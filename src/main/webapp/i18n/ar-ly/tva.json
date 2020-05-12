@@ -1,0 +1,25 @@
+{
+  "ibamApp": {
+    "tva": {
+      "home": {
+        "title": "Tvas",
+        "createLabel": "Create a new Tva",
+        "createOrEditLabel": "Create or edit a Tva",
+        "notFound": "No Tvas found"
+      },
+      "created": "A new Tva is created with identifier {{ param }}",
+      "updated": "A Tva is updated with identifier {{ param }}",
+      "deleted": "A Tva is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Tva {{ id }}?"
+      },
+      "detail": {
+        "title": "Tva"
+      },
+      "taux": "Taux",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiau": "Materiau"
+    }
+  }
+}

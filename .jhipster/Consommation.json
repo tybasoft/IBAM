@@ -1,0 +1,87 @@
+{
+    "name": "Consommation",
+    "fields": [
+        {
+            "fieldName": "reference",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dateAchat",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "typeCarburant",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "montant",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "quantite",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "kilometrage",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "commentaire",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "materiel",
+            "otherEntityRelationshipName": "consommation",
+            "relationshipName": "materiel",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "fournisseur",
+            "otherEntityRelationshipName": "consommation",
+            "relationshipName": "fournisseur",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "image",
+            "otherEntityRelationshipName": "consommation",
+            "relationshipName": "image",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200512004200",
+    "entityTableName": "consommation",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

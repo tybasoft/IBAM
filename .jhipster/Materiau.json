@@ -1,0 +1,95 @@
+{
+    "name": "Materiau",
+    "fields": [
+        {
+            "fieldName": "libelle",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "reference",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "poids",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "volume",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ligneBonReception",
+            "otherEntityRelationshipName": "materiau",
+            "relationshipName": "ligneBonRec"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "ligneBonCommande",
+            "otherEntityRelationshipName": "materiau",
+            "relationshipName": "ligneBonCom"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "marque",
+            "otherEntityRelationshipName": "materiau",
+            "relationshipName": "marque",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "unite",
+            "otherEntityRelationshipName": "materiau",
+            "relationshipName": "unite",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "famille",
+            "otherEntityRelationshipName": "materiau",
+            "relationshipName": "famille",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "tva",
+            "otherEntityRelationshipName": "materiau",
+            "relationshipName": "tva",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "image",
+            "otherEntityRelationshipName": "materiau",
+            "relationshipName": "image",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200512001600",
+    "entityTableName": "materiau",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

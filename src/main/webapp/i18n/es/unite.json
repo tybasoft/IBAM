@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "unite": {
+      "home": {
+        "title": "Unites",
+        "createLabel": "Crear nuevo Unite",
+        "createOrEditLabel": "Crear o editar Unite",
+        "notFound": "Ningún Unites encontrado"
+      },
+      "created": "Un nuevo Unite ha sido creado con el identificador {{ param }}",
+      "updated": "Un Unite ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Unite ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Unite {{ id }}?"
+      },
+      "detail": {
+        "title": "Unite"
+      },
+      "libelle": "Libelle",
+      "symbole": "Symbole",
+      "description": "Description",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiau": "Materiau"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "ibamApp": {
+    "entreprise": {
+      "home": {
+        "title": "Entreprises",
+        "createLabel": "Crear nuevo Entreprise",
+        "createOrEditLabel": "Crear o editar Entreprise",
+        "notFound": "Ningún Entreprises encontrado"
+      },
+      "created": "Un nuevo Entreprise ha sido creado con el identificador {{ param }}",
+      "updated": "Un Entreprise ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Entreprise ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Entreprise {{ id }}?"
+      },
+      "detail": {
+        "title": "Entreprise"
+      },
+      "entiteJuridique": "Entite Juridique",
+      "nomCommercial": "Nom Commercial",
+      "adresse": "Adresse",
+      "capital": "Capital",
+      "direction": "Direction",
+      "activite": "Activite",
+      "telephone": "Telephone",
+      "email": "Email",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "projet": "Projet",
+      "image": "Image"
+    }
+  }
+}

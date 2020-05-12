@@ -1,0 +1,39 @@
+{
+  "ibamApp": {
+    "projet": {
+      "home": {
+        "title": "Projets",
+        "createLabel": "Créer un nouveau Projet",
+        "createOrEditLabel": "Créer ou éditer un Projet",
+        "notFound": "Aucun Projet trouvé"
+      },
+      "created": "Un nouveau Projet a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Projet avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Projet avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Projet {{ id }} ?"
+      },
+      "detail": {
+        "title": "Projet"
+      },
+      "reference": "Reference",
+      "libelle": "Libelle",
+      "description": "Description",
+      "dateDebut": "Date Debut",
+      "dateFin": "Date Fin",
+      "nbrEmploye": "Nbr Employe",
+      "budget": "Budget",
+      "adresse": "Adresse",
+      "ville": "Ville",
+      "pays": "Pays",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "transfert": "Transfert",
+      "equipe": "Equipe",
+      "employe": "Employe",
+      "entreprise": "Entreprise",
+      "horaire": "Horaire",
+      "depot": "Depot"
+    }
+  }
+}

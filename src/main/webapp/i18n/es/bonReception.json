@@ -1,0 +1,30 @@
+{
+  "ibamApp": {
+    "bonReception": {
+      "home": {
+        "title": "Bon Receptions",
+        "createLabel": "Crear nuevo Bon Reception",
+        "createOrEditLabel": "Crear o editar Bon Reception",
+        "notFound": "Ningún Bon Receptions encontrado"
+      },
+      "created": "Un nuevo Bon Reception ha sido creado con el identificador {{ param }}",
+      "updated": "Un Bon Reception ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Bon Reception ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Bon Reception {{ id }}?"
+      },
+      "detail": {
+        "title": "Bon Reception"
+      },
+      "livreur": "Livreur",
+      "remarques": "Remarques",
+      "dateLivraison": "Date Livraison",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "ligneBonRec": "Ligne Bon Rec",
+      "depot": "Depot",
+      "fournisseur": "Fournisseur",
+      "image": "Image"
+    }
+  }
+}

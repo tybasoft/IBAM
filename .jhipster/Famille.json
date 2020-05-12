@@ -1,0 +1,50 @@
+{
+    "name": "Famille",
+    "fields": [
+        {
+            "fieldName": "libelle",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "materiau",
+            "otherEntityRelationshipName": "famille",
+            "relationshipName": "materiau"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "materiel",
+            "otherEntityRelationshipName": "famille",
+            "relationshipName": "materiel"
+        }
+    ],
+    "changelogDate": "20200512002000",
+    "javadoc": "The Famille entity.",
+    "entityTableName": "famille",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,29 @@
+{
+  "ibamApp": {
+    "pointage": {
+      "home": {
+        "title": "Pointages",
+        "createLabel": "Create a new Pointage",
+        "createOrEditLabel": "Create or edit a Pointage",
+        "notFound": "No Pointages found"
+      },
+      "created": "A new Pointage is created with identifier {{ param }}",
+      "updated": "A Pointage is updated with identifier {{ param }}",
+      "deleted": "A Pointage is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Pointage {{ id }}?"
+      },
+      "detail": {
+        "title": "Pointage"
+      },
+      "dateJour": "Date Jour",
+      "presenceMatin": "Presence Matin",
+      "presenceAPM": "Presence APM",
+      "nbrHeureSup": "Nbr Heure Sup",
+      "remarques": "Remarques",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "employe": "Employe"
+    }
+  }
+}

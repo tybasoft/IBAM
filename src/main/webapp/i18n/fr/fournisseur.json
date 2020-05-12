@@ -1,0 +1,36 @@
+{
+  "ibamApp": {
+    "fournisseur": {
+      "home": {
+        "title": "Fournisseurs",
+        "createLabel": "Créer un nouveau Fournisseur",
+        "createOrEditLabel": "Créer ou éditer un Fournisseur",
+        "notFound": "Aucun Fournisseur trouvé"
+      },
+      "created": "Un nouveau Fournisseur a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Fournisseur avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Fournisseur avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Fournisseur {{ id }} ?"
+      },
+      "detail": {
+        "title": "Fournisseur"
+      },
+      "nomCommercial": "Nom Commercial",
+      "type": "Type",
+      "fax": "Fax",
+      "nom": "Nom",
+      "prenom": "Prenom",
+      "email": "Email",
+      "tel": "Tel",
+      "adresse": "Adresse",
+      "description": "Description",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel",
+      "consommation": "Consommation",
+      "bonCommande": "Bon Commande",
+      "bonReception": "Bon Reception"
+    }
+  }
+}
