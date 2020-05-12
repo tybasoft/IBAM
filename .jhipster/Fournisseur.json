@@ -1,0 +1,92 @@
+{
+    "name": "Fournisseur",
+    "fields": [
+        {
+            "fieldName": "nomCommercial",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fax",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nom",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "prenom",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tel",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "adresse",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "materiel",
+            "otherEntityRelationshipName": "fournisseur",
+            "relationshipName": "materiel"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "consommation",
+            "otherEntityRelationshipName": "fournisseur",
+            "relationshipName": "consommation"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "bonCommande",
+            "otherEntityRelationshipName": "fournisseur",
+            "relationshipName": "bonCommande"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "bonReception",
+            "otherEntityRelationshipName": "fournisseur",
+            "relationshipName": "bonReception"
+        }
+    ],
+    "changelogDate": "20200512002700",
+    "entityTableName": "fournisseur",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

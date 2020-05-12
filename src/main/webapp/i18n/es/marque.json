@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "marque": {
+      "home": {
+        "title": "Marques",
+        "createLabel": "Crear nuevo Marque",
+        "createOrEditLabel": "Crear o editar Marque",
+        "notFound": "Ningún Marques encontrado"
+      },
+      "created": "Un nuevo Marque ha sido creado con el identificador {{ param }}",
+      "updated": "Un Marque ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Marque ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Marque {{ id }}?"
+      },
+      "detail": {
+        "title": "Marque"
+      },
+      "libelle": "Libelle",
+      "description": "Description",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiau": "Materiau",
+      "materiel": "Materiel"
+    }
+  }
+}

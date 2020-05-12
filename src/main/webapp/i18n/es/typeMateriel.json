@@ -1,0 +1,25 @@
+{
+  "ibamApp": {
+    "typeMateriel": {
+      "home": {
+        "title": "Type Materiels",
+        "createLabel": "Crear nuevo Type Materiel",
+        "createOrEditLabel": "Crear o editar Type Materiel",
+        "notFound": "Ningún Type Materiels encontrado"
+      },
+      "created": "Un nuevo Type Materiel ha sido creado con el identificador {{ param }}",
+      "updated": "Un Type Materiel ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Type Materiel ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Type Materiel {{ id }}?"
+      },
+      "detail": {
+        "title": "Type Materiel"
+      },
+      "type": "Type",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel"
+    }
+  }
+}

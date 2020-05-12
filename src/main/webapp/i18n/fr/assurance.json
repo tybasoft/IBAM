@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "assurance": {
+      "home": {
+        "title": "Assurances",
+        "createLabel": "Créer un nouveau Assurance",
+        "createOrEditLabel": "Créer ou éditer un Assurance",
+        "notFound": "Aucun Assurance trouvé"
+      },
+      "created": "Un nouveau Assurance a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Assurance avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Assurance avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Assurance {{ id }} ?"
+      },
+      "detail": {
+        "title": "Assurance"
+      },
+      "dateDebut": "Date Debut",
+      "dateFin": "Date Fin",
+      "agence": "Agence",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel"
+    }
+  }
+}

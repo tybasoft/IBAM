@@ -1,0 +1,14 @@
+package com.tybasoft.ibam.repository;
+
+import com.tybasoft.ibam.domain.CentreMaintenance;
+
+import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
+
+/**
+ * Spring Data  repository for the CentreMaintenance entity.
+ */
+@SuppressWarnings("unused")
+@Repository
+public interface CentreMaintenanceRepository extends JpaRepository<CentreMaintenance, Long> {
+}

@@ -1,0 +1,39 @@
+{
+    "name": "TypeMateriel",
+    "fields": [
+        {
+            "fieldName": "type",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "materiel",
+            "otherEntityRelationshipName": "typeMateriel",
+            "relationshipName": "materiel"
+        }
+    ],
+    "changelogDate": "20200512003800",
+    "entityTableName": "type_materiel",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

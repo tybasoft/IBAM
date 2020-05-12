@@ -1,0 +1,39 @@
+{
+    "name": "Tva",
+    "fields": [
+        {
+            "fieldName": "taux",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "materiau",
+            "otherEntityRelationshipName": "tva",
+            "relationshipName": "materiau"
+        }
+    ],
+    "changelogDate": "20200512001700",
+    "entityTableName": "tva",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

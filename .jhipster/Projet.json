@@ -1,0 +1,111 @@
+{
+    "name": "Projet",
+    "fields": [
+        {
+            "fieldName": "reference",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "libelle",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateDebut",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "dateFin",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "nbrEmploye",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "budget",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "adresse",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "ville",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "pays",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "transfertMateriel",
+            "otherEntityRelationshipName": "projet",
+            "relationshipName": "transfert"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "equipe",
+            "otherEntityRelationshipName": "projet",
+            "relationshipName": "equipe"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "employe",
+            "otherEntityRelationshipName": "projet",
+            "relationshipName": "employe"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "entreprise",
+            "otherEntityRelationshipName": "projet",
+            "relationshipName": "entreprise",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "horaire",
+            "otherEntityRelationshipName": "projet",
+            "relationshipName": "horaire",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "depot",
+            "otherEntityRelationshipName": "projet",
+            "relationshipName": "depot",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200512002900",
+    "entityTableName": "projet",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

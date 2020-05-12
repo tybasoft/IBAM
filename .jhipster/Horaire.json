@@ -1,0 +1,65 @@
+{
+    "name": "Horaire",
+    "fields": [
+        {
+            "fieldName": "libelle",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "nbrHeurParJr",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "nbrJourParSem",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "heureDebutJr",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "heureFinJr",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dureePause",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "projet",
+            "otherEntityRelationshipName": "horaire",
+            "relationshipName": "projet"
+        }
+    ],
+    "changelogDate": "20200512003400",
+    "entityTableName": "horaire",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,28 @@
+{
+  "ibamApp": {
+    "transfertMateriel": {
+      "home": {
+        "title": "Transfert Materiels",
+        "createLabel": "Crear nuevo Transfert Materiel",
+        "createOrEditLabel": "Crear o editar Transfert Materiel",
+        "notFound": "Ningún Transfert Materiels encontrado"
+      },
+      "created": "Un nuevo Transfert Materiel ha sido creado con el identificador {{ param }}",
+      "updated": "Un Transfert Materiel ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Transfert Materiel ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Transfert Materiel {{ id }}?"
+      },
+      "detail": {
+        "title": "Transfert Materiel"
+      },
+      "reference": "Reference",
+      "dateTransfert": "Date Transfert",
+      "commentaire": "Commentaire",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel",
+      "projet": "Projet"
+    }
+  }
+}
