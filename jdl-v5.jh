@@ -1,0 +1,388 @@
+
+
+entity Materiau {
+    libelle String required,
+    reference String required,
+    poids     String,
+    volume    String,
+	userModif String,
+	dateModif LocalDate
+}
+
+
+entity Tva {
+	taux String required,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Marque {
+    libelle String required,
+	userModif String,
+	dateModif LocalDate
+}
+
+
+entity Unite {
+	libelle String required,
+	symbole String required,
+    description String,
+	userModif String,
+	dateModif LocalDate
+}
+
+/**
+ * The Famille entity.
+ */
+entity Famille {
+	libelle String required,
+	description String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Image {
+	titre String required,
+	path String required,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Entreprise {
+	entiteJuridique String,
+	nomCommercial String required,
+    adresse String,
+    capital String,
+    direction String,
+    activite String,
+    telephone String,
+    email String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity LigneBonCommande {
+	quantite String required,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity LigneBonReception {
+	quantite String required,
+    prixHt String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity BonCommande {
+	datePrevLiv LocalDate,
+    remarques String,
+    dateCreation LocalDate required,
+    valide Boolean,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity BonReception {
+	livreur String,
+    remarques String,
+    dateLivraison LocalDate required,
+	userModif String,
+	dateModif LocalDate
+}
+entity Fournisseur {
+	nomCommercial String required,
+	type String,
+    fax String,
+    nom String ,
+    prenom String,
+    email String,
+    tel String,
+	adresse String required,
+    description String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Depot {
+	libelle String required,
+    adresse String required,
+    tel String,
+    ville String,
+    pays String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Projet {
+	reference String required,
+    libelle String required,
+    description String,
+    dateDebut LocalDate,
+    dateFin LocalDate,
+    nbrEmploye String,
+    budget String,
+    adresse String,
+    ville String,
+    pays String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Equipe {
+	libelle String required,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Fonction {
+	libelle String required,
+    description String,
+    competences String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Pointage {
+	dateJour LocalDate required,
+    presenceMatin Boolean required,
+    presenceAPM Boolean required,
+    nbrHeureSup String,
+    remarques String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Paie {
+    datePaiement LocalDate required,
+	nbrJourTravail String required,
+    montantPay String required,
+    nbrHeurSup String,
+    dateDebut LocalDate,
+    dateFin LocalDate,
+    remarques String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Horaire {
+	libelle String required,
+    nbrHeurParJr String required,
+    nbrJourParSem String required,
+    heureDebutJr String,
+    heureFinJr String,
+    dureePause String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Employe {
+    nom String required,
+	prenom String required,
+	matricule String required,
+    cin String required,
+    sexe String,
+    tarifJournalier String required,
+    dateNaissance LocalDate,
+    lieuNaissance String,
+    situationFam String,
+    nationalite String,
+    dateEntree LocalDate required,
+    tel String required,
+    email String,
+    adresse String,
+    division String,
+    typeContrat String,
+    multiPorjet Boolean required,
+    dateDepart LocalDate,
+    motifDepart String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Materiel {
+  libelle  			 String required,
+  matricule 	     String,
+  modele 			 String,
+  numCarteGrise 	 String required,
+  dateIdentification LocalDate,
+  compteurAchat      String,
+  etat               String,
+  location           Boolean,
+  description        String,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Assurance {
+  dateDebut			 LocalDate required,
+  dateFin			 LocalDate required,
+  agence 			 String required,
+	userModif String,
+	dateModif LocalDate
+ }
+ 
+entity Marque {
+	libelle          String required,
+	description      String,
+	userModif String,
+	dateModif LocalDate
+
+
+}
+
+
+entity TypeMateriel {
+    type           String required,
+	userModif String,
+	dateModif LocalDate
+}
+
+entity Document {
+  titre    		String required,
+  type 			String required,
+  path          String required,
+  commentaire   String,
+  userModif String,
+  dateModif LocalDate
+
+}
+
+entity Location {
+  reference             String required,
+  dateDebut 			LocalDate required,
+  dateFin    		    LocalDate,
+  tarif                 String required,
+  dureLocation          String,
+  montantLocation       String ,
+  remarque 				String,
+	userModif String,
+	dateModif LocalDate
+
+}
+
+entity TransfertMateriel {
+  reference             String required,
+  dateTransfert 		LocalDate required,
+  commentaire 			String,
+	userModif String,
+	dateModif LocalDate
+
+
+}
+
+entity Consommation {
+  reference             String required,
+  dateAchat         	 LocalDate required,
+  typeCarburant 		 String ,
+  montant 				 String required,
+  quantite               String required,
+  kilometrage 			 String ,
+  commentaire            String,
+  userModif String,
+  dateModif LocalDate
+
+
+}
+
+entity Maintenance {
+  reference              String required,
+  datePanne			 	 LocalDate required,
+  frais			 		 String required,
+  technicien 			 String ,
+  motif                  String required,
+  problemeFrequent       Boolean ,
+  remarque               String,
+  dureePanne			 String,
+	userModif String,
+	dateModif LocalDate
+  
+}
+
+entity CentreMaintenance {
+  libelle			 	 	 String required,
+  specialite			 	 String ,
+  responsable	 			 String ,
+  adresse                    String required,
+  telephone			         String required,
+  email 					 String,
+	userModif String,
+	dateModif LocalDate
+
+}
+
+entity VisiteTechnique {
+  reference                  String required,
+  dateVisite		 	 	 LocalDate required,
+  Remarque					 String,
+	userModif String,
+	dateModif LocalDate
+  
+}
+
+
+//------------------Relations-------------
+relationship OneToMany{
+	Marque{materiau} to Materiau{marque},
+    Unite{materiau} to Materiau{unite},
+    Famille{materiau} to Materiau{famille},
+    Tva{materiau} to Materiau{tva},
+    Famille{materiel} to Materiel{famille},
+	TypeMateriel{materiel} to  Materiel{typeMateriel},
+	Fournisseur{materiel}  to Materiel{fournisseur},
+	Marque{materiel} to Materiel{marque},
+    BonReception{ligneBonRec} to LigneBonReception{bonReception},
+    BonCommande{ligneBonCom} to LigneBonCommande{bonCommande},
+    Depot{bonCommande} to BonCommande{depot},
+    Depot{bonReception} to BonReception{depot},
+    Entreprise{projet} to Projet{entreprise},
+	Document{materiel} to Materiel{document}, 
+	Employe{materiel} to Materiel{employe} , 
+	Materiel{location}  to Location{materiel} ,
+    Materiel{assurance}  to Assurance{materiel} ,
+	Materiel{transfert}  to TransfertMateriel{materiel} ,
+    Projet{transfert} to TransfertMateriel{projet},
+	Materiel{consommation}   to Consommation{materiel} ,
+	Fournisseur{consommation}  to Consommation{fournisseur},
+	Materiel{maintenance}  to Maintenance{materiel}, 
+    Fournisseur{bonCommande} to BonCommande{fournisseur} ,
+    Fournisseur{bonReception} to BonReception{fournisseur},
+    CentreMaintenance{maintenance} to Maintenance{centreMaintenance},
+    Materiel{visitetechnique} to  VisiteTechnique{materiel},     
+    Horaire{projet}  to Projet{horaire},     
+    Projet{equipe} to Equipe{projet}  ,     
+    Projet{employe} to Employe{projet}  ,     
+    Equipe{employe} to Employe{equipe} ,
+	Employe{employe} to Equipe{equipe} , 	
+    Fonction{employe} to Employe{fonction},     
+    Employe{pointage} to Pointage{employe},     
+    Employe{paie} to Paie{employe} ,     
+    Materiau{ligneBonRec} to LigneBonReception{materiau},
+    Materiau{ligneBonCom} to LigneBonCommande{materiau},
+    Image{materiau} to Materiau{image},
+    Image{entreprise} to Entreprise{image},
+    Image{materiel} to Materiel{image}, 
+    Image{consommation} to Consommation{image}, 
+    Image{maintenance} to Maintenance{image}, 
+    Image{employee} to Employee{image}, 
+	Depot{projet} to Projet{depot},
+    Image{bonReception} to BonReception{image}
+
+}
+
+
+
+
+// Set pagination options
+//paginate JobHistory, Employee with infinite-scroll
+paginate Materiau,Marque,Unite,Famille,Image,LigneBonCommande,LigneBonReception,BonCommande,BonReception,Fournisseur,Projet,Equipe,Fonction,Pointage,Paie,Employe,Materiel,Assurance
+,Marque,Document,Location,TransfertMateriel,Consommation,Maintenance,CentreMaintenance,VisiteTechnique with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+//service all with serviceImpl except Employee, Job
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
