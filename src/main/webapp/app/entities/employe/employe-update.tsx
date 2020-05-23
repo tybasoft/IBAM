@@ -149,7 +149,17 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
                 <Label id="sexeLabel" for="employe-sexe">
                   <Translate contentKey="ibamApp.employe.sexe">Sexe</Translate>
                 </Label>
-                <AvField id="employe-sexe" type="text" name="sexe" />
+                <AvInput id="employe-sexe" type="select" className="form-control" name="sexe">
+                  <option value="" key="0">
+                    chisir Sexe....
+                  </option>
+                  <option value="Homme" key="1">
+                    Homme
+                  </option>
+                  <option value="Femme" key="2">
+                    Femme
+                  </option>
+                </AvInput>
               </AvGroup>
               <AvGroup>
                 <Label id="tarifJournalierLabel" for="employe-tarifJournalier">
@@ -237,7 +247,20 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
                 <Label id="typeContratLabel" for="employe-typeContrat">
                   <Translate contentKey="ibamApp.employe.typeContrat">Type Contrat</Translate>
                 </Label>
-                <AvField id="employe-typeContrat" type="text" name="typeContrat" />
+                <AvInput id="employe-typeContrat" type="select" className="form-control" name="typeContrat">
+                  <option value="" key="0">
+                    Choisir Type Contrat....
+                  </option>
+                  <option value="CDD" key="1">
+                    CDD
+                  </option>
+                  <option value="CDI" key="2">
+                    CDI
+                  </option>
+                  <option value="SST" key="3">
+                    SST
+                  </option>
+                </AvInput>
               </AvGroup>
               <AvGroup check>
                 <Label id="multiPorjetLabel">

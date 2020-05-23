@@ -14,6 +14,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,6 +47,9 @@ public class DocumentResourceIT {
     private static final String DEFAULT_USER_MODIF = "AAAAAAAAAA";
     private static final String UPDATED_USER_MODIF = "BBBBBBBBBB";
 
+    private static final Instant DEFAULT_DATE_MODIF = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE_MODIF = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
     @Autowired
     private DocumentRepository documentRepository;
 
@@ -68,7 +73,8 @@ public class DocumentResourceIT {
             .type(DEFAULT_TYPE)
             .path(DEFAULT_PATH)
             .commentaire(DEFAULT_COMMENTAIRE)
-            .userModif(DEFAULT_USER_MODIF);
+            .userModif(DEFAULT_USER_MODIF)
+            .dateModif(DEFAULT_DATE_MODIF);
         return document;
     }
     /**
@@ -83,7 +89,8 @@ public class DocumentResourceIT {
             .type(UPDATED_TYPE)
             .path(UPDATED_PATH)
             .commentaire(UPDATED_COMMENTAIRE)
-            .userModif(UPDATED_USER_MODIF);
+            .userModif(UPDATED_USER_MODIF)
+            .dateModif(UPDATED_DATE_MODIF);
         return document;
     }
 
@@ -112,6 +119,7 @@ public class DocumentResourceIT {
         assertThat(testDocument.getPath()).isEqualTo(DEFAULT_PATH);
         assertThat(testDocument.getCommentaire()).isEqualTo(DEFAULT_COMMENTAIRE);
         assertThat(testDocument.getUserModif()).isEqualTo(DEFAULT_USER_MODIF);
+        assertThat(testDocument.getDateModif()).isEqualTo(DEFAULT_DATE_MODIF);
     }
 
     @Test
@@ -203,7 +211,8 @@ public class DocumentResourceIT {
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
             .andExpect(jsonPath("$.[*].path").value(hasItem(DEFAULT_PATH)))
             .andExpect(jsonPath("$.[*].commentaire").value(hasItem(DEFAULT_COMMENTAIRE)))
-            .andExpect(jsonPath("$.[*].userModif").value(hasItem(DEFAULT_USER_MODIF)));
+            .andExpect(jsonPath("$.[*].userModif").value(hasItem(DEFAULT_USER_MODIF)))
+            .andExpect(jsonPath("$.[*].dateModif").value(hasItem(DEFAULT_DATE_MODIF.toString())));
     }
     
     @Test
@@ -221,7 +230,8 @@ public class DocumentResourceIT {
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
             .andExpect(jsonPath("$.path").value(DEFAULT_PATH))
             .andExpect(jsonPath("$.commentaire").value(DEFAULT_COMMENTAIRE))
-            .andExpect(jsonPath("$.userModif").value(DEFAULT_USER_MODIF));
+            .andExpect(jsonPath("$.userModif").value(DEFAULT_USER_MODIF))
+            .andExpect(jsonPath("$.dateModif").value(DEFAULT_DATE_MODIF.toString()));
     }
 
     @Test
@@ -249,7 +259,8 @@ public class DocumentResourceIT {
             .type(UPDATED_TYPE)
             .path(UPDATED_PATH)
             .commentaire(UPDATED_COMMENTAIRE)
-            .userModif(UPDATED_USER_MODIF);
+            .userModif(UPDATED_USER_MODIF)
+            .dateModif(UPDATED_DATE_MODIF);
 
         restDocumentMockMvc.perform(put("/api/documents")
             .contentType(MediaType.APPLICATION_JSON)
@@ -265,6 +276,7 @@ public class DocumentResourceIT {
         assertThat(testDocument.getPath()).isEqualTo(UPDATED_PATH);
         assertThat(testDocument.getCommentaire()).isEqualTo(UPDATED_COMMENTAIRE);
         assertThat(testDocument.getUserModif()).isEqualTo(UPDATED_USER_MODIF);
+        assertThat(testDocument.getDateModif()).isEqualTo(UPDATED_DATE_MODIF);
     }
 
     @Test

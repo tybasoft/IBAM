@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction } from 'react-jhipster';
+import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -49,12 +49,20 @@ export const DocumentDetail = (props: IDocumentDetailProps) => {
             </span>
           </dt>
           <dd>{documentEntity.commentaire}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.document.userModif">User Modif</Translate>
             </span>
           </dt>
           <dd>{documentEntity.userModif}</dd>
+          <dt>
+            <span id="dateModif">
+              <Translate contentKey="ibamApp.document.dateModif">Date Modif</Translate>
+            </span>
+          </dt>
+          <dd>
+            <TextFormat value={documentEntity.dateModif} type="date" format={APP_DATE_FORMAT} />
+          </dd> */}
         </dl>
         <Button tag={Link} to="/document" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

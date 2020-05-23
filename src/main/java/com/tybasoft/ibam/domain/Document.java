@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.domain;
 
+import com.tybasoft.ibam.security.SecurityUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,6 +45,20 @@ public class Document implements Serializable {
 
     @Column(name = "user_modif")
     private String userModif;
+
+    @Column(name = "date_modif")
+    private Instant dateModif;
+
+    @PrePersist
+    public void onCreate(){
+        userModif= SecurityUtils.getCurrentUserLogin().get();
+        dateModif= Instant.now();
+    }
+    @PreUpdate
+    public void onUpdate(){
+        userModif= SecurityUtils.getCurrentUserLogin().get();
+        dateModif= Instant.now();
+    }
 
     @OneToMany(mappedBy = "document")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -122,6 +138,19 @@ public class Document implements Serializable {
         this.userModif = userModif;
     }
 
+    public Instant getDateModif() {
+        return dateModif;
+    }
+
+    public Document dateModif(Instant dateModif) {
+        this.dateModif = dateModif;
+        return this;
+    }
+
+    public void setDateModif(Instant dateModif) {
+        this.dateModif = dateModif;
+    }
+
     public Set<Materiel> getMateriels() {
         return materiels;
     }
@@ -173,6 +202,7 @@ public class Document implements Serializable {
             ", path='" + getPath() + "'" +
             ", commentaire='" + getCommentaire() + "'" +
             ", userModif='" + getUserModif() + "'" +
+            ", dateModif='" + getDateModif() + "'" +
             "}";
     }
 }

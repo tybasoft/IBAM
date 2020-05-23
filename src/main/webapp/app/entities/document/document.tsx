@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
-import { Translate, ICrudGetAllAction, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -76,9 +76,12 @@ export const Document = (props: IDocumentProps) => {
                 <th className="hand" onClick={sort('commentaire')}>
                   <Translate contentKey="ibamApp.document.commentaire">Commentaire</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
+                {/* <th className="hand" onClick={sort('userModif')}>
                   <Translate contentKey="ibamApp.document.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('dateModif')}>
+                  <Translate contentKey="ibamApp.document.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -94,7 +97,10 @@ export const Document = (props: IDocumentProps) => {
                   <td>{document.type}</td>
                   <td>{document.path}</td>
                   <td>{document.commentaire}</td>
-                  <td>{document.userModif}</td>
+                  {/* <td>{document.userModif}</td>
+                  <td>
+                    <TextFormat type="date" value={document.dateModif} format={APP_DATE_FORMAT} />
+                  </td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${document.id}`} color="info" size="sm">

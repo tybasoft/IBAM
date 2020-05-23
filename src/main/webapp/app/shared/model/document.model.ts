@@ -1,3 +1,4 @@
+import { Moment } from 'moment';
 import { IMateriel } from 'app/shared/model/materiel.model';
 
 export interface IDocument {
@@ -7,6 +8,7 @@ export interface IDocument {
   path?: string;
   commentaire?: string;
   userModif?: string;
+  dateModif?: Moment;
   materiels?: IMateriel[];
 }
 

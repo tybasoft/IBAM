@@ -77,6 +77,7 @@ class DocumentGatlingTest extends Simulation {
                 , "path":"SAMPLE_TEXT"
                 , "commentaire":"SAMPLE_TEXT"
                 , "userModif":"SAMPLE_TEXT"
+                , "dateModif":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_document_url"))).exitHereIfFailed

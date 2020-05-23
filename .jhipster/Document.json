@@ -29,6 +29,10 @@
         {
             "fieldName": "userModif",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "Instant"
         }
     ],
     "relationships": [
