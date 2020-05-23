@@ -29,10 +29,6 @@
         {
             "fieldName": "userModif",
             "fieldType": "String"
-        },
-        {
-            "fieldName": "dateModif",
-            "fieldType": "LocalDate"
         }
     ],
     "relationships": [
@@ -53,5 +49,7 @@
     "readOnly": false,
     "embedded": false,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": "*",
+    "searchEngine": false,
+    "databaseType": "sql"
 }

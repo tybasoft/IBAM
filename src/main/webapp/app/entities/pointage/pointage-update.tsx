@@ -118,7 +118,7 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
                 </Label>
                 <AvField id="pointage-remarques" type="text" name="remarques" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="pointage-userModif">
                   <Translate contentKey="ibamApp.pointage.userModif">User Modif</Translate>
                 </Label>
@@ -129,7 +129,7 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
                   <Translate contentKey="ibamApp.pointage.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="pointage-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="pointage-employe">
                   <Translate contentKey="ibamApp.pointage.employe">Employe</Translate>

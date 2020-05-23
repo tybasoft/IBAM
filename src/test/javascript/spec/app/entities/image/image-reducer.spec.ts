@@ -33,7 +33,9 @@ describe('Entities reducer tests', () => {
     entity: defaultValue,
     totalItems: 0,
     updating: false,
-    updateSuccess: false
+    updateSuccess: false,
+    errorUpload: null,
+    uploadSuccess: false
   };
 
   function testInitialState(state) {

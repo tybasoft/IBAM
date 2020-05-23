@@ -100,7 +100,7 @@ export const FonctionUpdate = (props: IFonctionUpdateProps) => {
                 </Label>
                 <AvField id="fonction-competences" type="text" name="competences" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="fonction-userModif">
                   <Translate contentKey="ibamApp.fonction.userModif">User Modif</Translate>
                 </Label>
@@ -111,7 +111,7 @@ export const FonctionUpdate = (props: IFonctionUpdateProps) => {
                   <Translate contentKey="ibamApp.fonction.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="fonction-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <Button tag={Link} id="cancel-save" to="/fonction" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

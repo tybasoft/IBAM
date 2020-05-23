@@ -70,12 +70,12 @@ export const Image = (props: IImageProps) => {
                 <th className="hand" onClick={sort('path')}>
                   <Translate contentKey="ibamApp.image.path">Path</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
+                {/* <th className="hand" onClick={sort('userModif')}>
                   <Translate contentKey="ibamApp.image.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.image.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -89,10 +89,10 @@ export const Image = (props: IImageProps) => {
                   </td>
                   <td>{image.titre}</td>
                   <td>{image.path}</td>
-                  <td>{image.userModif}</td>
+                  {/* <td>{image.userModif}</td>
                   <td>
                     <TextFormat type="date" value={image.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
+                  </td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${image.id}`} color="info" size="sm">

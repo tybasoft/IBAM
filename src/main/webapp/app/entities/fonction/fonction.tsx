@@ -73,12 +73,12 @@ export const Fonction = (props: IFonctionProps) => {
                 <th className="hand" onClick={sort('competences')}>
                   <Translate contentKey="ibamApp.fonction.competences">Competences</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
+                {/* <th className="hand" onClick={sort('userModif')}>
                   <Translate contentKey="ibamApp.fonction.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.fonction.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -93,10 +93,10 @@ export const Fonction = (props: IFonctionProps) => {
                   <td>{fonction.libelle}</td>
                   <td>{fonction.description}</td>
                   <td>{fonction.competences}</td>
-                  <td>{fonction.userModif}</td>
+                  {/* <td>{fonction.userModif}</td>
                   <td>
                     <TextFormat type="date" value={fonction.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
+                  </td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${fonction.id}`} color="info" size="sm">

@@ -8,51 +8,169 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
 import { IImage } from 'app/shared/model/image.model';
-import { getEntities as getImages } from 'app/entities/image/image.reducer';
+import {
+  uploadImage,
+  getEntity as getImage,
+  deleteImageFile,
+  deleteEntity as deleteImageEntity,
+  updateEntity as updateImageEntity,
+  createEntity as createImageEntity,
+  reset as resetImage
+} from 'app/entities/image/image.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './entreprise.reducer';
 import { IEntreprise } from 'app/shared/model/entreprise.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import _debounce from 'lodash.debounce';
 
 export interface IEntrepriseUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const EntrepriseUpdate = (props: IEntrepriseUpdateProps) => {
-  const [imageId, setImageId] = useState('0');
+  const [newEntreprise, setnewEntreprise] = useState(null);
+  const [firstUpdate, setfirstUpdate] = useState(false);
+  const [imageDeleted, setimageDeleted] = useState(false);
+  const [imageID, setimageID] = useState(null);
+  const [imageFile, setimageFile] = useState(null);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { entrepriseEntity, images, loading, updating } = props;
+  const { entrepriseEntity, loading, updating, imageEntity } = props;
+
+  const validate = _debounce((value, ctx, input, cb) => {
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+    if (isNew) {
+      setTimeout(() => {
+        cb(allowedExtensions.exec(value) != null);
+      }, 500);
+    } else {
+      setTimeout(() => {
+        cb(allowedExtensions.exec(value) != null || (value === '' && !imageDeleted));
+      }, 500);
+    }
+  }, 300);
+
+  const deleteImage = () => {
+    setfirstUpdate(true);
+    setimageID(entrepriseEntity.image.id);
+    const entity = {
+      ...entrepriseEntity,
+      image: null
+    };
+    props.updateEntity(entity);
+    props.deleteImageFile(entrepriseEntity.image.path.substr(24));
+    setimageDeleted(true);
+  };
 
   const handleClose = () => {
     props.history.push('/entreprise');
   };
 
   useEffect(() => {
+    if (newEntreprise !== null) {
+      const entity = {
+        ...newEntreprise,
+        image: imageEntity
+      };
+      props.updateEntity(entity);
+      handleClose();
+    }
+  }, [imageEntity]);
+
+  useEffect(() => {
+    if (entrepriseEntity !== null && entrepriseEntity.id !== undefined) {
+      if (entrepriseEntity.image !== null) {
+        props.getImage(entrepriseEntity.image.id);
+        window.console.log(imageEntity);
+      }
+    }
+    if (!isNew && firstUpdate && entrepriseEntity.image == null) {
+      props.deleteImageEntity(imageID);
+    }
+  }, [entrepriseEntity]);
+
+  useEffect(() => {
     if (isNew) {
       props.reset();
     } else {
+      props.resetImage();
       props.getEntity(props.match.params.id);
     }
-
-    props.getImages();
   }, []);
 
   useEffect(() => {
-    if (props.updateSuccess) {
+    if (props.updateSuccess && !firstUpdate) {
       handleClose();
     }
   }, [props.updateSuccess]);
 
   const saveEntity = (event, errors, values) => {
+    let imageStorageName;
+    let image;
+    let entity;
+    const imageData = new FormData();
     if (errors.length === 0) {
-      const entity = {
-        ...entrepriseEntity,
-        ...values
-      };
-
       if (isNew) {
+        imageStorageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name);
+
+        image = {
+          titre: values.nomCommercial,
+          path: imageStorageName
+        };
+        entity = {
+          ...entrepriseEntity,
+          ...values,
+          image
+        };
+
+        imageData.append('file', imageFile);
+        imageData.append('storageName', imageStorageName);
+
         props.createEntity(entity);
+        props.uploadImage(imageData);
       } else {
-        props.updateEntity(entity);
+        if (!imageDeleted && entrepriseEntity.image !== null) {
+          imageStorageName = entrepriseEntity.image.path.substr(27);
+          image = {
+            ...imageEntity,
+            titre: values.nomCommercial,
+            path: imageStorageName
+          };
+          entity = {
+            ...entrepriseEntity,
+            ...values
+          };
+          imageData.append('file', imageFile);
+          imageData.append('storageName', imageStorageName);
+
+          if (imageFile) {
+            /* props.updateEntity(entity);
+            props.updateImageEntity(image);
+            props.uploadImage(imageData); */
+            window.console.log('nouvelle image');
+            window.console.log(image);
+            window.console.log(entity);
+          } else {
+            // props.updateEntity(entity);
+            window.console.log('no image');
+            window.console.log(image);
+            window.console.log(entity);
+          }
+        } else {
+          imageStorageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name);
+          image = {
+            titre: values.nomCommercial,
+            path: imageStorageName
+          };
+          entity = {
+            ...entrepriseEntity,
+            ...values
+          };
+          imageData.append('file', imageFile);
+          imageData.append('storageName', imageStorageName);
+
+          props.createImageEntity(image);
+          props.uploadImage(imageData);
+          setnewEntreprise(entity);
+        }
       }
     }
   };
@@ -135,6 +253,7 @@ export const EntrepriseUpdate = (props: IEntrepriseUpdateProps) => {
                 </Label>
                 <AvField id="entreprise-email" type="text" name="email" />
               </AvGroup>
+              {/*
               <AvGroup>
                 <Label id="userModifLabel" for="entreprise-userModif">
                   <Translate contentKey="ibamApp.entreprise.userModif">User Modif</Translate>
@@ -147,21 +266,55 @@ export const EntrepriseUpdate = (props: IEntrepriseUpdateProps) => {
                 </Label>
                 <AvField id="entreprise-dateModif" type="date" className="form-control" name="dateModif" />
               </AvGroup>
-              <AvGroup>
-                <Label for="entreprise-image">
-                  <Translate contentKey="ibamApp.entreprise.image">Image</Translate>
-                </Label>
-                <AvInput id="entreprise-image" type="select" className="form-control" name="image.id">
-                  <option value="" key="0" />
-                  {images
-                    ? images.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
+              */}
+              {isNew ? (
+                <AvGroup>
+                  <Label for="entreprise-image">
+                    <Translate contentKey="ibamApp.entreprise.image">Image</Translate>
+                  </Label>
+                  <AvInput
+                    id="entreprise-image"
+                    type="file"
+                    name="image"
+                    accept=".png, .jpg, .jpeg"
+                    validate={{ async: validate }}
+                    errorMessage="choisir une image"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setimageFile(e.target.files[0])}
+                  />
+                </AvGroup>
+              ) : null}
+              {!isNew ? (
+                <AvGroup>
+                  <Label for="entreprise-image">
+                    <Translate contentKey="ibamApp.entreprise.image">Image</Translate>
+                  </Label>
+                  <dd>
+                    <img src={imageEntity.path} alt="not found" style={{ width: '100%', border: 'solid 1px' }} />
+                  </dd>
+                  <dd>
+                    <Button
+                      color="danger"
+                      size="sm"
+                      onClick={() => deleteImage()}
+                      disabled={imageDeleted || entrepriseEntity.image == null}
+                    >
+                      <FontAwesomeIcon icon="trash" />{' '}
+                      <span className="d-none d-md-inline">
+                        <Translate contentKey="entity.action.delete">Delete</Translate>
+                      </span>
+                    </Button>
+                  </dd>
+                  <AvInput
+                    id="entreprise-image"
+                    type="file"
+                    name="imageFile"
+                    accept=".png, .jpg, .jpeg"
+                    validate={{ async: validate }}
+                    errorMessage="choisir une image"
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setimageFile(event.target.files[0])}
+                  />
+                </AvGroup>
+              ) : null}
               <Button tag={Link} id="cancel-save" to="/entreprise" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -184,19 +337,27 @@ export const EntrepriseUpdate = (props: IEntrepriseUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
-  images: storeState.image.entities,
   entrepriseEntity: storeState.entreprise.entity,
   loading: storeState.entreprise.loading,
   updating: storeState.entreprise.updating,
-  updateSuccess: storeState.entreprise.updateSuccess
+  updateSuccess: storeState.entreprise.updateSuccess,
+  errorUpload: storeState.image.errorUpload,
+  uploadSuccess: storeState.image.uploadSuccess,
+  imageEntity: storeState.image.entity
 });
 
 const mapDispatchToProps = {
-  getImages,
+  uploadImage,
+  getImage,
+  deleteImageFile,
+  deleteImageEntity,
+  updateImageEntity,
+  createImageEntity,
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
+  resetImage
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

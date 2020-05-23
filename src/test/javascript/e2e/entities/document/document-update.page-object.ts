@@ -9,7 +9,6 @@ export default class DocumentUpdatePage {
   pathInput: ElementFinder = element(by.css('input#document-path'));
   commentaireInput: ElementFinder = element(by.css('input#document-commentaire'));
   userModifInput: ElementFinder = element(by.css('input#document-userModif'));
-  dateModifInput: ElementFinder = element(by.css('input#document-dateModif'));
 
   getPageTitle() {
     return this.pageTitle;
@@ -53,14 +52,6 @@ export default class DocumentUpdatePage {
 
   async getUserModifInput() {
     return this.userModifInput.getAttribute('value');
-  }
-
-  async setDateModifInput(dateModif) {
-    await this.dateModifInput.sendKeys(dateModif);
-  }
-
-  async getDateModifInput() {
-    return this.dateModifInput.getAttribute('value');
   }
 
   async save() {

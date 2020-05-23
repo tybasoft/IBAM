@@ -257,6 +257,7 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
                 </Label>
                 <AvField id="employe-motifDepart" type="text" name="motifDepart" />
               </AvGroup>
+              {/*
               <AvGroup>
                 <Label id="userModifLabel" for="employe-userModif">
                   <Translate contentKey="ibamApp.employe.userModif">User Modif</Translate>
@@ -269,6 +270,7 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
                 </Label>
                 <AvField id="employe-dateModif" type="date" className="form-control" name="dateModif" />
               </AvGroup>
+              */}
               <AvGroup>
                 <Label for="employe-projet">
                   <Translate contentKey="ibamApp.employe.projet">Projet</Translate>

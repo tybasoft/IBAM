@@ -69,8 +69,6 @@ describe('Document e2e test', () => {
     expect(await documentUpdatePage.getCommentaireInput()).to.match(/commentaire/);
     await documentUpdatePage.setUserModifInput('userModif');
     expect(await documentUpdatePage.getUserModifInput()).to.match(/userModif/);
-    await documentUpdatePage.setDateModifInput('01-01-2001');
-    expect(await documentUpdatePage.getDateModifInput()).to.eq('2001-01-01');
     await waitUntilDisplayed(documentUpdatePage.saveButton);
     await documentUpdatePage.save();
     await waitUntilHidden(documentUpdatePage.saveButton);

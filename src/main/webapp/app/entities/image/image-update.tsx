@@ -101,7 +101,7 @@ export const ImageUpdate = (props: IImageUpdateProps) => {
                   }}
                 />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="image-userModif">
                   <Translate contentKey="ibamApp.image.userModif">User Modif</Translate>
                 </Label>
@@ -112,7 +112,7 @@ export const ImageUpdate = (props: IImageUpdateProps) => {
                   <Translate contentKey="ibamApp.image.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="image-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <Button tag={Link} id="cancel-save" to="/image" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

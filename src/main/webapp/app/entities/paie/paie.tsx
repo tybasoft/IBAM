@@ -76,7 +76,7 @@ export const Paie = (props: IPaieProps) => {
                 <th className="hand" onClick={sort('nbrHeurSup')}>
                   <Translate contentKey="ibamApp.paie.nbrHeurSup">Nbr Heur Sup</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('dateDebut')}>
+                {/* <th className="hand" onClick={sort('dateDebut')}>
                   <Translate contentKey="ibamApp.paie.dateDebut">Date Debut</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('dateFin')}>
@@ -93,7 +93,7 @@ export const Paie = (props: IPaieProps) => {
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.paie.employe">Employe</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -111,7 +111,7 @@ export const Paie = (props: IPaieProps) => {
                   <td>{paie.nbrJourTravail}</td>
                   <td>{paie.montantPay}</td>
                   <td>{paie.nbrHeurSup}</td>
-                  <td>
+                  {/* <td>
                     <TextFormat type="date" value={paie.dateDebut} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   <td>
@@ -122,7 +122,7 @@ export const Paie = (props: IPaieProps) => {
                   <td>
                     <TextFormat type="date" value={paie.dateModif} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
-                  <td>{paie.employe ? <Link to={`employe/${paie.employe.id}`}>{paie.employe.id}</Link> : ''}</td>
+                  <td>{paie.employe ? <Link to={`employe/${paie.employe.id}`}>{paie.employe.id}</Link> : ''}</td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${paie.id}`} color="info" size="sm">

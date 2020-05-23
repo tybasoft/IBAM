@@ -126,12 +126,6 @@ export const DocumentUpdate = (props: IDocumentUpdateProps) => {
                 </Label>
                 <AvField id="document-userModif" type="text" name="userModif" />
               </AvGroup>
-              <AvGroup>
-                <Label id="dateModifLabel" for="document-dateModif">
-                  <Translate contentKey="ibamApp.document.dateModif">Date Modif</Translate>
-                </Label>
-                <AvField id="document-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/document" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

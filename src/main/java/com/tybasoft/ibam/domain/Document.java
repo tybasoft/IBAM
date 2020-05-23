@@ -8,7 +8,6 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,9 +43,6 @@ public class Document implements Serializable {
 
     @Column(name = "user_modif")
     private String userModif;
-
-    @Column(name = "date_modif")
-    private LocalDate dateModif;
 
     @OneToMany(mappedBy = "document")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -126,19 +122,6 @@ public class Document implements Serializable {
         this.userModif = userModif;
     }
 
-    public LocalDate getDateModif() {
-        return dateModif;
-    }
-
-    public Document dateModif(LocalDate dateModif) {
-        this.dateModif = dateModif;
-        return this;
-    }
-
-    public void setDateModif(LocalDate dateModif) {
-        this.dateModif = dateModif;
-    }
-
     public Set<Materiel> getMateriels() {
         return materiels;
     }
@@ -190,7 +173,6 @@ public class Document implements Serializable {
             ", path='" + getPath() + "'" +
             ", commentaire='" + getCommentaire() + "'" +
             ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
             "}";
     }
 }
