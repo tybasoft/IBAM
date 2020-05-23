@@ -61,7 +61,7 @@ export const HoraireDetail = (props: IHoraireDetailProps) => {
             </span>
           </dt>
           <dd>{horaireEntity.dureePause}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.horaire.userModif">User Modif</Translate>
             </span>
@@ -74,7 +74,7 @@ export const HoraireDetail = (props: IHoraireDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={horaireEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
         </dl>
         <Button tag={Link} to="/horaire" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

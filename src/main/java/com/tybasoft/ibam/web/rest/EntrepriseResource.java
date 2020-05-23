@@ -1,7 +1,9 @@
 package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.Entreprise;
+import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.EntrepriseRepository;
+import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -35,9 +37,11 @@ public class EntrepriseResource {
     private String applicationName;
 
     private final EntrepriseRepository entrepriseRepository;
+    private final ImageService imageService;
 
-    public EntrepriseResource(EntrepriseRepository entrepriseRepository) {
+    public EntrepriseResource(EntrepriseRepository entrepriseRepository, ImageService imageService) {
         this.entrepriseRepository = entrepriseRepository;
+        this.imageService = imageService;
     }
 
     /**
@@ -49,10 +53,18 @@ public class EntrepriseResource {
      */
     @PostMapping("/entreprises")
     public ResponseEntity<Entreprise> createEntreprise(@Valid @RequestBody Entreprise entreprise) throws URISyntaxException {
+        Image image= entreprise.getImage();
+        log.debug("REST request to save Image : {}", image);
+        if (image.getId() != null) {
+            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Image resultImage= imageService.createImageEntity(image);
+
         log.debug("REST request to save Entreprise : {}", entreprise);
         if (entreprise.getId() != null) {
             throw new BadRequestAlertException("A new entreprise cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        entreprise.setImage(resultImage);
         Entreprise result = entrepriseRepository.save(entreprise);
         return ResponseEntity.created(new URI("/api/entreprises/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

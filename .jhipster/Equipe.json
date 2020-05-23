@@ -14,7 +14,7 @@
         },
         {
             "fieldName": "dateModif",
-            "fieldType": "LocalDate"
+            "fieldType": "Instant"
         }
     ],
     "relationships": [

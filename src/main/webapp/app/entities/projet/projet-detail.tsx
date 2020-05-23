@@ -89,7 +89,7 @@ export const ProjetDetail = (props: IProjetDetailProps) => {
             </span>
           </dt>
           <dd>{projetEntity.pays}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.projet.userModif">User Modif</Translate>
             </span>
@@ -102,7 +102,7 @@ export const ProjetDetail = (props: IProjetDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={projetEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
           <dt>
             <Translate contentKey="ibamApp.projet.entreprise">Entreprise</Translate>
           </dt>

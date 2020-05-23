@@ -31,7 +31,7 @@ export const EquipeDetail = (props: IEquipeDetailProps) => {
             </span>
           </dt>
           <dd>{equipeEntity.libelle}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.equipe.userModif">User Modif</Translate>
             </span>
@@ -44,7 +44,7 @@ export const EquipeDetail = (props: IEquipeDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={equipeEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
           <dt>
             <Translate contentKey="ibamApp.equipe.projet">Projet</Translate>
           </dt>

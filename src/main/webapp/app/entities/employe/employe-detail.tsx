@@ -145,6 +145,7 @@ export const EmployeDetail = (props: IEmployeDetailProps) => {
             </span>
           </dt>
           <dd>{employeEntity.motifDepart}</dd>
+          {/*
           <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.employe.userModif">User Modif</Translate>
@@ -159,6 +160,7 @@ export const EmployeDetail = (props: IEmployeDetailProps) => {
           <dd>
             <TextFormat value={employeEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
           </dd>
+          */}
           <dt>
             <Translate contentKey="ibamApp.employe.projet">Projet</Translate>
           </dt>

@@ -67,12 +67,14 @@ export const Equipe = (props: IEquipeProps) => {
                 <th className="hand" onClick={sort('libelle')}>
                   <Translate contentKey="ibamApp.equipe.libelle">Libelle</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                {/*
                 <th className="hand" onClick={sort('userModif')}>
                   <Translate contentKey="ibamApp.equipe.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.equipe.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                */}
                 <th>
                   <Translate contentKey="ibamApp.equipe.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -91,10 +93,12 @@ export const Equipe = (props: IEquipeProps) => {
                     </Button>
                   </td>
                   <td>{equipe.libelle}</td>
+                  {/*
                   <td>{equipe.userModif}</td>
                   <td>
                     <TextFormat type="date" value={equipe.dateModif} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
+                  */}
                   <td>{equipe.projet ? <Link to={`projet/${equipe.projet.id}`}>{equipe.projet.id}</Link> : ''}</td>
                   <td>{equipe.equipe ? <Link to={`employe/${equipe.equipe.id}`}>{equipe.equipe.id}</Link> : ''}</td>
                   <td className="text-right">
