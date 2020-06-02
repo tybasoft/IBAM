@@ -2,6 +2,7 @@ package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.Document;
 import com.tybasoft.ibam.repository.DocumentRepository;
+import com.tybasoft.ibam.service.DocumentService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +41,11 @@ public class DocumentResource {
     private String applicationName;
 
     private final DocumentRepository documentRepository;
+    private final DocumentService documentService;
 
-    public DocumentResource(DocumentRepository documentRepository) {
+    public DocumentResource(DocumentRepository documentRepository, DocumentService documentService) {
         this.documentRepository = documentRepository;
+        this.documentService = documentService;
     }
 
     /**
@@ -59,7 +61,7 @@ public class DocumentResource {
         if (document.getId() != null) {
             throw new BadRequestAlertException("A new document cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Document result = documentRepository.save(document);
+        Document result = documentService.createDocumentEntity(document);
         return ResponseEntity.created(new URI("/api/documents/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -80,7 +82,7 @@ public class DocumentResource {
         if (document.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Document result = documentRepository.save(document);
+        Document result = documentService.createDocumentEntity(document);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, document.getId().toString()))
             .body(result);

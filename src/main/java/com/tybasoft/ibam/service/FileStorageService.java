@@ -21,7 +21,7 @@ public class FileStorageService {
 
     public FileStorageService() {
         this.imagesStorageLocation = Paths.get("./src/main/webapp/content/uploads/images").toAbsolutePath().normalize();
-        this.documentsStorageLocation = Paths.get("./src/main/webapp/content/uploads/documnets").toAbsolutePath().normalize();
+        this.documentsStorageLocation = Paths.get("./src/main/webapp/content/uploads/documents").toAbsolutePath().normalize();
 
         try {
             Files.createDirectories(this.imagesStorageLocation);
@@ -31,21 +31,29 @@ public class FileStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file, String fileName) {
-        String imageName= "img"+fileName;
+    public String storeFile(MultipartFile file, String fileName, String fileType) {
+        Path targetLocation;
+        String newfileName= null;
         try {
             // Check if the file's name contains invalid characters
-            if(imageName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + imageName);
+            if(fileName.contains("..")) {
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + newfileName);
+            }
+
+            if (fileType.equals("image")){
+                newfileName= "img"+fileName;
+                targetLocation = this.imagesStorageLocation.resolve(newfileName);
+            }else {
+                newfileName= "doc"+fileName;
+                targetLocation = this.documentsStorageLocation.resolve(newfileName);
             }
 
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.imagesStorageLocation.resolve(imageName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return imageName;
+            return newfileName;
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + imageName + ". Please try again!", ex);
+            throw new FileStorageException("Could not store file " + newfileName + ". Please try again!", ex);
         }
     }
 
@@ -65,8 +73,13 @@ public class FileStorageService {
         }
     }
 
-    public void deleteFile(String fileName) {
-        String filePath = this.imagesStorageLocation.resolve(fileName).normalize().toString();
+    public void deleteFile(String fileName, String fileType) {
+        String filePath;
+        if (fileType.equals("image")){
+            filePath= this.imagesStorageLocation.resolve(fileName).normalize().toString();
+        }else {
+            filePath= this.documentsStorageLocation.resolve(fileName).normalize().toString();
+        }
 
         if(filePath != null) {
             File filetoDelete= FileUtils.getFile(filePath);

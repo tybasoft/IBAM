@@ -2,7 +2,9 @@ package com.tybasoft.ibam.service;
 
 import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.ImageRepository;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class ImageService {
@@ -19,6 +21,21 @@ public class ImageService {
         newimage.setTitre(image.getTitre()+"-Image");
         newimage.setPath("/content/uploads/images/"+imagePath);
 
+        if (image.getId() != null) {
+            newimage.setId(image.getId());
+        }
+
         return imageRepository.save(newimage);
+    }
+
+    public void deleteImageEntityFile(Image image, Logger log, ImageRepository imageRepository, FileStorageService fileStorageService) {
+        if (image != null) {
+            Image newimage= imageRepository.findById(image.getId()).get();
+            String imagePath= newimage.getPath().substring(24);
+
+            log.debug("REST request to delete Image : {}", newimage.getId());
+            imageRepository.deleteById(newimage.getId());
+            fileStorageService.deleteFile(imagePath, "image");
+        }
     }
 }

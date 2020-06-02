@@ -101,21 +101,24 @@ export default (state: ImageState = initialState, action): ImageState => {
       return {
         ...state,
         errorUpload: null,
-        uploadSuccess: false
+        uploadSuccess: false,
+        updating: true
       };
     case SUCCESS(ACTION_TYPES.UPLOAD_IMAGE):
     case SUCCESS(ACTION_TYPES.DELETE_IMAGE_FILE):
       return {
         ...state,
         errorUpload: null,
-        uploadSuccess: true
+        uploadSuccess: true,
+        updating: false
       };
     case FAILURE(ACTION_TYPES.UPLOAD_IMAGE):
     case FAILURE(ACTION_TYPES.DELETE_IMAGE_FILE):
       return {
         ...state,
         errorUpload: action.payload,
-        uploadSuccess: false
+        uploadSuccess: false,
+        updating: false
       };
     default:
       return state;
@@ -147,7 +150,7 @@ export const createEntity: ICrudPutAction<IImage> = entity => async dispatch => 
     type: ACTION_TYPES.CREATE_IMAGE,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  // dispatch(getEntities());
   return result;
 };
 

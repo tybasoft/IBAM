@@ -1,7 +1,11 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.domain.Maintenance;
+import com.tybasoft.ibam.repository.ImageRepository;
 import com.tybasoft.ibam.repository.MaintenanceRepository;
+import com.tybasoft.ibam.service.FileStorageService;
+import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +44,15 @@ public class MaintenanceResource {
     private String applicationName;
 
     private final MaintenanceRepository maintenanceRepository;
+    private final ImageService imageService;
+    private final ImageRepository imageRepository;
+    private final FileStorageService fileStorageService;
 
-    public MaintenanceResource(MaintenanceRepository maintenanceRepository) {
+    public MaintenanceResource(MaintenanceRepository maintenanceRepository, ImageService imageService, ImageRepository imageRepository, FileStorageService fileStorageService) {
         this.maintenanceRepository = maintenanceRepository;
+        this.imageService = imageService;
+        this.imageRepository = imageRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     /**
@@ -55,10 +64,18 @@ public class MaintenanceResource {
      */
     @PostMapping("/maintenances")
     public ResponseEntity<Maintenance> createMaintenance(@Valid @RequestBody Maintenance maintenance) throws URISyntaxException {
+        Image image= maintenance.getImage();
+        log.debug("REST request to save Image : {}", image);
+        if (image.getId() != null) {
+            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Image resultImage= imageService.createImageEntity(image);
+
         log.debug("REST request to save Maintenance : {}", maintenance);
         if (maintenance.getId() != null) {
             throw new BadRequestAlertException("A new maintenance cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        maintenance.setImage(resultImage);
         Maintenance result = maintenanceRepository.save(maintenance);
         return ResponseEntity.created(new URI("/api/maintenances/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -76,10 +93,18 @@ public class MaintenanceResource {
      */
     @PutMapping("/maintenances")
     public ResponseEntity<Maintenance> updateMaintenance(@Valid @RequestBody Maintenance maintenance) throws URISyntaxException {
+        Image image= maintenance.getImage();
+        Image resultImage= null;
+        if(image != null) {
+            log.debug("REST request to save Image : {}", image);
+            resultImage = imageService.createImageEntity(image);
+        }
+
         log.debug("REST request to update Maintenance : {}", maintenance);
         if (maintenance.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        maintenance.setImage(resultImage);
         Maintenance result = maintenanceRepository.save(maintenance);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, maintenance.getId().toString()))
@@ -121,6 +146,11 @@ public class MaintenanceResource {
      */
     @DeleteMapping("/maintenances/{id}")
     public ResponseEntity<Void> deleteMaintenance(@PathVariable Long id) {
+        Maintenance maintenance= maintenanceRepository.findById(id).get();
+        Image image= maintenance.getImage();
+
+        imageService.deleteImageEntityFile(image, log, imageRepository, fileStorageService);
+
         log.debug("REST request to delete Maintenance : {}", id);
         maintenanceRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

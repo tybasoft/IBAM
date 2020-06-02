@@ -1,7 +1,11 @@
 package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.Consommation;
+import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.ConsommationRepository;
+import com.tybasoft.ibam.repository.ImageRepository;
+import com.tybasoft.ibam.service.FileStorageService;
+import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +44,15 @@ public class ConsommationResource {
     private String applicationName;
 
     private final ConsommationRepository consommationRepository;
+    private final ImageService imageService;
+    private final ImageRepository imageRepository;
+    private final FileStorageService fileStorageService;
 
-    public ConsommationResource(ConsommationRepository consommationRepository) {
+    public ConsommationResource(ConsommationRepository consommationRepository, ImageService imageService, ImageRepository imageRepository, FileStorageService fileStorageService) {
         this.consommationRepository = consommationRepository;
+        this.imageService = imageService;
+        this.imageRepository = imageRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     /**
@@ -55,10 +64,18 @@ public class ConsommationResource {
      */
     @PostMapping("/consommations")
     public ResponseEntity<Consommation> createConsommation(@Valid @RequestBody Consommation consommation) throws URISyntaxException {
+        Image image= consommation.getImage();
+        log.debug("REST request to save Image : {}", image);
+        if (image.getId() != null) {
+            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Image resultImage= imageService.createImageEntity(image);
+
         log.debug("REST request to save Consommation : {}", consommation);
         if (consommation.getId() != null) {
             throw new BadRequestAlertException("A new consommation cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        consommation.setImage(resultImage);
         Consommation result = consommationRepository.save(consommation);
         return ResponseEntity.created(new URI("/api/consommations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -76,10 +93,18 @@ public class ConsommationResource {
      */
     @PutMapping("/consommations")
     public ResponseEntity<Consommation> updateConsommation(@Valid @RequestBody Consommation consommation) throws URISyntaxException {
+        Image image= consommation.getImage();
+        Image resultImage= null;
+        if(image != null) {
+            log.debug("REST request to save Image : {}", image);
+            resultImage = imageService.createImageEntity(image);
+        }
+
         log.debug("REST request to update Consommation : {}", consommation);
         if (consommation.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        consommation.setImage(resultImage);
         Consommation result = consommationRepository.save(consommation);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, consommation.getId().toString()))
@@ -121,6 +146,11 @@ public class ConsommationResource {
      */
     @DeleteMapping("/consommations/{id}")
     public ResponseEntity<Void> deleteConsommation(@PathVariable Long id) {
+        Consommation consommation=consommationRepository.findById(id).get();
+        Image image= consommation.getImage();
+
+        imageService.deleteImageEntityFile(image, log, imageRepository, fileStorageService);
+
         log.debug("REST request to delete Consommation : {}", id);
         consommationRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

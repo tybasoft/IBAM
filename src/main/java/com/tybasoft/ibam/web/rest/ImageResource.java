@@ -82,7 +82,7 @@ public class ImageResource {
         if (image.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Image result = imageRepository.save(image);
+        Image result = imageService.createImageEntity(image);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, image.getId().toString()))
             .body(result);

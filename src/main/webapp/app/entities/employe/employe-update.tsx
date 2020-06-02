@@ -14,23 +14,56 @@ import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
 import { IFonction } from 'app/shared/model/fonction.model';
 import { getEntities as getFonctions } from 'app/entities/fonction/fonction.reducer';
 import { IImage } from 'app/shared/model/image.model';
-import { getEntities as getImages } from 'app/entities/image/image.reducer';
+import {
+  createEntity as createImageEntity,
+  getEntity as getImageEntity,
+  reset as resetImage,
+  deleteEntity as deleteImageEntity,
+  uploadImage,
+  deleteImageFile
+} from 'app/entities/image/image.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './employe.reducer';
 import { IEmploye } from 'app/shared/model/employe.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import _debounce from 'lodash.debounce';
 
 export interface IEmployeUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const EmployeUpdate = (props: IEmployeUpdateProps) => {
-  const [employeId, setEmployeId] = useState('0');
-  const [equipeId, setEquipeId] = useState('0');
-  const [projetId, setProjetId] = useState('0');
-  const [fonctionId, setFonctionId] = useState('0');
-  const [imageId, setImageId] = useState('0');
+  const [errorMessage, seterrorMessage] = useState('');
+  const [imageID, setimageID] = useState(null);
+  const [imageDeleted, setimageDeleted] = useState(false);
+  const [imageFile, setimageFile] = useState(null);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { employeEntity, equipes, projets, fonctions, images, loading, updating } = props;
+  const { employeEntity, equipes, projets, fonctions, loading, updating, imageEntity } = props;
+
+  const validate = _debounce((value, ctx, input, cb) => {
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+    if (isNew && allowedExtensions.exec(value) == null) {
+      cb(false);
+      seterrorMessage(translate('entity.validation.imageFileType'));
+    } else if (allowedExtensions.exec(value) == null && value !== '') {
+      cb(false);
+      seterrorMessage(translate('entity.validation.imageFileType'));
+    } else if (imageFile) {
+      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
+        cb(false);
+        seterrorMessage(translate('entity.validation.imageFileSize'));
+      }
+    }
+    cb(true);
+  }, 300);
+
+  useEffect(() => {
+    if (imageID !== null) {
+      setTimeout(() => {
+        props.deleteImageEntity(imageID);
+      }, 1000);
+    }
+  }, [imageID]);
 
   const handleClose = () => {
     props.history.push('/employe' + props.location.search);
@@ -40,13 +73,13 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
     if (isNew) {
       props.reset();
     } else {
+      props.resetImage();
       props.getEntity(props.match.params.id);
     }
 
     props.getEquipes();
     props.getProjets();
     props.getFonctions();
-    props.getImages();
   }, []);
 
   useEffect(() => {
@@ -55,17 +88,80 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
     }
   }, [props.updateSuccess]);
 
+  useEffect(() => {
+    if (employeEntity.id !== undefined) {
+      if (employeEntity.id.toString() === props.match.params.id && employeEntity.image !== null) {
+        props.getImageEntity(employeEntity.image.id);
+      }
+    }
+  }, [employeEntity]);
+
+  const uploadNewImage = values => {
+    const storageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name);
+    const image = {
+      titre: values.matricule,
+      path: storageName
+    };
+    const imageData = new FormData();
+    imageData.append('file', imageFile);
+    imageData.append('storageName', storageName);
+
+    props.uploadImage(imageData);
+    return image;
+  };
+
   const saveEntity = (event, errors, values) => {
+    let imageStorageName;
+    let image;
+    let entity;
+    const imageData = new FormData();
     if (errors.length === 0) {
-      const entity = {
+      entity = {
         ...employeEntity,
         ...values
       };
 
       if (isNew) {
+        image = uploadNewImage(values);
+        entity.image = image;
+
         props.createEntity(entity);
       } else {
-        props.updateEntity(entity);
+        if (employeEntity.image == null) {
+          if (imageFile) {
+            image = uploadNewImage(values);
+            entity.image = image;
+          }
+          props.updateEntity(entity);
+        } else if (imageDeleted) {
+          entity.image = null;
+
+          if (imageFile) {
+            image = uploadNewImage(values);
+            entity.image = image;
+          }
+          props.deleteImageFile(employeEntity.image.path.substr(24));
+          setimageID(employeEntity.image.id);
+          props.updateEntity(entity);
+        } else {
+          image = {
+            id: employeEntity.image.id,
+            titre: values.matricule,
+            path: employeEntity.image.path.substr(27)
+          };
+          entity.image = image;
+
+          if (imageFile) {
+            (imageStorageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name)), (image.path = imageStorageName);
+            entity.image = image;
+            imageData.append('file', imageFile);
+            imageData.append('storageName', imageStorageName);
+
+            props.deleteImageFile(employeEntity.image.path.substr(24));
+            props.uploadImage(imageData);
+          }
+          props.updateEntity(entity);
+        }
       }
     }
   };
@@ -303,7 +399,7 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
                   {projets
                     ? projets.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -340,19 +436,49 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
                 </AvInput>
               </AvGroup>
               <AvGroup>
-                <Label for="employe-image">
+                <Label>
                   <Translate contentKey="ibamApp.employe.image">Image</Translate>
                 </Label>
-                <AvInput id="employe-image" type="select" className="form-control" name="image.id">
-                  <option value="" key="0" />
-                  {images
-                    ? images.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
+                {!isNew ? (
+                  <div>
+                    <dd>
+                      {!imageDeleted && employeEntity.image !== null && imageEntity.path !== undefined ? (
+                        <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '300px', border: 'solid 1px' }} />
+                      ) : null}
+                    </dd>
+                    <dd>
+                      <Button
+                        color="danger"
+                        size="sm"
+                        onClick={() => setimageDeleted(true)}
+                        disabled={imageDeleted || employeEntity.image == null}
+                      >
+                        <FontAwesomeIcon icon="trash" />{' '}
+                        <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.delete">Delete</Translate>
+                        </span>
+                      </Button>
+                    </dd>
+                  </div>
+                ) : null}
+                <AvInput
+                  id="employe-image"
+                  type="file"
+                  name="imageFile"
+                  accept=".png, .jpg, .jpeg"
+                  validate={{ async: validate }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setimageFile(event.target.files[0])}
+                  style={{ opacity: '0', position: 'absolute', height: '0px' }}
+                />
+                <div className="form-group" style={{ marginBottom: '-10px' }}>
+                  <Label for="employe-image" className="btn btn-secondary">
+                    {translate('entity.inputImageFile')}
+                  </Label>
+                  <Label className="p-2">
+                    {imageFile !== null && imageFile !== undefined ? imageFile.name : translate('entity.noFileChoosed')}
+                  </Label>
+                </div>
+                <AvFeedback>{errorMessage}</AvFeedback>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/employe" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
@@ -379,22 +505,29 @@ const mapStateToProps = (storeState: IRootState) => ({
   equipes: storeState.equipe.entities,
   projets: storeState.projet.entities,
   fonctions: storeState.fonction.entities,
-  images: storeState.image.entities,
   employeEntity: storeState.employe.entity,
   loading: storeState.employe.loading,
   updating: storeState.employe.updating,
-  updateSuccess: storeState.employe.updateSuccess
+  updateSuccess: storeState.employe.updateSuccess,
+  imageEntity: storeState.image.entity,
+  errorUpload: storeState.image.errorUpload,
+  uploadSuccess: storeState.image.uploadSuccess
 });
 
 const mapDispatchToProps = {
   getEquipes,
   getProjets,
   getFonctions,
-  getImages,
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
+  createImageEntity,
+  uploadImage,
+  getImageEntity,
+  resetImage,
+  deleteImageFile,
+  deleteImageEntity
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

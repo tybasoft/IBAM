@@ -128,7 +128,8 @@
       "delete": "Supprimer",
       "open": "Ouvrir",
       "save": "Sauvegarder",
-      "view": "Voir"
+      "view": "Voir",
+      "download": "Télécharger"
     },
     "detail": {
       "field": "Champs",
@@ -148,8 +149,15 @@
       "pattern": "Ce champ doit suivre l'expression régulière {{pattern}}.",
       "number": "Ce champ doit être un nombre.",
       "datetimelocal": "Ce champ doit être une date et une heure.",
-      "patternLogin": "Ce champ ne peut contenir que des lettres, des chiffres ou des adresses e-mail."
-    }
+      "patternLogin": "Ce champ ne peut contenir que des lettres, des chiffres ou des adresses e-mail.",
+      "imageFileType": "Le fichier doit être une image.",
+      "documentFileType": "Le fichier doit être un document.",
+      "imageFileSize": "L'image doit être de taille moin de 10MB.",
+      "documentFileSize": "Le document doit être de taille moin de 10MB."
+    },
+    "inputImageFile": "Choisir un fichier...",
+    "inputDocumentFile": "Choisir un fichier...",
+    "noFileChoosed": "Aucun fichier choisi"
   },
   "error": {
     "internalServerError": "Erreur interne du serveur",

@@ -16,7 +16,7 @@ import java.io.IOException;
 
 
 @RestController
-@RequestMapping("/api/images")
+@RequestMapping("/api")
 public class FileUploadDownloadController {
     class UploadFileResponse {
         private String fileName;
@@ -65,9 +65,9 @@ public class FileUploadDownloadController {
         this.fileStorageService = fileStorageService;
     }
 
-    @PostMapping("/uploadFile")
-    public ResponseEntity<UploadFileResponse> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("storageName") String storageName) {
-        String fileName = fileStorageService.storeFile(file, storageName);
+    @PostMapping("/images/uploadFile")
+    public ResponseEntity<UploadFileResponse> uploadImageFile(@RequestParam("file") MultipartFile file, @RequestParam("storageName") String storageName) {
+        String fileName = fileStorageService.storeFile(file, storageName, "image");
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
             .path("/downloadFile/")
@@ -79,7 +79,12 @@ public class FileUploadDownloadController {
             .body(result);
     }
 
+    @DeleteMapping("/images/deleteFile/{fileName:.+}")
+    public ResponseEntity<String> deleteImageFile(@PathVariable String fileName){
+        fileStorageService.deleteFile(fileName, "image");
 
+        return ResponseEntity.ok("file: "+fileName+ "was deleted with success");
+    }
 
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
@@ -103,9 +108,23 @@ public class FileUploadDownloadController {
             .body(resource);
     }
 
-    @DeleteMapping("/deleteFile/{fileName:.+}")
-    public ResponseEntity<String> deleteFile(@PathVariable String fileName){
-        fileStorageService.deleteFile(fileName);
+    @PostMapping("/documents/uploadFile")
+    public ResponseEntity<UploadFileResponse> uploadDocumentFile(@RequestParam("file") MultipartFile file, @RequestParam("storageName") String storageName) {
+        String fileName = fileStorageService.storeFile(file, storageName,"document");
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/downloadFile/")
+            .path("fileName")
+            .toUriString();
+
+        UploadFileResponse result= new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+        return  ResponseEntity.ok()
+            .body(result);
+    }
+
+    @DeleteMapping("/documents/deleteFile/{fileName:.+}")
+    public ResponseEntity<String> deleteDocumentFile(@PathVariable String fileName){
+        fileStorageService.deleteFile(fileName, "document");
 
         return ResponseEntity.ok("file: "+fileName+ "was deleted with success");
     }

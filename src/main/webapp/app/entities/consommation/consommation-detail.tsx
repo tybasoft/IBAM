@@ -7,20 +7,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './consommation.reducer';
+import { getEntity as getImage, reset as resetImage } from 'app/entities/image/image.reducer';
 import { IConsommation } from 'app/shared/model/consommation.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IConsommationDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const ConsommationDetail = (props: IConsommationDetailProps) => {
+  const { consommationEntity, imageEntity } = props;
+
   useEffect(() => {
+    props.resetImage();
     props.getEntity(props.match.params.id);
   }, []);
 
-  const { consommationEntity } = props;
+  useEffect(() => {
+    if (consommationEntity.id !== undefined) {
+      if (consommationEntity.id.toString() === props.match.params.id && consommationEntity.image !== null) {
+        props.getImage(consommationEntity.image.id);
+      }
+    }
+  }, [consommationEntity]);
+
   return (
     <Row>
-      <Col md="8">
+      <Col md="6">
         <h2>
           <Translate contentKey="ibamApp.consommation.detail.title">Consommation</Translate> [<b>{consommationEntity.id}</b>]
         </h2>
@@ -91,10 +102,6 @@ export const ConsommationDetail = (props: IConsommationDetailProps) => {
             <Translate contentKey="ibamApp.consommation.fournisseur">Fournisseur</Translate>
           </dt>
           <dd>{consommationEntity.fournisseur ? consommationEntity.fournisseur.id : ''}</dd>
-          <dt>
-            <Translate contentKey="ibamApp.consommation.image">Image</Translate>
-          </dt>
-          <dd>{consommationEntity.image ? consommationEntity.image.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/consommation" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
@@ -110,15 +117,21 @@ export const ConsommationDetail = (props: IConsommationDetailProps) => {
           </span>
         </Button>
       </Col>
+      <Col md="6">
+        {consommationEntity.image !== null ? (
+          <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '80%', border: 'solid 1px' }} />
+        ) : null}
+      </Col>
     </Row>
   );
 };
 
-const mapStateToProps = ({ consommation }: IRootState) => ({
-  consommationEntity: consommation.entity
+const mapStateToProps = (storeState: IRootState) => ({
+  consommationEntity: storeState.consommation.entity,
+  imageEntity: storeState.image.entity
 });
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getEntity, getImage, resetImage };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

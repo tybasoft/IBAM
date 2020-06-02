@@ -17,18 +17,17 @@ export const EntrepriseDetail = (props: IEntrepriseDetailProps) => {
   const { entrepriseEntity, imageEntity } = props;
 
   useEffect(() => {
-    if (entrepriseEntity !== null && entrepriseEntity.id !== undefined) {
-      window.console.log(entrepriseEntity);
-      if (entrepriseEntity.image !== null) {
+    props.resetImage();
+    props.getEntity(props.match.params.id);
+  }, []);
+
+  useEffect(() => {
+    if (entrepriseEntity.id !== undefined) {
+      if (entrepriseEntity.id.toString() === props.match.params.id && entrepriseEntity.image !== null) {
         props.getImage(entrepriseEntity.image.id);
       }
     }
   }, [entrepriseEntity]);
-
-  useEffect(() => {
-    props.resetImage();
-    props.getEntity(props.match.params.id);
-  }, []);
 
   return (
     <Row>
@@ -117,12 +116,9 @@ export const EntrepriseDetail = (props: IEntrepriseDetailProps) => {
         </Button>
       </Col>
       <Col md="6">
-        <dl>
-          <dt>
-            <Translate contentKey="ibamApp.entreprise.image">Image</Translate>
-          </dt>
-          <img src={imageEntity.path} alt="not found" style={{ width: '80%' }} />
-        </dl>
+        {entrepriseEntity.image !== null ? (
+          <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '80%', border: 'solid 1px' }} />
+        ) : null}
       </Col>
     </Row>
   );
