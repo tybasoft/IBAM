@@ -116,7 +116,8 @@
     "ribbon": {
       "dev": "Développement"
     },
-    "item-count": "Affichage {{first}} - {{second}} de {{total}} items."
+    "item-count": "Affichage {{first}} - {{second}} de {{total}} items.",
+    "themeChooser": "choisir un thème"
   },
   "entity": {
     "action": {

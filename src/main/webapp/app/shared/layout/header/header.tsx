@@ -1,7 +1,8 @@
+import { ThemeChooser } from 'react-bootstrap-theme-switcher';
 import './header.scss';
 
 import React, { useState, useEffect } from 'react';
-import { Translate, Storage } from 'react-jhipster';
+import { Translate, Storage, translate } from 'react-jhipster';
 import { Navbar, Nav, NavbarToggler, NavbarBrand, Collapse } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -51,7 +52,7 @@ const Header = (props: IHeaderProps) => {
     <div id="app-header">
       {renderDevRibbon()}
       <LoadingBar className="loading-bar" />
-      <Navbar dark expand="sm" fixed="top" className="jh-navbar">
+      <Navbar dark expand="sm" fixed="top" className="jh-navbar bg-primary">
         <NavbarToggler aria-label="Menu" onClick={toggleMenu} />
         <Brand />
         <Collapse isOpen={menuOpen} navbar>
@@ -65,6 +66,7 @@ const Header = (props: IHeaderProps) => {
             <AccountMenu isAuthenticated={props.isAuthenticated} />
           </Nav>
         </Collapse>
+        <ThemeChooser text={translate('global.themeChooser')} />
       </Navbar>
     </div>
   );
