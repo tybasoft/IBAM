@@ -12,7 +12,9 @@ export const ACTION_TYPES = {
   CREATE_DOCUMENT: 'document/CREATE_DOCUMENT',
   UPDATE_DOCUMENT: 'document/UPDATE_DOCUMENT',
   DELETE_DOCUMENT: 'document/DELETE_DOCUMENT',
-  RESET: 'document/RESET'
+  RESET: 'document/RESET',
+  UPLOAD_DOCUMENT: 'document/UPLOAD_DOCUMENT',
+  DELETE_DOCUMENT_FILE: 'document/DELETE_DOCUMENT_FILE'
 };
 
 const initialState = {
@@ -22,7 +24,9 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  errorUpload: null,
+  uploadSuccess: false
 };
 
 export type DocumentState = Readonly<typeof initialState>;
@@ -92,6 +96,30 @@ export default (state: DocumentState = initialState, action): DocumentState => {
       return {
         ...initialState
       };
+    case REQUEST(ACTION_TYPES.UPLOAD_DOCUMENT):
+    case REQUEST(ACTION_TYPES.DELETE_DOCUMENT_FILE):
+      return {
+        ...state,
+        errorUpload: null,
+        uploadSuccess: false,
+        updating: true
+      };
+    case SUCCESS(ACTION_TYPES.UPLOAD_DOCUMENT):
+    case SUCCESS(ACTION_TYPES.DELETE_DOCUMENT_FILE):
+      return {
+        ...state,
+        errorUpload: null,
+        uploadSuccess: true,
+        updating: false
+      };
+    case FAILURE(ACTION_TYPES.UPLOAD_DOCUMENT):
+    case FAILURE(ACTION_TYPES.DELETE_DOCUMENT_FILE):
+      return {
+        ...state,
+        errorUpload: action.payload,
+        uploadSuccess: false,
+        updating: false
+      };
     default:
       return state;
   }
@@ -122,7 +150,7 @@ export const createEntity: ICrudPutAction<IDocument> = entity => async dispatch 
     type: ACTION_TYPES.CREATE_DOCUMENT,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  // dispatch(getEntities());
   return result;
 };
 
@@ -146,3 +174,19 @@ export const deleteEntity: ICrudDeleteAction<IDocument> = id => async dispatch =
 export const reset = () => ({
   type: ACTION_TYPES.RESET
 });
+
+export const uploadDocument = (documentFile: FormData) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.UPLOAD_DOCUMENT,
+    payload: axios.post(`${apiUrl}/uploadFile`, documentFile)
+  });
+  return result;
+};
+
+export const deleteDocumentFile = (documentFile: string) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.DELETE_DOCUMENT_FILE,
+    payload: axios.delete(`${apiUrl}/deleteFile/${documentFile}`)
+  });
+  return result;
+};

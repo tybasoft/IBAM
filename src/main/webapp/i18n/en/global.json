@@ -116,7 +116,8 @@
     "ribbon": {
       "dev": "Development"
     },
-    "item-count": "Showing {{first}} - {{second}} of {{total}} items."
+    "item-count": "Showing {{first}} - {{second}} of {{total}} items.",
+    "themeChooser": "select theme"
   },
   "entity": {
     "action": {
@@ -128,7 +129,8 @@
       "edit": "Edit",
       "open": "Open",
       "save": "Save",
-      "view": "View"
+      "view": "View",
+      "download": "Download"
     },
     "detail": {
       "field": "Field",
@@ -148,8 +150,15 @@
       "pattern": "This field should follow pattern for {{ pattern }}.",
       "number": "This field should be a number.",
       "datetimelocal": "This field should be a date and time.",
-      "patternLogin": "This field can only contain letters, digits and e-mail addresses."
-    }
+      "patternLogin": "This field can only contain letters, digits and e-mail addresses.",
+      "imageFileType": "Choose an image.",
+      "documentFileType": "Choose a document.",
+      "imageFileSize": "The image must be less than 10MB in size.",
+      "documentFileSize": "The document must be less than 10MB in size."
+    },
+    "inputImageFile": "Choose a file...",
+    "inputDocumentFile": "Choose a file...",
+    "noFileChoosed": "No file selected"
   },
   "error": {
     "internalServerError": "Internal server error",

@@ -7,20 +7,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './materiau.reducer';
+import { getEntity as getImage, reset as resetImage } from 'app/entities/image/image.reducer';
 import { IMateriau } from 'app/shared/model/materiau.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IMateriauDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const MateriauDetail = (props: IMateriauDetailProps) => {
+  const { materiauEntity, imageEntity } = props;
+
   useEffect(() => {
+    props.resetImage();
     props.getEntity(props.match.params.id);
   }, []);
 
-  const { materiauEntity } = props;
+  useEffect(() => {
+    if (materiauEntity.id !== undefined) {
+      if (materiauEntity.id.toString() === props.match.params.id && materiauEntity.image !== null) {
+        props.getImage(materiauEntity.image.id);
+      }
+    }
+  }, [materiauEntity]);
+
   return (
     <Row>
-      <Col md="8">
+      <Col md="6">
         <h2>
           <Translate contentKey="ibamApp.materiau.detail.title">Materiau</Translate> [<b>{materiauEntity.id}</b>]
         </h2>
@@ -79,10 +90,6 @@ export const MateriauDetail = (props: IMateriauDetailProps) => {
             <Translate contentKey="ibamApp.materiau.tva">Tva</Translate>
           </dt>
           <dd>{materiauEntity.tva ? materiauEntity.tva.id : ''}</dd>
-          <dt>
-            <Translate contentKey="ibamApp.materiau.image">Image</Translate>
-          </dt>
-          <dd>{materiauEntity.image ? materiauEntity.image.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/materiau" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
@@ -98,15 +105,21 @@ export const MateriauDetail = (props: IMateriauDetailProps) => {
           </span>
         </Button>
       </Col>
+      <Col md="6">
+        {materiauEntity.image !== null ? (
+          <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '80%', border: 'solid 1px' }} />
+        ) : null}
+      </Col>
     </Row>
   );
 };
 
-const mapStateToProps = ({ materiau }: IRootState) => ({
-  materiauEntity: materiau.entity
+const mapStateToProps = (storeState: IRootState) => ({
+  materiauEntity: storeState.materiau.entity,
+  imageEntity: storeState.image.entity
 });
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getEntity, getImage, resetImage };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

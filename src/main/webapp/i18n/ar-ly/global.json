@@ -116,7 +116,8 @@
     "ribbon": {
       "dev": "تطوير"
     },
-    "item-count": "يعرض {{first}} - {{second}} من {{total}} البيانات."
+    "item-count": "يعرض {{first}} - {{second}} من {{total}} البيانات.",
+    "themeChooser": "اختر خلفية"
   },
   "entity": {
     "action": {
@@ -128,7 +129,8 @@
       "edit": "تعديل",
       "open": "فتح",
       "save": "حفظ",
-      "view": "عرض"
+      "view": "عرض",
+      "download": "تحميل"
     },
     "detail": {
       "field": "حقل",
@@ -147,8 +149,15 @@
       "maxbytes": "هذا الحقل لا يمكن أن يكون أكثر من {{ max }} بايت.",
       "pattern": "هذا الحقل يجب أن يتبع نمط {{ pattern }}.",
       "number": "هذا الحقل يجب أن يكون رقم.",
-      "datetimelocal": "هذا الحقل يجب أن يكون تاريخ ووقت."
-    }
+      "datetimelocal": "هذا الحقل يجب أن يكون تاريخ ووقت.",
+      "imageFileType": "اختر صورة",
+      "documentFileType": "اختر ملف",
+      "imageFileSize": ".حجم الصورة يجب ان يكون أقل من 10 ميغابايت",
+      "documentFileSize": ".حجم الملف يجب ان يكون أقل من 10 ميغابايت"
+    },
+    "inputImageFile": "اختر صورة...",
+    "inputDocumentFile": "اختر ملف...",
+    "noFileChoosed": "لم يتم اختيار أي شيء"
   },
   "error": {
     "internalServerError": "حدث خطأ في الخادم",

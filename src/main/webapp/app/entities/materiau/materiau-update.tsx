@@ -16,24 +16,56 @@ import { getEntities as getFamilles } from 'app/entities/famille/famille.reducer
 import { ITva } from 'app/shared/model/tva.model';
 import { getEntities as getTvas } from 'app/entities/tva/tva.reducer';
 import { IImage } from 'app/shared/model/image.model';
-import { getEntities as getImages } from 'app/entities/image/image.reducer';
+import {
+  createEntity as createImageEntity,
+  getEntity as getImageEntity,
+  reset as resetImage,
+  deleteEntity as deleteImageEntity,
+  uploadImage,
+  deleteImageFile
+} from 'app/entities/image/image.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './materiau.reducer';
 import { IMateriau } from 'app/shared/model/materiau.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import _debounce from 'lodash.debounce';
 
 export interface IMateriauUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const MateriauUpdate = (props: IMateriauUpdateProps) => {
-  const [marqueId, setMarqueId] = useState('0');
-  const [uniteId, setUniteId] = useState('0');
-  const [familleId, setFamilleId] = useState('0');
-  const [tvaId, setTvaId] = useState('0');
-  const [imageId, setImageId] = useState('0');
+  const [errorMessage, seterrorMessage] = useState('');
+  const [imageID, setimageID] = useState(null);
+  const [imageDeleted, setimageDeleted] = useState(false);
+  const [imageFile, setimageFile] = useState(null);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { materiauEntity, marques, unites, familles, tvas, images, loading, updating } = props;
+  const { materiauEntity, marques, unites, familles, tvas, loading, updating, imageEntity } = props;
 
+  const validate = _debounce((value, ctx, input, cb) => {
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+    if (isNew && allowedExtensions.exec(value) == null) {
+      cb(false);
+      seterrorMessage(translate('entity.validation.imageFileType'));
+    } else if (allowedExtensions.exec(value) == null && value !== '') {
+      cb(false);
+      seterrorMessage(translate('entity.validation.imageFileType'));
+    } else if (imageFile) {
+      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
+        cb(false);
+        seterrorMessage(translate('entity.validation.imageFileSize'));
+      }
+    }
+    cb(true);
+  }, 300);
+
+  useEffect(() => {
+    if (imageID !== null) {
+      setTimeout(() => {
+        props.deleteImageEntity(imageID);
+      }, 1000);
+    }
+  }, [imageID]);
   const handleClose = () => {
     props.history.push('/materiau' + props.location.search);
   };
@@ -42,6 +74,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
     if (isNew) {
       props.reset();
     } else {
+      props.resetImage();
       props.getEntity(props.match.params.id);
     }
 
@@ -49,7 +82,6 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
     props.getUnites();
     props.getFamilles();
     props.getTvas();
-    props.getImages();
   }, []);
 
   useEffect(() => {
@@ -58,17 +90,79 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
     }
   }, [props.updateSuccess]);
 
+  useEffect(() => {
+    if (materiauEntity.id !== undefined) {
+      if (materiauEntity.id.toString() === props.match.params.id && materiauEntity.image !== null) {
+        props.getImageEntity(materiauEntity.image.id);
+      }
+    }
+  }, [materiauEntity]);
+
+  const uploadNewImage = values => {
+    const storageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name);
+    const image = {
+      titre: values.libelle,
+      path: storageName
+    };
+    const imageData = new FormData();
+    imageData.append('file', imageFile);
+    imageData.append('storageName', storageName);
+
+    props.uploadImage(imageData);
+    return image;
+  };
+
   const saveEntity = (event, errors, values) => {
+    let imageStorageName;
+    let image;
+    let entity;
+    const imageData = new FormData();
     if (errors.length === 0) {
-      const entity = {
+      entity = {
         ...materiauEntity,
         ...values
       };
-
       if (isNew) {
+        image = uploadNewImage(values);
+        entity.image = image;
+
         props.createEntity(entity);
       } else {
-        props.updateEntity(entity);
+        if (materiauEntity.image == null) {
+          if (imageFile) {
+            image = uploadNewImage(values);
+            entity.image = image;
+          }
+          props.updateEntity(entity);
+        } else if (imageDeleted) {
+          entity.image = null;
+
+          if (imageFile) {
+            image = uploadNewImage(values);
+            entity.image = image;
+          }
+          props.deleteImageFile(materiauEntity.image.path.substr(24));
+          setimageID(materiauEntity.image.id);
+          props.updateEntity(entity);
+        } else {
+          image = {
+            id: materiauEntity.image.id,
+            titre: values.libelle,
+            path: materiauEntity.image.path.substr(27)
+          };
+          entity.image = image;
+
+          if (imageFile) {
+            (imageStorageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name)), (image.path = imageStorageName);
+            entity.image = image;
+            imageData.append('file', imageFile);
+            imageData.append('storageName', imageStorageName);
+
+            props.deleteImageFile(materiauEntity.image.path.substr(24));
+            props.uploadImage(imageData);
+          }
+          props.updateEntity(entity);
+        }
       }
     }
   };
@@ -207,19 +301,49 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                 </AvInput>
               </AvGroup>
               <AvGroup>
-                <Label for="materiau-image">
+                <Label>
                   <Translate contentKey="ibamApp.materiau.image">Image</Translate>
                 </Label>
-                <AvInput id="materiau-image" type="select" className="form-control" name="image.id">
-                  <option value="" key="0" />
-                  {images
-                    ? images.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
+                {!isNew ? (
+                  <div>
+                    <dd>
+                      {!imageDeleted && materiauEntity.image !== null && imageEntity.path !== undefined ? (
+                        <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '300px', border: 'solid 1px' }} />
+                      ) : null}
+                    </dd>
+                    <dd>
+                      <Button
+                        color="danger"
+                        size="sm"
+                        onClick={() => setimageDeleted(true)}
+                        disabled={imageDeleted || materiauEntity.image == null}
+                      >
+                        <FontAwesomeIcon icon="trash" />{' '}
+                        <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.delete">Delete</Translate>
+                        </span>
+                      </Button>
+                    </dd>
+                  </div>
+                ) : null}
+                <AvInput
+                  id="materiau-image"
+                  type="file"
+                  name="imageFile"
+                  accept=".png, .jpg, .jpeg"
+                  validate={{ async: validate }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setimageFile(event.target.files[0])}
+                  style={{ opacity: '0', position: 'absolute', height: '0px' }}
+                />
+                <div className="form-group" style={{ marginBottom: '-10px' }}>
+                  <Label for="materiau-image" className="btn btn-secondary">
+                    {translate('entity.inputImageFile')}
+                  </Label>
+                  <Label className="p-2">
+                    {imageFile !== null && imageFile !== undefined ? imageFile.name : translate('entity.noFileChoosed')}
+                  </Label>
+                </div>
+                <AvFeedback>{errorMessage}</AvFeedback>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/materiau" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
@@ -247,11 +371,13 @@ const mapStateToProps = (storeState: IRootState) => ({
   unites: storeState.unite.entities,
   familles: storeState.famille.entities,
   tvas: storeState.tva.entities,
-  images: storeState.image.entities,
   materiauEntity: storeState.materiau.entity,
   loading: storeState.materiau.loading,
   updating: storeState.materiau.updating,
-  updateSuccess: storeState.materiau.updateSuccess
+  updateSuccess: storeState.materiau.updateSuccess,
+  imageEntity: storeState.image.entity,
+  errorUpload: storeState.image.errorUpload,
+  uploadSuccess: storeState.image.uploadSuccess
 });
 
 const mapDispatchToProps = {
@@ -259,11 +385,16 @@ const mapDispatchToProps = {
   getUnites,
   getFamilles,
   getTvas,
-  getImages,
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
+  createImageEntity,
+  uploadImage,
+  getImageEntity,
+  resetImage,
+  deleteImageFile,
+  deleteImageEntity
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
