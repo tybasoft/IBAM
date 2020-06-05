@@ -45,7 +45,7 @@ export const Horaire = (props: IHoraireProps) => {
                 <th>
                   <Translate contentKey="ibamApp.horaire.nbrJourParSem">Nbr Jour Par Sem</Translate>
                 </th>
-                <th>
+                {/* <th>
                   <Translate contentKey="ibamApp.horaire.heureDebutJr">Heure Debut Jr</Translate>
                 </th>
                 <th>
@@ -59,7 +59,7 @@ export const Horaire = (props: IHoraireProps) => {
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.horaire.dateModif">Date Modif</Translate>
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -74,13 +74,13 @@ export const Horaire = (props: IHoraireProps) => {
                   <td>{horaire.libelle}</td>
                   <td>{horaire.nbrHeurParJr}</td>
                   <td>{horaire.nbrJourParSem}</td>
-                  <td>{horaire.heureDebutJr}</td>
+                  {/* <td>{horaire.heureDebutJr}</td>
                   <td>{horaire.heureFinJr}</td>
                   <td>{horaire.dureePause}</td>
                   <td>{horaire.userModif}</td>
                   <td>
                     <TextFormat type="date" value={horaire.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
+                  </td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${horaire.id}`} color="info" size="sm">

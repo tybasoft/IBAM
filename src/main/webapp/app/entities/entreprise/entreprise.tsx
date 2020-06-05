@@ -48,6 +48,7 @@ export const Entreprise = (props: IEntrepriseProps) => {
                 <th>
                   <Translate contentKey="ibamApp.entreprise.capital">Capital</Translate>
                 </th>
+                {/*
                 <th>
                   <Translate contentKey="ibamApp.entreprise.direction">Direction</Translate>
                 </th>
@@ -69,6 +70,7 @@ export const Entreprise = (props: IEntrepriseProps) => {
                 <th>
                   <Translate contentKey="ibamApp.entreprise.image">Image</Translate>
                 </th>
+                */}
                 <th />
               </tr>
             </thead>
@@ -84,6 +86,7 @@ export const Entreprise = (props: IEntrepriseProps) => {
                   <td>{entreprise.nomCommercial}</td>
                   <td>{entreprise.adresse}</td>
                   <td>{entreprise.capital}</td>
+                  {/*
                   <td>{entreprise.direction}</td>
                   <td>{entreprise.activite}</td>
                   <td>{entreprise.telephone}</td>
@@ -93,6 +96,7 @@ export const Entreprise = (props: IEntrepriseProps) => {
                     <TextFormat type="date" value={entreprise.dateModif} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   <td>{entreprise.image ? <Link to={`image/${entreprise.image.id}`}>{entreprise.image.id}</Link> : ''}</td>
+                  */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${entreprise.id}`} color="info" size="sm">

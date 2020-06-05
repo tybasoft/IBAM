@@ -98,7 +98,7 @@ export const EquipeUpdate = (props: IEquipeUpdateProps) => {
                   }}
                 />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="equipe-userModif">
                   <Translate contentKey="ibamApp.equipe.userModif">User Modif</Translate>
                 </Label>
@@ -109,7 +109,7 @@ export const EquipeUpdate = (props: IEquipeUpdateProps) => {
                   <Translate contentKey="ibamApp.equipe.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="equipe-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="equipe-projet">
                   <Translate contentKey="ibamApp.equipe.projet">Projet</Translate>

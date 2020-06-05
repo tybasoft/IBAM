@@ -7,20 +7,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './maintenance.reducer';
+import { getEntity as getImage, reset as resetImage } from 'app/entities/image/image.reducer';
 import { IMaintenance } from 'app/shared/model/maintenance.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IMaintenanceDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const MaintenanceDetail = (props: IMaintenanceDetailProps) => {
+  const { maintenanceEntity, imageEntity } = props;
+
   useEffect(() => {
+    props.resetImage();
     props.getEntity(props.match.params.id);
   }, []);
 
-  const { maintenanceEntity } = props;
+  useEffect(() => {
+    if (maintenanceEntity.id !== undefined) {
+      if (maintenanceEntity.id.toString() === props.match.params.id && maintenanceEntity.image !== null) {
+        props.getImage(maintenanceEntity.image.id);
+      }
+    }
+  }, [maintenanceEntity]);
+
   return (
     <Row>
-      <Col md="8">
+      <Col md="6">
         <h2>
           <Translate contentKey="ibamApp.maintenance.detail.title">Maintenance</Translate> [<b>{maintenanceEntity.id}</b>]
         </h2>
@@ -97,10 +108,6 @@ export const MaintenanceDetail = (props: IMaintenanceDetailProps) => {
             <Translate contentKey="ibamApp.maintenance.centreMaintenance">Centre Maintenance</Translate>
           </dt>
           <dd>{maintenanceEntity.centreMaintenance ? maintenanceEntity.centreMaintenance.id : ''}</dd>
-          <dt>
-            <Translate contentKey="ibamApp.maintenance.image">Image</Translate>
-          </dt>
-          <dd>{maintenanceEntity.image ? maintenanceEntity.image.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/maintenance" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
@@ -116,15 +123,21 @@ export const MaintenanceDetail = (props: IMaintenanceDetailProps) => {
           </span>
         </Button>
       </Col>
+      <Col md="6">
+        {maintenanceEntity.image !== null ? (
+          <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '80%', border: 'solid 1px' }} />
+        ) : null}
+      </Col>
     </Row>
   );
 };
 
-const mapStateToProps = ({ maintenance }: IRootState) => ({
-  maintenanceEntity: maintenance.entity
+const mapStateToProps = (storeState: IRootState) => ({
+  maintenanceEntity: storeState.maintenance.entity,
+  imageEntity: storeState.image.entity
 });
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getEntity, getImage, resetImage };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

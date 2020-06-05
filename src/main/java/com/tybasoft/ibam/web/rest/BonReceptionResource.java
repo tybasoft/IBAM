@@ -1,7 +1,11 @@
 package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.BonReception;
+import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.BonReceptionRepository;
+import com.tybasoft.ibam.repository.ImageRepository;
+import com.tybasoft.ibam.service.FileStorageService;
+import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +44,15 @@ public class BonReceptionResource {
     private String applicationName;
 
     private final BonReceptionRepository bonReceptionRepository;
+    private final ImageService imageService;
+    private final ImageRepository imageRepository;
+    private final FileStorageService fileStorageService;
 
-    public BonReceptionResource(BonReceptionRepository bonReceptionRepository) {
+    public BonReceptionResource(BonReceptionRepository bonReceptionRepository, ImageService imageService, ImageRepository imageRepository, FileStorageService fileStorageService) {
         this.bonReceptionRepository = bonReceptionRepository;
+        this.imageService = imageService;
+        this.imageRepository = imageRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     /**
@@ -55,10 +64,18 @@ public class BonReceptionResource {
      */
     @PostMapping("/bon-receptions")
     public ResponseEntity<BonReception> createBonReception(@Valid @RequestBody BonReception bonReception) throws URISyntaxException {
+        Image image= bonReception.getImage();
+        log.debug("REST request to save Image : {}", image);
+        if (image.getId() != null) {
+            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Image resultImage= imageService.createImageEntity(image);
+
         log.debug("REST request to save BonReception : {}", bonReception);
         if (bonReception.getId() != null) {
             throw new BadRequestAlertException("A new bonReception cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        bonReception.setImage(resultImage);
         BonReception result = bonReceptionRepository.save(bonReception);
         return ResponseEntity.created(new URI("/api/bon-receptions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -76,10 +93,18 @@ public class BonReceptionResource {
      */
     @PutMapping("/bon-receptions")
     public ResponseEntity<BonReception> updateBonReception(@Valid @RequestBody BonReception bonReception) throws URISyntaxException {
+        Image image= bonReception.getImage();
+        Image resultImage= null;
+        if(image != null) {
+            log.debug("REST request to save Image : {}", image);
+            resultImage = imageService.createImageEntity(image);
+        }
+
         log.debug("REST request to update BonReception : {}", bonReception);
         if (bonReception.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        bonReception.setImage(resultImage);
         BonReception result = bonReceptionRepository.save(bonReception);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bonReception.getId().toString()))
@@ -121,6 +146,11 @@ public class BonReceptionResource {
      */
     @DeleteMapping("/bon-receptions/{id}")
     public ResponseEntity<Void> deleteBonReception(@PathVariable Long id) {
+        BonReception bonReception= bonReceptionRepository.findById(id).get();
+        Image image= bonReception.getImage();
+
+        imageService.deleteImageEntityFile(image, log, imageRepository, fileStorageService);
+
         log.debug("REST request to delete BonReception : {}", id);
         bonReceptionRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

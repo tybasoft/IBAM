@@ -12,7 +12,9 @@ export const ACTION_TYPES = {
   CREATE_IMAGE: 'image/CREATE_IMAGE',
   UPDATE_IMAGE: 'image/UPDATE_IMAGE',
   DELETE_IMAGE: 'image/DELETE_IMAGE',
-  RESET: 'image/RESET'
+  RESET: 'image/RESET',
+  UPLOAD_IMAGE: 'image/UPLOAD_IMAGE',
+  DELETE_IMAGE_FILE: 'image/DELETE_IMAGE_FILE'
 };
 
 const initialState = {
@@ -22,7 +24,9 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  errorUpload: null,
+  uploadSuccess: false
 };
 
 export type ImageState = Readonly<typeof initialState>;
@@ -92,6 +96,30 @@ export default (state: ImageState = initialState, action): ImageState => {
       return {
         ...initialState
       };
+    case REQUEST(ACTION_TYPES.UPLOAD_IMAGE):
+    case REQUEST(ACTION_TYPES.DELETE_IMAGE_FILE):
+      return {
+        ...state,
+        errorUpload: null,
+        uploadSuccess: false,
+        updating: true
+      };
+    case SUCCESS(ACTION_TYPES.UPLOAD_IMAGE):
+    case SUCCESS(ACTION_TYPES.DELETE_IMAGE_FILE):
+      return {
+        ...state,
+        errorUpload: null,
+        uploadSuccess: true,
+        updating: false
+      };
+    case FAILURE(ACTION_TYPES.UPLOAD_IMAGE):
+    case FAILURE(ACTION_TYPES.DELETE_IMAGE_FILE):
+      return {
+        ...state,
+        errorUpload: action.payload,
+        uploadSuccess: false,
+        updating: false
+      };
     default:
       return state;
   }
@@ -122,7 +150,7 @@ export const createEntity: ICrudPutAction<IImage> = entity => async dispatch => 
     type: ACTION_TYPES.CREATE_IMAGE,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  // dispatch(getEntities());
   return result;
 };
 
@@ -146,3 +174,19 @@ export const deleteEntity: ICrudDeleteAction<IImage> = id => async dispatch => {
 export const reset = () => ({
   type: ACTION_TYPES.RESET
 });
+
+export const uploadImage = (imageFile: FormData) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.UPLOAD_IMAGE,
+    payload: axios.post(`${apiUrl}/uploadFile`, imageFile)
+  });
+  return result;
+};
+
+export const deleteImageFile = (imageFile: string) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.DELETE_IMAGE_FILE,
+    payload: axios.delete(`${apiUrl}/deleteFile/${imageFile}`)
+  });
+  return result;
+};

@@ -1,4 +1,4 @@
-import { browser, element, by } from 'protractor';
+import { browser, element, by, protractor } from 'protractor';
 
 import NavBarPage from './../../page-objects/navbar-page';
 import SignInPage from './../../page-objects/signin-page';
@@ -69,8 +69,8 @@ describe('Document e2e test', () => {
     expect(await documentUpdatePage.getCommentaireInput()).to.match(/commentaire/);
     await documentUpdatePage.setUserModifInput('userModif');
     expect(await documentUpdatePage.getUserModifInput()).to.match(/userModif/);
-    await documentUpdatePage.setDateModifInput('01-01-2001');
-    expect(await documentUpdatePage.getDateModifInput()).to.eq('2001-01-01');
+    await documentUpdatePage.setDateModifInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
+    expect(await documentUpdatePage.getDateModifInput()).to.contain('2001-01-01T02:30');
     await waitUntilDisplayed(documentUpdatePage.saveButton);
     await documentUpdatePage.save();
     await waitUntilHidden(documentUpdatePage.saveButton);
