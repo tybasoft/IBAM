@@ -76,6 +76,7 @@ export const Employe = (props: IEmployeProps) => {
                 <th className="hand" onClick={sort('cin')}>
                   <Translate contentKey="ibamApp.employe.cin">Cin</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                {/*
                 <th className="hand" onClick={sort('sexe')}>
                   <Translate contentKey="ibamApp.employe.sexe">Sexe</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -139,6 +140,7 @@ export const Employe = (props: IEmployeProps) => {
                 <th>
                   <Translate contentKey="ibamApp.employe.image">Image</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                */}
                 <th />
               </tr>
             </thead>
@@ -154,6 +156,7 @@ export const Employe = (props: IEmployeProps) => {
                   <td>{employe.prenom}</td>
                   <td>{employe.matricule}</td>
                   <td>{employe.cin}</td>
+                  {/*
                   <td>{employe.sexe}</td>
                   <td>{employe.tarifJournalier}</td>
                   <td>
@@ -183,6 +186,7 @@ export const Employe = (props: IEmployeProps) => {
                   <td>{employe.equipe ? <Link to={`equipe/${employe.equipe.id}`}>{employe.equipe.id}</Link> : ''}</td>
                   <td>{employe.fonction ? <Link to={`fonction/${employe.fonction.id}`}>{employe.fonction.id}</Link> : ''}</td>
                   <td>{employe.image ? <Link to={`image/${employe.image.id}`}>{employe.image.id}</Link> : ''}</td>
+                  */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${employe.id}`} color="info" size="sm">

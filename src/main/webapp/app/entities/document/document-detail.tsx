@@ -49,7 +49,7 @@ export const DocumentDetail = (props: IDocumentDetailProps) => {
             </span>
           </dt>
           <dd>{documentEntity.commentaire}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.document.userModif">User Modif</Translate>
             </span>
@@ -61,8 +61,8 @@ export const DocumentDetail = (props: IDocumentDetailProps) => {
             </span>
           </dt>
           <dd>
-            <TextFormat value={documentEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+            <TextFormat value={documentEntity.dateModif} type="date" format={APP_DATE_FORMAT} />
+          </dd> */}
         </dl>
         <Button tag={Link} to="/document" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

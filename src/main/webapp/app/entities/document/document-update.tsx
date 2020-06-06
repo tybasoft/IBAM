@@ -38,6 +38,8 @@ export const DocumentUpdate = (props: IDocumentUpdateProps) => {
   }, [props.updateSuccess]);
 
   const saveEntity = (event, errors, values) => {
+    values.dateModif = convertDateTimeToServer(values.dateModif);
+
     if (errors.length === 0) {
       const entity = {
         ...documentEntity,
@@ -120,7 +122,7 @@ export const DocumentUpdate = (props: IDocumentUpdateProps) => {
                 </Label>
                 <AvField id="document-commentaire" type="text" name="commentaire" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="document-userModif">
                   <Translate contentKey="ibamApp.document.userModif">User Modif</Translate>
                 </Label>
@@ -130,8 +132,15 @@ export const DocumentUpdate = (props: IDocumentUpdateProps) => {
                 <Label id="dateModifLabel" for="document-dateModif">
                   <Translate contentKey="ibamApp.document.dateModif">Date Modif</Translate>
                 </Label>
-                <AvField id="document-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+                <AvInput
+                  id="document-dateModif"
+                  type="datetime-local"
+                  className="form-control"
+                  name="dateModif"
+                  placeholder={'YYYY-MM-DD HH:mm'}
+                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.documentEntity.dateModif)}
+                />
+              </AvGroup> */}
               <Button tag={Link} id="cancel-save" to="/document" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

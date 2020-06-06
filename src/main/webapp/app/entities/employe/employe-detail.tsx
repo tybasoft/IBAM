@@ -7,20 +7,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './employe.reducer';
+import { getEntity as getImage, reset as resetImage } from 'app/entities/image/image.reducer';
 import { IEmploye } from 'app/shared/model/employe.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IEmployeDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const EmployeDetail = (props: IEmployeDetailProps) => {
+  const { employeEntity, imageEntity } = props;
+
   useEffect(() => {
+    props.resetImage();
     props.getEntity(props.match.params.id);
   }, []);
 
-  const { employeEntity } = props;
+  useEffect(() => {
+    if (employeEntity.id !== undefined) {
+      if (employeEntity.id.toString() === props.match.params.id && employeEntity.image !== null) {
+        props.getImage(employeEntity.image.id);
+      }
+    }
+  }, [employeEntity]);
+
   return (
     <Row>
-      <Col md="8">
+      <Col md="6">
         <h2>
           <Translate contentKey="ibamApp.employe.detail.title">Employe</Translate> [<b>{employeEntity.id}</b>]
         </h2>
@@ -145,6 +156,7 @@ export const EmployeDetail = (props: IEmployeDetailProps) => {
             </span>
           </dt>
           <dd>{employeEntity.motifDepart}</dd>
+          {/*
           <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.employe.userModif">User Modif</Translate>
@@ -159,10 +171,11 @@ export const EmployeDetail = (props: IEmployeDetailProps) => {
           <dd>
             <TextFormat value={employeEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
           </dd>
+          */}
           <dt>
             <Translate contentKey="ibamApp.employe.projet">Projet</Translate>
           </dt>
-          <dd>{employeEntity.projet ? employeEntity.projet.id : ''}</dd>
+          <dd>{employeEntity.projet ? employeEntity.projet.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.employe.equipe">Equipe</Translate>
           </dt>
@@ -171,10 +184,6 @@ export const EmployeDetail = (props: IEmployeDetailProps) => {
             <Translate contentKey="ibamApp.employe.fonction">Fonction</Translate>
           </dt>
           <dd>{employeEntity.fonction ? employeEntity.fonction.id : ''}</dd>
-          <dt>
-            <Translate contentKey="ibamApp.employe.image">Image</Translate>
-          </dt>
-          <dd>{employeEntity.image ? employeEntity.image.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/employe" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
@@ -190,15 +199,21 @@ export const EmployeDetail = (props: IEmployeDetailProps) => {
           </span>
         </Button>
       </Col>
+      <Col md="6">
+        {employeEntity.image !== null ? (
+          <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '80%', border: 'solid 1px' }} />
+        ) : null}
+      </Col>
     </Row>
   );
 };
 
-const mapStateToProps = ({ employe }: IRootState) => ({
-  employeEntity: employe.entity
+const mapStateToProps = (storeState: IRootState) => ({
+  employeEntity: storeState.employe.entity,
+  imageEntity: storeState.image.entity
 });
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getEntity, getImage, resetImage };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

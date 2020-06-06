@@ -12,21 +12,56 @@ import { getEntities as getMateriels } from 'app/entities/materiel/materiel.redu
 import { IFournisseur } from 'app/shared/model/fournisseur.model';
 import { getEntities as getFournisseurs } from 'app/entities/fournisseur/fournisseur.reducer';
 import { IImage } from 'app/shared/model/image.model';
-import { getEntities as getImages } from 'app/entities/image/image.reducer';
+import {
+  createEntity as createImageEntity,
+  getEntity as getImageEntity,
+  reset as resetImage,
+  deleteEntity as deleteImageEntity,
+  uploadImage,
+  deleteImageFile
+} from 'app/entities/image/image.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './consommation.reducer';
 import { IConsommation } from 'app/shared/model/consommation.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import _debounce from 'lodash.debounce';
 
 export interface IConsommationUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
-  const [materielId, setMaterielId] = useState('0');
-  const [fournisseurId, setFournisseurId] = useState('0');
-  const [imageId, setImageId] = useState('0');
+  const [errorMessage, seterrorMessage] = useState('');
+  const [imageID, setimageID] = useState(null);
+  const [imageDeleted, setimageDeleted] = useState(false);
+  const [imageFile, setimageFile] = useState(null);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { consommationEntity, materiels, fournisseurs, images, loading, updating } = props;
+  const { consommationEntity, materiels, fournisseurs, loading, updating, imageEntity } = props;
+
+  const validate = _debounce((value, ctx, input, cb) => {
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+    if (isNew && allowedExtensions.exec(value) == null) {
+      cb(false);
+      seterrorMessage(translate('entity.validation.imageFileType'));
+    } else if (allowedExtensions.exec(value) == null && value !== '') {
+      cb(false);
+      seterrorMessage(translate('entity.validation.imageFileType'));
+    } else if (imageFile) {
+      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
+        cb(false);
+        seterrorMessage(translate('entity.validation.imageFileSize'));
+      }
+    }
+    cb(true);
+  }, 300);
+
+  useEffect(() => {
+    if (imageID !== null) {
+      setTimeout(() => {
+        props.deleteImageEntity(imageID);
+      }, 1000);
+    }
+  }, [imageID]);
 
   const handleClose = () => {
     props.history.push('/consommation' + props.location.search);
@@ -36,12 +71,12 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
     if (isNew) {
       props.reset();
     } else {
+      props.resetImage();
       props.getEntity(props.match.params.id);
     }
 
     props.getMateriels();
     props.getFournisseurs();
-    props.getImages();
   }, []);
 
   useEffect(() => {
@@ -50,17 +85,80 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
     }
   }, [props.updateSuccess]);
 
+  useEffect(() => {
+    if (consommationEntity.id !== undefined) {
+      if (consommationEntity.id.toString() === props.match.params.id && consommationEntity.image !== null) {
+        props.getImageEntity(consommationEntity.image.id);
+      }
+    }
+  }, [consommationEntity]);
+
+  const uploadNewImage = values => {
+    const storageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name);
+    const image = {
+      titre: values.reference,
+      path: storageName
+    };
+    const imageData = new FormData();
+    imageData.append('file', imageFile);
+    imageData.append('storageName', storageName);
+
+    props.uploadImage(imageData);
+    return image;
+  };
+
   const saveEntity = (event, errors, values) => {
+    let imageStorageName;
+    let image;
+    let entity;
+    const imageData = new FormData();
     if (errors.length === 0) {
-      const entity = {
+      entity = {
         ...consommationEntity,
         ...values
       };
 
       if (isNew) {
+        image = uploadNewImage(values);
+        entity.image = image;
+
         props.createEntity(entity);
       } else {
-        props.updateEntity(entity);
+        if (consommationEntity.image == null) {
+          if (imageFile) {
+            image = uploadNewImage(values);
+            entity.image = image;
+          }
+          props.updateEntity(entity);
+        } else if (imageDeleted) {
+          entity.image = null;
+
+          if (imageFile) {
+            image = uploadNewImage(values);
+            entity.image = image;
+          }
+          props.deleteImageFile(consommationEntity.image.path.substr(24));
+          setimageID(consommationEntity.image.id);
+          props.updateEntity(entity);
+        } else {
+          image = {
+            id: consommationEntity.image.id,
+            titre: values.reference,
+            path: consommationEntity.image.path.substr(27)
+          };
+          entity.image = image;
+
+          if (imageFile) {
+            (imageStorageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name)), (image.path = imageStorageName);
+            entity.image = image;
+            imageData.append('file', imageFile);
+            imageData.append('storageName', imageStorageName);
+
+            props.deleteImageFile(consommationEntity.image.path.substr(24));
+            props.uploadImage(imageData);
+          }
+          props.updateEntity(entity);
+        }
       }
     }
   };
@@ -202,19 +300,49 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                 </AvInput>
               </AvGroup>
               <AvGroup>
-                <Label for="consommation-image">
+                <Label>
                   <Translate contentKey="ibamApp.consommation.image">Image</Translate>
                 </Label>
-                <AvInput id="consommation-image" type="select" className="form-control" name="image.id">
-                  <option value="" key="0" />
-                  {images
-                    ? images.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
+                {!isNew ? (
+                  <div>
+                    <dd>
+                      {!imageDeleted && consommationEntity.image !== null && imageEntity.path !== undefined ? (
+                        <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '300px', border: 'solid 1px' }} />
+                      ) : null}
+                    </dd>
+                    <dd>
+                      <Button
+                        color="danger"
+                        size="sm"
+                        onClick={() => setimageDeleted(true)}
+                        disabled={imageDeleted || consommationEntity.image == null}
+                      >
+                        <FontAwesomeIcon icon="trash" />{' '}
+                        <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.delete">Delete</Translate>
+                        </span>
+                      </Button>
+                    </dd>
+                  </div>
+                ) : null}
+                <AvInput
+                  id="consommation-image"
+                  type="file"
+                  name="imageFile"
+                  accept=".png, .jpg, .jpeg"
+                  validate={{ async: validate }}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setimageFile(event.target.files[0])}
+                  style={{ opacity: '0', position: 'absolute', height: '0px' }}
+                />
+                <div className="form-group" style={{ marginBottom: '-10px' }}>
+                  <Label for="consommation-image" className="btn btn-secondary">
+                    {translate('entity.inputImageFile')}
+                  </Label>
+                  <Label className="p-2">
+                    {imageFile !== null && imageFile !== undefined ? imageFile.name : translate('entity.noFileChoosed')}
+                  </Label>
+                </div>
+                <AvFeedback>{errorMessage}</AvFeedback>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/consommation" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
@@ -240,21 +368,28 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
 const mapStateToProps = (storeState: IRootState) => ({
   materiels: storeState.materiel.entities,
   fournisseurs: storeState.fournisseur.entities,
-  images: storeState.image.entities,
   consommationEntity: storeState.consommation.entity,
   loading: storeState.consommation.loading,
   updating: storeState.consommation.updating,
-  updateSuccess: storeState.consommation.updateSuccess
+  updateSuccess: storeState.consommation.updateSuccess,
+  imageEntity: storeState.image.entity,
+  errorUpload: storeState.image.errorUpload,
+  uploadSuccess: storeState.image.uploadSuccess
 });
 
 const mapDispatchToProps = {
   getMateriels,
   getFournisseurs,
-  getImages,
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
+  createImageEntity,
+  uploadImage,
+  getImageEntity,
+  resetImage,
+  deleteImageFile,
+  deleteImageEntity
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

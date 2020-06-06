@@ -132,7 +132,7 @@ export const HoraireUpdate = (props: IHoraireUpdateProps) => {
                 </Label>
                 <AvField id="horaire-dureePause" type="text" name="dureePause" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="horaire-userModif">
                   <Translate contentKey="ibamApp.horaire.userModif">User Modif</Translate>
                 </Label>
@@ -143,7 +143,7 @@ export const HoraireUpdate = (props: IHoraireUpdateProps) => {
                   <Translate contentKey="ibamApp.horaire.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="horaire-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <Button tag={Link} id="cancel-save" to="/horaire" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

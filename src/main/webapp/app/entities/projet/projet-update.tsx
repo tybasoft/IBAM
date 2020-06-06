@@ -162,7 +162,7 @@ export const ProjetUpdate = (props: IProjetUpdateProps) => {
                 </Label>
                 <AvField id="projet-pays" type="text" name="pays" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="projet-userModif">
                   <Translate contentKey="ibamApp.projet.userModif">User Modif</Translate>
                 </Label>
@@ -173,7 +173,7 @@ export const ProjetUpdate = (props: IProjetUpdateProps) => {
                   <Translate contentKey="ibamApp.projet.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="projet-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="projet-entreprise">
                   <Translate contentKey="ibamApp.projet.entreprise">Entreprise</Translate>

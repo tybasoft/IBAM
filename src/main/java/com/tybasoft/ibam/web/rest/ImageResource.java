@@ -2,6 +2,7 @@ package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.ImageRepository;
+import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +41,11 @@ public class ImageResource {
     private String applicationName;
 
     private final ImageRepository imageRepository;
+    private final ImageService imageService;
 
-    public ImageResource(ImageRepository imageRepository) {
+    public ImageResource(ImageRepository imageRepository, ImageService imageService) {
         this.imageRepository = imageRepository;
+        this.imageService = imageService;
     }
 
     /**
@@ -59,7 +61,7 @@ public class ImageResource {
         if (image.getId() != null) {
             throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Image result = imageRepository.save(image);
+        Image result = imageService.createImageEntity(image);
         return ResponseEntity.created(new URI("/api/images/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -80,7 +82,7 @@ public class ImageResource {
         if (image.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Image result = imageRepository.save(image);
+        Image result = imageService.createImageEntity(image);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, image.getId().toString()))
             .body(result);

@@ -144,7 +144,7 @@ export const PaieUpdate = (props: IPaieUpdateProps) => {
                 </Label>
                 <AvField id="paie-remarques" type="text" name="remarques" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="paie-userModif">
                   <Translate contentKey="ibamApp.paie.userModif">User Modif</Translate>
                 </Label>
@@ -155,7 +155,7 @@ export const PaieUpdate = (props: IPaieUpdateProps) => {
                   <Translate contentKey="ibamApp.paie.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="paie-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="paie-employe">
                   <Translate contentKey="ibamApp.paie.employe">Employe</Translate>

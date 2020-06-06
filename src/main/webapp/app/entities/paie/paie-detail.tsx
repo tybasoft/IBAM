@@ -73,7 +73,7 @@ export const PaieDetail = (props: IPaieDetailProps) => {
             </span>
           </dt>
           <dd>{paieEntity.remarques}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.paie.userModif">User Modif</Translate>
             </span>
@@ -86,7 +86,7 @@ export const PaieDetail = (props: IPaieDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={paieEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
           <dt>
             <Translate contentKey="ibamApp.paie.employe">Employe</Translate>
           </dt>
