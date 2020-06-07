@@ -37,7 +37,7 @@ public class FileStorageService {
         try {
             // Check if the file's name contains invalid characters
             if(fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + newfileName);
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
             if (fileType.equals("image")){
