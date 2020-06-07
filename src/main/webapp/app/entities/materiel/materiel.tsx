@@ -76,7 +76,7 @@ export const Materiel = (props: IMaterielProps) => {
                 <th className="hand" onClick={sort('numCarteGrise')}>
                   <Translate contentKey="ibamApp.materiel.numCarteGrise">Num Carte Grise</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('dateIdentification')}>
+                {/* <th className="hand" onClick={sort('dateIdentification')}>
                   <Translate contentKey="ibamApp.materiel.dateIdentification">Date Identification</Translate>{' '}
                   <FontAwesomeIcon icon="sort" />
                 </th>
@@ -118,7 +118,7 @@ export const Materiel = (props: IMaterielProps) => {
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.materiel.image">Image</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -134,7 +134,7 @@ export const Materiel = (props: IMaterielProps) => {
                   <td>{materiel.matricule}</td>
                   <td>{materiel.modele}</td>
                   <td>{materiel.numCarteGrise}</td>
-                  <td>
+                  {/* <td>
                     <TextFormat type="date" value={materiel.dateIdentification} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   <td>{materiel.compteurAchat}</td>
@@ -155,7 +155,7 @@ export const Materiel = (props: IMaterielProps) => {
                   <td>{materiel.marque ? <Link to={`marque/${materiel.marque.id}`}>{materiel.marque.id}</Link> : ''}</td>
                   <td>{materiel.document ? <Link to={`document/${materiel.document.id}`}>{materiel.document.id}</Link> : ''}</td>
                   <td>{materiel.employe ? <Link to={`employe/${materiel.employe.id}`}>{materiel.employe.id}</Link> : ''}</td>
-                  <td>{materiel.image ? <Link to={`image/${materiel.image.id}`}>{materiel.image.id}</Link> : ''}</td>
+                  <td>{materiel.image ? <Link to={`image/${materiel.image.id}`}>{materiel.image.id}</Link> : ''}</td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${materiel.id}`} color="info" size="sm">
