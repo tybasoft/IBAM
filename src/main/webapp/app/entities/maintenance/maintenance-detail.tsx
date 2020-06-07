@@ -75,7 +75,7 @@ export const MaintenanceDetail = (props: IMaintenanceDetailProps) => {
             </span>
           </dt>
           <dd>{maintenanceEntity.dureePanne}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.maintenance.userModif">User Modif</Translate>
             </span>
@@ -88,7 +88,7 @@ export const MaintenanceDetail = (props: IMaintenanceDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={maintenanceEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
           <dt>
             <Translate contentKey="ibamApp.maintenance.materiel">Materiel</Translate>
           </dt>

@@ -180,7 +180,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                   {materiels
                     ? materiels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle +" (" + otherEntity.matricule+ ")"}
                         </option>
                       ))
                     : null}
@@ -195,7 +195,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                   {fournisseurs
                     ? fournisseurs.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.nomCommercial}
                         </option>
                       ))
                     : null}
@@ -210,7 +210,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                   {images
                     ? images.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.titre}
                         </option>
                       ))
                     : null}

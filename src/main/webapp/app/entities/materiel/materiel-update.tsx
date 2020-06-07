@@ -172,7 +172,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                 </Label>
                 <AvField id="materiel-description" type="text" name="description" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="materiel-userModif">
                   <Translate contentKey="ibamApp.materiel.userModif">User Modif</Translate>
                 </Label>
@@ -183,7 +183,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   <Translate contentKey="ibamApp.materiel.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="materiel-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="materiel-famille">
                   <Translate contentKey="ibamApp.materiel.famille">Famille</Translate>
@@ -193,7 +193,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {familles
                     ? familles.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -208,7 +208,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {typeMateriels
                     ? typeMateriels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.type}
                         </option>
                       ))
                     : null}
@@ -223,7 +223,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {fournisseurs
                     ? fournisseurs.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.nomCommercial}
                         </option>
                       ))
                     : null}
@@ -238,7 +238,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {marques
                     ? marques.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -253,7 +253,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {documents
                     ? documents.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.titre}
                         </option>
                       ))
                     : null}
@@ -268,7 +268,8 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {employes
                     ? employes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.matricule}
+                           {otherEntity.prenom +"   "+otherEntity.nom+" (" + otherEntity.matricule+ ")"}
                         </option>
                       ))
                     : null}
@@ -283,7 +284,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {images
                     ? images.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.titre}
                         </option>
                       ))
                     : null}
