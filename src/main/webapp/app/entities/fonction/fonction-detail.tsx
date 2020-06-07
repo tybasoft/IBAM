@@ -43,7 +43,7 @@ export const FonctionDetail = (props: IFonctionDetailProps) => {
             </span>
           </dt>
           <dd>{fonctionEntity.competences}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.fonction.userModif">User Modif</Translate>
             </span>
@@ -56,7 +56,7 @@ export const FonctionDetail = (props: IFonctionDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={fonctionEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
         </dl>
         <Button tag={Link} to="/fonction" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

@@ -7,20 +7,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './entreprise.reducer';
+import { getEntity as getImage, reset as resetImage } from 'app/entities/image/image.reducer';
 import { IEntreprise } from 'app/shared/model/entreprise.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface IEntrepriseDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const EntrepriseDetail = (props: IEntrepriseDetailProps) => {
+  const { entrepriseEntity, imageEntity } = props;
+
   useEffect(() => {
+    props.resetImage();
     props.getEntity(props.match.params.id);
   }, []);
 
-  const { entrepriseEntity } = props;
+  useEffect(() => {
+    if (entrepriseEntity.id !== undefined) {
+      if (entrepriseEntity.id.toString() === props.match.params.id && entrepriseEntity.image !== null) {
+        props.getImage(entrepriseEntity.image.id);
+      }
+    }
+  }, [entrepriseEntity]);
+
   return (
     <Row>
-      <Col md="8">
+      <Col md="6">
         <h2>
           <Translate contentKey="ibamApp.entreprise.detail.title">Entreprise</Translate> [<b>{entrepriseEntity.id}</b>]
         </h2>
@@ -73,6 +84,7 @@ export const EntrepriseDetail = (props: IEntrepriseDetailProps) => {
             </span>
           </dt>
           <dd>{entrepriseEntity.email}</dd>
+          {/*
           <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.entreprise.userModif">User Modif</Translate>
@@ -87,10 +99,7 @@ export const EntrepriseDetail = (props: IEntrepriseDetailProps) => {
           <dd>
             <TextFormat value={entrepriseEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
           </dd>
-          <dt>
-            <Translate contentKey="ibamApp.entreprise.image">Image</Translate>
-          </dt>
-          <dd>{entrepriseEntity.image ? entrepriseEntity.image.id : ''}</dd>
+          */}
         </dl>
         <Button tag={Link} to="/entreprise" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
@@ -106,15 +115,21 @@ export const EntrepriseDetail = (props: IEntrepriseDetailProps) => {
           </span>
         </Button>
       </Col>
+      <Col md="6">
+        {entrepriseEntity.image !== null ? (
+          <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '80%', border: 'solid 1px' }} />
+        ) : null}
+      </Col>
     </Row>
   );
 };
 
-const mapStateToProps = ({ entreprise }: IRootState) => ({
-  entrepriseEntity: entreprise.entity
+const mapStateToProps = (storeState: IRootState) => ({
+  entrepriseEntity: storeState.entreprise.entity,
+  imageEntity: storeState.image.entity
 });
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getEntity, getImage, resetImage };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

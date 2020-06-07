@@ -37,7 +37,7 @@ export const ImageDetail = (props: IImageDetailProps) => {
             </span>
           </dt>
           <dd>{imageEntity.path}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.image.userModif">User Modif</Translate>
             </span>
@@ -50,7 +50,7 @@ export const ImageDetail = (props: IImageDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={imageEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
         </dl>
         <Button tag={Link} to="/image" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

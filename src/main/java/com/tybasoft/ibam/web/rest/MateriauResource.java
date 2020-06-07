@@ -1,7 +1,11 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.domain.Materiau;
+import com.tybasoft.ibam.repository.ImageRepository;
 import com.tybasoft.ibam.repository.MateriauRepository;
+import com.tybasoft.ibam.service.FileStorageService;
+import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +44,15 @@ public class MateriauResource {
     private String applicationName;
 
     private final MateriauRepository materiauRepository;
+    private final ImageService imageService;
+    private final ImageRepository imageRepository;
+    private final FileStorageService fileStorageService;
 
-    public MateriauResource(MateriauRepository materiauRepository) {
+    public MateriauResource(MateriauRepository materiauRepository, ImageService imageService, ImageRepository imageRepository, FileStorageService fileStorageService) {
         this.materiauRepository = materiauRepository;
+        this.imageService = imageService;
+        this.imageRepository = imageRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     /**
@@ -55,10 +64,18 @@ public class MateriauResource {
      */
     @PostMapping("/materiaus")
     public ResponseEntity<Materiau> createMateriau(@Valid @RequestBody Materiau materiau) throws URISyntaxException {
+        Image image= materiau.getImage();
+        log.debug("REST request to save Image : {}", image);
+        if (image.getId() != null) {
+            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Image resultImage= imageService.createImageEntity(image);
+
         log.debug("REST request to save Materiau : {}", materiau);
         if (materiau.getId() != null) {
             throw new BadRequestAlertException("A new materiau cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        materiau.setImage(resultImage);
         Materiau result = materiauRepository.save(materiau);
         return ResponseEntity.created(new URI("/api/materiaus/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -76,10 +93,18 @@ public class MateriauResource {
      */
     @PutMapping("/materiaus")
     public ResponseEntity<Materiau> updateMateriau(@Valid @RequestBody Materiau materiau) throws URISyntaxException {
+        Image image= materiau.getImage();
+        Image resultImage= null;
+        if(image != null) {
+            log.debug("REST request to save Image : {}", image);
+            resultImage = imageService.createImageEntity(image);
+        }
+
         log.debug("REST request to update Materiau : {}", materiau);
         if (materiau.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        materiau.setImage(resultImage);
         Materiau result = materiauRepository.save(materiau);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, materiau.getId().toString()))
@@ -121,6 +146,11 @@ public class MateriauResource {
      */
     @DeleteMapping("/materiaus/{id}")
     public ResponseEntity<Void> deleteMateriau(@PathVariable Long id) {
+        Materiau materiau= materiauRepository.findById(id).get();
+        Image image= materiau.getImage();
+
+        imageService.deleteImageEntityFile(image, log, imageRepository, fileStorageService);
+
         log.debug("REST request to delete Materiau : {}", id);
         materiauRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

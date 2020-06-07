@@ -11,6 +11,7 @@
         Added the entity Equipe.
     -->
     <changeSet id="20200512003000-1" author="jhipster">
+        <validCheckSum>8:c04c175b72ed536ffd24f05500907f67</validCheckSum>
         <createTable tableName="equipe">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -21,7 +22,7 @@
             <column name="user_modif" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="date_modif" type="date">
+            <column name="date_modif" type="timestamp">
                 <constraints nullable="true" />
             </column>
             <column name="projet_id" type="bigint">
@@ -55,9 +56,16 @@
             <column name="id" type="numeric"/>
             <column name="libelle" type="string"/>
             <column name="user_modif" type="string"/>
-            <column name="date_modif" type="date"/>
+            <column name="date_modif" type="timestamp"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
+    </changeSet>
+
+    <changeSet author="Marouane (generated)" id="1590212858734-2">
+        <modifyDataType tableName="equipe" columnName="date_modif" newDataType="timestamp" />
+    </changeSet>
+    <changeSet author="Marouane (generated)" id="1590212858734-1">
+        <alterSequence sequenceName="sequence_generator"/>
     </changeSet>
 
 </databaseChangeLog>

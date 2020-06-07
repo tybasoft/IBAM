@@ -1,7 +1,11 @@
 package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.Entreprise;
+import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.EntrepriseRepository;
+import com.tybasoft.ibam.repository.ImageRepository;
+import com.tybasoft.ibam.service.FileStorageService;
+import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -35,9 +39,15 @@ public class EntrepriseResource {
     private String applicationName;
 
     private final EntrepriseRepository entrepriseRepository;
+    private final ImageService imageService;
+    private final ImageRepository imageRepository;
+    private final FileStorageService fileStorageService;
 
-    public EntrepriseResource(EntrepriseRepository entrepriseRepository) {
+    public EntrepriseResource(EntrepriseRepository entrepriseRepository, ImageService imageService, ImageRepository imageRepository, FileStorageService fileStorageService) {
         this.entrepriseRepository = entrepriseRepository;
+        this.imageService = imageService;
+        this.imageRepository = imageRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     /**
@@ -49,10 +59,18 @@ public class EntrepriseResource {
      */
     @PostMapping("/entreprises")
     public ResponseEntity<Entreprise> createEntreprise(@Valid @RequestBody Entreprise entreprise) throws URISyntaxException {
+        Image image= entreprise.getImage();
+        log.debug("REST request to save Image : {}", image);
+        if (image.getId() != null) {
+            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Image resultImage= imageService.createImageEntity(image);
+
         log.debug("REST request to save Entreprise : {}", entreprise);
         if (entreprise.getId() != null) {
             throw new BadRequestAlertException("A new entreprise cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        entreprise.setImage(resultImage);
         Entreprise result = entrepriseRepository.save(entreprise);
         return ResponseEntity.created(new URI("/api/entreprises/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -70,10 +88,18 @@ public class EntrepriseResource {
      */
     @PutMapping("/entreprises")
     public ResponseEntity<Entreprise> updateEntreprise(@Valid @RequestBody Entreprise entreprise) throws URISyntaxException {
+        Image image= entreprise.getImage();
+        Image resultImage= null;
+        if(image != null) {
+            log.debug("REST request to save Image : {}", image);
+            resultImage = imageService.createImageEntity(image);
+        }
+
         log.debug("REST request to update Entreprise : {}", entreprise);
         if (entreprise.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        entreprise.setImage(resultImage);
         Entreprise result = entrepriseRepository.save(entreprise);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, entreprise.getId().toString()))
@@ -112,6 +138,11 @@ public class EntrepriseResource {
      */
     @DeleteMapping("/entreprises/{id}")
     public ResponseEntity<Void> deleteEntreprise(@PathVariable Long id) {
+        Entreprise entreprise= entrepriseRepository.findById(id).get();
+        Image image= entreprise.getImage();
+
+        imageService.deleteImageEntityFile(image, log, imageRepository, fileStorageService);
+
         log.debug("REST request to delete Entreprise : {}", id);
         entrepriseRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

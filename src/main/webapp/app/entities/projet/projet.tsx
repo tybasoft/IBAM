@@ -76,7 +76,7 @@ export const Projet = (props: IProjetProps) => {
                 <th className="hand" onClick={sort('dateDebut')}>
                   <Translate contentKey="ibamApp.projet.dateDebut">Date Debut</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('dateFin')}>
+                {/* <th className="hand" onClick={sort('dateFin')}>
                   <Translate contentKey="ibamApp.projet.dateFin">Date Fin</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('nbrEmploye')}>
@@ -108,7 +108,7 @@ export const Projet = (props: IProjetProps) => {
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.projet.depot">Depot</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -126,7 +126,7 @@ export const Projet = (props: IProjetProps) => {
                   <td>
                     <TextFormat type="date" value={projet.dateDebut} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
-                  <td>
+                  {/* <td>
                     <TextFormat type="date" value={projet.dateFin} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   <td>{projet.nbrEmploye}</td>
@@ -140,7 +140,7 @@ export const Projet = (props: IProjetProps) => {
                   </td>
                   <td>{projet.entreprise ? <Link to={`entreprise/${projet.entreprise.id}`}>{projet.entreprise.id}</Link> : ''}</td>
                   <td>{projet.horaire ? <Link to={`horaire/${projet.horaire.id}`}>{projet.horaire.id}</Link> : ''}</td>
-                  <td>{projet.depot ? <Link to={`depot/${projet.depot.id}`}>{projet.depot.id}</Link> : ''}</td>
+                  <td>{projet.depot ? <Link to={`depot/${projet.depot.id}`}>{projet.depot.id}</Link> : ''}</td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${projet.id}`} color="info" size="sm">
