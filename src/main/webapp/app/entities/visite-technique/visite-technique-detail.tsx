@@ -62,7 +62,7 @@ export const VisiteTechniqueDetail = (props: IVisiteTechniqueDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.visiteTechnique.materiel">Materiel</Translate>
           </dt>
-          <dd>{visiteTechniqueEntity.materiel ? visiteTechniqueEntity.materiel.id : ''}</dd>
+          <dd>{visiteTechniqueEntity.materiel ? visiteTechniqueEntity.materiel.id: ''}</dd>
         </dl>
         <Button tag={Link} to="/visite-technique" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

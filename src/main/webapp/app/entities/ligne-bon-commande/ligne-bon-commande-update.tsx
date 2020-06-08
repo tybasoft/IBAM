@@ -133,7 +133,7 @@ export const LigneBonCommandeUpdate = (props: ILigneBonCommandeUpdateProps) => {
                   {materiaus
                     ? materiaus.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle+"("+otherEntity.reference+")"}
                         </option>
                       ))
                     : null}
@@ -148,7 +148,6 @@ export const LigneBonCommandeUpdate = (props: ILigneBonCommandeUpdateProps) => {
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>

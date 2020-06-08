@@ -414,7 +414,7 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
                   {equipes
                     ? equipes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -429,7 +429,7 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
                   {fonctions
                     ? fonctions.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}

@@ -137,7 +137,7 @@ export const BonCommandeUpdate = (props: IBonCommandeUpdateProps) => {
                   {depots
                     ? depots.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -152,7 +152,7 @@ export const BonCommandeUpdate = (props: IBonCommandeUpdateProps) => {
                   {fournisseurs
                     ? fournisseurs.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.nomCommercial}
                         </option>
                       ))
                     : null}

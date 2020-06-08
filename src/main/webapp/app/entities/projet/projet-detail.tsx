@@ -110,7 +110,7 @@ export const ProjetDetail = (props: IProjetDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.projet.horaire">Horaire</Translate>
           </dt>
-          <dd>{projetEntity.horaire ? projetEntity.horaire.id : ''}</dd>
+          <dd>{projetEntity.horaire ? projetEntity.horaire.id: ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.projet.depot">Depot</Translate>
           </dt>

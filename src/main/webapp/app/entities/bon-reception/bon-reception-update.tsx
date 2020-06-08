@@ -233,7 +233,7 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                   {depots
                     ? depots.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -248,7 +248,7 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                   {fournisseurs
                     ? fournisseurs.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.nomCommercial}
                         </option>
                       ))
                     : null}

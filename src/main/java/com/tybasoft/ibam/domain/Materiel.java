@@ -1,6 +1,8 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tybasoft.ibam.security.SecurityUtils;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,6 +11,7 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -61,7 +64,7 @@ public class Materiel implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private LocalDate dateModif;
+    private Instant dateModif;
 
     @OneToMany(mappedBy = "materiel")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -254,16 +257,16 @@ public class Materiel implements Serializable {
         this.userModif = userModif;
     }
 
-    public LocalDate getDateModif() {
+    public Instant getDateModif() {
         return dateModif;
     }
 
-    public Materiel dateModif(LocalDate dateModif) {
+    public Materiel dateModif(Instant dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(LocalDate dateModif) {
+    public void setDateModif(Instant dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -541,5 +544,15 @@ public class Materiel implements Serializable {
             ", userModif='" + getUserModif() + "'" +
             ", dateModif='" + getDateModif() + "'" +
             "}";
+    }
+    @PrePersist
+    public void onCreate(){
+        userModif= SecurityUtils.getCurrentUserLogin().get();
+        dateModif= Instant.now();
+    }
+    @PreUpdate
+    public void onUpdate(){
+        userModif= SecurityUtils.getCurrentUserLogin().get();
+        dateModif= Instant.now();
     }
 }

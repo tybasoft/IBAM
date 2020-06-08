@@ -228,7 +228,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                 </Label>
                 <AvField id="materiau-volume" type="text" name="volume" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="materiau-userModif">
                   <Translate contentKey="ibamApp.materiau.userModif">User Modif</Translate>
                 </Label>
@@ -239,7 +239,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                   <Translate contentKey="ibamApp.materiau.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="materiau-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="materiau-marque">
                   <Translate contentKey="ibamApp.materiau.marque">Marque</Translate>
@@ -249,7 +249,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                   {marques
                     ? marques.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -264,7 +264,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                   {unites
                     ? unites.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -279,7 +279,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                   {familles
                     ? familles.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -294,7 +294,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                   {tvas
                     ? tvas.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.taux}
                         </option>
                       ))
                     : null}
