@@ -175,7 +175,7 @@ export const EmployeDetail = (props: IEmployeDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.employe.projet">Projet</Translate>
           </dt>
-          <dd>{employeEntity.projet ? employeEntity.projet.libelle : ''}</dd>
+          <dd>{employeEntity.projet ? employeEntity.projet.id: ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.employe.equipe">Equipe</Translate>
           </dt>

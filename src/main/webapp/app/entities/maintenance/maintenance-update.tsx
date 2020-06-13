@@ -284,7 +284,7 @@ export const MaintenanceUpdate = (props: IMaintenanceUpdateProps) => {
                   {materiels
                     ? materiels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle} ||  {otherEntity.matricule}
+                          {otherEntity.libelle +"("+otherEntity.matricule+")"}
                         </option>
                       ))
                     : null}
@@ -300,7 +300,7 @@ export const MaintenanceUpdate = (props: IMaintenanceUpdateProps) => {
                     ? centreMaintenances.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
                           
-                           {otherEntity.libelle +" (" + otherEntity.responsable+ ")"}
+                           {otherEntity.libelle}
                         </option>
                       ))
                     : null}

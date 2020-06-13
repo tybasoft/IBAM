@@ -60,7 +60,7 @@ export const MateriauDetail = (props: IMateriauDetailProps) => {
             </span>
           </dt>
           <dd>{materiauEntity.volume}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.materiau.userModif">User Modif</Translate>
             </span>
@@ -73,7 +73,7 @@ export const MateriauDetail = (props: IMateriauDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={materiauEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
           <dt>
             <Translate contentKey="ibamApp.materiau.marque">Marque</Translate>
           </dt>

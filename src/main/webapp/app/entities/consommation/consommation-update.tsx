@@ -217,7 +217,17 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                 <Label id="typeCarburantLabel" for="consommation-typeCarburant">
                   <Translate contentKey="ibamApp.consommation.typeCarburant">Type Carburant</Translate>
                 </Label>
-                <AvField id="consommation-typeCarburant" type="text" name="typeCarburant" />
+                  <AvInput id="consommation-typeCarburant" type="select" className="form-control" name="typeCarburant">
+                  <option value="" key="0">
+                    Choisir Type Carburant
+                  </option>
+                  <option value=" essence" key="1">
+                    essence
+                  </option>
+                  <option value="diesel" key="1">
+                   diesel
+                  </option>
+                </AvInput>
               </AvGroup>
               <AvGroup>
                 <Label id="montantLabel" for="consommation-montant">
@@ -257,7 +267,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                 </Label>
                 <AvField id="consommation-commentaire" type="text" name="commentaire" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="consommation-userModif">
                   <Translate contentKey="ibamApp.consommation.userModif">User Modif</Translate>
                 </Label>
@@ -268,7 +278,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                   <Translate contentKey="ibamApp.consommation.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="consommation-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="consommation-materiel">
                   <Translate contentKey="ibamApp.consommation.materiel">Materiel</Translate>

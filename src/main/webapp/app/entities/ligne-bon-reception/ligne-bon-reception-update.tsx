@@ -139,7 +139,7 @@ export const LigneBonReceptionUpdate = (props: ILigneBonReceptionUpdateProps) =>
                   {materiaus
                     ? materiaus.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                           {otherEntity.libelle+"("+otherEntity.reference+")"}
                         </option>
                       ))
                     : null}
