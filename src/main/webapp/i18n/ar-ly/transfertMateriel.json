@@ -2,27 +2,27 @@
   "ibamApp": {
     "transfertMateriel": {
       "home": {
-        "title": "Transfert Materiels",
-        "createLabel": "Create a new Transfert Materiel",
-        "createOrEditLabel": "Create or edit a Transfert Materiel",
-        "notFound": "No Transfert Materiels found"
+        "title": "نقل المعدات",
+        "createLabel": "إنشاء نقل جديد للمعدات",
+        "createOrEditLabel": "إنشاء أو تعديل نقل للأجهزة",
+        "notFound": "لم يتم العثور على أي نقل للأجهزة"
       },
-      "created": "A new Transfert Materiel is created with identifier {{ param }}",
-      "updated": "A Transfert Materiel is updated with identifier {{ param }}",
-      "deleted": "A Transfert Materiel is deleted with identifier {{ param }}",
+      "created": "لقد تم إنشاء  نقل جديد للمعدات مع معرف {{ param }}",
+      "updated": " يتم تحديث نقل معدات مع معرف {{ param }}",
+      "deleted": " يتم حدف نقل معدات مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Transfert Materiel {{ id }}?"
+        "question": "هل أنت متأكد أنك تريد حذف  نقل المعدات {{ id }}?"
       },
       "detail": {
-        "title": "Transfert Materiel"
+        "title": "نقل المعدات"
       },
-      "reference": "Reference",
-      "dateTransfert": "Date Transfert",
-      "commentaire": "Commentaire",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "materiel": "Materiel",
-      "projet": "Projet"
+      "reference": "مرجع",
+      "dateTransfert": "تاريخ التحويل",
+      "commentaire": "التعليق",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiel": "أداة",
+      "projet": "مشروع"
     }
   }
 }

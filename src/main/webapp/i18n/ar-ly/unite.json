@@ -2,26 +2,26 @@
   "ibamApp": {
     "unite": {
       "home": {
-        "title": "Unites",
-        "createLabel": "Create a new Unite",
-        "createOrEditLabel": "Create or edit a Unite",
-        "notFound": "No Unites found"
+        "title": "وحدات",
+        "createLabel": "إنشاء وحدة جديدة",
+        "createOrEditLabel": "إنشاء أو تحريروحدة",
+        "notFound": "لم يتم العثور على وحدات"
       },
-      "created": "A new Unite is created with identifier {{ param }}",
-      "updated": "A Unite is updated with identifier {{ param }}",
-      "deleted": "A Unite is deleted with identifier {{ param }}",
+      "created": "لقد تم إنشاء وحدة جديدة مع معرف {{ param }}",
+      "updated": "لقد تم تحديث وحدة مع معرف{{ param }}",
+      "deleted": "لقد تم حذف وحدة مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Unite {{ id }}?"
+        "question": "هل أنت متأكد من أنك تريد حذف هذه الوحدة {{ id }}?"
       },
       "detail": {
-        "title": "Unite"
+        "title": "وحدة"
       },
-      "libelle": "Libelle",
-      "symbole": "Symbole",
-      "description": "Description",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "materiau": "Materiau"
+      "libelle": "صياغة",
+      "symbole": "رمز",
+      "description": "وصف",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiau": "مواد"
     }
   }
 }

@@ -2,27 +2,27 @@
   "ibamApp": {
     "document": {
       "home": {
-        "title": "Documents",
-        "createLabel": "Create a new Document",
-        "createOrEditLabel": "Create or edit a Document",
-        "notFound": "No Documents found"
+        "title": "المُسْتَنَدات",
+        "createLabel": "إنشاء مستند جديد",
+        "createOrEditLabel": "إنشاءأو تعديل مستند ",
+        "notFound": "لم يتم العثور على مستندات"
       },
-      "created": "A new Document is created with identifier {{ param }}",
-      "updated": "A Document is updated with identifier {{ param }}",
-      "deleted": "A Document is deleted with identifier {{ param }}",
+      "created": "  يتم إنشاء مستند جديد مع معرف  {{ param }}",
+      "updated": " يتم تحديث المستند مع معرف {{ param }}",
+      "deleted": " تم  حذف المستند مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Document {{ id }}?"
+        "question": "هل أنت متأكدأنك تريد حذف المستند {{ id }}?"
       },
       "detail": {
-        "title": "Document"
+        "title": "مستند"
       },
-      "titre": "Titre",
-      "type": "Type",
-      "path": "Path",
-      "commentaire": "Commentaire",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "materiel": "Materiel"
+      "titre": "عنوان",
+      "type": "نوع",
+      "path": "مسار",
+      "commentaire": "تعليق",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiel": "أداة"
     }
   }
 }
