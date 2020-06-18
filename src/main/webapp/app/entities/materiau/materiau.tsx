@@ -55,6 +55,16 @@ export const Materiau = (props: IMateriauProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.materiau.home.createLabel">Create new Materiau</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {materiauList && materiauList.length > 0 ? (
@@ -76,27 +86,6 @@ export const Materiau = (props: IMateriauProps) => {
                 <th className="hand" onClick={sort('volume')}>
                   <Translate contentKey="ibamApp.materiau.volume">Volume</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.materiau.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.materiau.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiau.marque">Marque</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiau.unite">Unite</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiau.famille">Famille</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiau.tva">Tva</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiau.image">Image</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th />
               </tr>
             </thead>
@@ -112,15 +101,7 @@ export const Materiau = (props: IMateriauProps) => {
                   <td>{materiau.reference}</td>
                   <td>{materiau.poids}</td>
                   <td>{materiau.volume}</td>
-                  <td>{materiau.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={materiau.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
-                  <td>{materiau.marque ? <Link to={`marque/${materiau.marque.id}`}>{materiau.marque.id}</Link> : ''}</td>
-                  <td>{materiau.unite ? <Link to={`unite/${materiau.unite.id}`}>{materiau.unite.id}</Link> : ''}</td>
-                  <td>{materiau.famille ? <Link to={`famille/${materiau.famille.id}`}>{materiau.famille.id}</Link> : ''}</td>
-                  <td>{materiau.tva ? <Link to={`tva/${materiau.tva.id}`}>{materiau.tva.id}</Link> : ''}</td>
-                  <td>{materiau.image ? <Link to={`image/${materiau.image.id}`}>{materiau.image.id}</Link> : ''}</td>
+
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${materiau.id}`} color="info" size="sm">

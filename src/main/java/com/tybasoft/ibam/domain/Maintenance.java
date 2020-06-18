@@ -1,6 +1,8 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tybasoft.ibam.security.SecurityUtils;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -72,7 +74,8 @@ public class Maintenance implements Serializable {
     @JsonIgnoreProperties("maintenances")
     private Image image;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -249,7 +252,22 @@ public class Maintenance implements Serializable {
     public void setImage(Image image) {
         this.image = image;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -269,18 +287,10 @@ public class Maintenance implements Serializable {
 
     @Override
     public String toString() {
-        return "Maintenance{" +
-            "id=" + getId() +
-            ", reference='" + getReference() + "'" +
-            ", datePanne='" + getDatePanne() + "'" +
-            ", frais='" + getFrais() + "'" +
-            ", technicien='" + getTechnicien() + "'" +
-            ", motif='" + getMotif() + "'" +
-            ", problemeFrequent='" + isProblemeFrequent() + "'" +
-            ", remarque='" + getRemarque() + "'" +
-            ", dureePanne='" + getDureePanne() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return "Maintenance{" + "id=" + getId() + ", reference='" + getReference() + "'" + ", datePanne='"
+                + getDatePanne() + "'" + ", frais='" + getFrais() + "'" + ", technicien='" + getTechnicien() + "'"
+                + ", motif='" + getMotif() + "'" + ", problemeFrequent='" + isProblemeFrequent() + "'" + ", remarque='"
+                + getRemarque() + "'" + ", dureePanne='" + getDureePanne() + "'" + ", userModif='" + getUserModif()
+                + "'" + ", dateModif='" + getDateModif() + "'" + "}";
     }
 }

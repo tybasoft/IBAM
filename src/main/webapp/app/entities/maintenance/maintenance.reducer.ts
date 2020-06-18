@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_MAINTENANCE: 'maintenance/CREATE_MAINTENANCE',
   UPDATE_MAINTENANCE: 'maintenance/UPDATE_MAINTENANCE',
   DELETE_MAINTENANCE: 'maintenance/DELETE_MAINTENANCE',
-  RESET: 'maintenance/RESET'
+  RESET: 'maintenance/RESET',
+  REPPORT: 'maintenance/REPPORT'
 };
 
 const initialState = {
@@ -88,6 +89,13 @@ export default (state: MaintenanceState = initialState, action): MaintenanceStat
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -97,7 +105,7 @@ export default (state: MaintenanceState = initialState, action): MaintenanceStat
   }
 };
 
-const apiUrl = 'api/maintenances';
+export const apiUrl = 'api/maintenances';
 
 // Actions
 

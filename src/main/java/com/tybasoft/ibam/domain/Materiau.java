@@ -1,17 +1,17 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import com.tybasoft.ibam.security.SecurityUtils;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Materiau.
@@ -20,7 +20,6 @@ import java.util.Set;
 @Table(name = "materiau")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Materiau implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -76,7 +75,8 @@ public class Materiau implements Serializable {
     @JsonIgnoreProperties("materiaus")
     private Image image;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -277,7 +277,23 @@ public class Materiau implements Serializable {
     public void setImage(Image image) {
         this.image = image;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -297,14 +313,8 @@ public class Materiau implements Serializable {
 
     @Override
     public String toString() {
-        return "Materiau{" +
-            "id=" + getId() +
-            ", libelle='" + getLibelle() + "'" +
-            ", reference='" + getReference() + "'" +
-            ", poids='" + getPoids() + "'" +
-            ", volume='" + getVolume() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return ("Materiau{" + "id=" + getId() + ", libelle='" + getLibelle() + "'" + ", reference='" + getReference()
+                + "'" + ", poids='" + getPoids() + "'" + ", volume='" + getVolume() + "'" + ", userModif='"
+                + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}");
     }
 }

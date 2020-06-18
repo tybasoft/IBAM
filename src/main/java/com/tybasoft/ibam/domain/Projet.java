@@ -1,6 +1,8 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tybasoft.ibam.security.SecurityUtils;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -90,7 +92,8 @@ public class Projet implements Serializable {
     @JsonIgnoreProperties("projets")
     private Depot depot;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -368,7 +371,22 @@ public class Projet implements Serializable {
     public void setDepot(Depot depot) {
         this.depot = depot;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -388,20 +406,10 @@ public class Projet implements Serializable {
 
     @Override
     public String toString() {
-        return "Projet{" +
-            "id=" + getId() +
-            ", reference='" + getReference() + "'" +
-            ", libelle='" + getLibelle() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", dateDebut='" + getDateDebut() + "'" +
-            ", dateFin='" + getDateFin() + "'" +
-            ", nbrEmploye='" + getNbrEmploye() + "'" +
-            ", budget='" + getBudget() + "'" +
-            ", adresse='" + getAdresse() + "'" +
-            ", ville='" + getVille() + "'" +
-            ", pays='" + getPays() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return "Projet{" + "id=" + getId() + ", reference='" + getReference() + "'" + ", libelle='" + getLibelle() + "'"
+                + ", description='" + getDescription() + "'" + ", dateDebut='" + getDateDebut() + "'" + ", dateFin='"
+                + getDateFin() + "'" + ", nbrEmploye='" + getNbrEmploye() + "'" + ", budget='" + getBudget() + "'"
+                + ", adresse='" + getAdresse() + "'" + ", ville='" + getVille() + "'" + ", pays='" + getPays() + "'"
+                + ", userModif='" + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}";
     }
 }

@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_HORAIRE: 'horaire/CREATE_HORAIRE',
   UPDATE_HORAIRE: 'horaire/UPDATE_HORAIRE',
   DELETE_HORAIRE: 'horaire/DELETE_HORAIRE',
-  RESET: 'horaire/RESET'
+  RESET: 'horaire/RESET',
+  REPPORT: 'horaire/REPPORT'
 };
 
 const initialState = {
@@ -59,6 +60,11 @@ export default (state: HoraireState = initialState, action): HoraireState => {
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case SUCCESS(ACTION_TYPES.FETCH_HORAIRE_LIST):
       return {
         ...state,
@@ -90,12 +96,14 @@ export default (state: HoraireState = initialState, action): HoraireState => {
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/horaires';
+export const apiUrl = 'api/horaires';
 
 // Actions
 

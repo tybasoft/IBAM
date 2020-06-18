@@ -11,6 +11,7 @@ export const ACTION_TYPES = {
   FETCH_MATERIAU: 'materiau/FETCH_MATERIAU',
   CREATE_MATERIAU: 'materiau/CREATE_MATERIAU',
   UPDATE_MATERIAU: 'materiau/UPDATE_MATERIAU',
+  REPORT: 'materiau/REPORT',
   DELETE_MATERIAU: 'materiau/DELETE_MATERIAU',
   RESET: 'materiau/RESET'
 };
@@ -48,6 +49,13 @@ export default (state: MateriauState = initialState, action): MateriauState => {
         updateSuccess: false,
         updating: true
       };
+    case REQUEST(ACTION_TYPES.REPORT):
+      return {
+        ...state,
+        loading: true
+      };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case FAILURE(ACTION_TYPES.FETCH_MATERIAU_LIST):
     case FAILURE(ACTION_TYPES.FETCH_MATERIAU):
     case FAILURE(ACTION_TYPES.CREATE_MATERIAU):
@@ -97,7 +105,7 @@ export default (state: MateriauState = initialState, action): MateriauState => {
   }
 };
 
-const apiUrl = 'api/materiaus';
+export const apiUrl = 'api/materiaus';
 
 // Actions
 

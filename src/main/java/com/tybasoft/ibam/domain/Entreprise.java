@@ -1,6 +1,8 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tybasoft.ibam.security.SecurityUtils;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -67,7 +69,8 @@ public class Entreprise implements Serializable {
     @JsonIgnoreProperties("entreprises")
     private Image image;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -243,7 +246,22 @@ public class Entreprise implements Serializable {
     public void setImage(Image image) {
         this.image = image;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -263,18 +281,10 @@ public class Entreprise implements Serializable {
 
     @Override
     public String toString() {
-        return "Entreprise{" +
-            "id=" + getId() +
-            ", entiteJuridique='" + getEntiteJuridique() + "'" +
-            ", nomCommercial='" + getNomCommercial() + "'" +
-            ", adresse='" + getAdresse() + "'" +
-            ", capital='" + getCapital() + "'" +
-            ", direction='" + getDirection() + "'" +
-            ", activite='" + getActivite() + "'" +
-            ", telephone='" + getTelephone() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return "Entreprise{" + "id=" + getId() + ", entiteJuridique='" + getEntiteJuridique() + "'"
+                + ", nomCommercial='" + getNomCommercial() + "'" + ", adresse='" + getAdresse() + "'" + ", capital='"
+                + getCapital() + "'" + ", direction='" + getDirection() + "'" + ", activite='" + getActivite() + "'"
+                + ", telephone='" + getTelephone() + "'" + ", email='" + getEmail() + "'" + ", userModif='"
+                + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}";
     }
 }

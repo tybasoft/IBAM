@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_CONSOMMATION: 'consommation/CREATE_CONSOMMATION',
   UPDATE_CONSOMMATION: 'consommation/UPDATE_CONSOMMATION',
   DELETE_CONSOMMATION: 'consommation/DELETE_CONSOMMATION',
-  RESET: 'consommation/RESET'
+  RESET: 'consommation/RESET',
+  REPPORT: 'consomation/REPPORT'
 };
 
 const initialState = {
@@ -31,6 +32,8 @@ export type ConsommationState = Readonly<typeof initialState>;
 
 export default (state: ConsommationState = initialState, action): ConsommationState => {
   switch (action.type) {
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_CONSOMMATION_LIST):
     case REQUEST(ACTION_TYPES.FETCH_CONSOMMATION):
       return {
@@ -47,6 +50,11 @@ export default (state: ConsommationState = initialState, action): ConsommationSt
         errorMessage: null,
         updateSuccess: false,
         updating: true
+      };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
       };
     case FAILURE(ACTION_TYPES.FETCH_CONSOMMATION_LIST):
     case FAILURE(ACTION_TYPES.FETCH_CONSOMMATION):
@@ -97,7 +105,7 @@ export default (state: ConsommationState = initialState, action): ConsommationSt
   }
 };
 
-const apiUrl = 'api/consommations';
+export const apiUrl = 'api/consommations';
 
 // Actions
 

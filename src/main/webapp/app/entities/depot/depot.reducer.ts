@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_DEPOT: 'depot/CREATE_DEPOT',
   UPDATE_DEPOT: 'depot/UPDATE_DEPOT',
   DELETE_DEPOT: 'depot/DELETE_DEPOT',
-  RESET: 'depot/RESET'
+  RESET: 'depot/RESET',
+  REPPORT: 'depot/REPPORT'
 };
 
 const initialState = {
@@ -30,6 +31,8 @@ export type DepotState = Readonly<typeof initialState>;
 
 export default (state: DepotState = initialState, action): DepotState => {
   switch (action.type) {
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_DEPOT_LIST):
     case REQUEST(ACTION_TYPES.FETCH_DEPOT):
       return {
@@ -86,6 +89,11 @@ export default (state: DepotState = initialState, action): DepotState => {
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -95,7 +103,7 @@ export default (state: DepotState = initialState, action): DepotState => {
   }
 };
 
-const apiUrl = 'api/depots';
+export const apiUrl = 'api/depots';
 
 // Actions
 

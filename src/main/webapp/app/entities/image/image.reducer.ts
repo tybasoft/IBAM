@@ -14,7 +14,8 @@ export const ACTION_TYPES = {
   DELETE_IMAGE: 'image/DELETE_IMAGE',
   RESET: 'image/RESET',
   UPLOAD_IMAGE: 'image/UPLOAD_IMAGE',
-  DELETE_IMAGE_FILE: 'image/DELETE_IMAGE_FILE'
+  DELETE_IMAGE_FILE: 'image/DELETE_IMAGE_FILE',
+  REPPORT: 'image/REPPORT'
 };
 
 const initialState = {
@@ -43,6 +44,8 @@ export default (state: ImageState = initialState, action): ImageState => {
         updateSuccess: false,
         loading: true
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.CREATE_IMAGE):
     case REQUEST(ACTION_TYPES.UPDATE_IMAGE):
     case REQUEST(ACTION_TYPES.DELETE_IMAGE):
@@ -112,6 +115,11 @@ export default (state: ImageState = initialState, action): ImageState => {
         uploadSuccess: true,
         updating: false
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case FAILURE(ACTION_TYPES.UPLOAD_IMAGE):
     case FAILURE(ACTION_TYPES.DELETE_IMAGE_FILE):
       return {
@@ -125,7 +133,7 @@ export default (state: ImageState = initialState, action): ImageState => {
   }
 };
 
-const apiUrl = 'api/images';
+export const apiUrl = 'api/images';
 
 // Actions
 

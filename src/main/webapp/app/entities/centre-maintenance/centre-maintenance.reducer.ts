@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_CENTREMAINTENANCE: 'centreMaintenance/CREATE_CENTREMAINTENANCE',
   UPDATE_CENTREMAINTENANCE: 'centreMaintenance/UPDATE_CENTREMAINTENANCE',
   DELETE_CENTREMAINTENANCE: 'centreMaintenance/DELETE_CENTREMAINTENANCE',
-  RESET: 'centreMaintenance/RESET'
+  RESET: 'centreMaintenance/RESET',
+  REPPORT: 'centreMaintenance/REPPORT'
 };
 
 const initialState = {
@@ -31,6 +32,8 @@ export type CentreMaintenanceState = Readonly<typeof initialState>;
 
 export default (state: CentreMaintenanceState = initialState, action): CentreMaintenanceState => {
   switch (action.type) {
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_CENTREMAINTENANCE_LIST):
     case REQUEST(ACTION_TYPES.FETCH_CENTREMAINTENANCE):
       return {
@@ -47,6 +50,11 @@ export default (state: CentreMaintenanceState = initialState, action): CentreMai
         errorMessage: null,
         updateSuccess: false,
         updating: true
+      };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
       };
     case FAILURE(ACTION_TYPES.FETCH_CENTREMAINTENANCE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_CENTREMAINTENANCE):
@@ -97,7 +105,7 @@ export default (state: CentreMaintenanceState = initialState, action): CentreMai
   }
 };
 
-const apiUrl = 'api/centre-maintenances';
+export const apiUrl = 'api/centre-maintenances';
 
 // Actions
 

@@ -6,6 +6,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import com.tybasoft.ibam.security.SecurityUtils;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.time.LocalDate;
@@ -58,7 +60,8 @@ public class CentreMaintenance implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Maintenance> maintenances = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -195,7 +198,22 @@ public class CentreMaintenance implements Serializable {
     public void setMaintenances(Set<Maintenance> maintenances) {
         this.maintenances = maintenances;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -215,16 +233,9 @@ public class CentreMaintenance implements Serializable {
 
     @Override
     public String toString() {
-        return "CentreMaintenance{" +
-            "id=" + getId() +
-            ", libelle='" + getLibelle() + "'" +
-            ", specialite='" + getSpecialite() + "'" +
-            ", responsable='" + getResponsable() + "'" +
-            ", adresse='" + getAdresse() + "'" +
-            ", telephone='" + getTelephone() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return "CentreMaintenance{" + "id=" + getId() + ", libelle='" + getLibelle() + "'" + ", specialite='"
+                + getSpecialite() + "'" + ", responsable='" + getResponsable() + "'" + ", adresse='" + getAdresse()
+                + "'" + ", telephone='" + getTelephone() + "'" + ", email='" + getEmail() + "'" + ", userModif='"
+                + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}";
     }
 }

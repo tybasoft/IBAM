@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_POINTAGE: 'pointage/CREATE_POINTAGE',
   UPDATE_POINTAGE: 'pointage/UPDATE_POINTAGE',
   DELETE_POINTAGE: 'pointage/DELETE_POINTAGE',
-  RESET: 'pointage/RESET'
+  RESET: 'pointage/RESET',
+  REPPORT: 'pointage/REPPORT'
 };
 
 const initialState = {
@@ -88,16 +89,23 @@ export default (state: PointageState = initialState, action): PointageState => {
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/pointages';
+export const apiUrl = 'api/pointages';
 
 // Actions
 

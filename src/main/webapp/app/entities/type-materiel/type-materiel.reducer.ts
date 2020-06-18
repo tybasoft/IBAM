@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_TYPEMATERIEL: 'typeMateriel/CREATE_TYPEMATERIEL',
   UPDATE_TYPEMATERIEL: 'typeMateriel/UPDATE_TYPEMATERIEL',
   DELETE_TYPEMATERIEL: 'typeMateriel/DELETE_TYPEMATERIEL',
-  RESET: 'typeMateriel/RESET'
+  RESET: 'typeMateriel/RESET',
+  REPPORT: 'typeMateriel/REPPORT'
 };
 
 const initialState = {
@@ -30,6 +31,8 @@ export type TypeMaterielState = Readonly<typeof initialState>;
 
 export default (state: TypeMaterielState = initialState, action): TypeMaterielState => {
   switch (action.type) {
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_TYPEMATERIEL_LIST):
     case REQUEST(ACTION_TYPES.FETCH_TYPEMATERIEL):
       return {
@@ -86,6 +89,11 @@ export default (state: TypeMaterielState = initialState, action): TypeMaterielSt
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -95,7 +103,7 @@ export default (state: TypeMaterielState = initialState, action): TypeMaterielSt
   }
 };
 
-const apiUrl = 'api/type-materiels';
+export const apiUrl = 'api/type-materiels';
 
 // Actions
 

@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_MARQUE: 'marque/CREATE_MARQUE',
   UPDATE_MARQUE: 'marque/UPDATE_MARQUE',
   DELETE_MARQUE: 'marque/DELETE_MARQUE',
-  RESET: 'marque/RESET'
+  RESET: 'marque/RESET',
+  REPPORT: 'marque/REPPORT'
 };
 
 const initialState = {
@@ -47,6 +48,11 @@ export default (state: MarqueState = initialState, action): MarqueState => {
         errorMessage: null,
         updateSuccess: false,
         updating: true
+      };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
       };
     case FAILURE(ACTION_TYPES.FETCH_MARQUE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_MARQUE):
@@ -92,12 +98,14 @@ export default (state: MarqueState = initialState, action): MarqueState => {
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/marques';
+export const apiUrl = 'api/marques';
 
 // Actions
 

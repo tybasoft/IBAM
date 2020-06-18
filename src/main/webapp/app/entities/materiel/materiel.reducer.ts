@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_MATERIEL: 'materiel/CREATE_MATERIEL',
   UPDATE_MATERIEL: 'materiel/UPDATE_MATERIEL',
   DELETE_MATERIEL: 'materiel/DELETE_MATERIEL',
-  RESET: 'materiel/RESET'
+  RESET: 'materiel/RESET',
+  REPPORT: 'materiel/REPPORT'
 };
 
 const initialState = {
@@ -73,6 +74,13 @@ export default (state: MaterielState = initialState, action): MaterielState => {
         loading: false,
         entity: action.payload.data
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case SUCCESS(ACTION_TYPES.CREATE_MATERIEL):
     case SUCCESS(ACTION_TYPES.UPDATE_MATERIEL):
       return {
@@ -97,7 +105,7 @@ export default (state: MaterielState = initialState, action): MaterielState => {
   }
 };
 
-const apiUrl = 'api/materiels';
+export const apiUrl = 'api/materiels';
 
 // Actions
 

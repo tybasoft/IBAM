@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_LOCATION: 'location/CREATE_LOCATION',
   UPDATE_LOCATION: 'location/UPDATE_LOCATION',
   DELETE_LOCATION: 'location/DELETE_LOCATION',
-  RESET: 'location/RESET'
+  RESET: 'location/RESET',
+  REPPORT: 'location/REPPORT'
 };
 
 const initialState = {
@@ -31,6 +32,8 @@ export type LocationState = Readonly<typeof initialState>;
 
 export default (state: LocationState = initialState, action): LocationState => {
   switch (action.type) {
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_LOCATION_LIST):
     case REQUEST(ACTION_TYPES.FETCH_LOCATION):
       return {
@@ -88,6 +91,11 @@ export default (state: LocationState = initialState, action): LocationState => {
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -97,7 +105,7 @@ export default (state: LocationState = initialState, action): LocationState => {
   }
 };
 
-const apiUrl = 'api/locations';
+export const apiUrl = 'api/locations';
 
 // Actions
 

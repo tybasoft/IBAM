@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_EQUIPE: 'equipe/CREATE_EQUIPE',
   UPDATE_EQUIPE: 'equipe/UPDATE_EQUIPE',
   DELETE_EQUIPE: 'equipe/DELETE_EQUIPE',
-  RESET: 'equipe/RESET'
+  RESET: 'equipe/RESET',
+  REPPORT: 'equipe/REPPORT'
 };
 
 const initialState = {
@@ -81,6 +82,11 @@ export default (state: EquipeState = initialState, action): EquipeState => {
         updateSuccess: true,
         entity: action.payload.data
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case SUCCESS(ACTION_TYPES.DELETE_EQUIPE):
       return {
         ...state,
@@ -92,12 +98,14 @@ export default (state: EquipeState = initialState, action): EquipeState => {
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/equipes';
+export const apiUrl = 'api/equipes';
 
 // Actions
 

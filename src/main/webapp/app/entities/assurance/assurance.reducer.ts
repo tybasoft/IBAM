@@ -12,6 +12,7 @@ export const ACTION_TYPES = {
   CREATE_ASSURANCE: 'assurance/CREATE_ASSURANCE',
   UPDATE_ASSURANCE: 'assurance/UPDATE_ASSURANCE',
   DELETE_ASSURANCE: 'assurance/DELETE_ASSURANCE',
+  REPPORT: 'assurance/REPPORT',
   RESET: 'assurance/RESET'
 };
 
@@ -60,6 +61,11 @@ export default (state: AssuranceState = initialState, action): AssuranceState =>
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case SUCCESS(ACTION_TYPES.FETCH_ASSURANCE_LIST):
       return {
         ...state,
@@ -67,6 +73,8 @@ export default (state: AssuranceState = initialState, action): AssuranceState =>
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case SUCCESS(ACTION_TYPES.FETCH_ASSURANCE):
       return {
         ...state,
@@ -97,7 +105,7 @@ export default (state: AssuranceState = initialState, action): AssuranceState =>
   }
 };
 
-const apiUrl = 'api/assurances';
+export const apiUrl = 'api/assurances';
 
 // Actions
 

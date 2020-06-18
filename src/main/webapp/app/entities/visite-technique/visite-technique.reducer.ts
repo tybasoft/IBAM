@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_VISITETECHNIQUE: 'visiteTechnique/CREATE_VISITETECHNIQUE',
   UPDATE_VISITETECHNIQUE: 'visiteTechnique/UPDATE_VISITETECHNIQUE',
   DELETE_VISITETECHNIQUE: 'visiteTechnique/DELETE_VISITETECHNIQUE',
-  RESET: 'visiteTechnique/RESET'
+  RESET: 'visiteTechnique/RESET',
+  REPPORT: 'visiteTechnique/REPPORT'
 };
 
 const initialState = {
@@ -47,6 +48,11 @@ export default (state: VisiteTechniqueState = initialState, action): VisiteTechn
         errorMessage: null,
         updateSuccess: false,
         updating: true
+      };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
       };
     case FAILURE(ACTION_TYPES.FETCH_VISITETECHNIQUE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_VISITETECHNIQUE):
@@ -92,12 +98,14 @@ export default (state: VisiteTechniqueState = initialState, action): VisiteTechn
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/visite-techniques';
+export const apiUrl = 'api/visite-techniques';
 
 // Actions
 

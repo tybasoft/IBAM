@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_BONRECEPTION: 'bonReception/CREATE_BONRECEPTION',
   UPDATE_BONRECEPTION: 'bonReception/UPDATE_BONRECEPTION',
   DELETE_BONRECEPTION: 'bonReception/DELETE_BONRECEPTION',
-  RESET: 'bonReception/RESET'
+  RESET: 'bonReception/RESET',
+  REPPORT: 'bonReception/REPPORT'
 };
 
 const initialState = {
@@ -32,6 +33,8 @@ export type BonReceptionState = Readonly<typeof initialState>;
 export default (state: BonReceptionState = initialState, action): BonReceptionState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_BONRECEPTION_LIST):
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_BONRECEPTION):
       return {
         ...state,
@@ -59,6 +62,11 @@ export default (state: BonReceptionState = initialState, action): BonReceptionSt
         updating: false,
         updateSuccess: false,
         errorMessage: action.payload
+      };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
       };
     case SUCCESS(ACTION_TYPES.FETCH_BONRECEPTION_LIST):
       return {
@@ -97,7 +105,7 @@ export default (state: BonReceptionState = initialState, action): BonReceptionSt
   }
 };
 
-const apiUrl = 'api/bon-receptions';
+export const apiUrl = 'api/bon-receptions';
 
 // Actions
 

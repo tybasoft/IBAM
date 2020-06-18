@@ -4,6 +4,8 @@
       "home": {
         "title": "Tvas",
         "createLabel": "Create a new Tva",
+        "importLabel": "Import",
+        "exportLabel": "Export",
         "createOrEditLabel": "Create or edit a Tva",
         "notFound": "No Tvas found"
       },

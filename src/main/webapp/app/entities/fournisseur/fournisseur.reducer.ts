@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_FOURNISSEUR: 'fournisseur/CREATE_FOURNISSEUR',
   UPDATE_FOURNISSEUR: 'fournisseur/UPDATE_FOURNISSEUR',
   DELETE_FOURNISSEUR: 'fournisseur/DELETE_FOURNISSEUR',
-  RESET: 'fournisseur/RESET'
+  RESET: 'fournisseur/RESET',
+  REPPORT: 'fournisseur/REPPORT'
 };
 
 const initialState = {
@@ -60,6 +61,11 @@ export default (state: FournisseurState = initialState, action): FournisseurStat
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case SUCCESS(ACTION_TYPES.FETCH_FOURNISSEUR_LIST):
       return {
         ...state,
@@ -92,12 +98,14 @@ export default (state: FournisseurState = initialState, action): FournisseurStat
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/fournisseurs';
+export const apiUrl = 'api/fournisseurs';
 
 // Actions
 
