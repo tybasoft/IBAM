@@ -73,19 +73,25 @@ public class MaterielResource {
     public ResponseEntity<Materiel> createMateriel(@Valid @RequestBody Materiel materiel) throws URISyntaxException {
         Image image= materiel.getImage();
         Document document= materiel.getDocument();
+        Image resultImage= null;
+        Document resultDocument= null;
 
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
+        if(image != null) {
+            log.debug("REST request to save Image : {}", image);
+            if (image.getId() != null) {
+                throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+            resultImage = imageService.createImageEntity(image);
         }
-        Image resultImage= imageService.createImageEntity(image);
 
-        log.debug("REST request to save Document : {}", document);
-        if (document.getId() != null) {
-            throw new BadRequestAlertException("A new document cannot already have an ID", ENTITY_NAME, "idexists");
+        if(document != null) {
+            log.debug("REST request to save Document : {}", document);
+            if (document.getId() != null) {
+                throw new BadRequestAlertException("A new document cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+            resultDocument = documentService.createDocumentEntity(document);
         }
-        Document resultDocument = documentService.createDocumentEntity(document);
-
+        
         log.debug("REST request to save Materiel : {}", materiel);
         if (materiel.getId() != null) {
             throw new BadRequestAlertException("A new materiel cannot already have an ID", ENTITY_NAME, "idexists");

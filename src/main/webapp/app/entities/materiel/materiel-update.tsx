@@ -72,7 +72,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
   const validateImage = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
 
-    if (isNew && allowedExtensions.exec(value) == null) {
+    if (isNew && allowedExtensions.exec(value) == null && value !== '') {
       cb(false);
       seterrorImage(translate('entity.validation.imageFileType'));
     } else if (allowedExtensions.exec(value) == null && value !== '') {
@@ -90,7 +90,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
   const validateDocument = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.pdf|\.txt|\.csv|\.doc|\.docx|\.xls|\.xlsx|\.rar|\.zip)$/i;
 
-    if (isNew && allowedExtensions.exec(value) == null) {
+    if (isNew && allowedExtensions.exec(value) == null && value !== '') {
       cb(false);
       seterrorDocument(translate('entity.validation.documentFileType'));
     } else if (allowedExtensions.exec(value) == null && value !== '') {
@@ -249,8 +249,12 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
       };
 
       if (isNew) {
-        image = uploadNewImage(values);
-        document = uploadNewDocument(values);
+        if (imageFile) {
+          image = uploadNewImage(values);
+        }
+        if (documentFile) {
+          document = uploadNewDocument(values);
+        }
         entity.document = document;
         entity.image = image;
 
@@ -463,7 +467,17 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                 <Label id="etatLabel" for="materiel-etat">
                   <Translate contentKey="ibamApp.materiel.etat">Etat</Translate>
                 </Label>
-                <AvField id="materiel-etat" type="text" name="etat" />
+                <AvInput id="materiel-etat" type="select" className="form-control" name="etat">
+                  <option value="" key="0">
+                    chisir Etat....
+                  </option>
+                  <option value="ON" key="1">
+                    Opérationnel
+                  </option>
+                  <option value="OFF" key="2">
+                    En panne
+                  </option>
+                </AvInput>
               </AvGroup>
               <AvGroup check>
                 <Label id="locationLabel">
@@ -559,7 +573,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                     ? employes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
                           {otherEntity.matricule}
-                           {otherEntity.prenom +"   "+otherEntity.nom+" (" + otherEntity.matricule+ ")"}
+                          {otherEntity.prenom + '   ' + otherEntity.nom + ' (' + otherEntity.matricule + ')'}
                         </option>
                       ))
                     : null}

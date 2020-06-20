@@ -120,7 +120,7 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
                   <Translate contentKey="ibamApp.materiel.etat">Etat</Translate>
                 </span>
               </dt>
-              <dd>{materielEntity.etat}</dd>
+              <dd>{materielEntity.etat ? (materielEntity.etat === 'ON' ? 'Opérationnel' : 'En panne') : null}</dd>
               <dt>
                 <span id="location">
                   <Translate contentKey="ibamApp.materiel.location">Location</Translate>
@@ -133,7 +133,7 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
                 </span>
               </dt>
               <dd>{materielEntity.description}</dd>
-            {/*   <dt>
+              {/*   <dt>
                 <span id="userModif">
                   <Translate contentKey="ibamApp.materiel.userModif">User Modif</Translate>
                 </span>
