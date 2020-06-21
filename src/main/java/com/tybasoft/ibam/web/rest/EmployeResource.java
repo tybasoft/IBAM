@@ -65,11 +65,15 @@ public class EmployeResource {
     @PostMapping("/employes")
     public ResponseEntity<Employe> createEmploye(@Valid @RequestBody Employe employe) throws URISyntaxException {
         Image image= employe.getImage();
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
+        Image resultImage= null;
+
+        if (image != null) {
+            log.debug("REST request to save Image : {}", image);
+            if (image.getId() != null) {
+                throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+            resultImage = imageService.createImageEntity(image);
         }
-        Image resultImage= imageService.createImageEntity(image);
 
         log.debug("REST request to save Employe : {}", employe);
         if (employe.getId() != null) {
