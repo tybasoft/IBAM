@@ -75,7 +75,7 @@ const Header = (props: IHeaderProps) => {
         <Collapse isOpen={menuOpen} navbar>
           <Nav id="header-tabs" className="ml-auto" navbar>
             <Home />
-            {props.isAuthenticated && props.isChefMateriel && <MaterielMenu />}
+            {/* {props.isAuthenticated && props.isChefMateriel && <MaterielMenu />}
             {props.isAuthenticated && (props.isChefMateriau || props.isMagasinier || props.isUser || props.isAdmin) && (
               <MateriauMenu
                 isChefMateriau={props.isChefMateriau}
@@ -102,8 +102,8 @@ const Header = (props: IHeaderProps) => {
                   isChefMateriau={props.isChefMateriau}
                   isResponsableProjet={props.isResponsableProjet}
                 />
-              )}
-            {/* {props.isAuthenticated && <EntitiesMenu />} */}
+              )} */}
+            {props.isAuthenticated && <EntitiesMenu />}
             {props.isAuthenticated && props.isAdmin && (
               <AdminMenu showSwagger={props.isSwaggerEnabled} showDatabase={!props.isInProduction} />
             )}

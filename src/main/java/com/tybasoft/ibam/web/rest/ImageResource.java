@@ -122,9 +122,8 @@ public class ImageResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/images/{id}")
-    public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
+    public void deleteImage(@PathVariable Long id) {
         log.debug("REST request to delete Image : {}", id);
         imageRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

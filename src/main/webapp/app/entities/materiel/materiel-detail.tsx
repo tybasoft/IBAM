@@ -120,7 +120,13 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
                   <Translate contentKey="ibamApp.materiel.etat">Etat</Translate>
                 </span>
               </dt>
-              <dd>{materielEntity.etat ? (materielEntity.etat === 'ON' ? 'Opérationnel' : 'En panne') : null}</dd>
+              <dd>
+                {materielEntity.etat
+                  ? materielEntity.etat === 'ON'
+                    ? translate('ibamApp.materiel.etatFieldON')
+                    : translate('ibamApp.materiel.etatFieldOFF')
+                  : null}
+              </dd>
               <dt>
                 <span id="location">
                   <Translate contentKey="ibamApp.materiel.location">Location</Translate>

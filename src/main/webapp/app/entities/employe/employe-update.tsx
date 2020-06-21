@@ -42,19 +42,15 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
   const validate = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
 
-    if (isNew && allowedExtensions.exec(value) == null) {
+    if (value && allowedExtensions.exec(value) == null) {
       cb(false);
       seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (allowedExtensions.exec(value) == null && value !== '') {
+    } else if (value && imageFile.size / Math.pow(1024, 2) > 10) {
       cb(false);
-      seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (imageFile) {
-      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
-        cb(false);
-        seterrorMessage(translate('entity.validation.imageFileSize'));
-      }
+      seterrorMessage(translate('entity.validation.imageFileSize'));
+    } else {
+      cb(true);
     }
-    cb(true);
   }, 300);
 
   useEffect(() => {
@@ -122,9 +118,10 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
       };
 
       if (isNew) {
-        image = uploadNewImage(values);
-        entity.image = image;
-
+        if (imageFile) {
+          image = uploadNewImage(values);
+          entity.image = image;
+        }
         props.createEntity(entity);
       } else {
         if (employeEntity.image == null) {
