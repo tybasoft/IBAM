@@ -75,6 +75,7 @@ const Header = (props: IHeaderProps) => {
         <Collapse isOpen={menuOpen} navbar>
           <Nav id="header-tabs" className="ml-auto" navbar>
             <Home />
+<<<<<<< HEAD
             {props.isAuthenticated && props.isChefMateriel && <MaterielMenu />}
             {props.isAuthenticated && (props.isChefMateriau || props.isMagasinier || props.isUser || props.isAdmin) && (
               <MateriauMenu
@@ -103,6 +104,16 @@ const Header = (props: IHeaderProps) => {
                   isResponsableProjet={props.isResponsableProjet}
                 />
               )}
+=======
+            {/* {props.isAuthenticated && props.isChefMateriel     && <MaterielMenu />}
+            {props.isAuthenticated && (props.isChefMateriau || props.isMagasinier || props.isUser || props.isAdmin)     && <MateriauMenu isChefMateriau={props.isChefMateriau} isMagasinier={props.isMagasinier} isAdmin={props.isAdmin}  is User={ props.isUser}/>}
+            {props.isAuthenticated && (props.isResponsableEmp || props.isPointeur)&& <ModulePersonnelMenu isResponsableEmp={props.isResponsableEmp} isPointeur={props.isPointeur} />}
+            {props.isAuthenticated &&  props.isResponsableProjet && <AvancementMenu/>}
+            {props.isAuthenticated && (props.isChefMateriel || props.isMagasinier || 
+             props.isResponsableEmp||props.isResponsableProjet||props.isChefMateriau)&&
+            <ParametrageMenu isResponsableEmp={props.isResponsableEmp}  isMagasinier={props.isMagasinier}
+            isChefMateriel={props.isChefMateriel}  isChefMateriau={props.isChefMateriau} isResponsableProjet={props.isResponsableProjet} />} */}
+>>>>>>> countries-list
             {/* {props.isAuthenticated && <EntitiesMenu />} */}
             {props.isAuthenticated && props.isAdmin && (
               <AdminMenu showSwagger={props.isSwaggerEnabled} showDatabase={!props.isInProduction} />
