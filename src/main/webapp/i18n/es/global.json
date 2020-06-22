@@ -116,7 +116,8 @@
     "ribbon": {
       "dev": "Development"
     },
-    "item-count": "Mostrando {{first}} - {{second}} de {{total}} elementos."
+    "item-count": "Mostrando {{first}} - {{second}} de {{total}} elementos.",
+    "themeChooser": "Elige un fondo"
   },
   "entity": {
     "action": {

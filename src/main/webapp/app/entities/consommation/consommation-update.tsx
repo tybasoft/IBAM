@@ -40,19 +40,15 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
   const validate = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
 
-    if (isNew && allowedExtensions.exec(value) == null) {
+    if (value && allowedExtensions.exec(value) == null) {
       cb(false);
       seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (allowedExtensions.exec(value) == null && value !== '') {
+    } else if (value && imageFile.size / Math.pow(1024, 2) > 10) {
       cb(false);
-      seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (imageFile) {
-      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
-        cb(false);
-        seterrorMessage(translate('entity.validation.imageFileSize'));
-      }
+      seterrorMessage(translate('entity.validation.imageFileSize'));
+    } else {
+      cb(true);
     }
-    cb(true);
   }, 300);
 
   useEffect(() => {
@@ -119,9 +115,10 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
       };
 
       if (isNew) {
-        image = uploadNewImage(values);
-        entity.image = image;
-
+        if (imageFile) {
+          image = uploadNewImage(values);
+          entity.image = image;
+        }
         props.createEntity(entity);
       } else {
         if (consommationEntity.image == null) {
@@ -217,7 +214,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                 <Label id="typeCarburantLabel" for="consommation-typeCarburant">
                   <Translate contentKey="ibamApp.consommation.typeCarburant">Type Carburant</Translate>
                 </Label>
-                  <AvInput id="consommation-typeCarburant" type="select" className="form-control" name="typeCarburant">
+                <AvInput id="consommation-typeCarburant" type="select" className="form-control" name="typeCarburant">
                   <option value="" key="0">
                     Choisir Type Carburant
                   </option>
@@ -225,7 +222,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                     essence
                   </option>
                   <option value="diesel" key="1">
-                   diesel
+                    diesel
                   </option>
                 </AvInput>
               </AvGroup>
@@ -288,7 +285,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                   {materiels
                     ? materiels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle +" (" + otherEntity.matricule+ ")"}
+                          {otherEntity.libelle + ' (' + otherEntity.matricule + ')'}
                         </option>
                       ))
                     : null}

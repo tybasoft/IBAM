@@ -39,7 +39,9 @@
       "marque": "Marque",
       "document": "Document",
       "employe": "Employe",
-      "image": "Image"
+      "image": "Image",
+      "etatFieldON": "Operacional",
+      "etatFieldOFF": "dañado"
     }
   }
 }
