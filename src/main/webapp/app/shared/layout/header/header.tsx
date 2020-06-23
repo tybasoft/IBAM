@@ -23,6 +23,7 @@ import {
   AccountMenu,
   LocaleMenu
 } from '../menus';
+import { Notifications } from '../menus/notifications';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -39,6 +40,9 @@ export interface IHeaderProps {
   isSwaggerEnabled: boolean;
   currentLocale: string;
   onLocaleChange: Function;
+  getNotifs: Function;
+  notifsList: any;
+  updateNotif: Function;
 }
 
 const Header = (props: IHeaderProps) => {
@@ -89,6 +93,9 @@ const Header = (props: IHeaderProps) => {
             )}
             <LocaleMenu currentLocale={props.currentLocale} onClick={handleLocaleChange} />
             <AccountMenu isAuthenticated={props.isAuthenticated} />
+            {props.isAuthenticated && (
+              <Notifications getNotifs={props.getNotifs} notifsList={props.notifsList} updateNotif={props.updateNotif} />
+            )}
           </Nav>
         </Collapse>
         <ThemeChooser text={translate('global.themeChooser')} />

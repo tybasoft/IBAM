@@ -18,6 +18,7 @@ import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
+import { getUserEntities, updateEntity as updateNotification } from './entities/notification/notification.reducer';
 
 const baseHref = document
   .querySelector('base')
@@ -38,23 +39,25 @@ export const App = (props: IAppProps) => {
       <div className="app-container" style={{ paddingTop }}>
         <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
         <ErrorBoundary>
-          <Header         
+          <Header
             isAuthenticated={props.isAuthenticated}
             isAdmin={props.isAdmin}
             isUser={props.isUser}
             isChefMateriel={props.isChefMateriel}
             isChefMateriau={props.isChefMateriau}
-            isMagasinier ={props.isMagasinier}
-            isResponsableEmp ={props.isResponsableEmp}
-            isPointeur  ={props.isPointeur}
-            isResponsableProjet ={props.isResponsableProjet}
+            isMagasinier={props.isMagasinier}
+            isResponsableEmp={props.isResponsableEmp}
+            isPointeur={props.isPointeur}
+            isResponsableProjet={props.isResponsableProjet}
             currentLocale={props.currentLocale}
             onLocaleChange={props.setLocale}
             ribbonEnv={props.ribbonEnv}
             isInProduction={props.isInProduction}
             isSwaggerEnabled={props.isSwaggerEnabled}
+            getNotifs={props.getUserEntities}
+            notifsList={props.notifications}
+            updateNotif={props.updateNotification}
           />
-
         </ErrorBoundary>
         <div className="container-fluid view-container" id="app-view-container">
           <Card className="jh-card">
@@ -69,23 +72,29 @@ export const App = (props: IAppProps) => {
   );
 };
 
-const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootState) => ({
+const mapStateToProps = ({ authentication, applicationProfile, locale, notification }: IRootState) => ({
   currentLocale: locale.currentLocale,
   isAuthenticated: authentication.isAuthenticated,
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
-  isUser :  hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.USER]),
-  isMagasinier: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MAGASINIER,AUTHORITIES.ADMIN,AUTHORITIES.USER]),
-  isResponsableEmp: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.RESPONSABLEME,AUTHORITIES.ADMIN,AUTHORITIES.USER]),
-  isChefMateriel: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.CHEFMATERIEL,AUTHORITIES.ADMIN,AUTHORITIES.USER]),
-  isChefMateriau: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.CHEFMATERIAU,AUTHORITIES.ADMIN,AUTHORITIES.USER]),
-  isPointeur: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.POINTEUR,AUTHORITIES.ADMIN,AUTHORITIES.USER]),
-  isResponsableProjet: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.RESPONSABLEPROJET,AUTHORITIES.ADMIN,AUTHORITIES.USER]),
+  isUser: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.USER]),
+  isMagasinier: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.MAGASINIER, AUTHORITIES.ADMIN, AUTHORITIES.USER]),
+  isResponsableEmp: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.RESPONSABLEME, AUTHORITIES.ADMIN, AUTHORITIES.USER]),
+  isChefMateriel: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]),
+  isChefMateriau: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.CHEFMATERIAU, AUTHORITIES.ADMIN, AUTHORITIES.USER]),
+  isPointeur: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.POINTEUR, AUTHORITIES.ADMIN, AUTHORITIES.USER]),
+  isResponsableProjet: hasAnyAuthority(authentication.account.authorities, [
+    AUTHORITIES.RESPONSABLEPROJET,
+    AUTHORITIES.ADMIN,
+    AUTHORITIES.USER
+  ]),
   ribbonEnv: applicationProfile.ribbonEnv,
   isInProduction: applicationProfile.inProduction,
-  isSwaggerEnabled: applicationProfile.isSwaggerEnabled
+  isSwaggerEnabled: applicationProfile.isSwaggerEnabled,
+  notifications: notification.entities,
+  loading: notification.loading
 });
 
-const mapDispatchToProps = { setLocale, getSession, getProfile };
+const mapDispatchToProps = { setLocale, getSession, getProfile, getUserEntities, updateNotification };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
