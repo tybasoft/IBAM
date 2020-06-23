@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Card, CardSubtitle, CardBody, CardTitle, CardText, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { Translate, ICrudGetAllAction, TextFormat } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { IRootState } from 'app/shared/reducers';
-import { INotification } from 'app/shared/model/notification.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { Button, Card, Col, CardSubtitle, CardBody, CardTitle, CardText, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Translate } from 'react-jhipster';
 
 export interface INotificationProps {
   notificationsListCount: Function;
@@ -17,18 +10,19 @@ export interface INotificationProps {
 }
 
 export const NotificationsList = (props: INotificationProps) => {
-  const [unreadNotifs, setunreadNotifs] = useState(null);
   const [notiff, setnotiff] = useState(null);
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
   const { getNotifs, notifsList, notificationsListCount, updateNotif } = props;
 
-  const showNotif = notif => {
+  const showNotif = async notif => {
     setnotiff(notif);
     toggle();
-    Object.assign(notif, { visualise: true });
-    updateNotif(notif);
+    if (notif.visualise === false) {
+      await Object.assign(notif, { visualise: true });
+      updateNotif(notif);
+    }
   };
 
   useEffect(() => {
@@ -36,58 +30,64 @@ export const NotificationsList = (props: INotificationProps) => {
   }, []);
 
   useEffect(() => {
-    window.console.log(props.notifsList);
-
     if (notifsList.length > 0) {
       const unreadNotifications = notifsList.filter(notif => {
         return notif.visualise === false;
       });
-      setunreadNotifs(unreadNotifications);
       notificationsListCount(unreadNotifications.length);
+      notifsList.sort((a, b) => {
+        const x = new Date(a.date);
+        const y = new Date(b.date);
+        return x < y ? 1 : x > y ? -1 : 0;
+      });
       notifsList.sort((a, b) => {
         return a.visualise - b.visualise;
       });
-      window.console.log(unreadNotifications);
     }
   }, [props.notifsList]);
 
-  return (
+  return notifsList.length === 0 ? (
+    <div className="d-flex justify-content-center align-items-center notif-menu-body">
+      <div className="alert alert-warning">
+        <Translate contentKey="ibamApp.notification.home.notFound">No Notifications found</Translate>
+      </div>
+    </div>
+  ) : (
     <div>
-      {notifsList.length === 0 ? (
-        <div className="alert alert-warning">
-          <Translate contentKey="ibamApp.notification.home.notFound">No Notifications found</Translate>
-        </div>
-      ) : (
-        <div>
-          {notifsList.map(notif => {
-            return (
-              <Card key={notif.id} style={{ marginBottom: '10px' }}>
-                <CardBody>
-                  <CardTitle>{notif.libelle}</CardTitle>
-                  <CardSubtitle>{notif.visualise === false ? 'false' : 'true'}</CardSubtitle>
-                  <CardText>{notif.description}</CardText>
-                  <Button
-                    onClick={() => {
-                      showNotif(notif);
-                    }}
-                  >
-                    Voir
-                  </Button>
-                </CardBody>
-              </Card>
-            );
-          })}
-          <Modal isOpen={modal} toggle={toggle}>
-            <ModalHeader toggle={toggle}>{notiff !== null && notiff.libelle}</ModalHeader>
-            <ModalBody>{notiff !== null && notiff.description} </ModalBody>
-            <ModalFooter>
-              <Button color="secondary" onClick={toggle}>
-                Cancel
-              </Button>
-            </ModalFooter>
-          </Modal>
-        </div>
-      )}
+      {notifsList.map(notif => {
+        const notifStyle = { backgroundColor: '' };
+        notif.visualise === false ? (notifStyle.backgroundColor = '#ff000052') : null;
+        return (
+          <Col className="notif" key={notif.id} style={notifStyle}>
+            <Card>
+              <CardBody>
+                <CardTitle>
+                  <span>{notif.libelle}</span>
+                  <span style={{ float: 'right' }}>{notif.date}</span>
+                </CardTitle>
+                <CardText>{notif.description}</CardText>
+                <Button
+                  color="info"
+                  onClick={() => {
+                    showNotif(notif);
+                  }}
+                >
+                  <Translate contentKey="ibamApp.notification.buttonShow">voir</Translate>
+                </Button>
+              </CardBody>
+            </Card>
+          </Col>
+        );
+      })}
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}>{notiff !== null && notiff.libelle}</ModalHeader>
+        <ModalBody>{notiff !== null && notiff.description} </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={toggle}>
+            <Translate contentKey="ibamApp.notification.buttonCancel">annuler</Translate>
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };

@@ -9,6 +9,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -75,9 +76,7 @@ public class NotificationResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Notification result = notificationRepository.save(notification);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, notification.getId().toString()))
-            .body(result);
+        return ResponseEntity.ok().headers(HttpHeaders.EMPTY).body(result);
     }
 
     /**

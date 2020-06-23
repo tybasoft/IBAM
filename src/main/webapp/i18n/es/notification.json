@@ -21,7 +21,10 @@
       "date": "Date",
       "source": "Source",
       "visualise": "Visualise",
-      "user": "User"
+      "user": "User",
+      "header": "Notificaciones",
+      "buttonShow": "mostrar",
+      "buttonCancel": "cancelar"
     }
   }
 }

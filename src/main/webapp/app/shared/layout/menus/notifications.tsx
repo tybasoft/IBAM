@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Translate } from 'react-jhipster';
 
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +14,7 @@ export interface INotificationProps {
 
 export const Notifications = (props: INotificationProps) => {
   const [counter, setcounter] = useState(0);
-  const style = { borderRadius: '5px', height: '100%', backgroundColor: '' };
+  const style = { backgroundColor: '' };
   style.backgroundColor = counter !== 0 ? '#dc3545' : '#ffffff2e';
 
   const { getNotifs, notifsList, updateNotif } = props;
@@ -24,24 +25,15 @@ export const Notifications = (props: INotificationProps) => {
 
   return (
     <UncontrolledDropdown nav inNavbar>
-      <DropdownToggle nav className="d-flex align-items-center" style={style}>
-        <FontAwesomeIcon icon={faBell} style={{ fontSize: '18px' }} />
+      <DropdownToggle nav className="d-flex align-items-center notif-dropdown" style={style}>
+        <FontAwesomeIcon icon={faBell} className="notif-icon" />
         {counter !== 0 ? <span>{counter}</span> : null}
       </DropdownToggle>
-      <DropdownMenu
-        style={{
-          width: '500px',
-          left: '-20rem',
-          minHeight: '500px',
-          maxHeight: '500px',
-          overflow: 'auto',
-          padding: '10px'
-        }}
-      >
-        <DropdownItem header style={{ textAlign: 'center' }}>
-          Notifications
+      <DropdownMenu className="notif-menu">
+        <DropdownItem header className="notif-menu-header">
+          <Translate contentKey="ibamApp.notification.header">Notifications</Translate>
         </DropdownItem>
-        <DropdownItem divider />
+        <DropdownItem divider className="notif-menu-divider" />
         <NotificationsList
           notificationsListCount={handleCounterChange}
           getNotifs={getNotifs}
