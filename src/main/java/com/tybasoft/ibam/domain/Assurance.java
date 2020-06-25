@@ -173,4 +173,19 @@ public class Assurance implements Serializable {
                 + "'" + ", agence='" + getAgence() + "'" + ", userModif='" + getUserModif() + "'" + ", dateModif='"
                 + getDateModif() + "'" + "}");
     }
+
+    public Assurance(Long id, @NotNull LocalDate dateDebut, @NotNull LocalDate dateFin, @NotNull String agence,
+            String userModif, LocalDate dateModif, Materiel materiel) {
+        this.id = id;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.agence = agence;
+        this.userModif = userModif;
+        this.dateModif = dateModif;
+        this.materiel = materiel;
+    }
+
+    public Assurance() {
+    }
+
 }

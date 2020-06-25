@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Simple_Blue" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9bfc0803-6278-445b-89b3-b3183bd95345">
-	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageHeader"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageFooter"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="subtitle" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="titre" class="java.lang.String"/>
 	<field name="type" class="java.lang.String"/>
 	<field name="path" class="java.lang.String"/>
 	<field name="commentaire" class="java.lang.String"/>
-	<background>
-		<band/>
-	</background>
-	<title>
+	<pageHeader>
 		<band height="72">
 			<frame>
 				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699" uuid="c2483e1e-f7fe-4603-8e76-ba660482f1d2"/>
-				<staticText>
-					<reportElement x="20" y="20" width="234" height="43" forecolor="#FFFFFF" uuid="e3935883-5ca5-4e0b-8030-0a8e8d4cfede"/>
+				<textField isBlankWhenNull="true">
+					<reportElement x="19" y="26" width="100" height="40" forecolor="#ECF0FF" uuid="960e11ec-0526-4099-a6c9-16cbcdd5f6f0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<textElement>
-						<font size="34" isBold="true"/>
+						<font fontName="SansSerif" size="25" isBold="true"/>
 					</textElement>
-					<text><![CDATA[IBAM]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="20" y="60" width="321" height="20" forecolor="#FFFFFF" uuid="780e2d9b-41ba-4c41-8c5e-73d76a12599c"/>
-					<textElement textAlignment="Left">
-						<font size="14" isBold="false"/>
+					<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="230" y="50" width="350" height="30" forecolor="#ECF0FF" uuid="db7f1139-56e4-479f-8cf8-9beeed28840a"/>
+					<textElement>
+						<font fontName="Calibri Light" size="12"/>
 					</textElement>
-					<text><![CDATA[intelligent best application of management ]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[$P{subtitle}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
-	</title>
-	<pageHeader>
-		<band height="13"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="21">
@@ -143,7 +141,8 @@
 		<band/>
 	</columnFooter>
 	<pageFooter>
-		<band height="78">
+		<band height="17">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
 				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="0d4e1c93-1909-49bf-b128-6e687fdff87d"/>
 				<textElement textAlignment="Right"/>

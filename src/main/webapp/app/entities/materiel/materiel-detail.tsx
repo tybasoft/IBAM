@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf, faFileArchive, faFileCsv, faFileExcel, faFileWord, faFileAlt, faDownload } from '@fortawesome/free-solid-svg-icons';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntity } from './materiel.reducer';
+import { getEntity, RapportConsommation } from './materiel.reducer';
 import { getEntity as getImage, reset as resetImage } from 'app/entities/image/image.reducer';
 import { getEntity as getDocument, reset as resetDocument } from 'app/entities/document/document.reducer';
 import { IMateriel } from 'app/shared/model/materiel.model';
@@ -37,6 +37,10 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
       }
     }
   }, [materielEntity]);
+
+  const getConsommationRepport = () => {
+    const res = props.RapportConsommation(props.match.params.id);
+  };
 
   useEffect(() => {
     if (documentEntity !== null && documentEntity.type !== undefined) {
@@ -181,6 +185,11 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
                 <Translate contentKey="entity.action.edit">Edit</Translate>
               </span>
             </Button>
+            <Button onClick={getConsommationRepport} replace color="success">
+              <span className="d-none d-md-inline">
+                <Translate contentKey="ibamApp.materiel.detail.consommation">Rapport de consommation</Translate>
+              </span>
+            </Button>
           </Col>
           <Col md="6">
             {materielEntity.image !== null ? (
@@ -222,7 +231,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   loadingDocument: storeState.document.loading
 });
 
-const mapDispatchToProps = { getEntity, getImage, resetImage, getDocument, resetDocument };
+const mapDispatchToProps = { RapportConsommation, getEntity, getImage, resetImage, getDocument, resetDocument };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

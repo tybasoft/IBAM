@@ -14,7 +14,8 @@
         "question": "Are you sure you want to delete Materiel {{ id }}?"
       },
       "detail": {
-        "title": "Materiel"
+        "title": "Materiel",
+        "consommation": "Generate Consommation Report"
       },
       "libelle": "Libelle",
       "matricule": "Matricule",

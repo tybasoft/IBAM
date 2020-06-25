@@ -293,4 +293,8 @@ public class Maintenance implements Serializable {
                 + getRemarque() + "'" + ", dureePanne='" + getDureePanne() + "'" + ", userModif='" + getUserModif()
                 + "'" + ", dateModif='" + getDateModif() + "'" + "}";
     }
+
+    public Boolean getProblemeFrequent() {
+        return problemeFrequent;
+    }
 }

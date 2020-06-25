@@ -17,7 +17,6 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={PointageDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={PointageUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/import`} component={() => <Import apiUrl={apiUrl} />} />
-
       <ErrorBoundaryRoute exact path={`${match.url}/export`} component={() => <Export apiUrl={apiUrl} action={ACTION_TYPES.REPPORT} />} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={PointageUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={PointageDetail} />

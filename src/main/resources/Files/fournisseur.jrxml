@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="1200" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="17faac5a-3ec3-4edd-bc64-a6a36acadd4c">
-	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="1200" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="17faac5a-3ec3-4edd-bc64-a6a36acadd4c">
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageHeader"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageFooter"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="subtitle" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="nomCommercial" class="java.lang.String"/>
 	<field name="type" class="java.lang.String"/>
@@ -13,32 +15,28 @@
 	<field name="tel" class="java.lang.String"/>
 	<field name="adresse" class="java.lang.String"/>
 	<field name="description" class="java.lang.String"/>
-	<background>
-		<band/>
-	</background>
-	<title>
+	<pageHeader>
 		<band height="72">
 			<frame>
-				<reportElement mode="Opaque" x="-20" y="-20" width="1200" height="92" backcolor="#006699" uuid="ea7e946a-ae2f-4900-a6b0-b15885c78467"/>
-				<staticText>
-					<reportElement x="20" y="20" width="234" height="43" forecolor="#FFFFFF" uuid="c6f272c0-a415-4b72-b335-5d1bb9ee216c"/>
+				<reportElement mode="Opaque" x="-20" y="-20" width="1200" height="92" backcolor="#006699" uuid="c2483e1e-f7fe-4603-8e76-ba660482f1d2"/>
+				<textField isBlankWhenNull="true">
+					<reportElement x="19" y="26" width="100" height="40" forecolor="#ECF0FF" uuid="960e11ec-0526-4099-a6c9-16cbcdd5f6f0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<textElement>
-						<font size="34" isBold="true"/>
+						<font fontName="SansSerif" size="25" isBold="true"/>
 					</textElement>
-					<text><![CDATA[IBAM]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="395" y="43" width="605" height="20" forecolor="#FFFFFF" uuid="2d01fb41-7b2c-4806-a74b-fb0a449e2086"/>
-					<textElement textAlignment="Center">
-						<font size="14" isBold="false"/>
+					<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="230" y="50" width="350" height="30" forecolor="#ECF0FF" uuid="db7f1139-56e4-479f-8cf8-9beeed28840a"/>
+					<textElement>
+						<font fontName="Calibri Light" size="12"/>
 					</textElement>
-					<text><![CDATA[intelligent best application of management]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[$P{subtitle}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
-	</title>
-	<pageHeader>
-		<band height="13"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="25">

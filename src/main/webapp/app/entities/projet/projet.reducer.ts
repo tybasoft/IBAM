@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_PROJET: 'projet/CREATE_PROJET',
   UPDATE_PROJET: 'projet/UPDATE_PROJET',
   DELETE_PROJET: 'projet/DELETE_PROJET',
-  RESET: 'projet/RESET'
+  RESET: 'projet/RESET',
+  REPPORT: 'projet/REPPORT'
 };
 
 const initialState = {
@@ -81,6 +82,13 @@ export default (state: ProjetState = initialState, action): ProjetState => {
         updateSuccess: true,
         entity: action.payload.data
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case SUCCESS(ACTION_TYPES.DELETE_PROJET):
       return {
         ...state,
@@ -97,7 +105,7 @@ export default (state: ProjetState = initialState, action): ProjetState => {
   }
 };
 
-const apiUrl = 'api/projets';
+export const apiUrl = 'api/projets';
 
 // Actions
 

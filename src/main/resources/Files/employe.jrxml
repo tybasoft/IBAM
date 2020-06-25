@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="1100" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="17faac5a-3ec3-4edd-bc64-a6a36acadd4c">
-	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="pageHeader"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageFooter"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="subtitle" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="nom" class="java.lang.String"/>
 	<field name="prenom" class="java.lang.String"/>
@@ -331,32 +333,28 @@
 			<band/>
 		</groupFooter>
 	</group>
-	<background>
-		<band/>
-	</background>
-	<title>
+	<pageHeader>
 		<band height="72">
 			<frame>
-				<reportElement mode="Opaque" x="-20" y="-20" width="1100" height="92" backcolor="#006699" uuid="8da94295-5904-4259-b356-82f41848e30d"/>
-				<staticText>
-					<reportElement x="20" y="20" width="234" height="43" forecolor="#FFFFFF" uuid="2beab5a9-766c-4812-93b5-73243c0097ed"/>
+				<reportElement mode="Opaque" x="-20" y="-20" width="1100" height="92" backcolor="#006699" uuid="c2483e1e-f7fe-4603-8e76-ba660482f1d2"/>
+				<textField isBlankWhenNull="true">
+					<reportElement x="19" y="26" width="100" height="40" forecolor="#ECF0FF" uuid="960e11ec-0526-4099-a6c9-16cbcdd5f6f0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<textElement>
-						<font size="34" isBold="true"/>
+						<font fontName="SansSerif" size="25" isBold="true"/>
 					</textElement>
-					<text><![CDATA[TITLE]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="395" y="43" width="180" height="20" forecolor="#FFFFFF" uuid="a3810fe8-11d8-40ed-bbdb-8cbcea199a8e"/>
-					<textElement textAlignment="Right">
-						<font size="14" isBold="false"/>
+					<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="470" y="50" width="350" height="30" forecolor="#ECF0FF" uuid="db7f1139-56e4-479f-8cf8-9beeed28840a"/>
+					<textElement>
+						<font fontName="Calibri Light" size="12"/>
 					</textElement>
-					<text><![CDATA[Add a description here]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[$P{subtitle}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
-	</title>
-	<pageHeader>
-		<band height="13"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="21">
@@ -374,9 +372,6 @@
 			</line>
 		</band>
 	</detail>
-	<columnFooter>
-		<band/>
-	</columnFooter>
 	<pageFooter>
 		<band height="17">
 			<textField>

@@ -14,7 +14,8 @@
         "question": "Etes-vous certain de vouloir supprimer le Materiel {{ id }} ?"
       },
       "detail": {
-        "title": "Materiel"
+        "title": "Materiel",
+        "consommation": "Generer Rapport de Consommation"
       },
       "libelle": "Libelle",
       "matricule": "Matricule",

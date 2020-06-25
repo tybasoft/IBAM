@@ -49,7 +49,8 @@ public class MateriauResource {
     private final MateriauRepository materiauRepository;
     private final ImageService imageService;
     private final ImageRepository imageRepository;
-    private final FileStorageService fileStorageService;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     public MateriauResource(MateriauRepository materiauRepository, ImageService imageService,
             ImageRepository imageRepository, FileStorageService fileStorageService) {
