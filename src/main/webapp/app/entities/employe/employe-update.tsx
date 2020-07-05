@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { Translate, translate, Storage, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -27,10 +27,12 @@ import { IEmploye } from 'app/shared/model/employe.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import _debounce from 'lodash.debounce';
+import countries from '../../../content/countries';
 
 export interface IEmployeUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const EmployeUpdate = (props: IEmployeUpdateProps) => {
+  const [localCountries, setlocalCountries] = useState(null);
   const [errorMessage, seterrorMessage] = useState('');
   const [imageID, setimageID] = useState(null);
   const [imageDeleted, setimageDeleted] = useState(false);
@@ -42,19 +44,15 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
   const validate = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
 
-    if (isNew && allowedExtensions.exec(value) == null) {
+    if (value && allowedExtensions.exec(value) == null) {
       cb(false);
       seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (allowedExtensions.exec(value) == null && value !== '') {
+    } else if (value && imageFile.size / Math.pow(1024, 2) > 10) {
       cb(false);
-      seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (imageFile) {
-      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
-        cb(false);
-        seterrorMessage(translate('entity.validation.imageFileSize'));
-      }
+      seterrorMessage(translate('entity.validation.imageFileSize'));
+    } else {
+      cb(true);
     }
-    cb(true);
   }, 300);
 
   useEffect(() => {
@@ -68,6 +66,25 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
   const handleClose = () => {
     props.history.push('/employe' + props.location.search);
   };
+
+  useEffect(() => {
+    const locale = Storage.session.get('locale') === undefined ? 'fr' : Storage.session.get('locale');
+    const locales = countries.filter(country => {
+      return country.lng === locale;
+    });
+    locales.sort((a, b) => {
+      const x = a.name.toLowerCase();
+      const y = b.name.toLowerCase();
+      if (x < y) {
+        return -1;
+      }
+      if (x > y) {
+        return 1;
+      }
+      return 0;
+    });
+    setlocalCountries(locales);
+  }, [Storage.session.get('locale')]);
 
   useEffect(() => {
     if (isNew) {
@@ -122,9 +139,10 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
       };
 
       if (isNew) {
-        image = uploadNewImage(values);
-        entity.image = image;
-
+        if (imageFile) {
+          image = uploadNewImage(values);
+          entity.image = image;
+        }
         props.createEntity(entity);
       } else {
         if (employeEntity.image == null) {
@@ -180,7 +198,7 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
           {loading ? (
             <p>Loading...</p>
           ) : (
-            <AvForm model={isNew ? {} : employeEntity} onSubmit={saveEntity}>
+            <AvForm model={isNew ? { nationalite: 'MA' } : employeEntity} onSubmit={saveEntity}>
               {!isNew ? (
                 <AvGroup>
                   <Label for="employe-id">
@@ -292,7 +310,16 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
                 <Label id="nationaliteLabel" for="employe-nationalite">
                   <Translate contentKey="ibamApp.employe.nationalite">Nationalite</Translate>
                 </Label>
-                <AvField id="employe-nationalite" type="text" name="nationalite" />
+                <AvInput id="employe-nationalite" type="select" className="form-control" name="nationalite">
+                  <option value="" key="0" />
+                  {localCountries
+                    ? localCountries.map(country => (
+                        <option value={country.code} key={country.code}>
+                          {country.name}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
               </AvGroup>
               <AvGroup>
                 <Label id="dateEntreeLabel" for="employe-dateEntree">
@@ -414,7 +441,7 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
                   {equipes
                     ? equipes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -429,7 +456,7 @@ export const EmployeUpdate = (props: IEmployeUpdateProps) => {
                   {fonctions
                     ? fonctions.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}

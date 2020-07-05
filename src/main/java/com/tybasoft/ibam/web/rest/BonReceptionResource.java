@@ -65,11 +65,7 @@ public class BonReceptionResource {
     @PostMapping("/bon-receptions")
     public ResponseEntity<BonReception> createBonReception(@Valid @RequestBody BonReception bonReception) throws URISyntaxException {
         Image image= bonReception.getImage();
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage= imageService.createImageEntity(image);
+        Image resultImage = imageService.saveImage(image, log, ENTITY_NAME);
 
         log.debug("REST request to save BonReception : {}", bonReception);
         if (bonReception.getId() != null) {

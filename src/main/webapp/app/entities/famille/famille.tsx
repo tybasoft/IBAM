@@ -70,12 +70,12 @@ export const Famille = (props: IFamilleProps) => {
                 <th className="hand" onClick={sort('description')}>
                   <Translate contentKey="ibamApp.famille.description">Description</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
+                {/* <th className="hand" onClick={sort('userModif')}>
                   <Translate contentKey="ibamApp.famille.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.famille.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -89,10 +89,10 @@ export const Famille = (props: IFamilleProps) => {
                   </td>
                   <td>{famille.libelle}</td>
                   <td>{famille.description}</td>
-                  <td>{famille.userModif}</td>
+                  {/* <td>{famille.userModif}</td>
                   <td>
                     <TextFormat type="date" value={famille.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
+                  </td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${famille.id}`} color="info" size="sm">

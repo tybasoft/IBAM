@@ -72,37 +72,29 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
   const validateImage = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
 
-    if (isNew && allowedExtensions.exec(value) == null) {
+    if (value && allowedExtensions.exec(value) == null) {
       cb(false);
       seterrorImage(translate('entity.validation.imageFileType'));
-    } else if (allowedExtensions.exec(value) == null && value !== '') {
+    } else if (value && imageFile.size / Math.pow(1024, 2) > 10) {
       cb(false);
-      seterrorImage(translate('entity.validation.imageFileType'));
-    } else if (imageFile) {
-      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
-        cb(false);
-        seterrorImage(translate('entity.validation.imageFileSize'));
-      }
+      seterrorImage(translate('entity.validation.imageFileSize'));
+    } else {
+      cb(true);
     }
-    cb(true);
   }, 300);
 
   const validateDocument = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.pdf|\.txt|\.csv|\.doc|\.docx|\.xls|\.xlsx|\.rar|\.zip)$/i;
 
-    if (isNew && allowedExtensions.exec(value) == null) {
+    if (value && allowedExtensions.exec(value) == null) {
       cb(false);
       seterrorDocument(translate('entity.validation.documentFileType'));
-    } else if (allowedExtensions.exec(value) == null && value !== '') {
+    } else if (value && documentFile.size / Math.pow(1024, 2) > 10) {
       cb(false);
-      seterrorDocument(translate('entity.validation.documentFileType'));
-    } else if (documentFile) {
-      if (Math.round(documentFile.size / Math.pow(1024, 2)) > 10) {
-        cb(false);
-        seterrorDocument(translate('entity.validation.documentFileSize'));
-      }
+      seterrorDocument(translate('entity.validation.documentFileSize'));
+    } else {
+      cb(true);
     }
-    cb(true);
   }, 300);
 
   useEffect(() => {
@@ -247,13 +239,16 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
         ...materielEntity,
         ...values
       };
-
+      window.console.log(entity);
       if (isNew) {
-        image = uploadNewImage(values);
-        document = uploadNewDocument(values);
-        entity.document = document;
-        entity.image = image;
-
+        if (imageFile) {
+          image = uploadNewImage(values);
+          entity.image = image;
+        }
+        if (documentFile) {
+          document = uploadNewDocument(values);
+          entity.document = document;
+        }
         props.createEntity(entity);
       } else {
         if (materielEntity.image !== null && !imageDeleted && materielEntity.document !== null && !documentDeleted) {
@@ -463,7 +458,15 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                 <Label id="etatLabel" for="materiel-etat">
                   <Translate contentKey="ibamApp.materiel.etat">Etat</Translate>
                 </Label>
-                <AvField id="materiel-etat" type="text" name="etat" />
+                <AvInput id="materiel-etat" type="select" className="form-control" name="etat">
+                  <option value="" key="0" />
+                  <option value="ON" key="1">
+                    {translate('ibamApp.materiel.etatFieldON')}
+                  </option>
+                  <option value="OFF" key="2">
+                    {translate('ibamApp.materiel.etatFieldOFF')}
+                  </option>
+                </AvInput>
               </AvGroup>
               <AvGroup check>
                 <Label id="locationLabel">
@@ -477,7 +480,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                 </Label>
                 <AvField id="materiel-description" type="text" name="description" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="materiel-userModif">
                   <Translate contentKey="ibamApp.materiel.userModif">User Modif</Translate>
                 </Label>
@@ -488,7 +491,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   <Translate contentKey="ibamApp.materiel.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="materiel-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="materiel-famille">
                   <Translate contentKey="ibamApp.materiel.famille">Famille</Translate>
@@ -498,7 +501,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {familles
                     ? familles.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -513,7 +516,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {typeMateriels
                     ? typeMateriels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.type}
                         </option>
                       ))
                     : null}
@@ -528,7 +531,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {fournisseurs
                     ? fournisseurs.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.nomCommercial}
                         </option>
                       ))
                     : null}
@@ -543,7 +546,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {marques
                     ? marques.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -558,7 +561,8 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {employes
                     ? employes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.matricule}
+                          {otherEntity.prenom + '   ' + otherEntity.nom + ' (' + otherEntity.matricule + ')'}
                         </option>
                       ))
                     : null}

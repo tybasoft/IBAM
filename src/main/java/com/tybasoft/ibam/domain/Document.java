@@ -205,4 +205,6 @@ public class Document implements Serializable {
             ", dateModif='" + getDateModif() + "'" +
             "}";
     }
+    
+    
 }

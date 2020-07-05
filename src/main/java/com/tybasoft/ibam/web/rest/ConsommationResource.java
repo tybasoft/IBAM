@@ -65,11 +65,7 @@ public class ConsommationResource {
     @PostMapping("/consommations")
     public ResponseEntity<Consommation> createConsommation(@Valid @RequestBody Consommation consommation) throws URISyntaxException {
         Image image= consommation.getImage();
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage= imageService.createImageEntity(image);
+        Image resultImage = imageService.saveImage(image, log, ENTITY_NAME);
 
         log.debug("REST request to save Consommation : {}", consommation);
         if (consommation.getId() != null) {

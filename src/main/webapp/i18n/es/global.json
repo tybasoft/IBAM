@@ -37,6 +37,7 @@
         "maintenance": "Maintenance",
         "centreMaintenance": "Centre Maintenance",
         "visiteTechnique": "Visite Technique",
+        "notification": "Notification",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -116,7 +117,8 @@
     "ribbon": {
       "dev": "Development"
     },
-    "item-count": "Mostrando {{first}} - {{second}} de {{total}} elementos."
+    "item-count": "Mostrando {{first}} - {{second}} de {{total}} elementos.",
+    "themeChooser": "Elige un fondo"
   },
   "entity": {
     "action": {

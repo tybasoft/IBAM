@@ -37,7 +37,13 @@
         "maintenance": "Maintenance",
         "centreMaintenance": "Centre Maintenance",
         "visiteTechnique": "Visite Technique",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "notification": "Notification",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "Materiel": "Matériel",
+        "Materiau": "Matériau",
+        "Avancement": "Avancement",
+        "Personnel": "Personnel",
+        "Parametrage": "Paramétrage"
       },
       "account": {
         "main": "Compte",

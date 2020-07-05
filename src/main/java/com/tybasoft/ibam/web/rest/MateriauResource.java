@@ -65,11 +65,7 @@ public class MateriauResource {
     @PostMapping("/materiaus")
     public ResponseEntity<Materiau> createMateriau(@Valid @RequestBody Materiau materiau) throws URISyntaxException {
         Image image= materiau.getImage();
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage= imageService.createImageEntity(image);
+        Image resultImage = imageService.saveImage(image, log, ENTITY_NAME);
 
         log.debug("REST request to save Materiau : {}", materiau);
         if (materiau.getId() != null) {

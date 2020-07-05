@@ -7,26 +7,24 @@ import com.tybasoft.ibam.repository.ImageRepository;
 import com.tybasoft.ibam.service.FileStorageService;
 import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.Employe}.
@@ -35,7 +33,6 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class EmployeResource {
-
     private final Logger log = LoggerFactory.getLogger(EmployeResource.class);
 
     private static final String ENTITY_NAME = "employe";
@@ -48,7 +45,12 @@ public class EmployeResource {
     private final ImageRepository imageRepository;
     private final FileStorageService fileStorageService;
 
-    public EmployeResource(EmployeRepository employeRepository, ImageService imageService, ImageRepository imageRepository, FileStorageService fileStorageService) {
+    public EmployeResource(
+        EmployeRepository employeRepository,
+        ImageService imageService,
+        ImageRepository imageRepository,
+        FileStorageService fileStorageService
+    ) {
         this.employeRepository = employeRepository;
         this.imageService = imageService;
         this.imageRepository = imageRepository;
@@ -64,12 +66,8 @@ public class EmployeResource {
      */
     @PostMapping("/employes")
     public ResponseEntity<Employe> createEmploye(@Valid @RequestBody Employe employe) throws URISyntaxException {
-        Image image= employe.getImage();
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage= imageService.createImageEntity(image);
+        Image image = employe.getImage();
+        Image resultImage = imageService.saveImage(image, log, ENTITY_NAME);
 
         log.debug("REST request to save Employe : {}", employe);
         if (employe.getId() != null) {
@@ -77,7 +75,8 @@ public class EmployeResource {
         }
         employe.setImage(resultImage);
         Employe result = employeRepository.save(employe);
-        return ResponseEntity.created(new URI("/api/employes/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/employes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -93,9 +92,9 @@ public class EmployeResource {
      */
     @PutMapping("/employes")
     public ResponseEntity<Employe> updateEmploye(@Valid @RequestBody Employe employe) throws URISyntaxException {
-        Image image= employe.getImage();
-        Image resultImage= null;
-        if(image != null) {
+        Image image = employe.getImage();
+        Image resultImage = null;
+        if (image != null) {
             log.debug("REST request to save Image : {}", image);
             resultImage = imageService.createImageEntity(image);
         }
@@ -106,7 +105,8 @@ public class EmployeResource {
         }
         employe.setImage(resultImage);
         Employe result = employeRepository.save(employe);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, employe.getId().toString()))
             .body(result);
     }
@@ -146,15 +146,16 @@ public class EmployeResource {
      */
     @DeleteMapping("/employes/{id}")
     public ResponseEntity<Void> deleteEmploye(@PathVariable Long id) {
-        Employe employe= employeRepository.findById(id).get();
-        Image image= employe.getImage();
+        Employe employe = employeRepository.findById(id).get();
+        Image image = employe.getImage();
 
         imageService.deleteImageEntityFile(image, log, imageRepository, fileStorageService);
 
         log.debug("REST request to delete Employe : {}", id);
         employeRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
-
-
 }

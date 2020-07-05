@@ -61,7 +61,7 @@ export const CentreMaintenanceDetail = (props: ICentreMaintenanceDetailProps) =>
             </span>
           </dt>
           <dd>{centreMaintenanceEntity.email}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.centreMaintenance.userModif">User Modif</Translate>
             </span>
@@ -74,7 +74,7 @@ export const CentreMaintenanceDetail = (props: ICentreMaintenanceDetailProps) =>
           </dt>
           <dd>
             <TextFormat value={centreMaintenanceEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
         </dl>
         <Button tag={Link} to="/centre-maintenance" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
