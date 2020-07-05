@@ -45,7 +45,7 @@ export const TransfertMaterielDetail = (props: ITransfertMaterielDetailProps) =>
             </span>
           </dt>
           <dd>{transfertMaterielEntity.commentaire}</dd>
-          {/* <dt>
+          <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.transfertMateriel.userModif">User Modif</Translate>
             </span>
@@ -58,11 +58,11 @@ export const TransfertMaterielDetail = (props: ITransfertMaterielDetailProps) =>
           </dt>
           <dd>
             <TextFormat value={transfertMaterielEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd> */}
+          </dd>
           <dt>
             <Translate contentKey="ibamApp.transfertMateriel.materiel">Materiel</Translate>
           </dt>
-          <dd>{transfertMaterielEntity.materiel ? transfertMaterielEntity.materiel.id: ''}</dd>
+          <dd>{transfertMaterielEntity.materiel ? transfertMaterielEntity.materiel.id : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.transfertMateriel.projet">Projet</Translate>
           </dt>

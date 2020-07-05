@@ -88,7 +88,7 @@ export const TypeMaterielUpdate = (props: ITypeMaterielUpdateProps) => {
                   }}
                 />
               </AvGroup>
-              {/* <AvGroup>
+              <AvGroup>
                 <Label id="userModifLabel" for="type-materiel-userModif">
                   <Translate contentKey="ibamApp.typeMateriel.userModif">User Modif</Translate>
                 </Label>
@@ -99,7 +99,7 @@ export const TypeMaterielUpdate = (props: ITypeMaterielUpdateProps) => {
                   <Translate contentKey="ibamApp.typeMateriel.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="type-materiel-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup> */}
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/type-materiel" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_TRANSFERTMATERIEL: 'transfertMateriel/CREATE_TRANSFERTMATERIEL',
   UPDATE_TRANSFERTMATERIEL: 'transfertMateriel/UPDATE_TRANSFERTMATERIEL',
   DELETE_TRANSFERTMATERIEL: 'transfertMateriel/DELETE_TRANSFERTMATERIEL',
-  RESET: 'transfertMateriel/RESET'
+  RESET: 'transfertMateriel/RESET',
+  REPPORT: 'transferMateriel/REPPORT'
 };
 
 const initialState = {
@@ -47,6 +48,11 @@ export default (state: TransfertMaterielState = initialState, action): Transfert
         errorMessage: null,
         updateSuccess: false,
         updating: true
+      };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
       };
     case FAILURE(ACTION_TYPES.FETCH_TRANSFERTMATERIEL_LIST):
     case FAILURE(ACTION_TYPES.FETCH_TRANSFERTMATERIEL):
@@ -92,12 +98,14 @@ export default (state: TransfertMaterielState = initialState, action): Transfert
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/transfert-materiels';
+export const apiUrl = 'api/transfert-materiels';
 
 // Actions
 

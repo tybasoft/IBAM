@@ -12,7 +12,9 @@ export const ACTION_TYPES = {
   CREATE_PROJET: 'projet/CREATE_PROJET',
   UPDATE_PROJET: 'projet/UPDATE_PROJET',
   DELETE_PROJET: 'projet/DELETE_PROJET',
-  RESET: 'projet/RESET'
+  RESET: 'projet/RESET',
+  CONSOMMATION: 'projet/CONSOMMATION',
+  REPPORT: 'projet/REPPORT'
 };
 
 const initialState = {
@@ -48,6 +50,8 @@ export default (state: ProjetState = initialState, action): ProjetState => {
         updateSuccess: false,
         updating: true
       };
+    case REQUEST(ACTION_TYPES.CONSOMMATION):
+      return { ...state };
     case FAILURE(ACTION_TYPES.FETCH_PROJET_LIST):
     case FAILURE(ACTION_TYPES.FETCH_PROJET):
     case FAILURE(ACTION_TYPES.CREATE_PROJET):
@@ -81,6 +85,13 @@ export default (state: ProjetState = initialState, action): ProjetState => {
         updateSuccess: true,
         entity: action.payload.data
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case SUCCESS(ACTION_TYPES.DELETE_PROJET):
       return {
         ...state,
@@ -97,7 +108,7 @@ export default (state: ProjetState = initialState, action): ProjetState => {
   }
 };
 
-const apiUrl = 'api/projets';
+export const apiUrl = 'api/projets';
 
 // Actions
 
@@ -146,3 +157,11 @@ export const deleteEntity: ICrudDeleteAction<IProjet> = id => async dispatch => 
 export const reset = () => ({
   type: ACTION_TYPES.RESET
 });
+export const RapportConsommation = (Id: string) => async dispatch => {
+  const res = await axios.get(`${apiUrl}/consommation/${Id}`);
+  const result = dispatch({
+    type: ACTION_TYPES.CONSOMMATION,
+    payload: res
+  });
+  return result;
+};

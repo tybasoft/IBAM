@@ -1,15 +1,15 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import com.tybasoft.ibam.security.SecurityUtils;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Pointage.
@@ -18,7 +18,6 @@ import java.time.LocalDate;
 @Table(name = "pointage")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Pointage implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -54,7 +53,8 @@ public class Pointage implements Serializable {
     @JsonIgnoreProperties("pointages")
     private Employe employe;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -166,7 +166,22 @@ public class Pointage implements Serializable {
     public void setEmploye(Employe employe) {
         this.employe = employe;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -186,15 +201,17 @@ public class Pointage implements Serializable {
 
     @Override
     public String toString() {
-        return "Pointage{" +
-            "id=" + getId() +
-            ", dateJour='" + getDateJour() + "'" +
-            ", presenceMatin='" + isPresenceMatin() + "'" +
-            ", presenceAPM='" + isPresenceAPM() + "'" +
-            ", nbrHeureSup='" + getNbrHeureSup() + "'" +
-            ", remarques='" + getRemarques() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return ("Pointage{" + "id=" + getId() + ", dateJour='" + getDateJour() + "'" + ", presenceMatin='"
+                + isPresenceMatin() + "'" + ", presenceAPM='" + isPresenceAPM() + "'" + ", nbrHeureSup='"
+                + getNbrHeureSup() + "'" + ", remarques='" + getRemarques() + "'" + ", userModif='" + getUserModif()
+                + "'" + ", dateModif='" + getDateModif() + "'" + "}");
+    }
+
+    public Boolean getPresenceMatin() {
+        return presenceMatin;
+    }
+
+    public Boolean getPresenceAPM() {
+        return presenceAPM;
     }
 }

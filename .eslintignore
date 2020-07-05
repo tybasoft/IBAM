@@ -7,4 +7,3 @@ target/
 build/
 node/
 postcss.config.js
-src/main/webapp/content/react-bootstrap-theme-switcher

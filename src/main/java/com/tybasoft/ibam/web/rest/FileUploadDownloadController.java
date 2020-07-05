@@ -59,7 +59,7 @@ public class FileUploadDownloadController {
 
     private static final Logger logger= LoggerFactory.getLogger(FileUploadDownloadController.class);
 
-    private FileStorageService fileStorageService;
+    private final FileStorageService fileStorageService;
 
     public FileUploadDownloadController(FileStorageService fileStorageService) {
         this.fileStorageService = fileStorageService;

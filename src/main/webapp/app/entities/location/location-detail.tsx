@@ -71,7 +71,7 @@ export const LocationDetail = (props: ILocationDetailProps) => {
             </span>
           </dt>
           <dd>{locationEntity.remarque}</dd>
-          {/* <dt>
+          <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.location.userModif">User Modif</Translate>
             </span>
@@ -84,7 +84,7 @@ export const LocationDetail = (props: ILocationDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={locationEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd> */}
+          </dd>
           <dt>
             <Translate contentKey="ibamApp.location.materiel">Materiel</Translate>
           </dt>

@@ -3,8 +3,10 @@
     "tva": {
       "home": {
         "title": "Tvas",
-        "createLabel": "Create a new Tva",
-        "createOrEditLabel": "Create or edit a Tva",
+        "createLabel": "انشاء جديد",
+        "createOrEditLabel": "انشاء او تعديل",
+        "importLabel": "اضافة ملف",
+        "exportLabel": "استخراج ملف",
         "notFound": "No Tvas found"
       },
       "created": "A new Tva is created with identifier {{ param }}",

@@ -113,7 +113,7 @@ export const VisiteTechniqueUpdate = (props: IVisiteTechniqueUpdateProps) => {
                 </Label>
                 <AvField id="visite-technique-remarque" type="text" name="remarque" />
               </AvGroup>
-              {/* <AvGroup>
+              <AvGroup>
                 <Label id="userModifLabel" for="visite-technique-userModif">
                   <Translate contentKey="ibamApp.visiteTechnique.userModif">User Modif</Translate>
                 </Label>
@@ -124,7 +124,7 @@ export const VisiteTechniqueUpdate = (props: IVisiteTechniqueUpdateProps) => {
                   <Translate contentKey="ibamApp.visiteTechnique.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="visite-technique-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup> */}
+              </AvGroup>
               <AvGroup>
                 <Label for="visite-technique-materiel">
                   <Translate contentKey="ibamApp.visiteTechnique.materiel">Materiel</Translate>
@@ -134,7 +134,7 @@ export const VisiteTechniqueUpdate = (props: IVisiteTechniqueUpdateProps) => {
                   {materiels
                     ? materiels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                           {otherEntity.libelle +" (" + otherEntity.matricule+ ")"}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}

@@ -94,7 +94,7 @@ export const FamilleUpdate = (props: IFamilleUpdateProps) => {
                 </Label>
                 <AvField id="famille-description" type="text" name="description" />
               </AvGroup>
-              {/* <AvGroup>
+              <AvGroup>
                 <Label id="userModifLabel" for="famille-userModif">
                   <Translate contentKey="ibamApp.famille.userModif">User Modif</Translate>
                 </Label>
@@ -105,7 +105,7 @@ export const FamilleUpdate = (props: IFamilleUpdateProps) => {
                   <Translate contentKey="ibamApp.famille.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="famille-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup> */}
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/famille" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

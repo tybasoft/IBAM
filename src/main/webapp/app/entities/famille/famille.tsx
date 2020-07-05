@@ -55,6 +55,16 @@ export const Famille = (props: IFamilleProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.famille.home.createLabel">Create new Famille</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {familleList && familleList.length > 0 ? (
@@ -70,12 +80,12 @@ export const Famille = (props: IFamilleProps) => {
                 <th className="hand" onClick={sort('description')}>
                   <Translate contentKey="ibamApp.famille.description">Description</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                {/* <th className="hand" onClick={sort('userModif')}>
+                <th className="hand" onClick={sort('userModif')}>
                   <Translate contentKey="ibamApp.famille.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.famille.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th> */}
+                </th>
                 <th />
               </tr>
             </thead>
@@ -89,10 +99,10 @@ export const Famille = (props: IFamilleProps) => {
                   </td>
                   <td>{famille.libelle}</td>
                   <td>{famille.description}</td>
-                  {/* <td>{famille.userModif}</td>
+                  <td>{famille.userModif}</td>
                   <td>
                     <TextFormat type="date" value={famille.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td> */}
+                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${famille.id}`} color="info" size="sm">

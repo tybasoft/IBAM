@@ -2,7 +2,9 @@ package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.ImageRepository;
+import com.tybasoft.ibam.service.FileStorageService;
 import com.tybasoft.ibam.service.ImageService;
+import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -10,6 +12,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -52,7 +56,9 @@ public class ImageResource {
      * {@code POST  /images} : Create a new image.
      *
      * @param image the image to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new image, or with status {@code 400 (Bad Request)} if the image has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new image, or with status {@code 400 (Bad Request)} if the
+     *         image has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/images")
@@ -62,18 +68,20 @@ public class ImageResource {
             throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Image result = imageService.createImageEntity(image);
-        return ResponseEntity.created(new URI("/api/images/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        return ResponseEntity
+                .created(new URI("/api/images/" + result.getId())).headers(HeaderUtil
+                        .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                .body(result);
     }
 
     /**
      * {@code PUT  /images} : Updates an existing image.
      *
      * @param image the image to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated image,
-     * or with status {@code 400 (Bad Request)} if the image is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the image couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated image, or with status {@code 400 (Bad Request)} if the
+     *         image is not valid, or with status
+     *         {@code 500 (Internal Server Error)} if the image couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/images")
@@ -83,22 +91,24 @@ public class ImageResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Image result = imageService.createImageEntity(image);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, image.getId().toString()))
-            .body(result);
+        return ResponseEntity.ok().headers(
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, image.getId().toString()))
+                .body(result);
     }
 
     /**
      * {@code GET  /images} : get all the images.
      *
      * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of images in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of images in body.
      */
     @GetMapping("/images")
     public ResponseEntity<List<Image>> getAllImages(Pageable pageable) {
         log.debug("REST request to get a page of Images");
         Page<Image> page = imageRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil
+                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -106,7 +116,8 @@ public class ImageResource {
      * {@code GET  /images/:id} : get the "id" image.
      *
      * @param id the id of the image to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the image, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the image, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/images/{id}")
     public ResponseEntity<Image> getImage(@PathVariable Long id) {
@@ -122,8 +133,39 @@ public class ImageResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/images/{id}")
-    public void deleteImage(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
         log.debug("REST request to delete Image : {}", id);
         imageRepository.deleteById(id);
+        return ResponseEntity.noContent()
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+                .build();
+    }
+
+    @Autowired
+    private ReportService reportService;
+
+    @GetMapping("/images/report/{format}")
+    public boolean generateReport(@PathVariable String format) {
+        reportService.setName(ENTITY_NAME);
+        reportService.setDataSource((List) imageRepository.findAll());
+        return reportService.exportReport(format);
+    }
+
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    @PostMapping("/images/upload")
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
+            @RequestParam("filename") String filename) {
+        try {
+            fileStorageService.storeFile(file, filename, "Upload");
+
+            reportService.importReport(filename, this.ENTITY_NAME);
+
+        } catch (Exception e) {
+
+        }
+        return ResponseEntity.ok().body(true);
+
     }
 }

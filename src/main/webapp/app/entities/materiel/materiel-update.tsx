@@ -7,7 +7,8 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf, faFileArchive, faFileCsv, faFileExcel, faFileWord, faFileAlt, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { IRootState } from 'app/shared/reducers';
-
+import { IProjet } from 'app/shared/model/projet.model';
+import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
 import { IFamille } from 'app/shared/model/famille.model';
 import { getEntities as getFamilles } from 'app/entities/famille/famille.reducer';
 import { ITypeMateriel } from 'app/shared/model/type-materiel.model';
@@ -55,7 +56,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
   const [imageFile, setimageFile] = useState(null);
   const [documentFile, setdocumentFile] = useState(null);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
-
+  const [projetId, setProjetId] = useState('0');
   const {
     materielEntity,
     familles,
@@ -65,6 +66,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
     employes,
     loading,
     updating,
+    projets,
     imageEntity,
     documentEntity
   } = props;
@@ -72,29 +74,37 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
   const validateImage = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
 
-    if (value && allowedExtensions.exec(value) == null) {
+    if (isNew && allowedExtensions.exec(value) == null) {
       cb(false);
       seterrorImage(translate('entity.validation.imageFileType'));
-    } else if (value && imageFile.size / Math.pow(1024, 2) > 10) {
+    } else if (allowedExtensions.exec(value) == null && value !== '') {
       cb(false);
-      seterrorImage(translate('entity.validation.imageFileSize'));
-    } else {
-      cb(true);
+      seterrorImage(translate('entity.validation.imageFileType'));
+    } else if (imageFile) {
+      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
+        cb(false);
+        seterrorImage(translate('entity.validation.imageFileSize'));
+      }
     }
+    cb(true);
   }, 300);
 
   const validateDocument = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.pdf|\.txt|\.csv|\.doc|\.docx|\.xls|\.xlsx|\.rar|\.zip)$/i;
 
-    if (value && allowedExtensions.exec(value) == null) {
+    if (isNew && allowedExtensions.exec(value) == null) {
       cb(false);
       seterrorDocument(translate('entity.validation.documentFileType'));
-    } else if (value && documentFile.size / Math.pow(1024, 2) > 10) {
+    } else if (allowedExtensions.exec(value) == null && value !== '') {
       cb(false);
-      seterrorDocument(translate('entity.validation.documentFileSize'));
-    } else {
-      cb(true);
+      seterrorDocument(translate('entity.validation.documentFileType'));
+    } else if (documentFile) {
+      if (Math.round(documentFile.size / Math.pow(1024, 2)) > 10) {
+        cb(false);
+        seterrorDocument(translate('entity.validation.documentFileSize'));
+      }
     }
+    cb(true);
   }, 300);
 
   useEffect(() => {
@@ -158,6 +168,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
     props.getTypeMateriels();
     props.getFournisseurs();
     props.getMarques();
+    props.getProjets();
     props.getEmployes();
   }, []);
 
@@ -239,16 +250,13 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
         ...materielEntity,
         ...values
       };
-      window.console.log(entity);
+
       if (isNew) {
-        if (imageFile) {
-          image = uploadNewImage(values);
-          entity.image = image;
-        }
-        if (documentFile) {
-          document = uploadNewDocument(values);
-          entity.document = document;
-        }
+        image = uploadNewImage(values);
+        document = uploadNewDocument(values);
+        entity.document = document;
+        entity.image = image;
+
         props.createEntity(entity);
       } else {
         if (materielEntity.image !== null && !imageDeleted && materielEntity.document !== null && !documentDeleted) {
@@ -458,15 +466,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                 <Label id="etatLabel" for="materiel-etat">
                   <Translate contentKey="ibamApp.materiel.etat">Etat</Translate>
                 </Label>
-                <AvInput id="materiel-etat" type="select" className="form-control" name="etat">
-                  <option value="" key="0" />
-                  <option value="ON" key="1">
-                    {translate('ibamApp.materiel.etatFieldON')}
-                  </option>
-                  <option value="OFF" key="2">
-                    {translate('ibamApp.materiel.etatFieldOFF')}
-                  </option>
-                </AvInput>
+                <AvField id="materiel-etat" type="text" name="etat" />
               </AvGroup>
               <AvGroup check>
                 <Label id="locationLabel">
@@ -480,7 +480,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                 </Label>
                 <AvField id="materiel-description" type="text" name="description" />
               </AvGroup>
-              {/* <AvGroup>
+              <AvGroup>
                 <Label id="userModifLabel" for="materiel-userModif">
                   <Translate contentKey="ibamApp.materiel.userModif">User Modif</Translate>
                 </Label>
@@ -491,7 +491,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   <Translate contentKey="ibamApp.materiel.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="materiel-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup> */}
+              </AvGroup>
               <AvGroup>
                 <Label for="materiel-famille">
                   <Translate contentKey="ibamApp.materiel.famille">Famille</Translate>
@@ -501,7 +501,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {familles
                     ? familles.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}
@@ -516,7 +516,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {typeMateriels
                     ? typeMateriels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.type}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}
@@ -531,7 +531,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {fournisseurs
                     ? fournisseurs.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.nomCommercial}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}
@@ -546,7 +546,22 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {marques
                     ? marques.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle}
+                          {otherEntity.id}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
+              </AvGroup>
+              <AvGroup>
+                <Label for="materiel-projet">
+                  <Translate contentKey="ibamApp.materiel.projet">Projet</Translate>
+                </Label>
+                <AvInput id="materiel-projet" type="select" className="form-control" name="projet.id">
+                  <option value="" key="0" />
+                  {projets
+                    ? projets.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}
@@ -561,8 +576,7 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                   {employes
                     ? employes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.matricule}
-                          {otherEntity.prenom + '   ' + otherEntity.nom + ' (' + otherEntity.matricule + ')'}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}
@@ -688,6 +702,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   fournisseurs: storeState.fournisseur.entities,
   marques: storeState.marque.entities,
   employes: storeState.employe.entities,
+  projets: storeState.projet.entities,
   materielEntity: storeState.materiel.entity,
   loading: storeState.materiel.loading,
   updating: storeState.materiel.updating,
@@ -705,6 +720,7 @@ const mapDispatchToProps = {
   getMarques,
   getEmployes,
   getEntity,
+  getProjets,
   updateEntity,
   createEntity,
   reset,

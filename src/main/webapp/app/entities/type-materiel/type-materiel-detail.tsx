@@ -31,7 +31,7 @@ export const TypeMaterielDetail = (props: ITypeMaterielDetailProps) => {
             </span>
           </dt>
           <dd>{typeMaterielEntity.type}</dd>
-          {/* <dt>
+          <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.typeMateriel.userModif">User Modif</Translate>
             </span>
@@ -44,7 +44,7 @@ export const TypeMaterielDetail = (props: ITypeMaterielDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={typeMaterielEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd> */}
+          </dd>
         </dl>
         <Button tag={Link} to="/type-materiel" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

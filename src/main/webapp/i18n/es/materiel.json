@@ -14,7 +14,8 @@
         "question": "¿Seguro que quiere eliminar Materiel {{ id }}?"
       },
       "detail": {
-        "title": "Materiel"
+        "title": "Materiel",
+        "consommation": "generar informe de consumo"
       },
       "libelle": "Libelle",
       "matricule": "Matricule",
@@ -40,8 +41,7 @@
       "document": "Document",
       "employe": "Employe",
       "image": "Image",
-      "etatFieldON": "Operacional",
-      "etatFieldOFF": "dañado"
+      "projet": "projet"
     }
   }
 }

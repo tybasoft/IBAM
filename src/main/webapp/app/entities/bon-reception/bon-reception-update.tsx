@@ -40,15 +40,19 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
   const validate = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
 
-    if (value && allowedExtensions.exec(value) == null) {
+    if (isNew && allowedExtensions.exec(value) == null) {
       cb(false);
       seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (value && imageFile.size / Math.pow(1024, 2) > 10) {
+    } else if (allowedExtensions.exec(value) == null && value !== '') {
       cb(false);
-      seterrorMessage(translate('entity.validation.imageFileSize'));
-    } else {
-      cb(true);
+      seterrorMessage(translate('entity.validation.imageFileType'));
+    } else if (imageFile) {
+      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
+        cb(false);
+        seterrorMessage(translate('entity.validation.imageFileSize'));
+      }
     }
+    cb(true);
   }, 300);
 
   useEffect(() => {
@@ -115,10 +119,9 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
       };
 
       if (isNew) {
-        if (imageFile) {
-          image = uploadNewImage(values);
-          entity.image = image;
-        }
+        image = uploadNewImage(values);
+        entity.image = image;
+
         props.createEntity(entity);
       } else {
         if (bonReceptionEntity.image == null) {
@@ -230,7 +233,7 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                   {depots
                     ? depots.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}
@@ -245,7 +248,7 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                   {fournisseurs
                     ? fournisseurs.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.nomCommercial}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}

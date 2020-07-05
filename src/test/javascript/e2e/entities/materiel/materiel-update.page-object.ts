@@ -22,6 +22,7 @@ export default class MaterielUpdatePage {
   documentSelect: ElementFinder = element(by.css('select#materiel-document'));
   employeSelect: ElementFinder = element(by.css('select#materiel-employe'));
   imageSelect: ElementFinder = element(by.css('select#materiel-image'));
+  projetSelect: ElementFinder = element(by.css('select#materiel-projet'));
 
   getPageTitle() {
     return this.pageTitle;
@@ -111,10 +112,7 @@ export default class MaterielUpdatePage {
   }
 
   async familleSelectLastOption() {
-    await this.familleSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.familleSelect.all(by.tagName('option')).last().click();
   }
 
   async familleSelectOption(option) {
@@ -130,10 +128,7 @@ export default class MaterielUpdatePage {
   }
 
   async typeMaterielSelectLastOption() {
-    await this.typeMaterielSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.typeMaterielSelect.all(by.tagName('option')).last().click();
   }
 
   async typeMaterielSelectOption(option) {
@@ -149,10 +144,7 @@ export default class MaterielUpdatePage {
   }
 
   async fournisseurSelectLastOption() {
-    await this.fournisseurSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.fournisseurSelect.all(by.tagName('option')).last().click();
   }
 
   async fournisseurSelectOption(option) {
@@ -168,10 +160,7 @@ export default class MaterielUpdatePage {
   }
 
   async marqueSelectLastOption() {
-    await this.marqueSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.marqueSelect.all(by.tagName('option')).last().click();
   }
 
   async marqueSelectOption(option) {
@@ -187,10 +176,7 @@ export default class MaterielUpdatePage {
   }
 
   async documentSelectLastOption() {
-    await this.documentSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.documentSelect.all(by.tagName('option')).last().click();
   }
 
   async documentSelectOption(option) {
@@ -206,10 +192,7 @@ export default class MaterielUpdatePage {
   }
 
   async employeSelectLastOption() {
-    await this.employeSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.employeSelect.all(by.tagName('option')).last().click();
   }
 
   async employeSelectOption(option) {
@@ -225,10 +208,7 @@ export default class MaterielUpdatePage {
   }
 
   async imageSelectLastOption() {
-    await this.imageSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.imageSelect.all(by.tagName('option')).last().click();
   }
 
   async imageSelectOption(option) {
@@ -241,6 +221,22 @@ export default class MaterielUpdatePage {
 
   async getImageSelectedOption() {
     return this.imageSelect.element(by.css('option:checked')).getText();
+  }
+
+  async projetSelectLastOption() {
+    await this.projetSelect.all(by.tagName('option')).last().click();
+  }
+
+  async projetSelectOption(option) {
+    await this.projetSelect.sendKeys(option);
+  }
+
+  getProjetSelect() {
+    return this.projetSelect;
+  }
+
+  async getProjetSelectedOption() {
+    return this.projetSelect.element(by.css('option:checked')).getText();
   }
 
   async save() {

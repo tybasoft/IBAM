@@ -144,7 +144,7 @@ export const LocationUpdate = (props: ILocationUpdateProps) => {
                 </Label>
                 <AvField id="location-remarque" type="text" name="remarque" />
               </AvGroup>
-              {/* <AvGroup>
+              <AvGroup>
                 <Label id="userModifLabel" for="location-userModif">
                   <Translate contentKey="ibamApp.location.userModif">User Modif</Translate>
                 </Label>
@@ -155,7 +155,7 @@ export const LocationUpdate = (props: ILocationUpdateProps) => {
                   <Translate contentKey="ibamApp.location.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="location-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup> */}
+              </AvGroup>
               <AvGroup>
                 <Label for="location-materiel">
                   <Translate contentKey="ibamApp.location.materiel">Materiel</Translate>
@@ -165,7 +165,7 @@ export const LocationUpdate = (props: ILocationUpdateProps) => {
                   {materiels
                     ? materiels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle +" (" + otherEntity.matricule+ ")"}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}

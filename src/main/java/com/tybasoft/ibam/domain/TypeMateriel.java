@@ -3,14 +3,13 @@ package com.tybasoft.ibam.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.tybasoft.ibam.security.SecurityUtils;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import com.tybasoft.ibam.security.SecurityUtils;
+
 import java.io.Serializable;
 import java.util.Objects;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,13 +37,14 @@ public class TypeMateriel implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private Instant dateModif;
+    private LocalDate dateModif;
 
     @OneToMany(mappedBy = "typeMateriel")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Materiel> materiels = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -79,16 +79,16 @@ public class TypeMateriel implements Serializable {
         this.userModif = userModif;
     }
 
-    public Instant getDateModif() {
+    public LocalDate getDateModif() {
         return dateModif;
     }
 
-    public TypeMateriel dateModif(Instant dateModif) {
+    public TypeMateriel dateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(Instant dateModif) {
+    public void setDateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -116,7 +116,22 @@ public class TypeMateriel implements Serializable {
     public void setMateriels(Set<Materiel> materiels) {
         this.materiels = materiels;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -136,22 +151,7 @@ public class TypeMateriel implements Serializable {
 
     @Override
     public String toString() {
-        return "TypeMateriel{" +
-            "id=" + getId() +
-            ", type='" + getType() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
-    }
-    
-    @PrePersist
-    public void onCreate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
-    }
-    @PreUpdate
-    public void onUpdate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
+        return "TypeMateriel{" + "id=" + getId() + ", type='" + getType() + "'" + ", userModif='" + getUserModif() + "'"
+                + ", dateModif='" + getDateModif() + "'" + "}";
     }
 }

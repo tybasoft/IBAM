@@ -183,9 +183,8 @@ export const ProjetUpdate = (props: IProjetUpdateProps) => {
                   {entreprises
                     ? entreprises.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.nomCommercial}
+                          {otherEntity.id}
                         </option>
-
                       ))
                     : null}
                 </AvInput>
@@ -199,7 +198,7 @@ export const ProjetUpdate = (props: IProjetUpdateProps) => {
                   {horaires
                     ? horaires.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}
@@ -214,7 +213,7 @@ export const ProjetUpdate = (props: IProjetUpdateProps) => {
                   {depots
                     ? depots.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}

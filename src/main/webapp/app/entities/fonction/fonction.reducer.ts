@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_FONCTION: 'fonction/CREATE_FONCTION',
   UPDATE_FONCTION: 'fonction/UPDATE_FONCTION',
   DELETE_FONCTION: 'fonction/DELETE_FONCTION',
-  RESET: 'fonction/RESET'
+  RESET: 'fonction/RESET',
+  REPPORT: 'fonction/REPPORT'
 };
 
 const initialState = {
@@ -88,16 +89,23 @@ export default (state: FonctionState = initialState, action): FonctionState => {
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/fonctions';
+export const apiUrl = 'api/fonctions';
 
 // Actions
 

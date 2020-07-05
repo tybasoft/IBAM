@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_LIGNEBONCOMMANDE: 'ligneBonCommande/CREATE_LIGNEBONCOMMANDE',
   UPDATE_LIGNEBONCOMMANDE: 'ligneBonCommande/UPDATE_LIGNEBONCOMMANDE',
   DELETE_LIGNEBONCOMMANDE: 'ligneBonCommande/DELETE_LIGNEBONCOMMANDE',
-  RESET: 'ligneBonCommande/RESET'
+  RESET: 'ligneBonCommande/RESET',
+  REPPORT: 'ligneBonCommande/REPPORT'
 };
 
 const initialState = {
@@ -60,6 +61,11 @@ export default (state: LigneBonCommandeState = initialState, action): LigneBonCo
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case SUCCESS(ACTION_TYPES.FETCH_LIGNEBONCOMMANDE_LIST):
       return {
         ...state,
@@ -92,12 +98,14 @@ export default (state: LigneBonCommandeState = initialState, action): LigneBonCo
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/ligne-bon-commandes';
+export const apiUrl = 'api/ligne-bon-commandes';
 
 // Actions
 

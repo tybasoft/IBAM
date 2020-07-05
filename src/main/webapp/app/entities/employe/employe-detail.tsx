@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, Storage, TextFormat } from 'react-jhipster';
+import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -10,14 +10,11 @@ import { getEntity } from './employe.reducer';
 import { getEntity as getImage, reset as resetImage } from 'app/entities/image/image.reducer';
 import { IEmploye } from 'app/shared/model/employe.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import countries from '../../../content/countries';
-import { locales } from 'app/config/translation';
 
 export interface IEmployeDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const EmployeDetail = (props: IEmployeDetailProps) => {
   const { employeEntity, imageEntity } = props;
-  const [localeCountry, setlocaleCountry] = useState(null);
 
   useEffect(() => {
     props.resetImage();
@@ -31,15 +28,6 @@ export const EmployeDetail = (props: IEmployeDetailProps) => {
       }
     }
   }, [employeEntity]);
-
-  useEffect(() => {
-    const lng = Storage.session.get('locale') === undefined ? 'fr' : Storage.session.get('locale');
-    const locale = countries.filter(country => {
-      return country.lng === lng && country.code === employeEntity.nationalite;
-    });
-    setlocaleCountry(locale);
-    window.console.log(locale);
-  }, [Storage.session.get('locale'), employeEntity]);
 
   return (
     <Row>
@@ -109,7 +97,7 @@ export const EmployeDetail = (props: IEmployeDetailProps) => {
               <Translate contentKey="ibamApp.employe.nationalite">Nationalite</Translate>
             </span>
           </dt>
-          <dd>{localeCountry !== null && localeCountry[0] !== undefined && localeCountry[0].name}</dd>
+          <dd>{employeEntity.nationalite}</dd>
           <dt>
             <span id="dateEntree">
               <Translate contentKey="ibamApp.employe.dateEntree">Date Entree</Translate>
@@ -187,7 +175,7 @@ export const EmployeDetail = (props: IEmployeDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.employe.projet">Projet</Translate>
           </dt>
-          <dd>{employeEntity.projet ? employeEntity.projet.id : ''}</dd>
+          <dd>{employeEntity.projet ? employeEntity.projet.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.employe.equipe">Equipe</Translate>
           </dt>

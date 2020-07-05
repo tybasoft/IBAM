@@ -37,7 +37,6 @@
         "maintenance": "Maintenance",
         "centreMaintenance": "Centre Maintenance",
         "visiteTechnique": "Visite Technique",
-        "notification": "Notification",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

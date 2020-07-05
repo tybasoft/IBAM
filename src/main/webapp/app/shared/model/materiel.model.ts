@@ -12,6 +12,7 @@ import { IMarque } from 'app/shared/model/marque.model';
 import { IDocument } from 'app/shared/model/document.model';
 import { IEmploye } from 'app/shared/model/employe.model';
 import { IImage } from 'app/shared/model/image.model';
+import { IProjet } from 'app/shared/model/projet.model';
 
 export interface IMateriel {
   id?: number;
@@ -19,13 +20,13 @@ export interface IMateriel {
   matricule?: string;
   modele?: string;
   numCarteGrise?: string;
-  dateIdentification?: Moment;
+  dateIdentification?: string;
   compteurAchat?: string;
   etat?: string;
   location?: boolean;
   description?: string;
   userModif?: string;
-  dateModif?: Moment;
+  dateModif?: string;
   locations?: ILocation[];
   assurances?: IAssurance[];
   transferts?: ITransfertMateriel[];
@@ -39,8 +40,9 @@ export interface IMateriel {
   document?: IDocument;
   employe?: IEmploye;
   image?: IImage;
+  projet?: IProjet;
 }
 
 export const defaultValue: Readonly<IMateriel> = {
-  location: false
+  location: false,
 };

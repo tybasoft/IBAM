@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf, faFileArchive, faFileCsv, faFileExcel, faFileWord, faFileAlt, faDownload } from '@fortawesome/free-solid-svg-icons';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntity } from './materiel.reducer';
+import { getEntity, RapportConsommation } from './materiel.reducer';
 import { getEntity as getImage, reset as resetImage } from 'app/entities/image/image.reducer';
 import { getEntity as getDocument, reset as resetDocument } from 'app/entities/document/document.reducer';
 import { IMateriel } from 'app/shared/model/materiel.model';
@@ -37,6 +37,10 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
       }
     }
   }, [materielEntity]);
+
+  const getConsommationRepport = () => {
+    const res = props.RapportConsommation(props.match.params.id);
+  };
 
   useEffect(() => {
     if (documentEntity !== null && documentEntity.type !== undefined) {
@@ -120,13 +124,7 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
                   <Translate contentKey="ibamApp.materiel.etat">Etat</Translate>
                 </span>
               </dt>
-              <dd>
-                {materielEntity.etat
-                  ? materielEntity.etat === 'ON'
-                    ? translate('ibamApp.materiel.etatFieldON')
-                    : translate('ibamApp.materiel.etatFieldOFF')
-                  : null}
-              </dd>
+              <dd>{materielEntity.etat}</dd>
               <dt>
                 <span id="location">
                   <Translate contentKey="ibamApp.materiel.location">Location</Translate>
@@ -139,7 +137,7 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
                 </span>
               </dt>
               <dd>{materielEntity.description}</dd>
-              {/*   <dt>
+              <dt>
                 <span id="userModif">
                   <Translate contentKey="ibamApp.materiel.userModif">User Modif</Translate>
                 </span>
@@ -152,7 +150,7 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
               </dt>
               <dd>
                 <TextFormat value={materielEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-              </dd> */}
+              </dd>
               <dt>
                 <Translate contentKey="ibamApp.materiel.famille">Famille</Translate>
               </dt>
@@ -185,6 +183,11 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
               <FontAwesomeIcon icon="pencil-alt" />{' '}
               <span className="d-none d-md-inline">
                 <Translate contentKey="entity.action.edit">Edit</Translate>
+              </span>
+            </Button>
+            <Button onClick={getConsommationRepport} replace color="success">
+              <span className="d-none d-md-inline">
+                <Translate contentKey="ibamApp.materiel.detail.consommation">Rapport de consommation</Translate>
               </span>
             </Button>
           </Col>
@@ -228,7 +231,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   loadingDocument: storeState.document.loading
 });
 
-const mapDispatchToProps = { getEntity, getImage, resetImage, getDocument, resetDocument };
+const mapDispatchToProps = { RapportConsommation, getEntity, getImage, resetImage, getDocument, resetDocument };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

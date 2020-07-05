@@ -79,7 +79,7 @@ export const FournisseurDetail = (props: IFournisseurDetailProps) => {
             </span>
           </dt>
           <dd>{fournisseurEntity.description}</dd>
-          {/* <dt>
+          <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.fournisseur.userModif">User Modif</Translate>
             </span>
@@ -92,7 +92,7 @@ export const FournisseurDetail = (props: IFournisseurDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={fournisseurEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd> */}
+          </dd>
         </dl>
         <Button tag={Link} to="/fournisseur" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

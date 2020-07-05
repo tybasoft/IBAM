@@ -47,7 +47,7 @@ export const AssuranceDetail = (props: IAssuranceDetailProps) => {
             </span>
           </dt>
           <dd>{assuranceEntity.agence}</dd>
-          {/* <dt>
+          <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.assurance.userModif">User Modif</Translate>
             </span>
@@ -60,7 +60,7 @@ export const AssuranceDetail = (props: IAssuranceDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={assuranceEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd> */}
+          </dd>
           <dt>
             <Translate contentKey="ibamApp.assurance.materiel">Materiel</Translate>
           </dt>

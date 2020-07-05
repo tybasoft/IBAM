@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_BONCOMMANDE: 'bonCommande/CREATE_BONCOMMANDE',
   UPDATE_BONCOMMANDE: 'bonCommande/UPDATE_BONCOMMANDE',
   DELETE_BONCOMMANDE: 'bonCommande/DELETE_BONCOMMANDE',
-  RESET: 'bonCommande/RESET'
+  RESET: 'bonCommande/RESET',
+  REPPORT: 'bonCommande/REPPORT'
 };
 
 const initialState = {
@@ -32,6 +33,8 @@ export type BonCommandeState = Readonly<typeof initialState>;
 export default (state: BonCommandeState = initialState, action): BonCommandeState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_BONCOMMANDE_LIST):
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_BONCOMMANDE):
       return {
         ...state,
@@ -74,6 +77,11 @@ export default (state: BonCommandeState = initialState, action): BonCommandeStat
         entity: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.CREATE_BONCOMMANDE):
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case SUCCESS(ACTION_TYPES.UPDATE_BONCOMMANDE):
       return {
         ...state,
@@ -97,7 +105,7 @@ export default (state: BonCommandeState = initialState, action): BonCommandeStat
   }
 };
 
-const apiUrl = 'api/bon-commandes';
+export const apiUrl = 'api/bon-commandes';
 
 // Actions
 

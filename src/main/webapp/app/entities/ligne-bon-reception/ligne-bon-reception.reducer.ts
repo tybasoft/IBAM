@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_LIGNEBONRECEPTION: 'ligneBonReception/CREATE_LIGNEBONRECEPTION',
   UPDATE_LIGNEBONRECEPTION: 'ligneBonReception/UPDATE_LIGNEBONRECEPTION',
   DELETE_LIGNEBONRECEPTION: 'ligneBonReception/DELETE_LIGNEBONRECEPTION',
-  RESET: 'ligneBonReception/RESET'
+  RESET: 'ligneBonReception/RESET',
+  REPPORT: 'ligneBonReception/REPPORT'
 };
 
 const initialState = {
@@ -88,16 +89,23 @@ export default (state: LigneBonReceptionState = initialState, action): LigneBonR
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/ligne-bon-receptions';
+export const apiUrl = 'api/ligne-bon-receptions';
 
 // Actions
 

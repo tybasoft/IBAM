@@ -11,7 +11,6 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.time.Instant;
 import java.time.LocalDate;
 
 /**
@@ -61,7 +60,7 @@ public class Maintenance implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private Instant dateModif;
+    private LocalDate dateModif;
 
     @ManyToOne
     @JsonIgnoreProperties("maintenances")
@@ -75,7 +74,8 @@ public class Maintenance implements Serializable {
     @JsonIgnoreProperties("maintenances")
     private Image image;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -201,16 +201,16 @@ public class Maintenance implements Serializable {
         this.userModif = userModif;
     }
 
-    public Instant getDateModif() {
+    public LocalDate getDateModif() {
         return dateModif;
     }
 
-    public Maintenance dateModif(Instant dateModif) {
+    public Maintenance dateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(Instant dateModif) {
+    public void setDateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -252,7 +252,22 @@ public class Maintenance implements Serializable {
     public void setImage(Image image) {
         this.image = image;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -272,29 +287,14 @@ public class Maintenance implements Serializable {
 
     @Override
     public String toString() {
-        return "Maintenance{" +
-            "id=" + getId() +
-            ", reference='" + getReference() + "'" +
-            ", datePanne='" + getDatePanne() + "'" +
-            ", frais='" + getFrais() + "'" +
-            ", technicien='" + getTechnicien() + "'" +
-            ", motif='" + getMotif() + "'" +
-            ", problemeFrequent='" + isProblemeFrequent() + "'" +
-            ", remarque='" + getRemarque() + "'" +
-            ", dureePanne='" + getDureePanne() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return "Maintenance{" + "id=" + getId() + ", reference='" + getReference() + "'" + ", datePanne='"
+                + getDatePanne() + "'" + ", frais='" + getFrais() + "'" + ", technicien='" + getTechnicien() + "'"
+                + ", motif='" + getMotif() + "'" + ", problemeFrequent='" + isProblemeFrequent() + "'" + ", remarque='"
+                + getRemarque() + "'" + ", dureePanne='" + getDureePanne() + "'" + ", userModif='" + getUserModif()
+                + "'" + ", dateModif='" + getDateModif() + "'" + "}";
     }
-    
-    @PrePersist
-    public void onCreate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
-    }
-    @PreUpdate
-    public void onUpdate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
+
+    public Boolean getProblemeFrequent() {
+        return problemeFrequent;
     }
 }

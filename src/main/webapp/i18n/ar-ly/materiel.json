@@ -14,7 +14,8 @@
         "question": "Are you sure you want to delete Materiel {{ id }}?"
       },
       "detail": {
-        "title": "Materiel"
+        "title": "Materiel",
+        "consommation": "استخراج تقرير اللإستهلاك"
       },
       "libelle": "Libelle",
       "matricule": "Matricule",
@@ -40,8 +41,7 @@
       "document": "Document",
       "employe": "Employe",
       "image": "Image",
-      "etatFieldON": "جاهز للعمل",
-      "etatFieldOFF": "خارج الخدمة"
+      "projet": "projet"
     }
   }
 }

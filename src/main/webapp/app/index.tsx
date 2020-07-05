@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { ThemeSwitcher } from '../content/react-bootstrap-theme-switcher';
+import { ThemeSwitcher } from 'react-bootstrap-theme-switcher';
 
 import DevTools from './config/devtools';
 import initStore from './config/store';
@@ -30,7 +30,7 @@ const render = Component =>
   ReactDOM.render(
     <ErrorBoundary>
       <Provider store={store}>
-        <ThemeSwitcher themePath="content/react-bootstrap-theme-switcher/themes">
+        <ThemeSwitcher themePath="content/themes">
           <div>
             {/* If this slows down the app in dev disable it and enable when required  */}
             {devTools}

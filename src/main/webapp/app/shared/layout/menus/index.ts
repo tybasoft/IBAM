@@ -2,8 +2,3 @@ export * from './account';
 export * from './admin';
 export * from './locale';
 export * from './entities';
-export * from './modulemateriel';
-export * from './modulemateriau';
-export * from './modulepersonnel';
-export * from './moduleavancement';
-export * from './moduleparametrage';

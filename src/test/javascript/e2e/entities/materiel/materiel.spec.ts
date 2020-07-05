@@ -11,7 +11,7 @@ import {
   getRecordsCount,
   waitUntilHidden,
   waitUntilCount,
-  isVisible
+  isVisible,
 } from '../../util/utils';
 
 const expect = chai.expect;
@@ -94,6 +94,7 @@ describe('Materiel e2e test', () => {
     await materielUpdatePage.documentSelectLastOption();
     await materielUpdatePage.employeSelectLastOption();
     await materielUpdatePage.imageSelectLastOption();
+    await materielUpdatePage.projetSelectLastOption();
     await waitUntilDisplayed(materielUpdatePage.saveButton);
     await materielUpdatePage.save();
     await waitUntilHidden(materielUpdatePage.saveButton);

@@ -165,7 +165,7 @@ export const PaieUpdate = (props: IPaieUpdateProps) => {
                   {employes
                     ? employes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.prenom+""+otherEntity.nom+"("+otherEntity.matricule+")"}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}

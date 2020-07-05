@@ -27,6 +27,16 @@ export const TypeMateriel = (props: ITypeMaterielProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.typeMateriel.home.createLabel">Create new Type Materiel</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {typeMaterielList && typeMaterielList.length > 0 ? (
@@ -39,12 +49,12 @@ export const TypeMateriel = (props: ITypeMaterielProps) => {
                 <th>
                   <Translate contentKey="ibamApp.typeMateriel.type">Type</Translate>
                 </th>
-                {/* <th>
+                <th>
                   <Translate contentKey="ibamApp.typeMateriel.userModif">User Modif</Translate>
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.typeMateriel.dateModif">Date Modif</Translate>
-                </th> */}
+                </th>
                 <th />
               </tr>
             </thead>
@@ -57,10 +67,10 @@ export const TypeMateriel = (props: ITypeMaterielProps) => {
                     </Button>
                   </td>
                   <td>{typeMateriel.type}</td>
-                  {/* <td>{typeMateriel.userModif}</td>
+                  <td>{typeMateriel.userModif}</td>
                   <td>
                     <TextFormat type="date" value={typeMateriel.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td> */}
+                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${typeMateriel.id}`} color="info" size="sm">

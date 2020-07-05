@@ -10,8 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +19,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "materiel")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Materiel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,61 +62,79 @@ public class Materiel implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private Instant dateModif;
+    private LocalDate dateModif;
 
     @OneToMany(mappedBy = "materiel")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Location> locations = new HashSet<>();
 
     @OneToMany(mappedBy = "materiel")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Assurance> assurances = new HashSet<>();
 
     @OneToMany(mappedBy = "materiel")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<TransfertMateriel> transferts = new HashSet<>();
 
     @OneToMany(mappedBy = "materiel")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Consommation> consommations = new HashSet<>();
 
     @OneToMany(mappedBy = "materiel")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Maintenance> maintenances = new HashSet<>();
 
     @OneToMany(mappedBy = "materiel")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<VisiteTechnique> visitetechniques = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties("materiels")
+    @JsonIgnoreProperties(value = "materiels", allowSetters = true)
     private Famille famille;
 
     @ManyToOne
-    @JsonIgnoreProperties("materiels")
+    @JsonIgnoreProperties(value = "materiels", allowSetters = true)
     private TypeMateriel typeMateriel;
 
     @ManyToOne
-    @JsonIgnoreProperties("materiels")
+    @JsonIgnoreProperties(value = "materiels", allowSetters = true)
     private Fournisseur fournisseur;
 
     @ManyToOne
-    @JsonIgnoreProperties("materiels")
+    @JsonIgnoreProperties(value = "materiels", allowSetters = true)
     private Marque marque;
 
     @ManyToOne
-    @JsonIgnoreProperties("materiels")
+    @JsonIgnoreProperties(value = "materiels", allowSetters = true)
     private Document document;
 
     @ManyToOne
-    @JsonIgnoreProperties("materiels")
+    @JsonIgnoreProperties(value = "materiels", allowSetters = true)
     private Employe employe;
 
     @ManyToOne
-    @JsonIgnoreProperties("materiels")
+    @JsonIgnoreProperties(value = "materiels", allowSetters = true)
     private Image image;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    @ManyToOne
+    @JsonIgnoreProperties(value = "materiels", allowSetters = true)
+    private Projet projet;
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -257,16 +273,16 @@ public class Materiel implements Serializable {
         this.userModif = userModif;
     }
 
-    public Instant getDateModif() {
+    public LocalDate getDateModif() {
         return dateModif;
     }
 
-    public Materiel dateModif(Instant dateModif) {
+    public Materiel dateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(Instant dateModif) {
+    public void setDateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -510,7 +526,21 @@ public class Materiel implements Serializable {
     public void setImage(Image image) {
         this.image = image;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Projet getProjet() {
+        return projet;
+    }
+
+    public Materiel projet(Projet projet) {
+        this.projet = projet;
+        return this;
+    }
+
+    public void setProjet(Projet projet) {
+        this.projet = projet;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here
 
     @Override
     public boolean equals(Object o) {
@@ -528,31 +558,19 @@ public class Materiel implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
-        return "Materiel{" +
-            "id=" + getId() +
-            ", libelle='" + getLibelle() + "'" +
-            ", matricule='" + getMatricule() + "'" +
-            ", modele='" + getModele() + "'" +
-            ", numCarteGrise='" + getNumCarteGrise() + "'" +
-            ", dateIdentification='" + getDateIdentification() + "'" +
-            ", compteurAchat='" + getCompteurAchat() + "'" +
-            ", etat='" + getEtat() + "'" +
-            ", location='" + isLocation() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return "Materiel{" + "id=" + getId() + ", libelle='" + getLibelle() + "'" + ", matricule='" + getMatricule()
+                + "'" + ", modele='" + getModele() + "'" + ", numCarteGrise='" + getNumCarteGrise() + "'"
+                + ", dateIdentification='" + getDateIdentification() + "'" + ", compteurAchat='" + getCompteurAchat()
+                + "'" + ", etat='" + getEtat() + "'" + ", location='" + isLocation() + "'" + ", description='"
+                + getDescription() + "'" + ", userModif='" + getUserModif() + "'" + ", dateModif='" + getDateModif()
+                + "'" + "}";
     }
-    @PrePersist
-    public void onCreate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
+
+    public Boolean getLocation() {
+        return location;
     }
-    @PreUpdate
-    public void onUpdate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
-    }
+
 }

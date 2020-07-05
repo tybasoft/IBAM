@@ -10,8 +10,6 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,14 +39,15 @@ public class Equipe implements Serializable {
     private Instant dateModif;
 
     @PrePersist
-    public void onCreate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
+    public void onCreate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
+
     @PreUpdate
-    public void onUpdate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
+    public void onUpdate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
 
     @OneToMany(mappedBy = "equipe")
@@ -63,7 +62,8 @@ public class Equipe implements Serializable {
     @JsonIgnoreProperties("employes")
     private Employe equipe;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -161,7 +161,8 @@ public class Equipe implements Serializable {
     public void setEquipe(Employe employe) {
         this.equipe = employe;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -181,11 +182,7 @@ public class Equipe implements Serializable {
 
     @Override
     public String toString() {
-        return "Equipe{" +
-            "id=" + getId() +
-            ", libelle='" + getLibelle() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return "Equipe{" + "id=" + getId() + ", libelle='" + getLibelle() + "'" + ", userModif='" + getUserModif() + "'"
+                + ", dateModif='" + getDateModif() + "'" + "}";
     }
 }

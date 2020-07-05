@@ -121,7 +121,7 @@ export const AssuranceUpdate = (props: IAssuranceUpdateProps) => {
                   }}
                 />
               </AvGroup>
-              {/* <AvGroup>
+              <AvGroup>
                 <Label id="userModifLabel" for="assurance-userModif">
                   <Translate contentKey="ibamApp.assurance.userModif">User Modif</Translate>
                 </Label>
@@ -132,7 +132,7 @@ export const AssuranceUpdate = (props: IAssuranceUpdateProps) => {
                   <Translate contentKey="ibamApp.assurance.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="assurance-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup> */}
+              </AvGroup>
               <AvGroup>
                 <Label for="assurance-materiel">
                   <Translate contentKey="ibamApp.assurance.materiel">Materiel</Translate>
@@ -142,7 +142,7 @@ export const AssuranceUpdate = (props: IAssuranceUpdateProps) => {
                   {materiels
                     ? materiels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle +" (" + otherEntity.matricule+ ")"}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}

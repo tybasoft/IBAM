@@ -94,7 +94,7 @@ export const MarqueUpdate = (props: IMarqueUpdateProps) => {
                 </Label>
                 <AvField id="marque-description" type="text" name="description" />
               </AvGroup>
-              {/* <AvGroup>
+              <AvGroup>
                 <Label id="userModifLabel" for="marque-userModif">
                   <Translate contentKey="ibamApp.marque.userModif">User Modif</Translate>
                 </Label>
@@ -105,7 +105,7 @@ export const MarqueUpdate = (props: IMarqueUpdateProps) => {
                   <Translate contentKey="ibamApp.marque.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="marque-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup> */}
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/marque" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

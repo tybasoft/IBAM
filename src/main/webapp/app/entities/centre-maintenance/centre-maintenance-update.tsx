@@ -132,7 +132,6 @@ export const CentreMaintenanceUpdate = (props: ICentreMaintenanceUpdateProps) =>
                 </Label>
                 <AvField id="centre-maintenance-email" type="text" name="email" />
               </AvGroup>
-              {/* 
               <AvGroup>
                 <Label id="userModifLabel" for="centre-maintenance-userModif">
                   <Translate contentKey="ibamApp.centreMaintenance.userModif">User Modif</Translate>
@@ -144,7 +143,7 @@ export const CentreMaintenanceUpdate = (props: ICentreMaintenanceUpdateProps) =>
                   <Translate contentKey="ibamApp.centreMaintenance.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="centre-maintenance-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup> */}
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/centre-maintenance" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

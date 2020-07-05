@@ -37,7 +37,7 @@ export const FamilleDetail = (props: IFamilleDetailProps) => {
             </span>
           </dt>
           <dd>{familleEntity.description}</dd>
-          {/* <dt>
+          <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.famille.userModif">User Modif</Translate>
             </span>
@@ -50,7 +50,7 @@ export const FamilleDetail = (props: IFamilleDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={familleEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd> */}
+          </dd>
         </dl>
         <Button tag={Link} to="/famille" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

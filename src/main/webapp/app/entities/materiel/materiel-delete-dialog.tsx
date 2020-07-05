@@ -59,7 +59,7 @@ export const MaterielDeleteDialog = (props: IMaterielDeleteDialogProps) => {
 
 const mapStateToProps = ({ materiel }: IRootState) => ({
   materielEntity: materiel.entity,
-  updateSuccess: materiel.updateSuccess
+  updateSuccess: materiel.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

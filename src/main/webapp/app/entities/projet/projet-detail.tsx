@@ -6,7 +6,7 @@ import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntity } from './projet.reducer';
+import { getEntity, RapportConsommation } from './projet.reducer';
 import { IProjet } from 'app/shared/model/projet.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
@@ -16,7 +16,9 @@ export const ProjetDetail = (props: IProjetDetailProps) => {
   useEffect(() => {
     props.getEntity(props.match.params.id);
   }, []);
-
+  const getConsommationRepport = () => {
+    const res = props.RapportConsommation(props.match.params.id);
+  };
   const { projetEntity } = props;
   return (
     <Row>
@@ -110,7 +112,7 @@ export const ProjetDetail = (props: IProjetDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.projet.horaire">Horaire</Translate>
           </dt>
-          <dd>{projetEntity.horaire ? projetEntity.horaire.id: ''}</dd>
+          <dd>{projetEntity.horaire ? projetEntity.horaire.id : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.projet.depot">Depot</Translate>
           </dt>
@@ -128,6 +130,11 @@ export const ProjetDetail = (props: IProjetDetailProps) => {
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.edit">Edit</Translate>
           </span>
+        </Button>{' '}
+        <Button onClick={getConsommationRepport} replace color="success">
+          <span className="d-none d-md-inline">
+            <Translate contentKey="ibamApp.materiel.detail.consommation">Rapport de consommation</Translate>
+          </span>
         </Button>
       </Col>
     </Row>
@@ -138,7 +145,7 @@ const mapStateToProps = ({ projet }: IRootState) => ({
   projetEntity: projet.entity
 });
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getEntity, RapportConsommation };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -13,6 +13,7 @@ export const ACTION_TYPES = {
   UPDATE_DOCUMENT: 'document/UPDATE_DOCUMENT',
   DELETE_DOCUMENT: 'document/DELETE_DOCUMENT',
   RESET: 'document/RESET',
+  REPPORT: 'document/REPPORT',
   UPLOAD_DOCUMENT: 'document/UPLOAD_DOCUMENT',
   DELETE_DOCUMENT_FILE: 'document/DELETE_DOCUMENT_FILE'
 };
@@ -43,6 +44,8 @@ export default (state: DocumentState = initialState, action): DocumentState => {
         updateSuccess: false,
         loading: true
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.CREATE_DOCUMENT):
     case REQUEST(ACTION_TYPES.UPDATE_DOCUMENT):
     case REQUEST(ACTION_TYPES.DELETE_DOCUMENT):
@@ -92,6 +95,11 @@ export default (state: DocumentState = initialState, action): DocumentState => {
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -125,7 +133,7 @@ export default (state: DocumentState = initialState, action): DocumentState => {
   }
 };
 
-const apiUrl = 'api/documents';
+export const apiUrl = 'api/documents';
 
 // Actions
 

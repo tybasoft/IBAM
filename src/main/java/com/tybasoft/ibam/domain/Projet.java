@@ -11,7 +11,6 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,7 +66,7 @@ public class Projet implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private Instant dateModif;
+    private LocalDate dateModif;
 
     @OneToMany(mappedBy = "projet")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -93,7 +92,8 @@ public class Projet implements Serializable {
     @JsonIgnoreProperties("projets")
     private Depot depot;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -245,16 +245,16 @@ public class Projet implements Serializable {
         this.userModif = userModif;
     }
 
-    public Instant getDateModif() {
+    public LocalDate getDateModif() {
         return dateModif;
     }
 
-    public Projet dateModif(Instant dateModif) {
+    public Projet dateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(Instant dateModif) {
+    public void setDateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -371,7 +371,22 @@ public class Projet implements Serializable {
     public void setDepot(Depot depot) {
         this.depot = depot;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -391,30 +406,10 @@ public class Projet implements Serializable {
 
     @Override
     public String toString() {
-        return "Projet{" +
-            "id=" + getId() +
-            ", reference='" + getReference() + "'" +
-            ", libelle='" + getLibelle() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", dateDebut='" + getDateDebut() + "'" +
-            ", dateFin='" + getDateFin() + "'" +
-            ", nbrEmploye='" + getNbrEmploye() + "'" +
-            ", budget='" + getBudget() + "'" +
-            ", adresse='" + getAdresse() + "'" +
-            ", ville='" + getVille() + "'" +
-            ", pays='" + getPays() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
-    }
-    @PrePersist
-    public void onCreate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
-    }
-    @PreUpdate
-    public void onUpdate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
+        return "Projet{" + "id=" + getId() + ", reference='" + getReference() + "'" + ", libelle='" + getLibelle() + "'"
+                + ", description='" + getDescription() + "'" + ", dateDebut='" + getDateDebut() + "'" + ", dateFin='"
+                + getDateFin() + "'" + ", nbrEmploye='" + getNbrEmploye() + "'" + ", budget='" + getBudget() + "'"
+                + ", adresse='" + getAdresse() + "'" + ", ville='" + getVille() + "'" + ", pays='" + getPays() + "'"
+                + ", userModif='" + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}";
     }
 }

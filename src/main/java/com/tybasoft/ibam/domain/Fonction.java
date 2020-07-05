@@ -1,16 +1,17 @@
 package com.tybasoft.ibam.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import java.io.Serializable;
-import java.util.Objects;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import com.tybasoft.ibam.security.SecurityUtils;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Fonction.
@@ -19,7 +20,6 @@ import java.util.Set;
 @Table(name = "fonction")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Fonction implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -145,6 +145,20 @@ public class Fonction implements Serializable {
     public void setEmployes(Set<Employe> employes) {
         this.employes = employes;
     }
+
+     // Fonction executed when the object is created
+     @PrePersist
+     public void prePresist() {
+         this.dateModif = LocalDate.now();
+         this.userModif = SecurityUtils.getCurrentUserLogin().get();
+     }
+ 
+     // Fonction executed when the object is updated
+     @PreUpdate
+     public void preUpdate() {
+         this.dateModif = LocalDate.now();
+         this.userModif = SecurityUtils.getCurrentUserLogin().get();
+     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -165,13 +179,26 @@ public class Fonction implements Serializable {
 
     @Override
     public String toString() {
-        return "Fonction{" +
-            "id=" + getId() +
-            ", libelle='" + getLibelle() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", competences='" + getCompetences() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return (
+            "Fonction{" +
+            "id=" +
+            getId() +
+            ", libelle='" +
+            getLibelle() +
+            "'" +
+            ", description='" +
+            getDescription() +
+            "'" +
+            ", competences='" +
+            getCompetences() +
+            "'" +
+            ", userModif='" +
+            getUserModif() +
+            "'" +
+            ", dateModif='" +
+            getDateModif() +
+            "'" +
+            "}"
+        );
     }
 }

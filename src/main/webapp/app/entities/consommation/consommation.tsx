@@ -55,6 +55,17 @@ export const Consommation = (props: IConsommationProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.consommation.home.createLabel">Create new Consommation</Translate>
         </Link>
+
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {consommationList && consommationList.length > 0 ? (
@@ -76,7 +87,7 @@ export const Consommation = (props: IConsommationProps) => {
                 <th className="hand" onClick={sort('montant')}>
                   <Translate contentKey="ibamApp.consommation.montant">Montant</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                {/* <th className="hand" onClick={sort('quantite')}>
+                <th className="hand" onClick={sort('quantite')}>
                   <Translate contentKey="ibamApp.consommation.quantite">Quantite</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('kilometrage')}>
@@ -99,7 +110,7 @@ export const Consommation = (props: IConsommationProps) => {
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.consommation.image">Image</Translate> <FontAwesomeIcon icon="sort" />
-                </th> */}
+                </th>
                 <th />
               </tr>
             </thead>
@@ -117,7 +128,7 @@ export const Consommation = (props: IConsommationProps) => {
                   </td>
                   <td>{consommation.typeCarburant}</td>
                   <td>{consommation.montant}</td>
-                  {/* <td>{consommation.quantite}</td>
+                  <td>{consommation.quantite}</td>
                   <td>{consommation.kilometrage}</td>
                   <td>{consommation.commentaire}</td>
                   <td>{consommation.userModif}</td>
@@ -134,7 +145,7 @@ export const Consommation = (props: IConsommationProps) => {
                       ''
                     )}
                   </td>
-                  <td>{consommation.image ? <Link to={`image/${consommation.image.id}`}>{consommation.image.id}</Link> : ''}</td> */}
+                  <td>{consommation.image ? <Link to={`image/${consommation.image.id}`}>{consommation.image.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${consommation.id}`} color="info" size="sm">

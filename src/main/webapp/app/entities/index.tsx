@@ -34,164 +34,42 @@ import Consommation from './consommation';
 import Maintenance from './maintenance';
 import CentreMaintenance from './centre-maintenance';
 import VisiteTechnique from './visite-technique';
-import PrivateRoute from 'app/shared/auth/private-route';
-import { AUTHORITIES } from 'app/config/constants';
-import Notification from './notification';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
   <div>
     <Switch>
       {/* prettier-ignore */}
-      <PrivateRoute path={`${match.url}materiau`} component={Materiau} hasAnyAuthorities={[AUTHORITIES.CHEFMATERIAU,AUTHORITIES.MAGASINIER,AUTHORITIES.ADMIN,AUTHORITIES.USER]} />
-      <PrivateRoute
-        path={`${match.url}unite`}
-        component={Unite}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIAU, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}materiau`}
-        component={Materiau}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIAU, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}tva`}
-        component={Tva}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIAU, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}unite`}
-        component={Unite}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIAU, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}depot`}
-        component={Depot}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIAU, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}famille`}
-        component={Famille}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIEL, AUTHORITIES.CHEFMATERIAU, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute path={`${match.url}entreprise`} component={Entreprise} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
-
-      <PrivateRoute
-        path={`${match.url}bon-commande`}
-        component={BonCommande}
-        hasAnyAuthorities={[AUTHORITIES.MAGASINIER, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}bon-reception`}
-        component={BonReception}
-        hasAnyAuthorities={[AUTHORITIES.MAGASINIER, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}ligne-bon-com`}
-        component={LigneBonCommande}
-        hasAnyAuthorities={[AUTHORITIES.MAGASINIER, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}ligne-bon-rec`}
-        component={LigneBonReception}
-        hasAnyAuthorities={[AUTHORITIES.MAGASINIER, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-
-      <PrivateRoute
-        path={`${match.url}horaire`}
-        component={Horaire}
-        hasAnyAuthorities={[AUTHORITIES.RESPONSABLEME, AUTHORITIES.RESPONSABLEPROJET, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}projet`}
-        component={Projet}
-        hasAnyAuthorities={[AUTHORITIES.RESPONSABLEME, AUTHORITIES.RESPONSABLEPROJET, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-
-      <PrivateRoute
-        path={`${match.url}equipe`}
-        component={Equipe}
-        hasAnyAuthorities={[AUTHORITIES.RESPONSABLEME, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}paie`}
-        component={Paie}
-        hasAnyAuthorities={[AUTHORITIES.RESPONSABLEME, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}fonction`}
-        component={Fonction}
-        hasAnyAuthorities={[AUTHORITIES.RESPONSABLEME, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}employe`}
-        component={Employe}
-        hasAnyAuthorities={[AUTHORITIES.RESPONSABLEME, AUTHORITIES.POINTEUR, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}pointage`}
-        component={Pointage}
-        hasAnyAuthorities={[AUTHORITIES.POINTEUR, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-
-      <PrivateRoute path={`${match.url}image`} component={Image} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
-      <PrivateRoute
-        path={`${match.url}marque`}
-        component={Marque}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIAU, AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}fournisseur`}
-        component={Fournisseur}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIAU, AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute path={`${match.url}document`} component={Document} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
-      <PrivateRoute
-        path={`${match.url}materiel`}
-        component={Materiel}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}assurance`}
-        component={Assurance}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}type-materiel`}
-        component={TypeMateriel}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}location`}
-        component={Location}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}transfert-materiel`}
-        component={TransfertMateriel}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}consommation`}
-        component={Consommation}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}maintenance`}
-        component={Maintenance}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}centre-maintenance`}
-        component={CentreMaintenance}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <PrivateRoute
-        path={`${match.url}visite-technique`}
-        component={VisiteTechnique}
-        hasAnyAuthorities={[AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
-      />
-      <ErrorBoundaryRoute path={`${match.url}notification`} component={Notification} />
+      <ErrorBoundaryRoute path={`${match.url}materiau`} component={Materiau} />
+      <ErrorBoundaryRoute path={`${match.url}tva`} component={Tva} />
+      <ErrorBoundaryRoute path={`${match.url}marque`} component={Marque} />
+      <ErrorBoundaryRoute path={`${match.url}unite`} component={Unite} />
+      <ErrorBoundaryRoute path={`${match.url}famille`} component={Famille} />
+      <ErrorBoundaryRoute path={`${match.url}image`} component={Image} />
+      <ErrorBoundaryRoute path={`${match.url}entreprise`} component={Entreprise} />
+      <ErrorBoundaryRoute path={`${match.url}ligne-bon-commande`} component={LigneBonCommande} />
+      <ErrorBoundaryRoute path={`${match.url}ligne-bon-reception`} component={LigneBonReception} />
+      <ErrorBoundaryRoute path={`${match.url}bon-commande`} component={BonCommande} />
+      <ErrorBoundaryRoute path={`${match.url}bon-reception`} component={BonReception} />
+      <ErrorBoundaryRoute path={`${match.url}fournisseur`} component={Fournisseur} />
+      <ErrorBoundaryRoute path={`${match.url}depot`} component={Depot} />
+      <ErrorBoundaryRoute path={`${match.url}projet`} component={Projet} />
+      <ErrorBoundaryRoute path={`${match.url}equipe`} component={Equipe} />
+      <ErrorBoundaryRoute path={`${match.url}fonction`} component={Fonction} />
+      <ErrorBoundaryRoute path={`${match.url}pointage`} component={Pointage} />
+      <ErrorBoundaryRoute path={`${match.url}paie`} component={Paie} />
+      <ErrorBoundaryRoute path={`${match.url}horaire`} component={Horaire} />
+      <ErrorBoundaryRoute path={`${match.url}employe`} component={Employe} />
+      <ErrorBoundaryRoute path={`${match.url}materiel`} component={Materiel} />
+      <ErrorBoundaryRoute path={`${match.url}assurance`} component={Assurance} />
+      <ErrorBoundaryRoute path={`${match.url}type-materiel`} component={TypeMateriel} />
+      <ErrorBoundaryRoute path={`${match.url}document`} component={Document} />
+      <ErrorBoundaryRoute path={`${match.url}location`} component={Location} />
+      <ErrorBoundaryRoute path={`${match.url}transfert-materiel`} component={TransfertMateriel} />
+      <ErrorBoundaryRoute path={`${match.url}consommation`} component={Consommation} />
+      <ErrorBoundaryRoute path={`${match.url}maintenance`} component={Maintenance} />
+      <ErrorBoundaryRoute path={`${match.url}centre-maintenance`} component={CentreMaintenance} />
+      <ErrorBoundaryRoute path={`${match.url}visite-technique`} component={VisiteTechnique} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

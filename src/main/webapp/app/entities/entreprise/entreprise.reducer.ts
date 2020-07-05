@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_ENTREPRISE: 'entreprise/CREATE_ENTREPRISE',
   UPDATE_ENTREPRISE: 'entreprise/UPDATE_ENTREPRISE',
   DELETE_ENTREPRISE: 'entreprise/DELETE_ENTREPRISE',
-  RESET: 'entreprise/RESET'
+  RESET: 'entreprise/RESET',
+  REPPORT: 'entreprise/REPPORT'
 };
 
 const initialState = {
@@ -86,16 +87,23 @@ export default (state: EntrepriseState = initialState, action): EntrepriseState 
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/entreprises';
+export const apiUrl = 'api/entreprises';
 
 // Actions
 

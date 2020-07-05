@@ -11,7 +11,6 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.time.Instant;
 import java.time.LocalDate;
 
 /**
@@ -44,13 +43,14 @@ public class VisiteTechnique implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private Instant dateModif;
+    private LocalDate dateModif;
 
     @ManyToOne
     @JsonIgnoreProperties("visitetechniques")
     private Materiel materiel;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -111,16 +111,16 @@ public class VisiteTechnique implements Serializable {
         this.userModif = userModif;
     }
 
-    public Instant getDateModif() {
+    public LocalDate getDateModif() {
         return dateModif;
     }
 
-    public VisiteTechnique dateModif(Instant dateModif) {
+    public VisiteTechnique dateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(Instant dateModif) {
+    public void setDateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -136,7 +136,22 @@ public class VisiteTechnique implements Serializable {
     public void setMateriel(Materiel materiel) {
         this.materiel = materiel;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -156,23 +171,8 @@ public class VisiteTechnique implements Serializable {
 
     @Override
     public String toString() {
-        return "VisiteTechnique{" +
-            "id=" + getId() +
-            ", reference='" + getReference() + "'" +
-            ", dateVisite='" + getDateVisite() + "'" +
-            ", remarque='" + getRemarque() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
-    }
-    @PrePersist
-    public void onCreate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
-    }
-    @PreUpdate
-    public void onUpdate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
+        return "VisiteTechnique{" + "id=" + getId() + ", reference='" + getReference() + "'" + ", dateVisite='"
+                + getDateVisite() + "'" + ", remarque='" + getRemarque() + "'" + ", userModif='" + getUserModif() + "'"
+                + ", dateModif='" + getDateModif() + "'" + "}";
     }
 }
