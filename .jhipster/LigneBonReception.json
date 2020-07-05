@@ -1,0 +1,51 @@
+{
+    "name": "LigneBonReception",
+    "fields": [
+        {
+            "fieldName": "quantite",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "prixHt",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "bonReception",
+            "otherEntityRelationshipName": "ligneBonRec",
+            "relationshipName": "bonReception",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "materiau",
+            "otherEntityRelationshipName": "ligneBonRec",
+            "relationshipName": "materiau",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200512002400",
+    "entityTableName": "ligne_bon_reception",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

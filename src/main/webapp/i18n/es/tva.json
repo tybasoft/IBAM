@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "tva": {
+      "home": {
+        "title": "Tvas",
+        "createLabel": "Crear nuevo Tva",
+        "importLabel": "Importar",
+        "exportLabel": "Exportar",
+        "createOrEditLabel": "Crear o editar Tva",
+        "notFound": "Ningún Tvas encontrado"
+      },
+      "created": "Un nuevo Tva ha sido creado con el identificador {{ param }}",
+      "updated": "Un Tva ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Tva ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Tva {{ id }}?"
+      },
+      "detail": {
+        "title": "Tva"
+      },
+      "taux": "Taux",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiau": "Materiau"
+    }
+  }
+}

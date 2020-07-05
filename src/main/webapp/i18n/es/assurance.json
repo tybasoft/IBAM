@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "assurance": {
+      "home": {
+        "title": "Assurances",
+        "createLabel": "Crear nuevo Assurance",
+        "createOrEditLabel": "Crear o editar Assurance",
+        "notFound": "Ningún Assurances encontrado"
+      },
+      "created": "Un nuevo Assurance ha sido creado con el identificador {{ param }}",
+      "updated": "Un Assurance ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Assurance ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Assurance {{ id }}?"
+      },
+      "detail": {
+        "title": "Assurance"
+      },
+      "dateDebut": "Date Debut",
+      "dateFin": "Date Fin",
+      "agence": "Agence",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+    "name": "Equipe",
+    "fields": [
+        {
+            "fieldName": "libelle",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "employe",
+            "otherEntityRelationshipName": "equipe",
+            "relationshipName": "employe"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "projet",
+            "otherEntityRelationshipName": "equipe",
+            "relationshipName": "projet",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "employe",
+            "otherEntityRelationshipName": "employe",
+            "relationshipName": "equipe",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200512003000",
+    "entityTableName": "equipe",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

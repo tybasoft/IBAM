@@ -1,0 +1,11 @@
+version: '2'
+services:
+  ibam-postgresql:
+    image: postgres:12.1
+    # volumes:
+    #     - ~/volumes/jhipster/IBAM/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=IBAM
+      - POSTGRES_PASSWORD=
+    ports:
+      - 5432:5432

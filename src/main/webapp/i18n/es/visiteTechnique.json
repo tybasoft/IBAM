@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "visiteTechnique": {
+      "home": {
+        "title": "Visite Techniques",
+        "createLabel": "Crear nuevo Visite Technique",
+        "createOrEditLabel": "Crear o editar Visite Technique",
+        "notFound": "Ningún Visite Techniques encontrado"
+      },
+      "created": "Un nuevo Visite Technique ha sido creado con el identificador {{ param }}",
+      "updated": "Un Visite Technique ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Visite Technique ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Visite Technique {{ id }}?"
+      },
+      "detail": {
+        "title": "Visite Technique"
+      },
+      "reference": "Reference",
+      "dateVisite": "Date Visite",
+      "remarque": "Remarque",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel"
+    }
+  }
+}

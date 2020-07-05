@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "ligneBonReception": {
+      "home": {
+        "title": "Ligne Bon Receptions",
+        "createLabel": "Create a new Ligne Bon Reception",
+        "createOrEditLabel": "Create or edit a Ligne Bon Reception",
+        "notFound": "No Ligne Bon Receptions found"
+      },
+      "created": "A new Ligne Bon Reception is created with identifier {{ param }}",
+      "updated": "A Ligne Bon Reception is updated with identifier {{ param }}",
+      "deleted": "A Ligne Bon Reception is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Ligne Bon Reception {{ id }}?"
+      },
+      "detail": {
+        "title": "Ligne Bon Reception"
+      },
+      "quantite": "Quantite",
+      "prixHt": "Prix Ht",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "bonReception": "Bon Reception",
+      "materiau": "Materiau"
+    }
+  }
+}

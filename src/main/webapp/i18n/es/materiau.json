@@ -1,0 +1,34 @@
+{
+  "ibamApp": {
+    "materiau": {
+      "home": {
+        "title": "Materiaus",
+        "createLabel": "Crear nuevo Materiau",
+        "createOrEditLabel": "Crear o editar Materiau",
+        "notFound": "Ningún Materiaus encontrado"
+      },
+      "created": "Un nuevo Materiau ha sido creado con el identificador {{ param }}",
+      "updated": "Un Materiau ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Materiau ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Materiau {{ id }}?"
+      },
+      "detail": {
+        "title": "Materiau"
+      },
+      "libelle": "Libelle",
+      "reference": "Reference",
+      "poids": "Poids",
+      "volume": "Volume",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "ligneBonRec": "Ligne Bon Rec",
+      "ligneBonCom": "Ligne Bon Com",
+      "marque": "Marque",
+      "unite": "Unite",
+      "famille": "Famille",
+      "tva": "Tva",
+      "image": "Image"
+    }
+  }
+}

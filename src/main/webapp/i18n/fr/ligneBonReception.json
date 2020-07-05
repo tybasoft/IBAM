@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "ligneBonReception": {
+      "home": {
+        "title": "LigneBonReceptions",
+        "createLabel": "Créer un nouveau Ligne Bon Reception",
+        "createOrEditLabel": "Créer ou éditer un Ligne Bon Reception",
+        "notFound": "Aucun Ligne Bon Reception trouvé"
+      },
+      "created": "Un nouveau Ligne Bon Reception a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Ligne Bon Reception avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Ligne Bon Reception avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Ligne Bon Reception {{ id }} ?"
+      },
+      "detail": {
+        "title": "Ligne Bon Reception"
+      },
+      "quantite": "Quantite",
+      "prixHt": "Prix Ht",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "bonReception": "Bon Reception",
+      "materiau": "Materiau"
+    }
+  }
+}

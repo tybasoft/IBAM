@@ -1,0 +1,47 @@
+{
+  "ibamApp": {
+    "materiel": {
+      "home": {
+        "title": "Materiels",
+        "createLabel": "Créer un nouveau Materiel",
+        "createOrEditLabel": "Créer ou éditer un Materiel",
+        "notFound": "Aucun Materiel trouvé"
+      },
+      "created": "Un nouveau Materiel a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Materiel avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Materiel avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Materiel {{ id }} ?"
+      },
+      "detail": {
+        "title": "Materiel",
+        "consommation": "Generer Rapport de Consommation"
+      },
+      "libelle": "Libelle",
+      "matricule": "Matricule",
+      "modele": "Modele",
+      "numCarteGrise": "Num Carte Grise",
+      "dateIdentification": "Date Identification",
+      "compteurAchat": "Compteur Achat",
+      "etat": "Etat",
+      "location": "Location",
+      "description": "Description",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "location": "Location",
+      "assurance": "Assurance",
+      "transfert": "Transfert",
+      "consommation": "Consommation",
+      "maintenance": "Maintenance",
+      "visitetechnique": "Visitetechnique",
+      "famille": "Famille",
+      "typeMateriel": "Type Materiel",
+      "fournisseur": "Fournisseur",
+      "marque": "Marque",
+      "document": "Document",
+      "employe": "Employe",
+      "image": "Image",
+      "projet": "projet"
+    }
+  }
+}

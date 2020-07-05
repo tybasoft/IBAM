@@ -1,0 +1,178 @@
+{
+    "name": "Employe",
+    "fields": [
+        {
+            "fieldName": "nom",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "prenom",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "matricule",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "cin",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "sexe",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tarifJournalier",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dateNaissance",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "lieuNaissance",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "situationFam",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nationalite",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateEntree",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tel",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "adresse",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "division",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "typeContrat",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "multiPorjet",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dateDepart",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "motifDepart",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "materiel",
+            "otherEntityRelationshipName": "employe",
+            "relationshipName": "materiel"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "equipe",
+            "otherEntityRelationshipName": "equipe",
+            "relationshipName": "employe"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "pointage",
+            "otherEntityRelationshipName": "employe",
+            "relationshipName": "pointage"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "paie",
+            "otherEntityRelationshipName": "employe",
+            "relationshipName": "paie"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "projet",
+            "otherEntityRelationshipName": "employe",
+            "relationshipName": "projet",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "equipe",
+            "otherEntityRelationshipName": "employe",
+            "relationshipName": "equipe",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "fonction",
+            "otherEntityRelationshipName": "employe",
+            "relationshipName": "fonction",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "image",
+            "otherEntityRelationshipName": "employee",
+            "relationshipName": "image",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200512003500",
+    "entityTableName": "employe",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}
