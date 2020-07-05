@@ -8,9 +8,13 @@ import com.tybasoft.ibam.service.FileStorageService;
 import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.Entreprise}.
  */
@@ -33,7 +31,6 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class EntrepriseResource {
-
     private final Logger log = LoggerFactory.getLogger(EntrepriseResource.class);
 
     private static final String ENTITY_NAME = "entreprise";
@@ -46,8 +43,12 @@ public class EntrepriseResource {
     private final ImageRepository imageRepository;
     private final FileStorageService fileStorageService;
 
-    public EntrepriseResource(EntrepriseRepository entrepriseRepository, ImageService imageService,
-            ImageRepository imageRepository, FileStorageService fileStorageService) {
+    public EntrepriseResource(
+        EntrepriseRepository entrepriseRepository,
+        ImageService imageService,
+        ImageRepository imageRepository,
+        FileStorageService fileStorageService
+    ) {
         this.entrepriseRepository = entrepriseRepository;
         this.imageService = imageService;
         this.imageRepository = imageRepository;
@@ -64,14 +65,9 @@ public class EntrepriseResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/entreprises")
-    public ResponseEntity<Entreprise> createEntreprise(@Valid @RequestBody Entreprise entreprise)
-            throws URISyntaxException {
+    public ResponseEntity<Entreprise> createEntreprise(@Valid @RequestBody Entreprise entreprise) throws URISyntaxException {
         Image image = entreprise.getImage();
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage = imageService.createImageEntity(image);
+        Image resultImage = imageService.saveImage(image, log, ENTITY_NAME);
 
         log.debug("REST request to save Entreprise : {}", entreprise);
         if (entreprise.getId() != null) {
@@ -80,9 +76,9 @@ public class EntrepriseResource {
         entreprise.setImage(resultImage);
         Entreprise result = entrepriseRepository.save(entreprise);
         return ResponseEntity
-                .created(new URI("/api/entreprises/" + result.getId())).headers(HeaderUtil
-                        .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                .body(result);
+            .created(new URI("/api/entreprises/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -97,8 +93,7 @@ public class EntrepriseResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/entreprises")
-    public ResponseEntity<Entreprise> updateEntreprise(@Valid @RequestBody Entreprise entreprise)
-            throws URISyntaxException {
+    public ResponseEntity<Entreprise> updateEntreprise(@Valid @RequestBody Entreprise entreprise) throws URISyntaxException {
         Image image = entreprise.getImage();
         Image resultImage = null;
         if (image != null) {
@@ -112,9 +107,10 @@ public class EntrepriseResource {
         }
         entreprise.setImage(resultImage);
         Entreprise result = entrepriseRepository.save(entreprise);
-        return ResponseEntity.ok().headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, entreprise.getId().toString()))
-                .body(result);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, entreprise.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -158,9 +154,10 @@ public class EntrepriseResource {
 
         log.debug("REST request to delete Entreprise : {}", id);
         entrepriseRepository.deleteById(id);
-        return ResponseEntity.noContent()
-                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                .build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     @Autowired
@@ -174,17 +171,12 @@ public class EntrepriseResource {
     }
 
     @PostMapping("/entreprises/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
-            @RequestParam("filename") String filename) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filename) {
         try {
             fileStorageService.storeFile(file, filename, "Upload");
 
             reportService.importReport(filename, this.ENTITY_NAME);
-
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
-
     }
 }

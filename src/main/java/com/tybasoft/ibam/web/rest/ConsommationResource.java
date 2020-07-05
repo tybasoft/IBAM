@@ -48,8 +48,12 @@ public class ConsommationResource {
     private final ImageRepository imageRepository;
     private final FileStorageService fileStorageService;
 
-    public ConsommationResource(ConsommationRepository consommationRepository, ImageService imageService,
-            ImageRepository imageRepository, FileStorageService fileStorageService) {
+    public ConsommationResource(
+        ConsommationRepository consommationRepository,
+        ImageService imageService,
+        ImageRepository imageRepository,
+        FileStorageService fileStorageService
+    ) {
         this.consommationRepository = consommationRepository;
         this.imageService = imageService;
         this.imageRepository = imageRepository;
@@ -66,14 +70,9 @@ public class ConsommationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/consommations")
-    public ResponseEntity<Consommation> createConsommation(@Valid @RequestBody Consommation consommation)
-            throws URISyntaxException {
+    public ResponseEntity<Consommation> createConsommation(@Valid @RequestBody Consommation consommation) throws URISyntaxException {
         Image image = consommation.getImage();
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage = imageService.createImageEntity(image);
+        Image resultImage = imageService.saveImage(image, log, ENTITY_NAME);
 
         log.debug("REST request to save Consommation : {}", consommation);
         if (consommation.getId() != null) {
@@ -82,9 +81,9 @@ public class ConsommationResource {
         consommation.setImage(resultImage);
         Consommation result = consommationRepository.save(consommation);
         return ResponseEntity
-                .created(new URI("/api/consommations/" + result.getId())).headers(HeaderUtil
-                        .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                .body(result);
+            .created(new URI("/api/consommations/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -99,8 +98,7 @@ public class ConsommationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/consommations")
-    public ResponseEntity<Consommation> updateConsommation(@Valid @RequestBody Consommation consommation)
-            throws URISyntaxException {
+    public ResponseEntity<Consommation> updateConsommation(@Valid @RequestBody Consommation consommation) throws URISyntaxException {
         Image image = consommation.getImage();
         Image resultImage = null;
         if (image != null) {
@@ -114,9 +112,10 @@ public class ConsommationResource {
         }
         consommation.setImage(resultImage);
         Consommation result = consommationRepository.save(consommation);
-        return ResponseEntity.ok().headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, consommation.getId().toString()))
-                .body(result);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, consommation.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -130,8 +129,7 @@ public class ConsommationResource {
     public ResponseEntity<List<Consommation>> getAllConsommations(Pageable pageable) {
         log.debug("REST request to get a page of Consommations");
         Page<Consommation> page = consommationRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -164,9 +162,10 @@ public class ConsommationResource {
 
         log.debug("REST request to delete Consommation : {}", id);
         consommationRepository.deleteById(id);
-        return ResponseEntity.noContent()
-                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                .build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     @Autowired
@@ -180,17 +179,12 @@ public class ConsommationResource {
     }
 
     @PostMapping("/consommations/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
-            @RequestParam("filename") String filename) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filename) {
         try {
             fileStorageService.storeFile(file, filename, "Upload");
 
             reportService.importReport(filename, this.ENTITY_NAME);
-
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
-
     }
 }

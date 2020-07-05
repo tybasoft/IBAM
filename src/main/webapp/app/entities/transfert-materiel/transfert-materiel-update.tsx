@@ -117,7 +117,7 @@ export const TransfertMaterielUpdate = (props: ITransfertMaterielUpdateProps) =>
                 </Label>
                 <AvField id="transfert-materiel-commentaire" type="text" name="commentaire" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="transfert-materiel-userModif">
                   <Translate contentKey="ibamApp.transfertMateriel.userModif">User Modif</Translate>
                 </Label>
@@ -128,7 +128,7 @@ export const TransfertMaterielUpdate = (props: ITransfertMaterielUpdateProps) =>
                   <Translate contentKey="ibamApp.transfertMateriel.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="transfert-materiel-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="transfert-materiel-materiel">
                   <Translate contentKey="ibamApp.transfertMateriel.materiel">Materiel</Translate>
@@ -138,7 +138,7 @@ export const TransfertMaterielUpdate = (props: ITransfertMaterielUpdateProps) =>
                   {materiels
                     ? materiels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                           {otherEntity.libelle +" (" + otherEntity.matricule+ ")"}
                         </option>
                       ))
                     : null}
@@ -153,7 +153,8 @@ export const TransfertMaterielUpdate = (props: ITransfertMaterielUpdateProps) =>
                   {projets
                     ? projets.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                         
+                             {otherEntity.libelle +" (" + otherEntity.reference+ ")"}
                         </option>
                       ))
                     : null}

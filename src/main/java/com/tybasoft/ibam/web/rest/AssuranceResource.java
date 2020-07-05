@@ -1,6 +1,5 @@
 package com.tybasoft.ibam.web.rest;
 
-import com.tybasoft.ibam.Helper.CsvHelpers;
 import com.tybasoft.ibam.domain.Assurance;
 import com.tybasoft.ibam.repository.AssuranceRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -13,19 +12,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -65,17 +59,16 @@ public class AssuranceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/assurances")
-    public ResponseEntity<Assurance> createAssurance(@Valid @RequestBody Assurance assurance)
-            throws URISyntaxException {
+    public ResponseEntity<Assurance> createAssurance(@Valid @RequestBody Assurance assurance) throws URISyntaxException {
         log.debug("REST request to save Assurance : {}", assurance);
         if (assurance.getId() != null) {
             throw new BadRequestAlertException("A new assurance cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Assurance result = assuranceRepository.save(assurance);
         return ResponseEntity
-                .created(new URI("/api/assurances/" + result.getId())).headers(HeaderUtil
-                        .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                .body(result);
+            .created(new URI("/api/assurances/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -90,16 +83,16 @@ public class AssuranceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/assurances")
-    public ResponseEntity<Assurance> updateAssurance(@Valid @RequestBody Assurance assurance)
-            throws URISyntaxException {
+    public ResponseEntity<Assurance> updateAssurance(@Valid @RequestBody Assurance assurance) throws URISyntaxException {
         log.debug("REST request to update Assurance : {}", assurance);
         if (assurance.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Assurance result = assuranceRepository.save(assurance);
-        return ResponseEntity.ok().headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, assurance.getId().toString()))
-                .body(result);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, assurance.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -113,8 +106,7 @@ public class AssuranceResource {
     public ResponseEntity<List<Assurance>> getAllAssurances(Pageable pageable) {
         log.debug("REST request to get a page of Assurances");
         Page<Assurance> page = assuranceRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -142,9 +134,10 @@ public class AssuranceResource {
     public ResponseEntity<Void> deleteAssurance(@PathVariable Long id) {
         log.debug("REST request to delete Assurance : {}", id);
         assuranceRepository.deleteById(id);
-        return ResponseEntity.noContent()
-                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                .build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     @GetMapping("/assurances/report/{format}")
@@ -158,14 +151,12 @@ public class AssuranceResource {
     private FileStorageService fileStorageService;
 
     @PostMapping("/assurances/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
-            @RequestParam("filename") String filename) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filename) {
         try {
             fileStorageService.storeFile(file, filename, "Upload");
 
             reportService.importReport(filename, this.ENTITY_NAME);
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
     }
 }

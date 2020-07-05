@@ -48,8 +48,12 @@ public class MaintenanceResource {
     private final ImageRepository imageRepository;
     private final FileStorageService fileStorageService;
 
-    public MaintenanceResource(MaintenanceRepository maintenanceRepository, ImageService imageService,
-            ImageRepository imageRepository, FileStorageService fileStorageService) {
+    public MaintenanceResource(
+        MaintenanceRepository maintenanceRepository,
+        ImageService imageService,
+        ImageRepository imageRepository,
+        FileStorageService fileStorageService
+    ) {
         this.maintenanceRepository = maintenanceRepository;
         this.imageService = imageService;
         this.imageRepository = imageRepository;
@@ -66,14 +70,9 @@ public class MaintenanceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/maintenances")
-    public ResponseEntity<Maintenance> createMaintenance(@Valid @RequestBody Maintenance maintenance)
-            throws URISyntaxException {
+    public ResponseEntity<Maintenance> createMaintenance(@Valid @RequestBody Maintenance maintenance) throws URISyntaxException {
         Image image = maintenance.getImage();
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage = imageService.createImageEntity(image);
+        Image resultImage = imageService.saveImage(image, log, ENTITY_NAME);
 
         log.debug("REST request to save Maintenance : {}", maintenance);
         if (maintenance.getId() != null) {
@@ -82,9 +81,9 @@ public class MaintenanceResource {
         maintenance.setImage(resultImage);
         Maintenance result = maintenanceRepository.save(maintenance);
         return ResponseEntity
-                .created(new URI("/api/maintenances/" + result.getId())).headers(HeaderUtil
-                        .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                .body(result);
+            .created(new URI("/api/maintenances/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -99,8 +98,7 @@ public class MaintenanceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/maintenances")
-    public ResponseEntity<Maintenance> updateMaintenance(@Valid @RequestBody Maintenance maintenance)
-            throws URISyntaxException {
+    public ResponseEntity<Maintenance> updateMaintenance(@Valid @RequestBody Maintenance maintenance) throws URISyntaxException {
         Image image = maintenance.getImage();
         Image resultImage = null;
         if (image != null) {
@@ -114,9 +112,10 @@ public class MaintenanceResource {
         }
         maintenance.setImage(resultImage);
         Maintenance result = maintenanceRepository.save(maintenance);
-        return ResponseEntity.ok().headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, maintenance.getId().toString()))
-                .body(result);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, maintenance.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -130,8 +129,7 @@ public class MaintenanceResource {
     public ResponseEntity<List<Maintenance>> getAllMaintenances(Pageable pageable) {
         log.debug("REST request to get a page of Maintenances");
         Page<Maintenance> page = maintenanceRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -164,9 +162,10 @@ public class MaintenanceResource {
 
         log.debug("REST request to delete Maintenance : {}", id);
         maintenanceRepository.deleteById(id);
-        return ResponseEntity.noContent()
-                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                .build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     @Autowired
@@ -180,17 +179,12 @@ public class MaintenanceResource {
     }
 
     @PostMapping("/maintenances/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
-            @RequestParam("filename") String filename) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filename) {
         try {
             fileStorageService.storeFile(file, filename, "Upload");
 
             reportService.importReport(filename, this.ENTITY_NAME);
-
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
-
     }
 }

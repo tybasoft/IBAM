@@ -49,11 +49,16 @@ public class MateriauResource {
     private final MateriauRepository materiauRepository;
     private final ImageService imageService;
     private final ImageRepository imageRepository;
+
     @Autowired
     private FileStorageService fileStorageService;
 
-    public MateriauResource(MateriauRepository materiauRepository, ImageService imageService,
-            ImageRepository imageRepository, FileStorageService fileStorageService) {
+    public MateriauResource(
+        MateriauRepository materiauRepository,
+        ImageService imageService,
+        ImageRepository imageRepository,
+        FileStorageService fileStorageService
+    ) {
         this.materiauRepository = materiauRepository;
         this.imageService = imageService;
         this.imageRepository = imageRepository;
@@ -72,11 +77,7 @@ public class MateriauResource {
     @PostMapping("/materiaus")
     public ResponseEntity<Materiau> createMateriau(@Valid @RequestBody Materiau materiau) throws URISyntaxException {
         Image image = materiau.getImage();
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage = imageService.createImageEntity(image);
+        Image resultImage = imageService.saveImage(image, log, ENTITY_NAME);
 
         log.debug("REST request to save Materiau : {}", materiau);
         if (materiau.getId() != null) {
@@ -85,9 +86,9 @@ public class MateriauResource {
         materiau.setImage(resultImage);
         Materiau result = materiauRepository.save(materiau);
         return ResponseEntity
-                .created(new URI("/api/materiaus/" + result.getId())).headers(HeaderUtil
-                        .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                .body(result);
+            .created(new URI("/api/materiaus/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -116,9 +117,10 @@ public class MateriauResource {
         }
         materiau.setImage(resultImage);
         Materiau result = materiauRepository.save(materiau);
-        return ResponseEntity.ok().headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, materiau.getId().toString()))
-                .body(result);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, materiau.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -132,8 +134,7 @@ public class MateriauResource {
     public ResponseEntity<List<Materiau>> getAllMateriaus(Pageable pageable) {
         log.debug("REST request to get a page of Materiaus");
         Page<Materiau> page = materiauRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -166,9 +167,10 @@ public class MateriauResource {
 
         log.debug("REST request to delete Materiau : {}", id);
         materiauRepository.deleteById(id);
-        return ResponseEntity.noContent()
-                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                .build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     @GetMapping("/materiaus/report/{format}")
@@ -179,17 +181,12 @@ public class MateriauResource {
     }
 
     @PostMapping("/materiaus/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
-            @RequestParam("filename") String filename) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filename) {
         try {
             fileStorageService.storeFile(file, filename, "Upload");
 
             reportService.importReport(filename, this.ENTITY_NAME);
-
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
-
     }
 }

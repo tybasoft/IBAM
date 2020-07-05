@@ -87,7 +87,7 @@ export const CentreMaintenance = (props: ICentreMaintenanceProps) => {
                 <th className="hand" onClick={sort('adresse')}>
                   <Translate contentKey="ibamApp.centreMaintenance.adresse">Adresse</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('telephone')}>
+                {/* <th className="hand" onClick={sort('telephone')}>
                   <Translate contentKey="ibamApp.centreMaintenance.telephone">Telephone</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('email')}>
@@ -98,7 +98,7 @@ export const CentreMaintenance = (props: ICentreMaintenanceProps) => {
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.centreMaintenance.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -114,12 +114,12 @@ export const CentreMaintenance = (props: ICentreMaintenanceProps) => {
                   <td>{centreMaintenance.specialite}</td>
                   <td>{centreMaintenance.responsable}</td>
                   <td>{centreMaintenance.adresse}</td>
-                  <td>{centreMaintenance.telephone}</td>
+                  {/* <td>{centreMaintenance.telephone}</td>
                   <td>{centreMaintenance.email}</td>
                   <td>{centreMaintenance.userModif}</td>
                   <td>
                     <TextFormat type="date" value={centreMaintenance.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
+                  </td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${centreMaintenance.id}`} color="info" size="sm">

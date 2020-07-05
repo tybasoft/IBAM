@@ -44,19 +44,15 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
   const validate = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
 
-    if (isNew && allowedExtensions.exec(value) == null) {
+    if (value && allowedExtensions.exec(value) == null) {
       cb(false);
       seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (allowedExtensions.exec(value) == null && value !== '') {
+    } else if (value && imageFile.size / Math.pow(1024, 2) > 10) {
       cb(false);
-      seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (imageFile) {
-      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
-        cb(false);
-        seterrorMessage(translate('entity.validation.imageFileSize'));
-      }
+      seterrorMessage(translate('entity.validation.imageFileSize'));
+    } else {
+      cb(true);
     }
-    cb(true);
   }, 300);
 
   useEffect(() => {
@@ -123,9 +119,10 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
         ...values
       };
       if (isNew) {
-        image = uploadNewImage(values);
-        entity.image = image;
-
+        if (imageFile) {
+          image = uploadNewImage(values);
+          entity.image = image;
+        }
         props.createEntity(entity);
       } else {
         if (materiauEntity.image == null) {
@@ -228,7 +225,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                 </Label>
                 <AvField id="materiau-volume" type="text" name="volume" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="materiau-userModif">
                   <Translate contentKey="ibamApp.materiau.userModif">User Modif</Translate>
                 </Label>
@@ -239,7 +236,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                   <Translate contentKey="ibamApp.materiau.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="materiau-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="materiau-marque">
                   <Translate contentKey="ibamApp.materiau.marque">Marque</Translate>
@@ -249,7 +246,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                   {marques
                     ? marques.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -264,7 +261,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                   {unites
                     ? unites.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -279,7 +276,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                   {familles
                     ? familles.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -294,7 +291,7 @@ export const MateriauUpdate = (props: IMateriauUpdateProps) => {
                   {tvas
                     ? tvas.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.taux}
                         </option>
                       ))
                     : null}

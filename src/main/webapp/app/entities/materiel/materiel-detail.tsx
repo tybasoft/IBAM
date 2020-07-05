@@ -124,7 +124,13 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
                   <Translate contentKey="ibamApp.materiel.etat">Etat</Translate>
                 </span>
               </dt>
-              <dd>{materielEntity.etat}</dd>
+              <dd>
+                {materielEntity.etat
+                  ? materielEntity.etat === 'ON'
+                    ? translate('ibamApp.materiel.etatFieldON')
+                    : translate('ibamApp.materiel.etatFieldOFF')
+                  : null}
+              </dd>
               <dt>
                 <span id="location">
                   <Translate contentKey="ibamApp.materiel.location">Location</Translate>
@@ -137,7 +143,7 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
                 </span>
               </dt>
               <dd>{materielEntity.description}</dd>
-              <dt>
+              {/*   <dt>
                 <span id="userModif">
                   <Translate contentKey="ibamApp.materiel.userModif">User Modif</Translate>
                 </span>
@@ -150,7 +156,7 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
               </dt>
               <dd>
                 <TextFormat value={materielEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-              </dd>
+              </dd> */}
               <dt>
                 <Translate contentKey="ibamApp.materiel.famille">Famille</Translate>
               </dt>

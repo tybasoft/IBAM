@@ -41,7 +41,9 @@
       "document": "Document",
       "employe": "Employe",
       "image": "Image",
-      "projet": "projet"
+      "projet": "projet",
+      "etatFieldON": "Operational",
+      "etatFieldOFF": "out of service"
     }
   }
 }

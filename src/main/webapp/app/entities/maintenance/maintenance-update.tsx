@@ -40,19 +40,15 @@ export const MaintenanceUpdate = (props: IMaintenanceUpdateProps) => {
   const validate = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
 
-    if (isNew && allowedExtensions.exec(value) == null) {
+    if (value && allowedExtensions.exec(value) == null) {
       cb(false);
       seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (allowedExtensions.exec(value) == null && value !== '') {
+    } else if (value && imageFile.size / Math.pow(1024, 2) > 10) {
       cb(false);
-      seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (imageFile) {
-      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
-        cb(false);
-        seterrorMessage(translate('entity.validation.imageFileSize'));
-      }
+      seterrorMessage(translate('entity.validation.imageFileSize'));
+    } else {
+      cb(true);
     }
-    cb(true);
   }, 300);
 
   useEffect(() => {
@@ -119,9 +115,10 @@ export const MaintenanceUpdate = (props: IMaintenanceUpdateProps) => {
       };
 
       if (isNew) {
-        image = uploadNewImage(values);
-        entity.image = image;
-
+        if (imageFile) {
+          image = uploadNewImage(values);
+          entity.image = image;
+        }
         props.createEntity(entity);
       } else {
         if (maintenanceEntity.image == null) {
@@ -263,7 +260,7 @@ export const MaintenanceUpdate = (props: IMaintenanceUpdateProps) => {
                 </Label>
                 <AvField id="maintenance-dureePanne" type="text" name="dureePanne" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="maintenance-userModif">
                   <Translate contentKey="ibamApp.maintenance.userModif">User Modif</Translate>
                 </Label>
@@ -274,7 +271,7 @@ export const MaintenanceUpdate = (props: IMaintenanceUpdateProps) => {
                   <Translate contentKey="ibamApp.maintenance.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="maintenance-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="maintenance-materiel">
                   <Translate contentKey="ibamApp.maintenance.materiel">Materiel</Translate>
@@ -284,7 +281,7 @@ export const MaintenanceUpdate = (props: IMaintenanceUpdateProps) => {
                   {materiels
                     ? materiels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle + '(' + otherEntity.matricule + ')'}
                         </option>
                       ))
                     : null}
@@ -299,7 +296,7 @@ export const MaintenanceUpdate = (props: IMaintenanceUpdateProps) => {
                   {centreMaintenances
                     ? centreMaintenances.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}

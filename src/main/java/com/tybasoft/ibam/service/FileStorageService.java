@@ -1,11 +1,5 @@
 package com.tybasoft.ibam.service;
 
-import org.apache.commons.io.FileUtils;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -13,6 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileStorageService {
@@ -22,18 +21,15 @@ public class FileStorageService {
 
     public FileStorageService() {
         this.imagesStorageLocation = Paths.get("./src/main/webapp/content/uploads/images").toAbsolutePath().normalize();
-        this.documentsStorageLocation = Paths.get("./src/main/webapp/content/uploads/documents").toAbsolutePath()
-                .normalize();
-        this.ImportsStorageLocation = Paths.get("./src/main/webapp/content/uploads/Imports").toAbsolutePath()
-                .normalize();
+        this.documentsStorageLocation = Paths.get("./src/main/webapp/content/uploads/documents").toAbsolutePath().normalize();
+        this.ImportsStorageLocation = Paths.get("./src/main/webapp/content/uploads/Imports").toAbsolutePath().normalize();
 
         try {
             Files.createDirectories(this.imagesStorageLocation);
             Files.createDirectories(this.documentsStorageLocation);
             Files.createDirectories(this.ImportsStorageLocation);
         } catch (Exception e) {
-            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.",
-                    e);
+            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", e);
         }
     }
 
@@ -43,7 +39,7 @@ public class FileStorageService {
         try {
             // Check if the file's name contains invalid characters
             if (fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + newfileName);
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
             if (fileType.equals("image")) {
@@ -99,5 +95,4 @@ public class FileStorageService {
             throw new MyFileNotFoundException("File not found " + fileName);
         }
     }
-
 }

@@ -83,18 +83,18 @@ export const TransfertMateriel = (props: ITransfertMaterielProps) => {
                 <th className="hand" onClick={sort('commentaire')}>
                   <Translate contentKey="ibamApp.transfertMateriel.commentaire">Commentaire</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
+                {/* <th className="hand" onClick={sort('userModif')}>
                   <Translate contentKey="ibamApp.transfertMateriel.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.transfertMateriel.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th>
                   <Translate contentKey="ibamApp.transfertMateriel.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
+                {/* <th>
                   <Translate contentKey="ibamApp.transfertMateriel.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -111,10 +111,10 @@ export const TransfertMateriel = (props: ITransfertMaterielProps) => {
                     <TextFormat type="date" value={transfertMateriel.dateTransfert} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   <td>{transfertMateriel.commentaire}</td>
-                  <td>{transfertMateriel.userModif}</td>
+                  {/* <td>{transfertMateriel.userModif}</td>
                   <td>
                     <TextFormat type="date" value={transfertMateriel.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
+                  </td> */}
                   <td>
                     {transfertMateriel.materiel ? (
                       <Link to={`materiel/${transfertMateriel.materiel.id}`}>{transfertMateriel.materiel.id}</Link>
@@ -122,13 +122,13 @@ export const TransfertMateriel = (props: ITransfertMaterielProps) => {
                       ''
                     )}
                   </td>
-                  <td>
+                  {/* <td>
                     {transfertMateriel.projet ? (
                       <Link to={`projet/${transfertMateriel.projet.id}`}>{transfertMateriel.projet.id}</Link>
                     ) : (
                       ''
                     )}
-                  </td>
+                  </td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${transfertMateriel.id}`} color="info" size="sm">

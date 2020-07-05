@@ -202,4 +202,6 @@ public class Document implements Serializable {
                 + ", path='" + getPath() + "'" + ", commentaire='" + getCommentaire() + "'" + ", userModif='"
                 + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}";
     }
+    
+    
 }

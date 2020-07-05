@@ -6,10 +6,14 @@ import com.tybasoft.ibam.service.FileStorageService;
 import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +21,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.Image}.
@@ -36,7 +34,6 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class ImageResource {
-
     private final Logger log = LoggerFactory.getLogger(ImageResource.class);
 
     private static final String ENTITY_NAME = "image";
@@ -69,9 +66,9 @@ public class ImageResource {
         }
         Image result = imageService.createImageEntity(image);
         return ResponseEntity
-                .created(new URI("/api/images/" + result.getId())).headers(HeaderUtil
-                        .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                .body(result);
+            .created(new URI("/api/images/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -91,9 +88,10 @@ public class ImageResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Image result = imageService.createImageEntity(image);
-        return ResponseEntity.ok().headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, image.getId().toString()))
-                .body(result);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, image.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -107,8 +105,7 @@ public class ImageResource {
     public ResponseEntity<List<Image>> getAllImages(Pageable pageable) {
         log.debug("REST request to get a page of Images");
         Page<Image> page = imageRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -133,12 +130,9 @@ public class ImageResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/images/{id}")
-    public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
+    public void deleteImage(@PathVariable Long id) {
         log.debug("REST request to delete Image : {}", id);
         imageRepository.deleteById(id);
-        return ResponseEntity.noContent()
-                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                .build();
     }
 
     @Autowired
@@ -155,17 +149,12 @@ public class ImageResource {
     private FileStorageService fileStorageService;
 
     @PostMapping("/images/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
-            @RequestParam("filename") String filename) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filename) {
         try {
             fileStorageService.storeFile(file, filename, "Upload");
 
             reportService.importReport(filename, this.ENTITY_NAME);
-
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
-
     }
 }

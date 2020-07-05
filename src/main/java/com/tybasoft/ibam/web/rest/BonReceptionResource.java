@@ -48,8 +48,12 @@ public class BonReceptionResource {
     private final ImageRepository imageRepository;
     private final FileStorageService fileStorageService;
 
-    public BonReceptionResource(BonReceptionRepository bonReceptionRepository, ImageService imageService,
-            ImageRepository imageRepository, FileStorageService fileStorageService) {
+    public BonReceptionResource(
+        BonReceptionRepository bonReceptionRepository,
+        ImageService imageService,
+        ImageRepository imageRepository,
+        FileStorageService fileStorageService
+    ) {
         this.bonReceptionRepository = bonReceptionRepository;
         this.imageService = imageService;
         this.imageRepository = imageRepository;
@@ -66,14 +70,9 @@ public class BonReceptionResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/bon-receptions")
-    public ResponseEntity<BonReception> createBonReception(@Valid @RequestBody BonReception bonReception)
-            throws URISyntaxException {
+    public ResponseEntity<BonReception> createBonReception(@Valid @RequestBody BonReception bonReception) throws URISyntaxException {
         Image image = bonReception.getImage();
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage = imageService.createImageEntity(image);
+        Image resultImage = imageService.saveImage(image, log, ENTITY_NAME);
 
         log.debug("REST request to save BonReception : {}", bonReception);
         if (bonReception.getId() != null) {
@@ -82,9 +81,9 @@ public class BonReceptionResource {
         bonReception.setImage(resultImage);
         BonReception result = bonReceptionRepository.save(bonReception);
         return ResponseEntity
-                .created(new URI("/api/bon-receptions/" + result.getId())).headers(HeaderUtil
-                        .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                .body(result);
+            .created(new URI("/api/bon-receptions/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -99,8 +98,7 @@ public class BonReceptionResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/bon-receptions")
-    public ResponseEntity<BonReception> updateBonReception(@Valid @RequestBody BonReception bonReception)
-            throws URISyntaxException {
+    public ResponseEntity<BonReception> updateBonReception(@Valid @RequestBody BonReception bonReception) throws URISyntaxException {
         Image image = bonReception.getImage();
         Image resultImage = null;
         if (image != null) {
@@ -114,9 +112,10 @@ public class BonReceptionResource {
         }
         bonReception.setImage(resultImage);
         BonReception result = bonReceptionRepository.save(bonReception);
-        return ResponseEntity.ok().headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bonReception.getId().toString()))
-                .body(result);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bonReception.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -130,8 +129,7 @@ public class BonReceptionResource {
     public ResponseEntity<List<BonReception>> getAllBonReceptions(Pageable pageable) {
         log.debug("REST request to get a page of BonReceptions");
         Page<BonReception> page = bonReceptionRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -164,9 +162,10 @@ public class BonReceptionResource {
 
         log.debug("REST request to delete BonReception : {}", id);
         bonReceptionRepository.deleteById(id);
-        return ResponseEntity.noContent()
-                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                .build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     @Autowired
@@ -180,17 +179,12 @@ public class BonReceptionResource {
     }
 
     @PostMapping("/bon-receptions/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
-            @RequestParam("filename") String filename) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filename) {
         try {
             fileStorageService.storeFile(file, filename, "Upload");
 
             reportService.importReport(filename, this.ENTITY_NAME);
-
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
-
     }
 }

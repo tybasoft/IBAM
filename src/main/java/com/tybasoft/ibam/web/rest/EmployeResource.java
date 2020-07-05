@@ -48,8 +48,12 @@ public class EmployeResource {
     private final ImageRepository imageRepository;
     private final FileStorageService fileStorageService;
 
-    public EmployeResource(EmployeRepository employeRepository, ImageService imageService,
-            ImageRepository imageRepository, FileStorageService fileStorageService) {
+    public EmployeResource(
+        EmployeRepository employeRepository,
+        ImageService imageService,
+        ImageRepository imageRepository,
+        FileStorageService fileStorageService
+    ) {
         this.employeRepository = employeRepository;
         this.imageService = imageService;
         this.imageRepository = imageRepository;
@@ -68,11 +72,7 @@ public class EmployeResource {
     @PostMapping("/employes")
     public ResponseEntity<Employe> createEmploye(@Valid @RequestBody Employe employe) throws URISyntaxException {
         Image image = employe.getImage();
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage = imageService.createImageEntity(image);
+        Image resultImage = imageService.saveImage(image, log, ENTITY_NAME);
 
         log.debug("REST request to save Employe : {}", employe);
         if (employe.getId() != null) {
@@ -81,9 +81,9 @@ public class EmployeResource {
         employe.setImage(resultImage);
         Employe result = employeRepository.save(employe);
         return ResponseEntity
-                .created(new URI("/api/employes/" + result.getId())).headers(HeaderUtil
-                        .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                .body(result);
+            .created(new URI("/api/employes/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -112,9 +112,10 @@ public class EmployeResource {
         }
         employe.setImage(resultImage);
         Employe result = employeRepository.save(employe);
-        return ResponseEntity.ok().headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, employe.getId().toString()))
-                .body(result);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, employe.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -128,8 +129,7 @@ public class EmployeResource {
     public ResponseEntity<List<Employe>> getAllEmployes(Pageable pageable) {
         log.debug("REST request to get a page of Employes");
         Page<Employe> page = employeRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -162,9 +162,10 @@ public class EmployeResource {
 
         log.debug("REST request to delete Employe : {}", id);
         employeRepository.deleteById(id);
-        return ResponseEntity.noContent()
-                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                .build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     @Autowired
@@ -178,17 +179,12 @@ public class EmployeResource {
     }
 
     @PostMapping("/employes/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
-            @RequestParam("filename") String filename) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filename) {
         try {
             fileStorageService.storeFile(file, filename, "Upload");
 
             reportService.importReport(filename, this.ENTITY_NAME);
-
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
-
     }
 }

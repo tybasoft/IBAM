@@ -11,10 +11,14 @@ import com.tybasoft.ibam.service.FileStorageService;
 import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +26,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.Materiel}.
@@ -41,8 +39,8 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Transactional
 public class MaterielResource {
-
     private final Logger log = LoggerFactory.getLogger(MaterielResource.class);
+
     @Autowired
     private ReportService reportService;
 
@@ -58,9 +56,14 @@ public class MaterielResource {
     private final DocumentRepository documentRepository;
     private final FileStorageService fileStorageService;
 
-    public MaterielResource(MaterielRepository materielRepository, ImageService imageService,
-            ImageRepository imageRepository, DocumentService documentService, DocumentRepository documentRepository,
-            FileStorageService fileStorageService) {
+    public MaterielResource(
+        MaterielRepository materielRepository,
+        ImageService imageService,
+        ImageRepository imageRepository,
+        DocumentService documentService,
+        DocumentRepository documentRepository,
+        FileStorageService fileStorageService
+    ) {
         this.materielRepository = materielRepository;
         this.imageService = imageService;
         this.imageRepository = imageRepository;
@@ -82,18 +85,17 @@ public class MaterielResource {
     public ResponseEntity<Materiel> createMateriel(@Valid @RequestBody Materiel materiel) throws URISyntaxException {
         Image image = materiel.getImage();
         Document document = materiel.getDocument();
+        Document resultDocument = null;
 
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage = imageService.createImageEntity(image);
+        Image resultImage = imageService.saveImage(image, log, ENTITY_NAME);
 
-        log.debug("REST request to save Document : {}", document);
-        if (document.getId() != null) {
-            throw new BadRequestAlertException("A new document cannot already have an ID", ENTITY_NAME, "idexists");
+        if (document != null) {
+            log.debug("REST request to save Document : {}", document);
+            if (document.getId() != null) {
+                throw new BadRequestAlertException("A new document cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+            resultDocument = documentService.createDocumentEntity(document);
         }
-        Document resultDocument = documentService.createDocumentEntity(document);
 
         log.debug("REST request to save Materiel : {}", materiel);
         if (materiel.getId() != null) {
@@ -103,9 +105,9 @@ public class MaterielResource {
         materiel.setDocument(resultDocument);
         Materiel result = materielRepository.save(materiel);
         return ResponseEntity
-                .created(new URI("/api/materiels/" + result.getId())).headers(HeaderUtil
-                        .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-                .body(result);
+            .created(new URI("/api/materiels/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -151,9 +153,10 @@ public class MaterielResource {
         materiel.setImage(resultImage);
         materiel.setDocument(resultDocument);
         Materiel result = materielRepository.save(materiel);
-        return ResponseEntity.ok().headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, materiel.getId().toString()))
-                .body(result);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, materiel.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -167,8 +170,7 @@ public class MaterielResource {
     public ResponseEntity<List<Materiel>> getAllMateriels(Pageable pageable) {
         log.debug("REST request to get a page of Materiels");
         Page<Materiel> page = materielRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -203,9 +205,10 @@ public class MaterielResource {
 
         log.debug("REST request to delete Materiel : {}", id);
         materielRepository.deleteById(id);
-        return ResponseEntity.noContent()
-                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-                .build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     @GetMapping("/materiels/report/{format}")
@@ -222,14 +225,12 @@ public class MaterielResource {
     }
 
     @PostMapping("/materiels/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
-            @RequestParam("filename") String filename) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filename) {
         try {
             fileStorageService.storeFile(file, filename, "Upload");
 
             reportService.importReport(filename, this.ENTITY_NAME);
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
     }
 }

@@ -2,12 +2,18 @@ package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tybasoft.ibam.security.SecurityUtils;
-
 import java.io.Serializable;
+import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.*;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
@@ -40,7 +46,7 @@ public class Assurance implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private LocalDate dateModif;
+    private Instant dateModif;
 
     @ManyToOne
     @JsonIgnoreProperties("assurances")
@@ -108,16 +114,16 @@ public class Assurance implements Serializable {
         this.userModif = userModif;
     }
 
-    public LocalDate getDateModif() {
+    public Instant getDateModif() {
         return dateModif;
     }
 
-    public Assurance dateModif(LocalDate dateModif) {
+    public Assurance dateModif(Instant dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(LocalDate dateModif) {
+    public void setDateModif(Instant dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -134,19 +140,6 @@ public class Assurance implements Serializable {
         this.materiel = materiel;
     }
 
-    // Fonction executed when the object is created
-    @PrePersist
-    public void prePresist() {
-        this.dateModif = LocalDate.now();
-        this.userModif = SecurityUtils.getCurrentUserLogin().get();
-    }
-
-    // Fonction executed when the object is updated
-    @PreUpdate
-    public void preUpdate() {
-        this.dateModif = LocalDate.now();
-        this.userModif = SecurityUtils.getCurrentUserLogin().get();
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
     // setters here, do not remove
 
@@ -168,13 +161,38 @@ public class Assurance implements Serializable {
 
     @Override
     public String toString() {
-        return ("Assurance{" + "id=" + getId() + ", dateDebut='" + getDateDebut() + "'" + ", dateFin='" + getDateFin()
-                + "'" + ", agence='" + getAgence() + "'" + ", userModif='" + getUserModif() + "'" + ", dateModif='"
-                + getDateModif() + "'" + "}");
+        return (
+            "Assurance{" +
+            "id=" +
+            getId() +
+            ", dateDebut='" +
+            getDateDebut() +
+            "'" +
+            ", dateFin='" +
+            getDateFin() +
+            "'" +
+            ", agence='" +
+            getAgence() +
+            "'" +
+            ", userModif='" +
+            getUserModif() +
+            "'" +
+            ", dateModif='" +
+            getDateModif() +
+            "'" +
+            "}"
+        );
     }
 
-    public Assurance(Long id, @NotNull LocalDate dateDebut, @NotNull LocalDate dateFin, @NotNull String agence,
-            String userModif, LocalDate dateModif, Materiel materiel) {
+    public Assurance(
+        Long id,
+        @NotNull LocalDate dateDebut,
+        @NotNull LocalDate dateFin,
+        @NotNull String agence,
+        String userModif,
+        Instant dateModif,
+        Materiel materiel
+    ) {
         this.id = id;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
@@ -184,7 +202,17 @@ public class Assurance implements Serializable {
         this.materiel = materiel;
     }
 
-    public Assurance() {
+    public Assurance() {}
+
+    @PrePersist
+    public void onCreate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
 
+    @PreUpdate
+    public void onUpdate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
+    }
 }

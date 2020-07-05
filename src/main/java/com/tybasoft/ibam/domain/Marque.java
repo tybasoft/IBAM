@@ -1,18 +1,17 @@
 package com.tybasoft.ibam.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import com.tybasoft.ibam.security.SecurityUtils;
-
+import com.tybasoft.ibam.security.SecurityUtils;
 import java.io.Serializable;
-import java.util.Objects;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Marque.
@@ -21,7 +20,6 @@ import java.util.Set;
 @Table(name = "marque")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Marque implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -40,7 +38,7 @@ public class Marque implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private LocalDate dateModif;
+    private Instant dateModif;
 
     @OneToMany(mappedBy = "marque")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -99,16 +97,16 @@ public class Marque implements Serializable {
         this.userModif = userModif;
     }
 
-    public LocalDate getDateModif() {
+    public Instant getDateModif() {
         return dateModif;
     }
 
-    public Marque dateModif(LocalDate dateModif) {
+    public Marque dateModif(Instant dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(LocalDate dateModif) {
+    public void setDateModif(Instant dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -162,19 +160,6 @@ public class Marque implements Serializable {
         this.materiels = materiels;
     }
 
-    // Fonction executed when the object is created
-    @PrePersist
-    public void prePresist() {
-        this.dateModif = LocalDate.now();
-        this.userModif = SecurityUtils.getCurrentUserLogin().get();
-    }
-
-    // Fonction executed when the object is updated
-    @PreUpdate
-    public void preUpdate() {
-        this.dateModif = LocalDate.now();
-        this.userModif = SecurityUtils.getCurrentUserLogin().get();
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
     // setters here, do not remove
 
@@ -196,7 +181,35 @@ public class Marque implements Serializable {
 
     @Override
     public String toString() {
-        return "Marque{" + "id=" + getId() + ", libelle='" + getLibelle() + "'" + ", description='" + getDescription()
-                + "'" + ", userModif='" + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}";
+        return (
+            "Marque{" +
+            "id=" +
+            getId() +
+            ", libelle='" +
+            getLibelle() +
+            "'" +
+            ", description='" +
+            getDescription() +
+            "'" +
+            ", userModif='" +
+            getUserModif() +
+            "'" +
+            ", dateModif='" +
+            getDateModif() +
+            "'" +
+            "}"
+        );
+    }
+
+    @PrePersist
+    public void onCreate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
 }
