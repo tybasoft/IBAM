@@ -118,7 +118,8 @@
       "dev": "Development"
     },
     "item-count": "Mostrando {{first}} - {{second}} de {{total}} elementos.",
-    "themeChooser": "Elige un fondo"
+    "themeChooser": "Elige un fondo",
+    "SessionExpired": "Su sesión ha caducado! Por favor autentíquese nuevamente."
   },
   "entity": {
     "action": {

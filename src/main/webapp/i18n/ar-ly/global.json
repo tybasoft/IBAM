@@ -118,7 +118,8 @@
       "dev": "تطوير"
     },
     "item-count": "يعرض {{first}} - {{second}} من {{total}} البيانات.",
-    "themeChooser": "اختر خلفية"
+    "themeChooser": "اختر خلفية",
+    "SessionExpired": "انتهت صلاحية حسابك! يرجى تسجيل دخولك مرة أخرى"
   },
   "entity": {
     "action": {

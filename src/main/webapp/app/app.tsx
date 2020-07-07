@@ -1,15 +1,16 @@
 import 'react-toastify/dist/ReactToastify.css';
 import './app.scss';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Card } from 'reactstrap';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Card, Modal, ModalHeader, ModalFooter, ModalBody, Button } from 'reactstrap';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { hot } from 'react-hot-loader';
+import { Translate } from 'react-jhipster';
 
 import { IRootState } from 'app/shared/reducers';
-import { getSession } from 'app/shared/reducers/authentication';
+import { getSession, logout } from 'app/shared/reducers/authentication';
 import { getProfile } from 'app/shared/reducers/application-profile';
 import { setLocale } from 'app/shared/reducers/locale';
 import Header from 'app/shared/layout/header/header';
@@ -32,6 +33,18 @@ export const App = (props: IAppProps) => {
     props.getSession();
     props.getProfile();
   }, []);
+
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
+
+  useEffect(() => {
+    if (props.isAuthenticated) {
+      setTimeout(() => {
+        props.logout();
+        setModal(true);
+      }, 120000);
+    }
+  }, [props.isAuthenticated]);
 
   const paddingTop = '60px';
   return (
@@ -64,6 +77,17 @@ export const App = (props: IAppProps) => {
             <ErrorBoundary>
               <AppRoutes />
             </ErrorBoundary>
+            <Modal isOpen={modal}>
+              <ModalHeader>IBAM</ModalHeader>
+              <ModalBody>
+                <Translate contentKey="global.SessionExpired">Votre Session a expiré! Veuillez vous authentifier de nouveau.</Translate>
+              </ModalBody>
+              <ModalFooter>
+                <Button tag={Link} to="/" color="primary" onClick={toggle}>
+                  OK
+                </Button>
+              </ModalFooter>
+            </Modal>
           </Card>
           <Footer />
         </div>
@@ -94,7 +118,7 @@ const mapStateToProps = ({ authentication, applicationProfile, locale, notificat
   loading: notification.loading
 });
 
-const mapDispatchToProps = { setLocale, getSession, getProfile, getUserEntities, updateNotification };
+const mapDispatchToProps = { setLocale, getSession, getProfile, getUserEntities, updateNotification, logout };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
