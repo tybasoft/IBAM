@@ -98,7 +98,6 @@ export default (state: ConsommationState = initialState, action): ConsommationSt
 };
 
 const apiUrl = 'api/consommations';
-
 // Actions
 
 export const getEntities: ICrudGetAllAction<IConsommation> = (page, size, sort) => {

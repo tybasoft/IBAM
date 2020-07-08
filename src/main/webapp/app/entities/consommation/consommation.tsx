@@ -55,6 +55,7 @@ export const Consommation = (props: IConsommationProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.consommation.home.createLabel">Create new Consommation</Translate>
         </Link>
+       
       </h2>
       <div className="table-responsive">
         {consommationList && consommationList.length > 0 ? (

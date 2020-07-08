@@ -98,7 +98,6 @@ export default (state: CentreMaintenanceState = initialState, action): CentreMai
 };
 
 const apiUrl = 'api/centre-maintenances';
-
 // Actions
 
 export const getEntities: ICrudGetAllAction<ICentreMaintenance> = (page, size, sort) => {

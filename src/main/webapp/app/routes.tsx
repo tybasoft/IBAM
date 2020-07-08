@@ -25,6 +25,8 @@ const Admin = Loadable({
   loading: () => <div>loading ...</div>
 });
 
+
+
 const Routes = () => (
   <div className="view-routes">
     <Switch>

@@ -98,7 +98,6 @@ export default (state: MaterielState = initialState, action): MaterielState => {
 };
 
 const apiUrl = 'api/materiels';
-
 // Actions
 
 export const getEntities: ICrudGetAllAction<IMateriel> = (page, size, sort) => {

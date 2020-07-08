@@ -97,7 +97,7 @@ export default (state: MaintenanceState = initialState, action): MaintenanceStat
   }
 };
 
-const apiUrl = 'api/maintenances';
+export const apiUrl = 'api/maintenances';
 
 // Actions
 

@@ -8,6 +8,7 @@ import ConsommationDetail from './consommation-detail';
 import ConsommationUpdate from './consommation-update';
 import ConsommationDeleteDialog from './consommation-delete-dialog';
 
+
 const Routes = ({ match }) => (
   <>
     <Switch>

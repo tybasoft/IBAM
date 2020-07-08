@@ -62,6 +62,7 @@ export const App = (props: IAppProps) => {
               <AppRoutes />
             </ErrorBoundary>
           </Card>
+         
           <Footer />
         </div>
       </div>

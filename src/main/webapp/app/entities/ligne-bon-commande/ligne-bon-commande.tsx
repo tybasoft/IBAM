@@ -104,7 +104,7 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
                   </td>
                   <td>
                     {ligneBonCommande.materiau ? (
-                      <Link to={`materiau/${ligneBonCommande.materiau.id}`}>{ligneBonCommande.materiau.id}</Link>
+                      <Link to={`materiau/${ligneBonCommande.materiau.id}`}>{ligneBonCommande.materiau.libelle}</Link>
                     ) : (
                       ''
                     )}

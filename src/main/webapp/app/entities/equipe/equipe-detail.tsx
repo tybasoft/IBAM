@@ -48,11 +48,11 @@ export const EquipeDetail = (props: IEquipeDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.equipe.projet">Projet</Translate>
           </dt>
-          <dd>{equipeEntity.projet ? equipeEntity.projet.id : ''}</dd>
+          <dd>{equipeEntity.projet ? equipeEntity.projet.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.equipe.equipe">Equipe</Translate>
           </dt>
-          <dd>{equipeEntity.equipe ? equipeEntity.equipe.id : ''}</dd>
+          <dd>{equipeEntity.equipe ? equipeEntity.equipe.cin: ''}</dd>
         </dl>
         <Button tag={Link} to="/equipe" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

@@ -98,7 +98,6 @@ export default (state: MarqueState = initialState, action): MarqueState => {
 };
 
 const apiUrl = 'api/marques';
-
 // Actions
 
 export const getEntities: ICrudGetAllAction<IMarque> = (page, size, sort) => {

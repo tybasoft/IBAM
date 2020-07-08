@@ -21,7 +21,7 @@ export const  ModulePersonnelMenu   = props => (
     <MenuItem icon="asterisk" to="/employe">
       <Translate contentKey="global.menu.entities.employe" />
     </MenuItem>}
-     {props.isResponsableEmp &&
+     {(props.isPointeur) &&
      <MenuItem icon="asterisk" to="/pointage">
       <Translate contentKey="global.menu.entities.pointage" />
     </MenuItem>}

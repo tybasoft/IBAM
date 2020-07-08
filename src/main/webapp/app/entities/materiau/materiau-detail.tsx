@@ -77,19 +77,19 @@ export const MateriauDetail = (props: IMateriauDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.materiau.marque">Marque</Translate>
           </dt>
-          <dd>{materiauEntity.marque ? materiauEntity.marque.id : ''}</dd>
+          <dd>{materiauEntity.marque ? materiauEntity.marque.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.materiau.unite">Unite</Translate>
           </dt>
-          <dd>{materiauEntity.unite ? materiauEntity.unite.id : ''}</dd>
+          <dd>{materiauEntity.unite ? materiauEntity.unite.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.materiau.famille">Famille</Translate>
           </dt>
-          <dd>{materiauEntity.famille ? materiauEntity.famille.id : ''}</dd>
+          <dd>{materiauEntity.famille ? materiauEntity.famille.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.materiau.tva">Tva</Translate>
           </dt>
-          <dd>{materiauEntity.tva ? materiauEntity.tva.id : ''}</dd>
+          <dd>{materiauEntity.tva ? materiauEntity.tva.taux : ''}</dd>
         </dl>
         <Button tag={Link} to="/materiau" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

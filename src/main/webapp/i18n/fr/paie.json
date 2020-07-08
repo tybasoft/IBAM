@@ -5,6 +5,7 @@
         "title": "Paies",
         "createLabel": "Créer un nouveau Paie",
         "createOrEditLabel": "Créer ou éditer un Paie",
+        "genererpaiement": "générer",
         "notFound": "Aucun Paie trouvé"
       },
       "created": "Un nouveau Paie a été créé avec l'identifiant {{ param }}",

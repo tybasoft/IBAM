@@ -70,11 +70,11 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.bonCommande.depot">Depot</Translate>
           </dt>
-          <dd>{bonCommandeEntity.depot ? bonCommandeEntity.depot.id : ''}</dd>
+          <dd>{bonCommandeEntity.depot ? bonCommandeEntity.depot.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.bonCommande.fournisseur">Fournisseur</Translate>
           </dt>
-          <dd>{bonCommandeEntity.fournisseur ? bonCommandeEntity.fournisseur.id : ''}</dd>
+          <dd>{bonCommandeEntity.fournisseur ? bonCommandeEntity.fournisseur.nomCommercial : ''}</dd>
         </dl>
         <Button tag={Link} to="/bon-commande" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

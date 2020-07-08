@@ -7,10 +7,13 @@ import Pointage from './pointage';
 import PointageDetail from './pointage-detail';
 import PointageUpdate from './pointage-update';
 import PointageDeleteDialog from './pointage-delete-dialog';
+import PointageJour from './pointage-interface';
+
 
 const Routes = ({ match }) => (
   <>
     <Switch>
+      <ErrorBoundaryRoute exact path={`${match.url}/pointer`} component={PointageJour} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={PointageDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={PointageUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={PointageUpdate} />

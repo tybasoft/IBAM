@@ -55,6 +55,7 @@ export const CentreMaintenance = (props: ICentreMaintenanceProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.centreMaintenance.home.createLabel">Create new Centre Maintenance</Translate>
         </Link>
+       
       </h2>
       <div className="table-responsive">
         {centreMaintenanceList && centreMaintenanceList.length > 0 ? (

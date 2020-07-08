@@ -106,15 +106,15 @@ export const ProjetDetail = (props: IProjetDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.projet.entreprise">Entreprise</Translate>
           </dt>
-          <dd>{projetEntity.entreprise ? projetEntity.entreprise.id : ''}</dd>
+          <dd>{projetEntity.entreprise ? projetEntity.entreprise.nomCommercial : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.projet.horaire">Horaire</Translate>
           </dt>
-          <dd>{projetEntity.horaire ? projetEntity.horaire.id: ''}</dd>
+          <dd>{projetEntity.horaire ? projetEntity.horaire.libelle: ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.projet.depot">Depot</Translate>
           </dt>
-          <dd>{projetEntity.depot ? projetEntity.depot.id : ''}</dd>
+          <dd>{projetEntity.depot ? projetEntity.depot.libelle : ''}</dd>
         </dl>
         <Button tag={Link} to="/projet" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

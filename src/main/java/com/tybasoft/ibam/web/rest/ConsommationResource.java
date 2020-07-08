@@ -27,6 +27,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.Consommation}.
@@ -155,4 +158,8 @@ public class ConsommationResource {
         consommationRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
+   
+    
+
+    
 }

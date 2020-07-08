@@ -111,10 +111,10 @@ export const BonCommande = (props: IBonCommandeProps) => {
                   <td>
                     <TextFormat type="date" value={bonCommande.dateModif} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
-                  <td>{bonCommande.depot ? <Link to={`depot/${bonCommande.depot.id}`}>{bonCommande.depot.id}</Link> : ''}</td>
+                  <td>{bonCommande.depot ? <Link to={`depot/${bonCommande.depot.id}`}>{bonCommande.depot.libelle}</Link> : ''}</td>
                   <td>
                     {bonCommande.fournisseur ? (
-                      <Link to={`fournisseur/${bonCommande.fournisseur.id}`}>{bonCommande.fournisseur.id}</Link>
+                      <Link to={`fournisseur/${bonCommande.fournisseur.id}`}>{bonCommande.fournisseur.nomCommercial}</Link>
                     ) : (
                       ''
                     )}

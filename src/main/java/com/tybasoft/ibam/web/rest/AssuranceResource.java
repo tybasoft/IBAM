@@ -2,6 +2,7 @@ package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.Assurance;
 import com.tybasoft.ibam.repository.AssuranceRepository;
+import com.tybasoft.ibam.service.FileStorageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +25,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+
+
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.Assurance}.
  */
@@ -35,8 +37,9 @@ public class AssuranceResource {
 
     private final Logger log = LoggerFactory.getLogger(AssuranceResource.class);
 
+   
     private static final String ENTITY_NAME = "assurance";
-
+   
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
@@ -125,4 +128,7 @@ public class AssuranceResource {
         assuranceRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
+    
+ 
+
 }

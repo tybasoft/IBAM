@@ -8,6 +8,8 @@ import LocationDetail from './location-detail';
 import LocationUpdate from './location-update';
 import LocationDeleteDialog from './location-delete-dialog';
 
+
+
 const Routes = ({ match }) => (
   <>
     <Switch>

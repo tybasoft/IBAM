@@ -107,7 +107,7 @@ export const TransfertMateriel = (props: ITransfertMaterielProps) => {
                   </td> */}
                   <td>
                     {transfertMateriel.materiel ? (
-                      <Link to={`materiel/${transfertMateriel.materiel.id}`}>{transfertMateriel.materiel.id}</Link>
+                      <Link to={`materiel/${transfertMateriel.materiel.id}`}>{transfertMateriel.materiel.libelle}</Link>
                     ) : (
                       ''
                     )}

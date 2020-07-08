@@ -116,10 +116,10 @@ export const Materiau = (props: IMateriauProps) => {
                   <td>
                     <TextFormat type="date" value={materiau.dateModif} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
-                  <td>{materiau.marque ? <Link to={`marque/${materiau.marque.id}`}>{materiau.marque.id}</Link> : ''}</td>
-                  <td>{materiau.unite ? <Link to={`unite/${materiau.unite.id}`}>{materiau.unite.id}</Link> : ''}</td>
-                  <td>{materiau.famille ? <Link to={`famille/${materiau.famille.id}`}>{materiau.famille.id}</Link> : ''}</td>
-                  <td>{materiau.tva ? <Link to={`tva/${materiau.tva.id}`}>{materiau.tva.id}</Link> : ''}</td>
+                  <td>{materiau.marque ? <Link to={`marque/${materiau.marque.id}`}>{materiau.marque.libelle}</Link> : ''}</td>
+                  <td>{materiau.unite ? <Link to={`unite/${materiau.unite.id}`}>{materiau.unite.libelle}</Link> : ''}</td>
+                  <td>{materiau.famille ? <Link to={`famille/${materiau.famille.id}`}>{materiau.famille.libelle}</Link> : ''}</td>
+                  <td>{materiau.tva ? <Link to={`tva/${materiau.tva.id}`}>{materiau.tva.taux}</Link> : ''}</td>
                   <td>{materiau.image ? <Link to={`image/${materiau.image.id}`}>{materiau.image.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">

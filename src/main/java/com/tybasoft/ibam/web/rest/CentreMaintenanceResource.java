@@ -2,6 +2,7 @@ package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.CentreMaintenance;
 import com.tybasoft.ibam.repository.CentreMaintenanceRepository;
+import com.tybasoft.ibam.service.FileStorageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -24,6 +25,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.CentreMaintenance}.
@@ -125,4 +129,7 @@ public class CentreMaintenanceResource {
         centreMaintenanceRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
+    
+
 }
+

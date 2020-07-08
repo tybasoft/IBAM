@@ -103,11 +103,11 @@ export const MaintenanceDetail = (props: IMaintenanceDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.maintenance.materiel">Materiel</Translate>
           </dt>
-          <dd>{maintenanceEntity.materiel ? maintenanceEntity.materiel.id : ''}</dd>
+          <dd>{maintenanceEntity.materiel ? maintenanceEntity.materiel.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.maintenance.centreMaintenance">Centre Maintenance</Translate>
           </dt>
-          <dd>{maintenanceEntity.centreMaintenance ? maintenanceEntity.centreMaintenance.id : ''}</dd>
+          <dd>{maintenanceEntity.centreMaintenance ? maintenanceEntity.centreMaintenance.libelle : ''}</dd>
         </dl>
         <Button tag={Link} to="/maintenance" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

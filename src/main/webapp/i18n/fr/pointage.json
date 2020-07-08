@@ -5,6 +5,7 @@
         "title": "Pointages",
         "createLabel": "Créer un nouveau Pointage",
         "createOrEditLabel": "Créer ou éditer un Pointage",
+        "pointer": "Pointer",
         "notFound": "Aucun Pointage trouvé"
       },
       "created": "Un nouveau Pointage a été créé avec l'identifiant {{ param }}",

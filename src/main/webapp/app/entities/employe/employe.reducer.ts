@@ -12,6 +12,7 @@ export const ACTION_TYPES = {
   CREATE_EMPLOYE: 'employe/CREATE_EMPLOYE',
   UPDATE_EMPLOYE: 'employe/UPDATE_EMPLOYE',
   DELETE_EMPLOYE: 'employe/DELETE_EMPLOYE',
+  FILTER_EMPLOYE_BY_PID: 'employe/FILTER_EMPLOYE_BY_PID',
   RESET: 'employe/RESET'
 };
 
@@ -19,7 +20,9 @@ const initialState = {
   loading: false,
   errorMessage: null,
   entities: [] as ReadonlyArray<IEmploye>,
+  currList: [] as ReadonlyArray<IEmploye>,
   entity: defaultValue,
+  projectid: '',
   updating: false,
   totalItems: 0,
   updateSuccess: false
@@ -32,13 +35,8 @@ export type EmployeState = Readonly<typeof initialState>;
 export default (state: EmployeState = initialState, action): EmployeState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_EMPLOYE_LIST):
+    case REQUEST(ACTION_TYPES.FILTER_EMPLOYE_BY_PID):
     case REQUEST(ACTION_TYPES.FETCH_EMPLOYE):
-      return {
-        ...state,
-        errorMessage: null,
-        updateSuccess: false,
-        loading: true
-      };
     case REQUEST(ACTION_TYPES.CREATE_EMPLOYE):
     case REQUEST(ACTION_TYPES.UPDATE_EMPLOYE):
     case REQUEST(ACTION_TYPES.DELETE_EMPLOYE):
@@ -49,6 +47,7 @@ export default (state: EmployeState = initialState, action): EmployeState => {
         updating: true
       };
     case FAILURE(ACTION_TYPES.FETCH_EMPLOYE_LIST):
+    case FAILURE(ACTION_TYPES.FILTER_EMPLOYE_BY_PID):
     case FAILURE(ACTION_TYPES.FETCH_EMPLOYE):
     case FAILURE(ACTION_TYPES.CREATE_EMPLOYE):
     case FAILURE(ACTION_TYPES.UPDATE_EMPLOYE):
@@ -65,7 +64,15 @@ export default (state: EmployeState = initialState, action): EmployeState => {
         ...state,
         loading: false,
         entities: action.payload.data,
+        currList: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+      };
+    case SUCCESS(ACTION_TYPES.FILTER_EMPLOYE_BY_PID):
+      return {
+        ...state,
+        loading: false,
+        currList: action.payload.entities,
+        projectid: action.payload.projectid
       };
     case SUCCESS(ACTION_TYPES.FETCH_EMPLOYE):
       return {
@@ -92,6 +99,7 @@ export default (state: EmployeState = initialState, action): EmployeState => {
       return {
         ...initialState
       };
+
     default:
       return state;
   }

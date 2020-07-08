@@ -8,6 +8,7 @@ import CentreMaintenanceDetail from './centre-maintenance-detail';
 import CentreMaintenanceUpdate from './centre-maintenance-update';
 import CentreMaintenanceDeleteDialog from './centre-maintenance-delete-dialog';
 
+
 const Routes = ({ match }) => (
   <>
     <Switch>
