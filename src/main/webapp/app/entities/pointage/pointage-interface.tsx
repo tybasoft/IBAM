@@ -15,12 +15,14 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
 import { Employe } from '../employe/employe';
+import { AvFeedback,  AvField } from 'availity-reactstrap-validation';
 
 
 
 export interface IPointageJourProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const PointageJour = (props: IPointageJourProps) => {
+  const [filter, setFilter] = useState('');
 
 
     useEffect(() => {
@@ -32,32 +34,69 @@ export const PointageJour = (props: IPointageJourProps) => {
     props.getEntities();
    
   },[]);
+  const { projets,employeList,loading,projectid} = props;  
+     
+  const saveEntity = (event, errors, values) => {
+    const tab=[];
+    let cmpt=0;
+    if (errors.length === 0) {
+      
+           employeList.map((employe,i=0)=>{
+                  
+             tab[i]={
+
+              "dateJour": "12/02/2020",
+              "presenceMatin" :Object.values(values)[cmpt+1],
+              "presenceAPM" :Object.values(values)[cmpt+2],
+              "nbrHeureSup" : Object.values(values)[cmpt+3],
+              "remarques" : Object.values(values)[cmpt+4],
+              "employe" : {
+                "id" : employe.id
+              }
+             }
+            cmpt+=4;
+            i++;
+           }
+    )
+        
+      window.console.log(tab);
+          }
+  };
+  
 
 
-    const { projets,employeList,loading,projectid} = props;  
-
-
+    const changeFilter = evt => setFilter(evt.target.value);
+    const filterFn = l => l.matricule.toUpperCase().includes(filter.toUpperCase());
+  
+  
+   
+  
+    
+   
     
   return (
     <div>
 
-            <AvForm >
+            <AvForm   onSubmit={saveEntity}>
                 <AvGroup>
                 <AvInput id="employe-projet" type="select" className="form-control" 
                 name="projet.id" 
-                onChange={(e) => {
-                  filterEmployees(this.props.employeList,e.target.value)
-                }}>
+                value={filter} onChange={changeFilter}>
                   <option value="" key="0"    />
                   {projets ? projets.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}  >
                           {otherEntity.libelle}
                         </option>
-                      ))
+                      )) 
                     : null}
                 </AvInput>
               </AvGroup> 
             
+              <span>
+        <Translate contentKey="logs.filter">Filter</Translate>
+      </span>
+      <input type="text" value={filter} onChange={changeFilter} className="form-control" />
+
  <div className="table-responsive">
         { employeList &&   employeList.length > 0 ? (
           <Table responsive  >
@@ -90,15 +129,15 @@ export const PointageJour = (props: IPointageJourProps) => {
             </thead>
             <tbody>
              
-              { employeList.map((employe, i)=> (
+              { employeList.filter(filterFn).map((employe, i)=> (
                 <tr   key={employe.id}  >
                   <td>{employe.id} </td>
                   <td>{employe.matricule}</td>
                   <td>{employe.nom} {employe.prenom}</td>
-                  <td><input type="checkbox" checked/></td>
-                  <td><input type="checkbox" checked/></td>
-                  <td><input type="text"  name="nbsup"/></td>
-                  <td><input type="text"  name="observation"/></td>
+                  <td> <AvInput id={employe.id+"1"} type="checkbox" name={"Matin"+employe.id}/></td>
+                  <td> <AvInput id={employe.id+"2"} type="checkbox" name={"APM"+employe.id} /></td>
+                  <td> <AvInput id={employe.id+"3"} type="text" name={"nbsup"+employe.id} /></td>
+                  <td> <AvInput id={employe.id+"4"} type="text" name={"observation"+employe.id} /></td>
                 </tr>
               ))}
             </tbody>
@@ -110,11 +149,12 @@ export const PointageJour = (props: IPointageJourProps) => {
             </div>
           )
         )}
-      </div>  
-
-      
-                           <button >Save</button>
-                        
+      </div>     
+         <Button color="primary" id="save-entity" type="submit" >
+                <FontAwesomeIcon icon="save" />
+                &nbsp;
+                <Translate contentKey="entity.action.save">Save</Translate>
+              </Button>             
           </AvForm>
 
 
