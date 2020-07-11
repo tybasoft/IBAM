@@ -3,16 +3,12 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import {  AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { IRootState } from 'app/shared/reducers';
-import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { Button, Col, Row, Table,Container ,Label} from 'reactstrap';
-import { Link} from 'react-router-dom';
-import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { Button, Col, Row, Table ,Label} from 'reactstrap';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { getEntities } from '../test/test.reducer';
+import { getEntities } from '../employe/employe.reducer';
 import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
-/* import { createEntity} from './pointage.reducer'; */
 import {getEntities  as getPointages}  from 'app/entities/pointage/pointage.reducer';
-import { AvFeedback,  AvField ,Input} from 'availity-reactstrap-validation';
 import Moment from 'moment';
 import {CreateList}  from './pointage.reducer';
 
