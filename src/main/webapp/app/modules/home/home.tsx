@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'reactstrap';
 import {  RouteComponentProps } from 'react-router-dom';
 import { login } from 'app/shared/reducers/authentication';
-import LoginPage from 'app/modules/login/loginpage';
 import './home.scss';
 
 export interface IHomeProp extends StateProps,RouteComponentProps<{}> {}
@@ -28,13 +27,7 @@ export const Home = (props: IHomeProp) => {
             </Alert>
           </div>
         ) : (
-          <div className="App">
-          <div className="card cardalign w-100">
-          <div className="card-body">
-         <LoginPage location={props.location} match={props.match} history={props.history}/>
-        </div>
-        </div>
-       </div>
+          <div></div>
            
         )}
        
@@ -48,7 +41,7 @@ export const Home = (props: IHomeProp) => {
 };
 
 const mapStateToProps = storeState => ({
-  account: storeState.authentication.account,
+  account: storeState.authentication.account
   
 });
 

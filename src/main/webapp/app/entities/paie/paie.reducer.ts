@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_PAIE: 'paie/CREATE_PAIE',
   UPDATE_PAIE: 'paie/UPDATE_PAIE',
   DELETE_PAIE: 'paie/DELETE_PAIE',
-  RESET: 'paie/RESET'
+  RESET: 'paie/RESET',
+  CREATE_PAIE_LIST: 'paie/CREATE_PAIE_LIST'
 };
 
 const initialState = {
@@ -39,6 +40,7 @@ export default (state: PaieState = initialState, action): PaieState => {
         updateSuccess: false,
         loading: true
       };
+    case REQUEST(ACTION_TYPES.CREATE_PAIE_LIST):
     case REQUEST(ACTION_TYPES.CREATE_PAIE):
     case REQUEST(ACTION_TYPES.UPDATE_PAIE):
     case REQUEST(ACTION_TYPES.DELETE_PAIE):
@@ -48,8 +50,10 @@ export default (state: PaieState = initialState, action): PaieState => {
         updateSuccess: false,
         updating: true
       };
+
     case FAILURE(ACTION_TYPES.FETCH_PAIE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_PAIE):
+    case FAILURE(ACTION_TYPES.CREATE_PAIE_LIST):
     case FAILURE(ACTION_TYPES.CREATE_PAIE):
     case FAILURE(ACTION_TYPES.UPDATE_PAIE):
     case FAILURE(ACTION_TYPES.DELETE_PAIE):
@@ -60,6 +64,7 @@ export default (state: PaieState = initialState, action): PaieState => {
         updateSuccess: false,
         errorMessage: action.payload
       };
+
     case SUCCESS(ACTION_TYPES.FETCH_PAIE_LIST):
       return {
         ...state,
@@ -74,6 +79,7 @@ export default (state: PaieState = initialState, action): PaieState => {
         entity: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.CREATE_PAIE):
+    case SUCCESS(ACTION_TYPES.CREATE_PAIE_LIST):
     case SUCCESS(ACTION_TYPES.UPDATE_PAIE):
       return {
         ...state,
@@ -88,6 +94,7 @@ export default (state: PaieState = initialState, action): PaieState => {
         updateSuccess: true,
         entity: {}
       };
+
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -146,3 +153,20 @@ export const deleteEntity: ICrudDeleteAction<IPaie> = id => async dispatch => {
 export const reset = () => ({
   type: ACTION_TYPES.RESET
 });
+
+/* export const GenererPaie=(paie : object,nbrHsup:Float32Array)=>async dispatch =>{
+    const result=await dispatch({
+          type:ACTION_TYPES.GENERER_PAIE,
+          payload: axios.post(`${apiUrl}/genererPaie/${nbrHsup}`,paie)
+    });
+     return result;
+} */
+
+export const CreateList = (tab: any[]) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_PAIE_LIST,
+    payload: axios.post(`${apiUrl}`, tab)
+  });
+  dispatch(getEntities());
+  return result;
+};

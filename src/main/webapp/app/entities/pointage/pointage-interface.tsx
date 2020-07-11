@@ -4,18 +4,18 @@ import { RouteComponentProps } from 'react-router-dom';
 import {  AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { IRootState } from 'app/shared/reducers';
 import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { Button, Col, Row, Table,Container } from 'reactstrap';
+import { Button, Col, Row, Table,Container ,Label} from 'reactstrap';
 import { Link} from 'react-router-dom';
 import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getEntities } from '../test/test.reducer';
-import { filterEmployees } from '../test/test.reducer';
-import { IEmploye } from 'app/shared/model/employe.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
-import { Employe } from '../employe/employe';
-import { AvFeedback,  AvField } from 'availity-reactstrap-validation';
+/* import { createEntity} from './pointage.reducer'; */
+import {getEntities  as getPointages}  from 'app/entities/pointage/pointage.reducer';
+import { AvFeedback,  AvField ,Input} from 'availity-reactstrap-validation';
+import Moment from 'moment';
+import {CreateList}  from './pointage.reducer';
+
 
 
 
@@ -23,117 +23,158 @@ export interface IPointageJourProps extends StateProps, DispatchProps, RouteComp
 
 export const PointageJour = (props: IPointageJourProps) => {
   const [filter, setFilter] = useState('');
+  
+  const { projets,employeList,pointageList,loading,updateSuccess} = props;  
+  const { account } = props;
+ 
+  const handleClose = () => {
+    props.history.push('/pointage' + props.location.search);
+  };
 
+  useEffect(() => {
+    if (props.updateSuccess) {
+      handleClose();
+    }
+  }, [props.updateSuccess]);
 
-    useEffect(() => {
+  useEffect(() => {
     props.getProjets();
-   
   },[]);
 
   useEffect(() => {
     props.getEntities();
-   
   },[]);
-  const { projets,employeList,loading,projectid} = props;  
-     
-  const saveEntity = (event, errors, values) => {
-    const tab=[];
-    let cmpt=0;
-    if (errors.length === 0) {
+
+  useEffect(() => {
+    props.getPointages();
+  },[]);
+
+  
+  /* pour filtrer la liste des employes selon le projet  */
+  const changeFilter = evt => setFilter(evt.target.value);
+  const filterByProjetId = l => l.projet && l.projet.id.toString().toUpperCase().includes(filter.toUpperCase());
+    
+
+  /* Pour tester si le pointage est deja effectue pour la meme projet dans la meme date */
+  function  ValidatePointageJour(projectId,datejour){
+    let compt=0;
+    pointageList.map(pointageelement=>{     
+      if(pointageelement.employe.projet.id===Number(projectId)
+          &&  pointageelement.dateJour===datejour)
+          compt++;
+    })
+
+      if(compt>0) 
+      return false;
+      return  true;
+}
+
+ /*  Pour le sauvegarde */
+    const saveEntity = (event, errors, values) => {
+      const tab=[];
+      let cmpt=0;
       
-           employeList.map((employe,i=0)=>{
-                  
-             tab[i]={
-
-              "dateJour": "12/02/2020",
-              "presenceMatin" :Object.values(values)[cmpt+1],
-              "presenceAPM" :Object.values(values)[cmpt+2],
-              "nbrHeureSup" : Object.values(values)[cmpt+3],
-              "remarques" : Object.values(values)[cmpt+4],
-              "employe" : {
-                "id" : employe.id
-              }
-             }
-            cmpt+=4;
-            i++;
-           }
-    )
-        
-      window.console.log(tab);
+      if (errors.length === 0) {
+             employeList.filter(filterByProjetId).map((employe,i=0)=>{
+              
+               tab[i]={
+                "dateJour": Moment(new Date()).format('YYYY-MM-DD'),
+                "projet" : Object.values(values)[0],
+                "presenceMatin" :Object.values(values)[cmpt+1],
+                "presenceAPM" :Object.values(values)[cmpt+2],
+                "nbrHeureSup" : Object.values(values)[cmpt+3],
+                "remarques" : Object.values(values)[cmpt+4],
+                "employe" : {
+                  "id" : employe.id
+                }
+               }
+              cmpt+=4;
+              i++;
+             }    
+           )
+           if(errors.length === 0 && tab.length>0){
+             const valider=ValidatePointageJour(tab[0].projet.id,Moment(new Date()).format('YYYY-MM-DD'));
+             if(valider===true)
+             props.CreateList(tab);
+             else
+             alert("le pointage est déjà effectue ");
           }
-  };
-  
-
-
-    const changeFilter = evt => setFilter(evt.target.value);
-    const filterFn = l => l.matricule.toUpperCase().includes(filter.toUpperCase());
-  
-  
-   
-  
+   }
+       
     
+    }
+
    
-    
   return (
     <div>
-
-            <AvForm   onSubmit={saveEntity}>
-                <AvGroup>
-                <AvInput id="employe-projet" type="select" className="form-control" 
-                name="projet.id" 
-                value={filter} onChange={changeFilter}>
-                  <option value="" key="0"    />
-                  {projets ? projets.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}  >
-                          {otherEntity.libelle}
-                        </option>
-                      )) 
-                    : null}
-                </AvInput>
-              </AvGroup> 
-            
-              <span>
-        <Translate contentKey="logs.filter">Filter</Translate>
-      </span>
-      <input type="text" value={filter} onChange={changeFilter} className="form-control" />
-
+        <AvForm   onSubmit={saveEntity}>
+            <AvGroup>
+                <Row >
+                  <Col xs="5"><b>Pointeur : {account.login}</b></Col>
+                  <Col xs="5"><b>Fiche Pointage</b></Col>
+                  <Col xs="auto">
+                    <Label id="dateJourLabel" for="pointage-dateJour">
+                      <b>{"Date :" +new Date().toLocaleDateString()}</b>
+                    </Label>
+                  </Col>
+                  </Row>
+            </AvGroup>
+             <hr/>
+            <AvGroup>
+                <Row>
+                  <Col xs="3"></Col>
+                  <Col xs="3"></Col>
+                  <Col xs="6" sm="4">
+                    <AvInput id="employe-projet" type="select" className="form-control" 
+                      name="projet.id" 
+                      value={filter} onChange={changeFilter} required>
+                        <option value="" key="0"  />
+                        {projets ? projets.map(otherEntity => (
+                              <option value={otherEntity.id} key={otherEntity.id}  >
+                                {otherEntity.libelle}
+                              </option>
+                            )) 
+                          : null}
+                    </AvInput>
+                  </Col>
+                </Row>
+            </AvGroup> 
  <div className="table-responsive">
         { employeList &&   employeList.length > 0 ? (
           <Table responsive  >
             <thead>
               <tr  >
                 <th className="hand" >
-                  <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="global.field.id">ID</Translate>
                 </th>  
                 <th className="hand" >
-                  <Translate contentKey="ibamApp.employe.matricule">Matricule</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="ibamApp.employe.matricule">Matricule</Translate>
                 </th>
                 <th className="hand">
-                  <Translate contentKey="ibamApp.employe.nomcomplet">Nom et Prenom</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="ibamApp.employe.nomcomplet">Nom et Prenom</Translate>
                 </th>
-               <th className="hand" >
-                  <Translate contentKey="ibamApp.pointage.presenceMatin">Nb / Heure Matin</Translate> <FontAwesomeIcon icon="sort" />
+                <th className="hand" >
+                  <Translate contentKey="ibamApp.pointage.presenceMatin">Nb / Heure Matin</Translate>
                 </th>
                
-               <th className="hand" >
-                  <Translate contentKey="ibamApp.pointage.presenceAPM">Nb / Heure Après-midi</Translate> <FontAwesomeIcon icon="sort" />
+                <th className="hand" >
+                  <Translate contentKey="ibamApp.pointage.presenceAPM">Nb / Heure Après-midi</Translate>
                 </th>
         
-                 <th className="hand" >
-                  <Translate contentKey="ibamApp.pointage.nbrHeureSup">Nb / H,sup</Translate> <FontAwesomeIcon icon="sort" />
+                <th className="hand" >
+                  <Translate contentKey="ibamApp.pointage.nbrHeureSup">Nb / H,sup</Translate>
                 </th>
-                 <th className="hand" >
-                  <Translate contentKey="ibamApp.pointage.remarques">Observation</Translate> <FontAwesomeIcon icon="sort" />
-           </th>   
-      </tr>
+                <th className="hand" >
+                  <Translate contentKey="ibamApp.pointage.remarques">Observation</Translate>
+                </th>   
+              </tr>
             </thead>
             <tbody>
-             
-              { employeList.filter(filterFn).map((employe, i)=> (
+              { employeList.filter(filterByProjetId).map((employe, i)=> (
                 <tr   key={employe.id}  >
                   <td>{employe.id} </td>
                   <td>{employe.matricule}</td>
-                  <td>{employe.nom} {employe.prenom}</td>
+                  <td>{employe.nom +"  "+ employe.prenom}</td>
                   <td> <AvInput id={employe.id+"1"} type="checkbox" name={"Matin"+employe.id}/></td>
                   <td> <AvInput id={employe.id+"2"} type="checkbox" name={"APM"+employe.id} /></td>
                   <td> <AvInput id={employe.id+"3"} type="text" name={"nbsup"+employe.id} /></td>
@@ -149,35 +190,32 @@ export const PointageJour = (props: IPointageJourProps) => {
             </div>
           )
         )}
-      </div>     
-         <Button color="primary" id="save-entity" type="submit" >
+      </div>    
+              <Button color="primary" id="save-entity" type="submit" >
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
-              </Button>             
-          </AvForm>
-
-
-          
-   </div>
-       
+              </Button> 
+          </AvForm>      
+   </div> 
   );
 };
 
 
 const mapStateToProps = (storeState: IRootState) => ({
+    account: storeState.authentication.account,
     projets: storeState.projet.entities,
-    employeList : storeState.employe.currList,
+    employeList : storeState.employe.entities,
+    pointageList : storeState.pointage.entities,
     loading: storeState.employe.loading,
-    projectid :storeState.employe.projectid
+    updateSuccess: storeState.pointage.updateSuccess
 });
 
 const mapDispatchToProps = {
   getProjets,
   getEntities,
-  filterEmployees
-
-  
+  getPointages,
+  CreateList
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

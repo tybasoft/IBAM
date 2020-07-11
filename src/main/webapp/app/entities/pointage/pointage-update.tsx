@@ -68,9 +68,7 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
       </Row>
       <Row className="justify-content-center">
         <Col md="8">
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
+          
             <AvForm model={isNew ? {} : pointageEntity} onSubmit={saveEntity}>
               {!isNew ? (
                 <AvGroup>
@@ -159,7 +157,7 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
             </AvForm>
-          )}
+       
         </Col>
       </Row>
     </div>

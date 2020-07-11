@@ -1,7 +1,10 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Document;
 import com.tybasoft.ibam.domain.Paie;
+import com.tybasoft.ibam.domain.Pointage;
 import com.tybasoft.ibam.repository.PaieRepository;
+import com.tybasoft.ibam.service.PaieService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -41,9 +44,11 @@ public class PaieResource {
     private String applicationName;
 
     private final PaieRepository paieRepository;
+    private final PaieService  paieService;
 
-    public PaieResource(PaieRepository paieRepository) {
+    public PaieResource(PaieRepository paieRepository,PaieService  paieService) {
         this.paieRepository = paieRepository;
+        this.paieService=paieService;
     }
 
     /**
@@ -53,17 +58,17 @@ public class PaieResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new paie, or with status {@code 400 (Bad Request)} if the paie has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/paies")
-    public ResponseEntity<Paie> createPaie(@Valid @RequestBody Paie paie) throws URISyntaxException {
-        log.debug("REST request to save Paie : {}", paie);
-        if (paie.getId() != null) {
-            throw new BadRequestAlertException("A new paie cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Paie result = paieRepository.save(paie);
-        return ResponseEntity.created(new URI("/api/paies/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
+//    @PostMapping("/paies")
+//    public ResponseEntity<Paie> createPaie(@Valid @RequestBody Paie paie) throws URISyntaxException {
+//        log.debug("REST request to save Paie : {}", paie);
+//        if (paie.getId() != null) {
+//            throw new BadRequestAlertException("A new paie cannot already have an ID", ENTITY_NAME, "idexists");
+//        }
+//        Paie result = paieRepository.save(paie);
+//        return ResponseEntity.created(new URI("/api/paies/" + result.getId()))
+//            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+//            .body(result);
+//    }
 
     /**
      * {@code PUT  /paies} : Updates an existing paie.
@@ -125,4 +130,22 @@ public class PaieResource {
         paieRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
+    
+    @GetMapping("/paies/genererPaie/{nbHeuSup}")
+    public float GenererPaie(@Valid @RequestBody Paie paie,@PathVariable float  nbHeuSup) throws URISyntaxException {
+        float   salaire=paieService.CalculeMontantEmploye(paie, nbHeuSup);
+        return salaire;
+    }
+
+   
+    @PostMapping("/paies")
+    public ResponseEntity<Paie[]> createPaieList(@Valid @RequestBody Paie []  tab) throws URISyntaxException {
+       
+    	Paie [] result = paieService.createPaieList(tab);
+        return ResponseEntity.created(new URI("/api/paies/"))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME,"created"))
+            .body(result);
+    }
+    
+    
 }

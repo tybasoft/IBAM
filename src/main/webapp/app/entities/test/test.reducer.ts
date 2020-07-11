@@ -7,15 +7,13 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 import { IEmploye, defaultValue } from 'app/shared/model/employe.model';
 
 export const ACTION_TYPES = {
-  FETCH_EMPLOYE_LIST: 'employe/FETCH_EMPLOYE_LIST',
-  FILTER_EMPLOYE_BY_PID: 'employe/FILTER_EMPLOYE_BY_PID'
+  FETCH_EMPLOYE_LIST: 'employe/FETCH_EMPLOYE_LIST'
 };
 
 const initialState = {
   loading: false,
   errorMessage: null,
   entities: [] as ReadonlyArray<IEmploye>,
-  currList: [] as ReadonlyArray<IEmploye>,
   entity: defaultValue,
   projectid: '',
   updating: false,
@@ -30,7 +28,6 @@ export type EmployeState = Readonly<typeof initialState>;
 export default (state: EmployeState = initialState, action): EmployeState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_EMPLOYE_LIST):
-    case REQUEST(ACTION_TYPES.FILTER_EMPLOYE_BY_PID):
       return {
         ...state,
         errorMessage: null,
@@ -38,7 +35,6 @@ export default (state: EmployeState = initialState, action): EmployeState => {
         updating: true
       };
     case FAILURE(ACTION_TYPES.FETCH_EMPLOYE_LIST):
-    case FAILURE(ACTION_TYPES.FILTER_EMPLOYE_BY_PID):
       return {
         ...state,
         loading: false,
@@ -51,15 +47,7 @@ export default (state: EmployeState = initialState, action): EmployeState => {
         ...state,
         loading: false,
         entities: action.payload.data,
-        currList: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
-      };
-    case SUCCESS(ACTION_TYPES.FILTER_EMPLOYE_BY_PID):
-      return {
-        ...state,
-        loading: false,
-        currList: action.payload.entities,
-        projectid: action.payload.projectid
       };
 
     default:
@@ -78,27 +66,3 @@ export const getEntities: ICrudGetAllAction<IEmploye> = (page, size, sort) => {
     payload: axios.get<IEmploye>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
-
-/* 
-    projectid : projectid,
-    items  : projectid === '' ? employes: employes.filter((el) => el.projet && el.projet.id && (el.projet.id ===projectid))
-  
-    */
-
-export const filterEmployees = (employes, projectid) => dispatch => {
-  /* dispatch({
-    type: ACTION_TYPES.FILTER_EMPLOYE_BY_PID,
-    payload: {
-      projectid:projectid,
-      entities: employes
-     
-    },
-  }); */
-};
-
-/* projectid === ""
-          ? employes
-          : employes.filter(
-              (x) => x.projet.id.indexOf(projectid.toUpperCase()) >= 0
-            ),
-            */
