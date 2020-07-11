@@ -4,7 +4,6 @@ import com.tybasoft.ibam.domain.Document;
 import com.tybasoft.ibam.domain.Paie;
 import com.tybasoft.ibam.domain.Pointage;
 import com.tybasoft.ibam.repository.PaieRepository;
-import com.tybasoft.ibam.service.PaieService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -44,11 +43,11 @@ public class PaieResource {
     private String applicationName;
 
     private final PaieRepository paieRepository;
-    private final PaieService  paieService;
+   
 
-    public PaieResource(PaieRepository paieRepository,PaieService  paieService) {
+    public PaieResource(PaieRepository paieRepository) {
         this.paieRepository = paieRepository;
-        this.paieService=paieService;
+        
     }
 
     /**
@@ -130,22 +129,4 @@ public class PaieResource {
         paieRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
-    
-    @GetMapping("/paies/genererPaie/{nbHeuSup}")
-    public float GenererPaie(@Valid @RequestBody Paie paie,@PathVariable float  nbHeuSup) throws URISyntaxException {
-        float   salaire=paieService.CalculeMontantEmploye(paie, nbHeuSup);
-        return salaire;
-    }
-
-   
-    @PostMapping("/paies")
-    public ResponseEntity<Paie[]> createPaieList(@Valid @RequestBody Paie []  tab) throws URISyntaxException {
-       
-    	Paie [] result = paieService.createPaieList(tab);
-        return ResponseEntity.created(new URI("/api/paies/"))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME,"created"))
-            .body(result);
-    }
-    
-    
 }
