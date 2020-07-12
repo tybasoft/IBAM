@@ -2,31 +2,31 @@
   "ibamApp": {
     "image": {
       "home": {
-        "title": "Images",
-        "createLabel": "Create a new Image",
-        "createOrEditLabel": "Create or edit a Image",
-        "notFound": "No Images found"
+        "title": "الصور",
+        "createLabel": "إنشاء صورة جديدة",
+        "createOrEditLabel": " إنشاء  أو تعديل صورة",
+        "notFound": "لم يتم العثور على صور"
       },
-      "created": "A new Image is created with identifier {{ param }}",
-      "updated": "A Image is updated with identifier {{ param }}",
-      "deleted": "A Image is deleted with identifier {{ param }}",
+      "created": "يتم إنشاء صورة جديدة مع المعرف {{ param }}",
+      "updated": " يتم تحديث الصورة مع معرف {{ param }}",
+      "deleted": "لقد تم حذف الصورة مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Image {{ id }}?"
+        "question": "هل أنت متأكد أنك تريد حذف الصورة {{ id }}?"
       },
       "detail": {
-        "title": "Image"
+        "title": "صورة"
       },
-      "titre": "Titre",
-      "path": "Path",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "materiau": "Materiau",
-      "entreprise": "Entreprise",
-      "materiel": "Materiel",
-      "consommation": "Consommation",
-      "maintenance": "Maintenance",
-      "employee": "Employee",
-      "bonReception": "Bon Reception"
+      "titre": "عنوان",
+      "path": "مسار",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiau": "مواد",
+      "entreprise": "شركة",
+      "materiel": "أداة",
+      "consommation": "إستهلاك",
+      "maintenance": "صيانة",
+      "employee": "الموظف",
+      "bonReception": "إستلام الطلبية"
     }
   }
 }

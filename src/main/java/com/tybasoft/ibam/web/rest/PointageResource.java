@@ -5,7 +5,7 @@ import com.tybasoft.ibam.repository.PointageRepository;
 import com.tybasoft.ibam.service.FileStorageService;
 import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
-
+import com.tybasoft.ibam.service.PointageService;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -45,9 +45,10 @@ public class PointageResource {
     private String applicationName;
 
     private final PointageRepository pointageRepository;
-
-    public PointageResource(PointageRepository pointageRepository) {
+    private final  PointageService   pointageService;
+    public PointageResource(PointageRepository pointageRepository,PointageService   pointageService) {
         this.pointageRepository = pointageRepository;
+        this.pointageService=pointageService;
     }
 
     /**
@@ -65,13 +66,14 @@ public class PointageResource {
         if (pointage.getId() != null) {
             throw new BadRequestAlertException("A new pointage cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
         Pointage result = pointageRepository.save(pointage);
         return ResponseEntity
                 .created(new URI("/api/pointages/" + result.getId())).headers(HeaderUtil
                         .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
                 .body(result);
     }
-
+    
     /**
      * {@code PUT  /pointages} : Updates an existing pointage.
      *
@@ -167,4 +169,14 @@ public class PointageResource {
         return ResponseEntity.ok().body(true);
 
     }
+    
+    /*Pour faire l'insertion du pointage du jour dans la base de donnees*/
+    @PostMapping("/pointages/createPointageList")
+    public ResponseEntity<Pointage[]> createListPointage(@Valid @RequestBody Pointage []  tab) throws URISyntaxException {
+		    	Pointage [] result = pointageService.createPointage(tab);
+		        return   ResponseEntity.created(new URI("/api/pointages/" ))
+		                .headers(HeaderUtil.createEntityCreationAlert(applicationName,true,ENTITY_NAME,""))
+		                .body(result);  
+    }
+
 }

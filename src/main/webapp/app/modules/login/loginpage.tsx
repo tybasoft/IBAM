@@ -4,21 +4,17 @@ import { Redirect, RouteComponentProps } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
 import { login } from 'app/shared/reducers/authentication';
-import LoginModal from './login-modal';
+import LoginForm from './LoginForm';
 
-export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface ILoginPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
-export const Login = (props: ILoginProps) => {
-  const [showModal, setShowModal] = useState(props.showModal);
-
-  useEffect(() => {
-    setShowModal(true);
-  }, []);
-
+export const LoginPage = (props: ILoginPageProps) => {
+ 
+  
   const handleLogin = (username, password, rememberMe = false) => props.login(username, password, rememberMe);
 
   const handleClose = () => {
-    setShowModal(false);
+   
     props.history.push('/');
   };
 
@@ -28,7 +24,7 @@ export const Login = (props: ILoginProps) => {
     return <Redirect to={from} />;
   }
   
-  return <LoginModal showModal={showModal} handleLogin={handleLogin} handleClose={handleClose} loginError={props.loginError} />;
+  return <LoginForm handleLogin={handleLogin} loginError={props.loginError} />;
 };
 
 const mapStateToProps = ({ authentication }: IRootState) => ({
@@ -42,4 +38,5 @@ const mapDispatchToProps = { login };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

@@ -62,11 +62,11 @@ export const TransfertMaterielDetail = (props: ITransfertMaterielDetailProps) =>
           <dt>
             <Translate contentKey="ibamApp.transfertMateriel.materiel">Materiel</Translate>
           </dt>
-          <dd>{transfertMaterielEntity.materiel ? transfertMaterielEntity.materiel.id: ''}</dd>
+          <dd>{transfertMaterielEntity.materiel ? transfertMaterielEntity.materiel.libelle: ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.transfertMateriel.projet">Projet</Translate>
           </dt>
-          <dd>{transfertMaterielEntity.projet ? transfertMaterielEntity.projet.id : ''}</dd>
+          <dd>{transfertMaterielEntity.projet ? transfertMaterielEntity.projet.libelle : ''}</dd>
         </dl>
         <Button tag={Link} to="/transfert-materiel" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

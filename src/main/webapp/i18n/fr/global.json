@@ -137,7 +137,8 @@
       "open": "Ouvrir",
       "save": "Sauvegarder",
       "view": "Voir",
-      "download": "Télécharger"
+      "download": "Télécharger",
+      "genererpaie": "générer"
     },
     "detail": {
       "field": "Champs",

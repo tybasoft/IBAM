@@ -44,7 +44,8 @@
       "projet": "Projet",
       "equipe": "Equipe",
       "fonction": "Fonction",
-      "image": "Image"
+      "image": "Image",
+      "nomcomplet": "Nom & Prenom"
     }
   }
 }

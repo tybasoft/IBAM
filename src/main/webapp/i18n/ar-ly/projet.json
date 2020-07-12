@@ -2,38 +2,38 @@
   "ibamApp": {
     "projet": {
       "home": {
-        "title": "Projets",
-        "createLabel": "Create a new Projet",
-        "createOrEditLabel": "Create or edit a Projet",
-        "notFound": "No Projets found"
+        "title": "المشاريع",
+        "createLabel": "إنشاء مشروع جديد",
+        "createOrEditLabel": "إنشاء أو تعديل مشروع",
+        "notFound": "لم يتم العثور على مشاريع"
       },
-      "created": "A new Projet is created with identifier {{ param }}",
-      "updated": "A Projet is updated with identifier {{ param }}",
-      "deleted": "A Projet is deleted with identifier {{ param }}",
+      "created": " يتم إنشاء مشروع جديد مع معرف{{ param }}",
+      "updated": " يتم تحديث المشروع  مع معرف {{ param }}",
+      "deleted": " يتم حذف المشروع  مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Projet {{ id }}?"
+        "question": "هل أنت متأكد أنك تريد حذف المشروع{{ id }}?"
       },
       "detail": {
-        "title": "Projet"
+        "title": "مشروع"
       },
-      "reference": "Reference",
-      "libelle": "Libelle",
-      "description": "Description",
-      "dateDebut": "Date Debut",
-      "dateFin": "Date Fin",
-      "nbrEmploye": "Nbr Employe",
-      "budget": "Budget",
-      "adresse": "Adresse",
-      "ville": "Ville",
-      "pays": "Pays",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "transfert": "Transfert",
-      "equipe": "Equipe",
-      "employe": "Employe",
-      "entreprise": "Entreprise",
-      "horaire": "Horaire",
-      "depot": "Depot"
+      "reference": "مرجع",
+      "libelle": "صياغة",
+      "description": "وصف",
+      "dateDebut": "تاريخ البدء",
+      "dateFin": "تاريخ الانتهاء",
+      "nbrEmploye": "عدد الموظفين",
+      "budget": "الميزانية",
+      "adresse": "العنوان",
+      "ville": "المدينة",
+      "pays": "البلد",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "transfert": "نقل",
+      "equipe": "فريق",
+      "employe": "الموظف",
+      "entreprise": "الشركة ",
+      "horaire": "الجدول الزمني",
+      "depot": "مستودع"
     }
   }
 }

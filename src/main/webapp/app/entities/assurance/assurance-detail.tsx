@@ -64,7 +64,7 @@ export const AssuranceDetail = (props: IAssuranceDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.assurance.materiel">Materiel</Translate>
           </dt>
-          <dd>{assuranceEntity.materiel ? assuranceEntity.materiel.id : ''}</dd>
+          <dd>{assuranceEntity.materiel ? assuranceEntity.materiel.libelle : ''}</dd>
         </dl>
         <Button tag={Link} to="/assurance" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

@@ -28,6 +28,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import com.tybasoft.ibam.service.FileStorageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
+
+
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.Location}.
@@ -167,4 +172,7 @@ public class LocationResource {
         return ResponseEntity.ok().body(true);
 
     }
+   
+    
+
 }

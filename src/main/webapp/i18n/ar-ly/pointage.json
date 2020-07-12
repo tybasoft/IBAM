@@ -2,28 +2,28 @@
   "ibamApp": {
     "pointage": {
       "home": {
-        "title": "Pointages",
-        "createLabel": "Create a new Pointage",
-        "createOrEditLabel": "Create or edit a Pointage",
-        "notFound": "No Pointages found"
+        "title": "إدخال وقت الحضور",
+        "createLabel": "إنشاء وقت حضور جديد",
+        "createOrEditLabel": "إنشاء أو تعديل وقت حضور",
+        "notFound": "لم يتم العثور على أي وقت حضورمسجل"
       },
-      "created": "A new Pointage is created with identifier {{ param }}",
-      "updated": "A Pointage is updated with identifier {{ param }}",
-      "deleted": "A Pointage is deleted with identifier {{ param }}",
+      "created": " يتم إنشاء وقت حضور جديد مع معرف {{ param }}",
+      "updated": "يتم تحديث وقت حضورمع معرف {{ param }}",
+      "deleted": "تم حذف وقت حضور مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Pointage {{ id }}?"
+        "question": "هل أنت متأكد أنك تريد حذف وقت حضور {{ id }}?"
       },
       "detail": {
-        "title": "Pointage"
+        "title": "وقت حضور"
       },
-      "dateJour": "Date Jour",
-      "presenceMatin": "Presence Matin",
-      "presenceAPM": "Presence APM",
-      "nbrHeureSup": "Nbr Heure Sup",
-      "remarques": "Remarques",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "employe": "Employe"
+      "dateJour": "تاريخ اليوم",
+      "presenceMatin": "الحضور الصباحي",
+      "presenceAPM": "الحضور المسائي",
+      "nbrHeureSup": "عدد ساعات العمل الإضافي",
+      "remarques": "ملاحظات",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "employe": "موظف"
     }
   }
 }

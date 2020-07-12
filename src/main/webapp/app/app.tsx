@@ -89,6 +89,7 @@ export const App = (props: IAppProps) => {
               </ModalFooter>
             </Modal>
           </Card>
+         
           <Footer />
         </div>
       </div>
