@@ -55,6 +55,12 @@ export const Paie = (props: IPaieProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.paie.home.createLabel">Create new Paie</Translate>
         </Link>
+        &nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+        <Link to={`${match.url}/paiement`}  className="btn btn-primary jh-generer-paie" id="jh-generer-paie">
+          <FontAwesomeIcon icon="plus" />
+            <Translate contentKey="ibamApp.paie.home.genererpaiement">Générer</Translate>
+        </Link>
+    
        
       </h2>
       <div className="table-responsive">
