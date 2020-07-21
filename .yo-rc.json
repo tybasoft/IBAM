@@ -36,7 +36,7 @@
     "dtoSuffix": "DTO",
     "otherModules": [],
     "blueprints": [],
-    "lastLiquibaseTimestamp": 1592645008000
+    "lastLiquibaseTimestamp": 1595183335000
   },
   "git-provider": "GitHub",
   "git-company": "tybasoft",

@@ -5,8 +5,9 @@
         "title": "Pointages",
         "createLabel": "Créer un nouveau Pointage",
         "createOrEditLabel": "Créer ou éditer un Pointage",
-        "pointer": "Pointer",
-        "notFound": "Aucun Pointage trouvé"
+        "notFound": "Aucun Pointage trouvé",
+        "fichePointage": "Fiche Pointage",
+        "pointer": "Pointer"
       },
       "created": "Un nouveau Pointage a été créé avec l'identifiant {{ param }}",
       "updated": "Le Pointage avec l'identifiant {{ param }} a été mis à jour",
@@ -24,7 +25,8 @@
       "remarques": "Remarques",
       "userModif": "User Modif",
       "dateModif": "Date Modif",
-      "employe": "Employe"
+      "employe": "Employe",
+      "fichePointage": "Fiche Pointage"
     }
   }
 }

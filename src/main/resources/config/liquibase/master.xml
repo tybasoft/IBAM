@@ -45,6 +45,7 @@
     <include file="config/liquibase/changelog/20200512004400_added_entity_CentreMaintenance.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200512004500_added_entity_VisiteTechnique.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200620092328_added_entity_Notification.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200719182855_added_entity_FichePointage.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20200512001600_added_entity_constraints_Materiau.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200512002200_added_entity_constraints_Entreprise.xml" relativeToChangelogFile="false"/>
@@ -65,6 +66,7 @@
     <include file="config/liquibase/changelog/20200512004300_added_entity_constraints_Maintenance.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200512004500_added_entity_constraints_VisiteTechnique.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200620092328_added_entity_constraints_Notification.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200719182855_added_entity_constraints_FichePointage.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200523052350_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200523054708_changelog.xml" relativeToChangelogFile="false"/>

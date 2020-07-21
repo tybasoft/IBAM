@@ -13,9 +13,9 @@ import reducer, {
   getEntity,
   updateEntity,
   reset
-} from 'app/entities/pointage/pointage.reducer';
+} from 'app/entities/fiche-pointage/fiche-pointage.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { IPointage, defaultValue } from 'app/shared/model/pointage.model';
+import { IFichePointage, defaultValue } from 'app/shared/model/fiche-pointage.model';
 
 describe('Entities reducer tests', () => {
   function isEmpty(element): boolean {
@@ -29,9 +29,8 @@ describe('Entities reducer tests', () => {
   const initialState = {
     loading: false,
     errorMessage: null,
-    entities: [] as ReadonlyArray<IPointage>,
+    entities: [] as ReadonlyArray<IFichePointage>,
     entity: defaultValue,
-    totalItems: 0,
     updating: false,
     updateSuccess: false
   };
@@ -61,7 +60,7 @@ describe('Entities reducer tests', () => {
 
   describe('Requests', () => {
     it('should set state to loading', () => {
-      testMultipleTypes([REQUEST(ACTION_TYPES.FETCH_POINTAGE_LIST), REQUEST(ACTION_TYPES.FETCH_POINTAGE)], {}, state => {
+      testMultipleTypes([REQUEST(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST), REQUEST(ACTION_TYPES.FETCH_FICHEPOINTAGE)], {}, state => {
         expect(state).toMatchObject({
           errorMessage: null,
           updateSuccess: false,
@@ -72,7 +71,11 @@ describe('Entities reducer tests', () => {
 
     it('should set state to updating', () => {
       testMultipleTypes(
-        [REQUEST(ACTION_TYPES.CREATE_POINTAGE), REQUEST(ACTION_TYPES.UPDATE_POINTAGE), REQUEST(ACTION_TYPES.DELETE_POINTAGE)],
+        [
+          REQUEST(ACTION_TYPES.CREATE_FICHEPOINTAGE),
+          REQUEST(ACTION_TYPES.UPDATE_FICHEPOINTAGE),
+          REQUEST(ACTION_TYPES.DELETE_FICHEPOINTAGE)
+        ],
         {},
         state => {
           expect(state).toMatchObject({
@@ -102,11 +105,11 @@ describe('Entities reducer tests', () => {
     it('should set a message in errorMessage', () => {
       testMultipleTypes(
         [
-          FAILURE(ACTION_TYPES.FETCH_POINTAGE_LIST),
-          FAILURE(ACTION_TYPES.FETCH_POINTAGE),
-          FAILURE(ACTION_TYPES.CREATE_POINTAGE),
-          FAILURE(ACTION_TYPES.UPDATE_POINTAGE),
-          FAILURE(ACTION_TYPES.DELETE_POINTAGE)
+          FAILURE(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST),
+          FAILURE(ACTION_TYPES.FETCH_FICHEPOINTAGE),
+          FAILURE(ACTION_TYPES.CREATE_FICHEPOINTAGE),
+          FAILURE(ACTION_TYPES.UPDATE_FICHEPOINTAGE),
+          FAILURE(ACTION_TYPES.DELETE_FICHEPOINTAGE)
         ],
         'error message',
         state => {
@@ -122,16 +125,15 @@ describe('Entities reducer tests', () => {
 
   describe('Successes', () => {
     it('should fetch all entities', () => {
-      const payload = { data: [{ 1: 'fake1' }, { 2: 'fake2' }], headers: { 'x-total-count': 123 } };
+      const payload = { data: [{ 1: 'fake1' }, { 2: 'fake2' }] };
       expect(
         reducer(undefined, {
-          type: SUCCESS(ACTION_TYPES.FETCH_POINTAGE_LIST),
+          type: SUCCESS(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST),
           payload
         })
       ).toEqual({
         ...initialState,
         loading: false,
-        totalItems: payload.headers['x-total-count'],
         entities: payload.data
       });
     });
@@ -140,7 +142,7 @@ describe('Entities reducer tests', () => {
       const payload = { data: { 1: 'fake1' } };
       expect(
         reducer(undefined, {
-          type: SUCCESS(ACTION_TYPES.FETCH_POINTAGE),
+          type: SUCCESS(ACTION_TYPES.FETCH_FICHEPOINTAGE),
           payload
         })
       ).toEqual({
@@ -154,7 +156,7 @@ describe('Entities reducer tests', () => {
       const payload = { data: 'fake payload' };
       expect(
         reducer(undefined, {
-          type: SUCCESS(ACTION_TYPES.CREATE_POINTAGE),
+          type: SUCCESS(ACTION_TYPES.CREATE_FICHEPOINTAGE),
           payload
         })
       ).toEqual({
@@ -168,7 +170,7 @@ describe('Entities reducer tests', () => {
     it('should delete entity', () => {
       const payload = 'fake payload';
       const toTest = reducer(undefined, {
-        type: SUCCESS(ACTION_TYPES.DELETE_POINTAGE),
+        type: SUCCESS(ACTION_TYPES.DELETE_FICHEPOINTAGE),
         payload
       });
       expect(toTest).toMatchObject({
@@ -191,79 +193,79 @@ describe('Entities reducer tests', () => {
       axios.delete = sinon.stub().returns(Promise.resolve(resolvedObject));
     });
 
-    it('dispatches ACTION_TYPES.FETCH_POINTAGE_LIST actions', async () => {
+    it('dispatches ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.FETCH_POINTAGE_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST)
         },
         {
-          type: SUCCESS(ACTION_TYPES.FETCH_POINTAGE_LIST),
+          type: SUCCESS(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST),
           payload: resolvedObject
         }
       ];
       await store.dispatch(getEntities()).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
-    it('dispatches ACTION_TYPES.FETCH_POINTAGE actions', async () => {
+    it('dispatches ACTION_TYPES.FETCH_FICHEPOINTAGE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.FETCH_POINTAGE)
+          type: REQUEST(ACTION_TYPES.FETCH_FICHEPOINTAGE)
         },
         {
-          type: SUCCESS(ACTION_TYPES.FETCH_POINTAGE),
+          type: SUCCESS(ACTION_TYPES.FETCH_FICHEPOINTAGE),
           payload: resolvedObject
         }
       ];
       await store.dispatch(getEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
-    it('dispatches ACTION_TYPES.CREATE_POINTAGE actions', async () => {
+    it('dispatches ACTION_TYPES.CREATE_FICHEPOINTAGE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.CREATE_POINTAGE)
+          type: REQUEST(ACTION_TYPES.CREATE_FICHEPOINTAGE)
         },
         {
-          type: SUCCESS(ACTION_TYPES.CREATE_POINTAGE),
+          type: SUCCESS(ACTION_TYPES.CREATE_FICHEPOINTAGE),
           payload: resolvedObject
         },
         {
-          type: REQUEST(ACTION_TYPES.FETCH_POINTAGE_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST)
         },
         {
-          type: SUCCESS(ACTION_TYPES.FETCH_POINTAGE_LIST),
+          type: SUCCESS(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST),
           payload: resolvedObject
         }
       ];
       await store.dispatch(createEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
-    it('dispatches ACTION_TYPES.UPDATE_POINTAGE actions', async () => {
+    it('dispatches ACTION_TYPES.UPDATE_FICHEPOINTAGE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.UPDATE_POINTAGE)
+          type: REQUEST(ACTION_TYPES.UPDATE_FICHEPOINTAGE)
         },
         {
-          type: SUCCESS(ACTION_TYPES.UPDATE_POINTAGE),
+          type: SUCCESS(ACTION_TYPES.UPDATE_FICHEPOINTAGE),
           payload: resolvedObject
         }
       ];
       await store.dispatch(updateEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
-    it('dispatches ACTION_TYPES.DELETE_POINTAGE actions', async () => {
+    it('dispatches ACTION_TYPES.DELETE_FICHEPOINTAGE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.DELETE_POINTAGE)
+          type: REQUEST(ACTION_TYPES.DELETE_FICHEPOINTAGE)
         },
         {
-          type: SUCCESS(ACTION_TYPES.DELETE_POINTAGE),
+          type: SUCCESS(ACTION_TYPES.DELETE_FICHEPOINTAGE),
           payload: resolvedObject
         },
         {
-          type: REQUEST(ACTION_TYPES.FETCH_POINTAGE_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST)
         },
         {
-          type: SUCCESS(ACTION_TYPES.FETCH_POINTAGE_LIST),
+          type: SUCCESS(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST),
           payload: resolvedObject
         }
       ];

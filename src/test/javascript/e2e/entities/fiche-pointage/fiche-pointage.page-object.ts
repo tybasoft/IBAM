@@ -4,13 +4,13 @@ import { waitUntilAnyDisplayed, waitUntilDisplayed, click, waitUntilHidden, isVi
 
 import NavBarPage from './../../page-objects/navbar-page';
 
-import PointageUpdatePage from './pointage-update.page-object';
+import FichePointageUpdatePage from './fiche-pointage-update.page-object';
 
 const expect = chai.expect;
-export class PointageDeleteDialog {
+export class FichePointageDeleteDialog {
   deleteModal = element(by.className('modal'));
-  private dialogTitle: ElementFinder = element(by.id('ibamApp.pointage.delete.question'));
-  private confirmButton = element(by.id('jhi-confirm-delete-pointage'));
+  private dialogTitle: ElementFinder = element(by.id('ibamApp.fichePointage.delete.question'));
+  private confirmButton = element(by.id('jhi-confirm-delete-fichePointage'));
 
   getDialogTitle() {
     return this.dialogTitle;
@@ -21,10 +21,10 @@ export class PointageDeleteDialog {
   }
 }
 
-export default class PointageComponentsPage {
+export default class FichePointageComponentsPage {
   createButton: ElementFinder = element(by.id('jh-create-entity'));
   deleteButtons = element.all(by.css('div table .btn-danger'));
-  title: ElementFinder = element(by.id('pointage-heading'));
+  title: ElementFinder = element(by.id('fiche-pointage-heading'));
   noRecords: ElementFinder = element(by.css('#app-view-container .table-responsive div.alert.alert-warning'));
   table: ElementFinder = element(by.css('#app-view-container div.table-responsive > table'));
 
@@ -43,27 +43,27 @@ export default class PointageComponentsPage {
   }
 
   async goToPage(navBarPage: NavBarPage) {
-    await navBarPage.getEntityPage('pointage');
+    await navBarPage.getEntityPage('fiche-pointage');
     await waitUntilAnyDisplayed([this.noRecords, this.table]);
     return this;
   }
 
-  async goToCreatePointage() {
+  async goToCreateFichePointage() {
     await this.createButton.click();
-    return new PointageUpdatePage();
+    return new FichePointageUpdatePage();
   }
 
-  async deletePointage() {
+  async deleteFichePointage() {
     const deleteButton = this.getDeleteButton(this.records.last());
     await click(deleteButton);
 
-    const pointageDeleteDialog = new PointageDeleteDialog();
-    await waitUntilDisplayed(pointageDeleteDialog.deleteModal);
-    expect(await pointageDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/ibamApp.pointage.delete.question/);
-    await pointageDeleteDialog.clickOnConfirmButton();
+    const fichePointageDeleteDialog = new FichePointageDeleteDialog();
+    await waitUntilDisplayed(fichePointageDeleteDialog.deleteModal);
+    expect(await fichePointageDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/ibamApp.fichePointage.delete.question/);
+    await fichePointageDeleteDialog.clickOnConfirmButton();
 
-    await waitUntilHidden(pointageDeleteDialog.deleteModal);
+    await waitUntilHidden(fichePointageDeleteDialog.deleteModal);
 
-    expect(await isVisible(pointageDeleteDialog.deleteModal)).to.be.false;
+    expect(await isVisible(fichePointageDeleteDialog.deleteModal)).to.be.false;
   }
 }
