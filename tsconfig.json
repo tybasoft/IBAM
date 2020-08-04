@@ -12,7 +12,12 @@
     "suppressImplicitAnyIndexErrors": true,
     "outDir": "target/classes/static/app",
     "lib": ["es2015", "es2017", "dom"],
-    "types": ["webpack-env", "jest"],
+    "types": [
+      "webpack-env",
+      "jest",
+      "googlemaps",
+      "markerclustererplus"
+    ],
     "allowJs": true,
     "checkJs": false,
     "baseUrl": "./",

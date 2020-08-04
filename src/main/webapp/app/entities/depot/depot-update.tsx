@@ -131,6 +131,18 @@ export const DepotUpdate = (props: IDepotUpdateProps) => {
                 </Label>
                 <AvField id="depot-dateModif" type="date" className="form-control" name="dateModif" />
               </AvGroup>
+              <AvGroup>
+                <Label id="latitudeLabel" for="depot-latitude">
+                  <Translate contentKey="ibamApp.depot.latitude">Latitude</Translate>
+                </Label>
+                <AvField id="depot-latitude" type="number" className="form-control" name="latitude" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="longitudeLabel" for="depot-longitude">
+                  <Translate contentKey="ibamApp.depot.longitude">Longitude</Translate>
+                </Label>
+                <AvField id="depot-longitude" type="number" className="form-control" name="longitude" />
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/depot" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
