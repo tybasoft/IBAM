@@ -25,7 +25,10 @@
       "dateModif": "تاريخ التغيير",
       "bonCommande": "طلب الشراء",
       "bonReception": "إستلام الطلبية",
-      "projet": "المشروع"
+      "projet": "المشروع",
+      "latitude": "خط العرض",
+      "longitude": "خط الطول",
+      "nolocal": "لا توجد معلومات عن الاحداثيات."
     }
   }
 }
