@@ -1,5 +1,8 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Entreprise;
+import com.tybasoft.ibam.domain.FichePointage;
+import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.domain.Pointage;
 import com.tybasoft.ibam.repository.PointageRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -169,14 +172,23 @@ public class PointageResource {
         return ResponseEntity.ok().body(true);
 
     }
-    
+
     /*Pour faire l'insertion du pointage du jour dans la base de donnees*/
     @PostMapping("/pointages/createPointageList")
     public ResponseEntity<Pointage[]> createListPointage(@Valid @RequestBody Pointage []  tab) throws URISyntaxException {
-		    	Pointage [] result = pointageService.createPointage(tab);
-		        return   ResponseEntity.created(new URI("/api/pointages/" ))
+		    	
+    	        FichePointage  fiche=tab[0].getFichePointage();
+    	        FichePointage  resultFiche=pointageService.saveFichePointage(fiche, log);
+    	        
+    	        for(int i=0;i<tab.length;i++) {
+    	        	tab[i].setFichePointage(resultFiche);
+    	        	if (tab[i].getId() != null) {
+    	                throw new BadRequestAlertException("A new pointage cannot already have an ID", ENTITY_NAME, "idexists");
+    	            }
+    	        }
+    	          Pointage [] result = pointageService.createPointage(tab);
+		          return   ResponseEntity.created(new URI("/api/pointages/" ))
 		                .headers(HeaderUtil.createEntityCreationAlert(applicationName,true,ENTITY_NAME,""))
 		                .body(result);  
     }
-
 }
