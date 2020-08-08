@@ -11,12 +11,11 @@ import { IPointage } from 'app/shared/model/pointage.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
-
 export interface IPointageProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Pointage = (props: IPointageProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
-    
+
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
@@ -49,7 +48,7 @@ export const Pointage = (props: IPointageProps) => {
   const { pointageList, match, loading, totalItems } = props;
   return (
     <div>
-        <h2 id="pointage-heading">
+      <h2 id="pointage-heading">
         <Translate contentKey="ibamApp.pointage.home.title">Pointages</Translate>
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
@@ -92,7 +91,7 @@ export const Pointage = (props: IPointageProps) => {
                 <th className="hand" onClick={sort('nbrHeureSup')}>
                   <Translate contentKey="ibamApp.pointage.nbrHeureSup">Nbr Heure Sup</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-               {/*  <th className="hand" onClick={sort('remarques')}>
+                {/* <th className="hand" onClick={sort('remarques')}>
                   <Translate contentKey="ibamApp.pointage.remarques">Remarques</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('userModif')}>
@@ -100,12 +99,9 @@ export const Pointage = (props: IPointageProps) => {
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.pointage.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th> */}
+                </th>
                 <th>
                   <Translate contentKey="ibamApp.pointage.employe">Employe</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                {/* <th>
-                  <Translate contentKey="ibamApp.pointage.fichePointage">Fiche Pointage</Translate> <FontAwesomeIcon icon="sort" />
                 </th> */}
                 <th />
               </tr>
@@ -118,23 +114,18 @@ export const Pointage = (props: IPointageProps) => {
                       {pointage.id}
                     </Button>
                   </td>
-                  <td>{pointage.dateJour ? <TextFormat type="date" value={pointage.dateJour} format={APP_LOCAL_DATE_FORMAT} /> : null}</td>
+                  <td>
+                    <TextFormat type="date" value={pointage.dateJour} format={APP_LOCAL_DATE_FORMAT} />
+                  </td>
                   <td>{pointage.presenceMatin ? 'true' : 'false'}</td>
                   <td>{pointage.presenceAPM ? 'true' : 'false'}</td>
                   <td>{pointage.nbrHeureSup}</td>
-                 {/*  <td>{pointage.remarques}</td>
+                  {/* <td>{pointage.remarques}</td>
                   <td>{pointage.userModif}</td>
                   <td>
-                    {pointage.dateModif ? <TextFormat type="date" value={pointage.dateModif} format={APP_LOCAL_DATE_FORMAT} /> : null}
-                  </td> */}
-                  <td>{pointage.employe ? <Link to={`employe/${pointage.employe.id}`}>{pointage.employe.id}</Link> : ''}</td>
-                 {/*  <td>
-                    {pointage.fichePointage ? (
-                      <Link to={`fiche-pointage/${pointage.fichePointage.id}`}>{pointage.fichePointage.id}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td> */}
+                    <TextFormat type="date" value={pointage.dateModif} format={APP_LOCAL_DATE_FORMAT} />
+                  </td>
+                  <td>{pointage.employe ? <Link to={`employe/${pointage.employe.id}`}>{pointage.employe.id}</Link> : ''}</td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${pointage.id}`} color="info" size="sm">
@@ -179,24 +170,20 @@ export const Pointage = (props: IPointageProps) => {
           )
         )}
       </div>
-      {props.totalItems ? (
-        <div className={pointageList && pointageList.length > 0 ? '' : 'd-none'}>
-          <Row className="justify-content-center">
-            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
-          </Row>
-          <Row className="justify-content-center">
-            <JhiPagination
-              activePage={paginationState.activePage}
-              onSelect={handlePagination}
-              maxButtons={5}
-              itemsPerPage={paginationState.itemsPerPage}
-              totalItems={props.totalItems}
-            />
-          </Row>
-        </div>
-      ) : (
-        ''
-      )}
+      <div className={pointageList && pointageList.length > 0 ? '' : 'd-none'}>
+        <Row className="justify-content-center">
+          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+        </Row>
+        <Row className="justify-content-center">
+          <JhiPagination
+            activePage={paginationState.activePage}
+            onSelect={handlePagination}
+            maxButtons={5}
+            itemsPerPage={paginationState.itemsPerPage}
+            totalItems={props.totalItems}
+          />
+        </Row>
+      </div>
     </div>
   );
 };
@@ -204,11 +191,11 @@ export const Pointage = (props: IPointageProps) => {
 const mapStateToProps = ({ pointage }: IRootState) => ({
   pointageList: pointage.entities,
   loading: pointage.loading,
-  totalItems: pointage.totalItems,
+  totalItems: pointage.totalItems
 });
 
 const mapDispatchToProps = {
-  getEntities,
+  getEntities
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

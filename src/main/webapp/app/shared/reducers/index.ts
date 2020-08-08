@@ -136,10 +136,6 @@ import visiteTechnique, {
 import notification, {
   NotificationState
 } from 'app/entities/notification/notification.reducer';
-// prettier-ignore
-import fichePointage, {
-  FichePointageState
-} from 'app/entities/fiche-pointage/fiche-pointage.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -184,7 +180,6 @@ export interface IRootState {
   readonly centreMaintenance: CentreMaintenanceState;
   readonly visiteTechnique: VisiteTechniqueState;
   readonly notification: NotificationState;
-  readonly fichePointage: FichePointageState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -231,9 +226,8 @@ const rootReducer = combineReducers<IRootState>({
   centreMaintenance,
   visiteTechnique,
   notification,
-  fichePointage,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
-  loadingBar
+  loadingBar,
 });
 
 export default rootReducer;

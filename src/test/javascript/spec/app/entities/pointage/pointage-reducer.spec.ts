@@ -258,13 +258,6 @@ describe('Entities reducer tests', () => {
         {
           type: SUCCESS(ACTION_TYPES.DELETE_POINTAGE),
           payload: resolvedObject
-        },
-        {
-          type: REQUEST(ACTION_TYPES.FETCH_POINTAGE_LIST)
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.FETCH_POINTAGE_LIST),
-          payload: resolvedObject
         }
       ];
       await store.dispatch(deleteEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));

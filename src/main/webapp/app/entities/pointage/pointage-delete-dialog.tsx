@@ -59,7 +59,7 @@ export const PointageDeleteDialog = (props: IPointageDeleteDialogProps) => {
 
 const mapStateToProps = ({ pointage }: IRootState) => ({
   pointageEntity: pointage.entity,
-  updateSuccess: pointage.updateSuccess,
+  updateSuccess: pointage.updateSuccess
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

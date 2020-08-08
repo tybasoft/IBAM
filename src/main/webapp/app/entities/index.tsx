@@ -37,7 +37,6 @@ import VisiteTechnique from './visite-technique';
 import PrivateRoute from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
 import Notification from './notification';
-import FichePointage from './fiche-pointage';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -193,8 +192,6 @@ const Routes = ({ match }) => (
         hasAnyAuthorities={[AUTHORITIES.CHEFMATERIEL, AUTHORITIES.ADMIN, AUTHORITIES.USER]}
       />
       <ErrorBoundaryRoute path={`${match.url}notification`} component={Notification} />
-      <ErrorBoundaryRoute path={`${match.url}fiche-pointage`} component={FichePointage} />
-      <ErrorBoundaryRoute path={`${match.url}pointage`} component={Pointage} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

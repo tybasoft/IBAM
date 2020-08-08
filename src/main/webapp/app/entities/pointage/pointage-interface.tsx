@@ -11,10 +11,6 @@ import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
 import {getEntities  as getPointages}  from 'app/entities/pointage/pointage.reducer';
 import Moment from 'moment';
 import {CreateList}  from './pointage.reducer';
-import { 
-  createEntity,
-  getEntity  as getFichePointage } 
-  from 'app/entities/fiche-pointage/fiche-pointage.reducer';
 
 
 
@@ -23,23 +19,16 @@ export interface IPointageJourProps extends StateProps, DispatchProps, RouteComp
 
 export const PointageJour = (props: IPointageJourProps) => {
   const [filter, setFilter] = useState('');
-  const [ficheId, setFicheId] = useState(null);
   
-  const { 
-    projets,
-    employeList,
-    pointageList,
-    FichePointageEntity,
-    loading,
-    updateSuccess,
-    account } = props;
+  const { projets,employeList,pointageList,loading,updateSuccess} = props;  
+  const { account } = props;
  
   const handleClose = () => {
     props.history.push('/pointage' + props.location.search);
   };
 
   useEffect(() => {
-    if (props.updateSuccess) {  
+    if (props.updateSuccess) {
       handleClose();
     }
   }, [props.updateSuccess]);
@@ -79,25 +68,9 @@ export const PointageJour = (props: IPointageJourProps) => {
  /*  Pour le sauvegarde */
     const saveEntity = (event, errors, values) => {
       const tab=[];
-      let fichePointage;
-      let entity;
       let cmpt=0;
-      fichePointage = {
-        ...FichePointageEntity,
-        ...values
-      };
+      
       if (errors.length === 0) {
-
-
-        
-            fichePointage={
-              
-              dateJour: Moment(new Date()).format('YYYY-MM-DD'),
-              projet: Object.values(values)[0]
-              
-            }
-           
-             props.createEntity(fichePointage);
              employeList.filter(filterByProjetId).map((employe,i=0)=>{
               
                tab[i]={
@@ -110,25 +83,17 @@ export const PointageJour = (props: IPointageJourProps) => {
                 "employe" : {
                   "id" : employe.id
                 }
-                ,
-                "fichePointage" : {
-                  "id" : FichePointageEntity.id
-                }
                }
               cmpt+=4;
               i++;
              }    
            )
-
-           window.console.log(tab[0]);
            if(errors.length === 0 && tab.length>0){
              const valider=ValidatePointageJour(tab[0].projet.id,Moment(new Date()).format('YYYY-MM-DD'));
-             if(valider===true){
+             if(valider===true)
              props.CreateList(tab);
-           
-            }else{
+             else
              alert("le pointage est déjà effectue ");
-            }
           }
    }
        
@@ -238,7 +203,6 @@ const mapStateToProps = (storeState: IRootState) => ({
     projets: storeState.projet.entities,
     employeList : storeState.employe.entities,
     pointageList : storeState.pointage.entities,
-    FichePointageEntity : storeState.fichePointage.entity,
     loading: storeState.employe.loading,
     updateSuccess: storeState.pointage.updateSuccess
 });
@@ -247,7 +211,6 @@ const mapDispatchToProps = {
   getProjets,
   getEntities,
   getPointages,
-  createEntity,
   CreateList
 };
 
