@@ -23,21 +23,19 @@ export interface IPointageJourProps extends StateProps, DispatchProps, RouteComp
 
 export const PointageJour = (props: IPointageJourProps) => {
   const [filter, setFilter] = useState('');
-  
-
+  const [ficheId, setFicheId] = useState(null);
   
   const { 
     projets,
     employeList,
     pointageList,
     FichePointageEntity,
-    PointageEntity,
     loading,
     updateSuccess,
     account } = props;
  
   const handleClose = () => {
-    props.history.push('/fiche-pointage' + props.location.search);
+    props.history.push('/pointage' + props.location.search);
   };
 
   useEffect(() => {
@@ -48,7 +46,13 @@ export const PointageJour = (props: IPointageJourProps) => {
 
   useEffect(() => {
     props.getProjets();
+  },[]);
+
+  useEffect(() => {
     props.getEntities();
+  },[]);
+
+  useEffect(() => {
     props.getPointages();
   },[]);
 
@@ -76,12 +80,26 @@ export const PointageJour = (props: IPointageJourProps) => {
     const saveEntity = (event, errors, values) => {
       const tab=[];
       let fichePointage;
+      let entity;
       let cmpt=0;
-    
+      fichePointage = {
+        ...FichePointageEntity,
+        ...values
+      };
       if (errors.length === 0) {
 
-           employeList.filter(filterByProjetId).map((employe,i=0)=>{
-            
+
+        
+            fichePointage={
+              
+              dateJour: Moment(new Date()).format('YYYY-MM-DD'),
+              projet: Object.values(values)[0]
+              
+            }
+           
+             props.createEntity(fichePointage);
+             employeList.filter(filterByProjetId).map((employe,i=0)=>{
+              
                tab[i]={
                 "dateJour": Moment(new Date()).format('YYYY-MM-DD'),
                 "projet" : Object.values(values)[0],
@@ -94,8 +112,7 @@ export const PointageJour = (props: IPointageJourProps) => {
                 }
                 ,
                 "fichePointage" : {
-                  dateJour: Moment(new Date()).format('YYYY-MM-DD'),
-                  projet: Object.values(values)[0]
+                  "id" : FichePointageEntity.id
                 }
                }
               cmpt+=4;
@@ -103,7 +120,7 @@ export const PointageJour = (props: IPointageJourProps) => {
              }    
            )
 
-            
+           window.console.log(tab[0]);
            if(errors.length === 0 && tab.length>0){
              const valider=ValidatePointageJour(tab[0].projet.id,Moment(new Date()).format('YYYY-MM-DD'));
              if(valider===true){
@@ -114,12 +131,14 @@ export const PointageJour = (props: IPointageJourProps) => {
             }
           }
    }
+       
+    
     }
 
    
   return (
     <div>
-        <AvForm   onSubmit={saveEntity} >
+        <AvForm   onSubmit={saveEntity}>
             <AvGroup>
                 <Row >
                   <Col xs="5"><b>Pointeur : {account.login}</b></Col>
@@ -187,9 +206,9 @@ export const PointageJour = (props: IPointageJourProps) => {
                   <td>{employe.id} </td>
                   <td>{employe.matricule}</td>
                   <td>{employe.nom +"  "+ employe.prenom}</td>
-                  <td> <AvInput id={employe.id+"1"} type="checkbox" name={"Matin"+employe.id}  defaultChecked/></td>
-                  <td> <AvInput id={employe.id+"2"} type="checkbox" name={"APM"+employe.id}   defaultChecked/></td>
-                  <td> <AvInput id={employe.id+"3"} type="text" name={"nbsup"+employe.id}  /></td>
+                  <td> <AvInput id={employe.id+"1"} type="checkbox" name={"Matin"+employe.id}/></td>
+                  <td> <AvInput id={employe.id+"2"} type="checkbox" name={"APM"+employe.id} /></td>
+                  <td> <AvInput id={employe.id+"3"} type="text" name={"nbsup"+employe.id} /></td>
                   <td> <AvInput id={employe.id+"4"} type="text" name={"observation"+employe.id} /></td>
                 </tr>
               ))}
@@ -220,7 +239,6 @@ const mapStateToProps = (storeState: IRootState) => ({
     employeList : storeState.employe.entities,
     pointageList : storeState.pointage.entities,
     FichePointageEntity : storeState.fichePointage.entity,
-    PointageEntity :storeState.pointage.entity,
     loading: storeState.employe.loading,
     updateSuccess: storeState.pointage.updateSuccess
 });

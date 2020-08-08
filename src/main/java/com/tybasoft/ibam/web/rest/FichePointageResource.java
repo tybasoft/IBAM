@@ -1,9 +1,7 @@
 package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.FichePointage;
-import com.tybasoft.ibam.domain.Pointage;
 import com.tybasoft.ibam.repository.FichePointageRepository;
-import com.tybasoft.ibam.service.PointageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -19,8 +17,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
-import javax.validation.Valid;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.FichePointage}.
@@ -38,11 +34,9 @@ public class FichePointageResource {
     private String applicationName;
 
     private final FichePointageRepository fichePointageRepository;
-    private final  PointageService   pointageService;
 
-    public FichePointageResource(FichePointageRepository fichePointageRepository,PointageService   pointageService) {
+    public FichePointageResource(FichePointageRepository fichePointageRepository) {
         this.fichePointageRepository = fichePointageRepository;
-        this.pointageService=pointageService;
     }
 
     /**
@@ -108,7 +102,7 @@ public class FichePointageResource {
         Optional<FichePointage> fichePointage = fichePointageRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(fichePointage);
     }
-    
+
     /**
      * {@code DELETE  /fiche-pointages/:id} : delete the "id" fichePointage.
      *
@@ -118,28 +112,7 @@ public class FichePointageResource {
     @DeleteMapping("/fiche-pointages/{id}")
     public ResponseEntity<Void> deleteFichePointage(@PathVariable Long id) {
         log.debug("REST request to delete FichePointage : {}", id);
-        FichePointage    fiche=fichePointageRepository.findById(id).get();
-        if(fiche!=null)
-        pointageService.deleteFicheANDALLPointageEntity(fiche, log);
-        
+        fichePointageRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
-    }
-    
-    
-    @GetMapping("/fiche-pointages/{id}/listPointageOfFiche")
-    public List<Pointage> getAllPointageFichePointage(@PathVariable Long id) {
-        log.debug("REST request to get FichePointage : {}", id);
-        Optional<FichePointage> fichePointage = fichePointageRepository.findById(id);
-        List<Pointage>    currentlist=pointageService.ViewPointagesByFicheId(fichePointage.get());
-        return currentlist;
-    }
-   
-    
-    @PutMapping("/fiche-pointages/update")
-    public int updateListPointages(@Valid @RequestBody Pointage []  tab) throws URISyntaxException {
-        
-    	 Pointage [] result = pointageService.createPointage(tab);
-    	 
-        return  tab.length;
     }
 }

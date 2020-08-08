@@ -27,14 +27,6 @@ export const FichePointage = (props: IFichePointageProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.fichePointage.home.createLabel">Create new Fiche Pointage</Translate>
         </Link>
-      
-        <Link to={`${match.url}/pointer`}  className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="ibamApp.pointage.home.pointer">Pointer</Translate>
-        </Link>
-
-        
       </h2>
       <div className="table-responsive">
         {fichePointageList && fichePointageList.length > 0 ? (
@@ -69,18 +61,6 @@ export const FichePointage = (props: IFichePointageProps) => {
                   <td>{fichePointage.projet ? <Link to={`projet/${fichePointage.projet.id}`}>{fichePointage.projet.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
-                    <Button tag={Link} to={`${match.url}/${fichePointage.id}/listPointageOfFiche`} color="info" size="sm">
-                        <FontAwesomeIcon icon="eye" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.viewPointage">View List</Translate>
-                        </span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${fichePointage.id}/EditListPointage`} color="primary" size="sm">
-                        <FontAwesomeIcon icon="pencil-alt" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.editPointage">Editer Pointage</Translate>
-                        </span>
-                      </Button>
                       <Button tag={Link} to={`${match.url}/${fichePointage.id}`} color="info" size="sm">
                         <FontAwesomeIcon icon="eye" />{' '}
                         <span className="d-none d-md-inline">
@@ -99,9 +79,6 @@ export const FichePointage = (props: IFichePointageProps) => {
                           <Translate contentKey="entity.action.delete">Delete</Translate>
                         </span>
                       </Button>
-
-
-                      
                     </div>
                   </td>
                 </tr>

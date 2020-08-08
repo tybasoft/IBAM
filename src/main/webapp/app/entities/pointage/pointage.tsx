@@ -56,6 +56,11 @@ export const Pointage = (props: IPointageProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.pointage.home.createLabel">Create new Pointage</Translate>
         </Link> 
+        <Link  to={`${match.url}/pointer`}  className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.pointage.home.pointer">Pointer</Translate>
+        </Link>
         <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
