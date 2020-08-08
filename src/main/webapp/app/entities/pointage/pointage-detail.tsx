@@ -31,7 +31,7 @@ export const PointageDetail = (props: IPointageDetailProps) => {
             </span>
           </dt>
           <dd>
-            <TextFormat value={pointageEntity.dateJour} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            {pointageEntity.dateJour ? <TextFormat value={pointageEntity.dateJour} type="date" format={APP_LOCAL_DATE_FORMAT} /> : null}
           </dd>
           <dt>
             <span id="presenceMatin">
@@ -57,7 +57,7 @@ export const PointageDetail = (props: IPointageDetailProps) => {
             </span>
           </dt>
           <dd>{pointageEntity.remarques}</dd>
-          {/* <dt>
+          <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.pointage.userModif">User Modif</Translate>
             </span>
@@ -69,12 +69,16 @@ export const PointageDetail = (props: IPointageDetailProps) => {
             </span>
           </dt>
           <dd>
-            <TextFormat value={pointageEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd> */}
+            {pointageEntity.dateModif ? <TextFormat value={pointageEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} /> : null}
+          </dd>
           <dt>
             <Translate contentKey="ibamApp.pointage.employe">Employe</Translate>
           </dt>
-          <dd>{pointageEntity.employe ? pointageEntity.employe.cin: ''}</dd>
+          <dd>{pointageEntity.employe ? pointageEntity.employe.id : ''}</dd>
+          <dt>
+            <Translate contentKey="ibamApp.pointage.fichepointage">Fichepointage</Translate>
+          </dt>
+          <dd>{pointageEntity.fichepointage ? pointageEntity.fichepointage.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/pointage" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
@@ -95,7 +99,7 @@ export const PointageDetail = (props: IPointageDetailProps) => {
 };
 
 const mapStateToProps = ({ pointage }: IRootState) => ({
-  pointageEntity: pointage.entity
+  pointageEntity: pointage.entity,
 });
 
 const mapDispatchToProps = { getEntity };

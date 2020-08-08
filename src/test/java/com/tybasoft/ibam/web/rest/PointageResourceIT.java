@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link PointageResource} REST controller.
  */
 @SpringBootTest(classes = IbamApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class PointageResourceIT {
@@ -108,7 +107,6 @@ public class PointageResourceIT {
     @Transactional
     public void createPointage() throws Exception {
         int databaseSizeBeforeCreate = pointageRepository.findAll().size();
-
         // Create the Pointage
         restPointageMockMvc.perform(post("/api/pointages")
             .contentType(MediaType.APPLICATION_JSON)
@@ -157,6 +155,7 @@ public class PointageResourceIT {
 
         // Create the Pointage, which fails.
 
+
         restPointageMockMvc.perform(post("/api/pointages")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(pointage)))
@@ -175,6 +174,7 @@ public class PointageResourceIT {
 
         // Create the Pointage, which fails.
 
+
         restPointageMockMvc.perform(post("/api/pointages")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(pointage)))
@@ -192,6 +192,7 @@ public class PointageResourceIT {
         pointage.setPresenceAPM(null);
 
         // Create the Pointage, which fails.
+
 
         restPointageMockMvc.perform(post("/api/pointages")
             .contentType(MediaType.APPLICATION_JSON)
@@ -241,7 +242,6 @@ public class PointageResourceIT {
             .andExpect(jsonPath("$.userModif").value(DEFAULT_USER_MODIF))
             .andExpect(jsonPath("$.dateModif").value(DEFAULT_DATE_MODIF.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingPointage() throws Exception {
@@ -293,8 +293,6 @@ public class PointageResourceIT {
     @Transactional
     public void updateNonExistingPointage() throws Exception {
         int databaseSizeBeforeUpdate = pointageRepository.findAll().size();
-
-        // Create the Pointage
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPointageMockMvc.perform(put("/api/pointages")

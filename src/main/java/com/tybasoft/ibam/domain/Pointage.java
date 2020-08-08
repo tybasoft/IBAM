@@ -1,23 +1,23 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tybasoft.ibam.security.SecurityUtils;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Pointage.
  */
 @Entity
 @Table(name = "pointage")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Pointage implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -50,11 +50,14 @@ public class Pointage implements Serializable {
     private LocalDate dateModif;
 
     @ManyToOne
-    @JsonIgnoreProperties("pointages")
+    @JsonIgnoreProperties(value = "pointages")
     private Employe employe;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
-    // remove
+    @ManyToOne
+    @JsonIgnoreProperties(value = "pointages")
+    private FichePointage fichePointage;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -167,21 +170,19 @@ public class Pointage implements Serializable {
         this.employe = employe;
     }
 
-    // Fonction executed when the object is created
-    @PrePersist
-    public void prePresist() {
-        this.dateModif = LocalDate.now();
-        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    public FichePointage getFichepointage() {
+        return fichePointage;
     }
 
-    // Fonction executed when the object is updated
-    @PreUpdate
-    public void preUpdate() {
-        this.dateModif = LocalDate.now();
-        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    public Pointage fichePointage(FichePointage fichePointage) {
+        this.fichePointage = fichePointage;
+        return this;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
-    // setters here, do not remove
+
+    public void setFichePointage(FichePointage fichePointage) {
+        this.fichePointage = fichePointage;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -199,19 +200,18 @@ public class Pointage implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
-        return ("Pointage{" + "id=" + getId() + ", dateJour='" + getDateJour() + "'" + ", presenceMatin='"
-                + isPresenceMatin() + "'" + ", presenceAPM='" + isPresenceAPM() + "'" + ", nbrHeureSup='"
-                + getNbrHeureSup() + "'" + ", remarques='" + getRemarques() + "'" + ", userModif='" + getUserModif()
-                + "'" + ", dateModif='" + getDateModif() + "'" + "}");
-    }
-
-    public Boolean getPresenceMatin() {
-        return presenceMatin;
-    }
-
-    public Boolean getPresenceAPM() {
-        return presenceAPM;
+        return "Pointage{" +
+            "id=" + getId() +
+            ", dateJour='" + getDateJour() + "'" +
+            ", presenceMatin='" + isPresenceMatin() + "'" +
+            ", presenceAPM='" + isPresenceAPM() + "'" +
+            ", nbrHeureSup='" + getNbrHeureSup() + "'" +
+            ", remarques='" + getRemarques() + "'" +
+            ", userModif='" + getUserModif() + "'" +
+            ", dateModif='" + getDateModif() + "'" +
+            "}";
     }
 }
