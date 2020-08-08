@@ -1,6 +1,8 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tybasoft.ibam.security.SecurityUtils;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
 
 /**
@@ -47,7 +50,7 @@ public class Pointage implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private LocalDate dateModif;
+    private Instant dateModif;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "pointages")
@@ -144,16 +147,16 @@ public class Pointage implements Serializable {
         this.userModif = userModif;
     }
 
-    public LocalDate getDateModif() {
+    public Instant getDateModif() {
         return dateModif;
     }
 
-    public Pointage dateModif(LocalDate dateModif) {
+    public Pointage dateModif(Instant dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(LocalDate dateModif) {
+    public void setDateModif(Instant dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -170,7 +173,7 @@ public class Pointage implements Serializable {
         this.employe = employe;
     }
 
-    public FichePointage getFichepointage() {
+    public FichePointage getFichePointage() {
         return fichePointage;
     }
 
@@ -213,5 +216,17 @@ public class Pointage implements Serializable {
             ", userModif='" + getUserModif() + "'" +
             ", dateModif='" + getDateModif() + "'" +
             "}";
+    }
+    
+    @PrePersist
+    public void onCreate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
 }

@@ -4,7 +4,9 @@ import { IPointage } from 'app/shared/model/pointage.model';
 
 export interface IFichePointage {
   id?: number;
-  datejour?: string;
+  dateJour?: string;
+  userModif?: string;
+  dateModif?: string;
   projet?: IProjet;
   pointages?: IPointage[];
 }

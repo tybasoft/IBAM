@@ -72,7 +72,9 @@ class FichePointageGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "id":null
-                , "datejour":"2020-01-01T00:00:00.000Z"
+                , "dateJour":"2020-01-01T00:00:00.000Z"
+                , "userModif":"SAMPLE_TEXT"
+                , "dateModif":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_fichePointage_url"))).exitHereIfFailed

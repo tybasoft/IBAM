@@ -11,6 +11,7 @@ import { IFichePointage } from 'app/shared/model/fiche-pointage.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
+
 export interface IFichePointageProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const FichePointage = (props: IFichePointageProps) => {
@@ -45,7 +46,6 @@ export const FichePointage = (props: IFichePointageProps) => {
       activePage: currentPage
     });
 
-
   const { fichePointageList, match, loading, totalItems } = props;
   return (
     <div>
@@ -65,8 +65,14 @@ export const FichePointage = (props: IFichePointageProps) => {
                 <th className="hand" onClick={sort('id')}>
                   <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('datejour')}>
-                  <Translate contentKey="ibamApp.fichePointage.datejour">Datejour</Translate> <FontAwesomeIcon icon="sort" />
+                <th className="hand" onClick={sort('dateJour')}>
+                  <Translate contentKey="ibamApp.fichePointage.dateJour">Date Jour</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('userModif')}>
+                  <Translate contentKey="ibamApp.fichePointage.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('dateModif')}>
+                  <Translate contentKey="ibamApp.fichePointage.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.fichePointage.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
@@ -83,9 +89,13 @@ export const FichePointage = (props: IFichePointageProps) => {
                     </Button>
                   </td>
                   <td>
-                    {fichePointage.datejour ? (
-                      <TextFormat type="date" value={fichePointage.datejour} format={APP_LOCAL_DATE_FORMAT} />
+                    {fichePointage.dateJour ? (
+                      <TextFormat type="date" value={fichePointage.dateJour} format={APP_LOCAL_DATE_FORMAT} />
                     ) : null}
+                  </td>
+                  <td>{fichePointage.userModif}</td>
+                  <td>
+                    {fichePointage.dateModif ? <TextFormat type="date" value={fichePointage.dateModif} format={APP_DATE_FORMAT} /> : null}
                   </td>
                   <td>{fichePointage.projet ? <Link to={`projet/${fichePointage.projet.id}`}>{fichePointage.projet.id}</Link> : ''}</td>
                   <td className="text-right">

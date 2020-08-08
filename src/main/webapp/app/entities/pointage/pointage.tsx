@@ -77,7 +77,7 @@ export const Pointage = (props: IPointageProps) => {
                 <th className="hand" onClick={sort('nbrHeureSup')}>
                   <Translate contentKey="ibamApp.pointage.nbrHeureSup">Nbr Heure Sup</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('remarques')}>
+               {/*  <th className="hand" onClick={sort('remarques')}>
                   <Translate contentKey="ibamApp.pointage.remarques">Remarques</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('userModif')}>
@@ -85,13 +85,13 @@ export const Pointage = (props: IPointageProps) => {
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.pointage.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th>
                   <Translate contentKey="ibamApp.pointage.employe">Employe</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
+               {/*  <th>
                   <Translate contentKey="ibamApp.pointage.fichepointage">Fichepointage</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -107,19 +107,19 @@ export const Pointage = (props: IPointageProps) => {
                   <td>{pointage.presenceMatin ? 'true' : 'false'}</td>
                   <td>{pointage.presenceAPM ? 'true' : 'false'}</td>
                   <td>{pointage.nbrHeureSup}</td>
-                  <td>{pointage.remarques}</td>
+                  {/* <td>{pointage.remarques}</td>
                   <td>{pointage.userModif}</td>
                   <td>
                     {pointage.dateModif ? <TextFormat type="date" value={pointage.dateModif} format={APP_LOCAL_DATE_FORMAT} /> : null}
-                  </td>
+                  </td> */}
                   <td>{pointage.employe ? <Link to={`employe/${pointage.employe.id}`}>{pointage.employe.id}</Link> : ''}</td>
-                  <td>
+                 {/*  <td>
                     {pointage.fichepointage ? (
                       <Link to={`fiche-pointage/${pointage.fichepointage.id}`}>{pointage.fichepointage.id}</Link>
                     ) : (
                       ''
                     )}
-                  </td>
+                  </td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${pointage.id}`} color="info" size="sm">

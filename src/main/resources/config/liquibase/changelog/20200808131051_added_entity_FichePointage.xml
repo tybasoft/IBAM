@@ -15,7 +15,13 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="datejour" type="date">
+            <column name="date_jour" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="user_modif" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_modif" type="datetime">
                 <constraints nullable="true" />
             </column>
             <column name="projet_id" type="bigint">
@@ -23,6 +29,7 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+        <dropDefaultValue tableName="fiche_pointage" columnName="date_modif" columnDataType="datetime"/>
     </changeSet>
 
     <changeSet id="20200808131051-1-relations" author="jhipster">
@@ -44,7 +51,9 @@
                   separator=";"
                   tableName="fiche_pointage">
             <column name="id" type="numeric"/>
-            <column name="datejour" type="date"/>
+            <column name="date_jour" type="date"/>
+            <column name="user_modif" type="string"/>
+            <column name="date_modif" type="datetime"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IFichePointage, defaultValue } from 'app/shared/model/fiche-pointage.model';
+import { IPointage } from 'app/shared/model/pointage.model';
 
 export const ACTION_TYPES = {
   FETCH_FICHEPOINTAGE_LIST: 'fichePointage/FETCH_FICHEPOINTAGE_LIST',
@@ -12,6 +13,7 @@ export const ACTION_TYPES = {
   CREATE_FICHEPOINTAGE: 'fichePointage/CREATE_FICHEPOINTAGE',
   UPDATE_FICHEPOINTAGE: 'fichePointage/UPDATE_FICHEPOINTAGE',
   DELETE_FICHEPOINTAGE: 'fichePointage/DELETE_FICHEPOINTAGE',
+  FETCH_POINTAGEBYFICHE_LIST: 'fichePointage/FETCH_POINTAGEBYFICHE_LIST',
   RESET: 'fichePointage/RESET'
 };
 
@@ -19,6 +21,7 @@ const initialState = {
   loading: false,
   errorMessage: null,
   entities: [] as ReadonlyArray<IFichePointage>,
+  entitiespointage: [] as ReadonlyArray<IPointage>,
   entity: defaultValue,
   updating: false,
   totalItems: 0,
@@ -33,6 +36,7 @@ export default (state: FichePointageState = initialState, action): FichePointage
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST):
     case REQUEST(ACTION_TYPES.FETCH_FICHEPOINTAGE):
+    case REQUEST(ACTION_TYPES.FETCH_POINTAGEBYFICHE_LIST):
       return {
         ...state,
         errorMessage: null,
@@ -50,6 +54,7 @@ export default (state: FichePointageState = initialState, action): FichePointage
       };
     case FAILURE(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_FICHEPOINTAGE):
+    case FAILURE(ACTION_TYPES.FETCH_POINTAGEBYFICHE_LIST):
     case FAILURE(ACTION_TYPES.CREATE_FICHEPOINTAGE):
     case FAILURE(ACTION_TYPES.UPDATE_FICHEPOINTAGE):
     case FAILURE(ACTION_TYPES.DELETE_FICHEPOINTAGE):
@@ -59,6 +64,12 @@ export default (state: FichePointageState = initialState, action): FichePointage
         updating: false,
         updateSuccess: false,
         errorMessage: action.payload
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_POINTAGEBYFICHE_LIST):
+      return {
+        ...state,
+        loading: false,
+        entitiespointage: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST):
       return {
@@ -146,4 +157,9 @@ export const deleteEntity: ICrudDeleteAction<IFichePointage> = id => async dispa
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET
+});
+
+export const getEntitiesPointage: ICrudGetAllAction<IPointage> = id => ({
+  type: ACTION_TYPES.FETCH_POINTAGEBYFICHE_LIST,
+  payload: axios.get<IPointage>(`${apiUrl}/${id}/listPointageOfFiche`)
 });

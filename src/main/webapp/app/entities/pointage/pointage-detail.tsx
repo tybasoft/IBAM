@@ -57,7 +57,7 @@ export const PointageDetail = (props: IPointageDetailProps) => {
             </span>
           </dt>
           <dd>{pointageEntity.remarques}</dd>
-          <dt>
+         {/*  <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.pointage.userModif">User Modif</Translate>
             </span>
@@ -70,11 +70,11 @@ export const PointageDetail = (props: IPointageDetailProps) => {
           </dt>
           <dd>
             {pointageEntity.dateModif ? <TextFormat value={pointageEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} /> : null}
-          </dd>
+          </dd> */}
           <dt>
             <Translate contentKey="ibamApp.pointage.employe">Employe</Translate>
           </dt>
-          <dd>{pointageEntity.employe ? pointageEntity.employe.id : ''}</dd>
+          <dd>{pointageEntity.employe ? pointageEntity.employe.cin : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.pointage.fichepointage">Fichepointage</Translate>
           </dt>
