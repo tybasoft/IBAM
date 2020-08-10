@@ -177,21 +177,13 @@ public class PointageResource {
     /*Pour faire l'insertion du pointage du jour dans la base de donnees*/
     @PostMapping("/pointages/createPointageList")
     public ResponseEntity<FichePointage> createListPointage(@Valid @RequestBody Pointage []  tab) throws URISyntaxException {
-		    	
-    	        FichePointage  fiche=tab[0].getFichePointage();
-    	        FichePointage  resultFiche=pointageService.saveFichePointage(fiche, log);
-    	        
-    	        for(int i=0;i<tab.length;i++) {
-    	        	tab[i].setFichePointage(resultFiche);
-    	        	if (tab[i].getId() != null) {
-    	                throw new BadRequestAlertException("A new pointage cannot already have an ID", ENTITY_NAME, "idexists");
-    	            }
-    	        }
-    	          Pointage [] result = pointageService.createPointage(tab);
+    	      
+    	Pointage []  result = pointageService.EnregistrementPointage(tab);
+		       
 		          return   ResponseEntity
-		                  .created(new URI("/api/pointages/" + resultFiche.getId())).headers(HeaderUtil
-		                          .createEntityCreationAlert(applicationName, true, ENTITY_NAME1, resultFiche.getId().toString()))
-		                  .body(resultFiche); 
+		                  .created(new URI("/api/fiche-pointages/" + result[0].getFichePointage().getId())).headers(HeaderUtil
+		                          .createEntityCreationAlert(applicationName, true, ENTITY_NAME1, result[0].getFichePointage().getId().toString()))
+		                  .body(result[0].getFichePointage()); 
     }
     
     /*Pour la modification de la liste de pointag*/

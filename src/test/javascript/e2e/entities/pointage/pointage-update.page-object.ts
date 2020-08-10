@@ -15,7 +15,7 @@ export default class PointageUpdatePage {
   userModifInput: ElementFinder = element(by.css('input#pointage-userModif'));
   dateModifInput: ElementFinder = element(by.css('input#pointage-dateModif'));
   employeSelect: ElementFinder = element(by.css('select#pointage-employe'));
-  fichepointageSelect: ElementFinder = element(by.css('select#pointage-fichepointage'));
+  fichePointageSelect: ElementFinder = element(by.css('select#pointage-fichePointage'));
 
   getPageTitle() {
     return this.pageTitle;
@@ -86,23 +86,23 @@ export default class PointageUpdatePage {
     return this.employeSelect.element(by.css('option:checked')).getText();
   }
 
-  async fichepointageSelectLastOption() {
-    await this.fichepointageSelect
+  async fichePointageSelectLastOption() {
+    await this.fichePointageSelect
       .all(by.tagName('option'))
       .last()
       .click();
   }
 
-  async fichepointageSelectOption(option) {
-    await this.fichepointageSelect.sendKeys(option);
+  async fichePointageSelectOption(option) {
+    await this.fichePointageSelect.sendKeys(option);
   }
 
-  getFichepointageSelect() {
-    return this.fichepointageSelect;
+  getFichePointageSelect() {
+    return this.fichePointageSelect;
   }
 
-  async getFichepointageSelectedOption() {
-    return this.fichepointageSelect.element(by.css('option:checked')).getText();
+  async getFichePointageSelectedOption() {
+    return this.fichePointageSelect.element(by.css('option:checked')).getText();
   }
 
   async save() {
@@ -152,7 +152,7 @@ export default class PointageUpdatePage {
     await this.setDateModifInput('01-01-2001');
     expect(await this.getDateModifInput()).to.eq('2001-01-01');
     await this.employeSelectLastOption();
-    await this.fichepointageSelectLastOption();
+    await this.fichePointageSelectLastOption();
     await this.save();
     await waitUntilHidden(this.saveButton);
     expect(await isVisible(this.saveButton)).to.be.false;

@@ -12,6 +12,7 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
 
+
 export interface IPointageProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Pointage = (props: IPointageProps) => {
@@ -46,6 +47,7 @@ export const Pointage = (props: IPointageProps) => {
       activePage: currentPage
     });
 
+
   const { pointageList, match, loading, totalItems } = props;
   return (
     <div>
@@ -55,6 +57,16 @@ export const Pointage = (props: IPointageProps) => {
           <FontAwesomeIcon icon="plus" />
           &nbsp;
           <Translate contentKey="ibamApp.pointage.home.createLabel">Create new Pointage</Translate>
+        </Link> 
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
         </Link>
       </h2>
       <div className="table-responsive">
@@ -77,7 +89,7 @@ export const Pointage = (props: IPointageProps) => {
                 <th className="hand" onClick={sort('nbrHeureSup')}>
                   <Translate contentKey="ibamApp.pointage.nbrHeureSup">Nbr Heure Sup</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-               {/*  <th className="hand" onClick={sort('remarques')}>
+              {/*   <th className="hand" onClick={sort('remarques')}>
                   <Translate contentKey="ibamApp.pointage.remarques">Remarques</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('userModif')}>
@@ -90,7 +102,7 @@ export const Pointage = (props: IPointageProps) => {
                   <Translate contentKey="ibamApp.pointage.employe">Employe</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                {/*  <th>
-                  <Translate contentKey="ibamApp.pointage.fichepointage">Fichepointage</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="ibamApp.pointage.fichePointage">Fiche Pointage</Translate> <FontAwesomeIcon icon="sort" />
                 </th> */}
                 <th />
               </tr>
@@ -107,15 +119,15 @@ export const Pointage = (props: IPointageProps) => {
                   <td>{pointage.presenceMatin ? 'true' : 'false'}</td>
                   <td>{pointage.presenceAPM ? 'true' : 'false'}</td>
                   <td>{pointage.nbrHeureSup}</td>
-                  {/* <td>{pointage.remarques}</td>
+                 {/*  <td>{pointage.remarques}</td>
                   <td>{pointage.userModif}</td>
                   <td>
                     {pointage.dateModif ? <TextFormat type="date" value={pointage.dateModif} format={APP_LOCAL_DATE_FORMAT} /> : null}
                   </td> */}
-                  <td>{pointage.employe ? <Link to={`employe/${pointage.employe.id}`}>{pointage.employe.id}</Link> : ''}</td>
-                 {/*  <td>
-                    {pointage.fichepointage ? (
-                      <Link to={`fiche-pointage/${pointage.fichepointage.id}`}>{pointage.fichepointage.id}</Link>
+                  <td>{pointage.employe ? <Link to={`employe/${pointage.employe.id}`}>{pointage.employe.cin}</Link> : ''}</td>
+                  {/* <td>
+                    {pointage.fichePointage ? (
+                      <Link to={`fiche-pointage/${pointage.fichePointage.id}`}>{pointage.fichePointage.id}</Link>
                     ) : (
                       ''
                     )}

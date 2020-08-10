@@ -1,8 +1,6 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tybasoft.ibam.security.SecurityUtils;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -10,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
 
 /**
@@ -50,14 +47,14 @@ public class Pointage implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private Instant dateModif;
+    private LocalDate dateModif;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "pointages")
+    @JsonIgnoreProperties(value = "pointages", allowSetters = true)
     private Employe employe;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "pointages")
+    @JsonIgnoreProperties(value = "pointages", allowSetters = true)
     private FichePointage fichePointage;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -147,16 +144,16 @@ public class Pointage implements Serializable {
         this.userModif = userModif;
     }
 
-    public Instant getDateModif() {
+    public LocalDate getDateModif() {
         return dateModif;
     }
 
-    public Pointage dateModif(Instant dateModif) {
+    public Pointage dateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(Instant dateModif) {
+    public void setDateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -216,17 +213,5 @@ public class Pointage implements Serializable {
             ", userModif='" + getUserModif() + "'" +
             ", dateModif='" + getDateModif() + "'" +
             "}";
-    }
-    
-    @PrePersist
-    public void onCreate() {
-        userModif = SecurityUtils.getCurrentUserLogin().get();
-        dateModif = Instant.now();
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        userModif = SecurityUtils.getCurrentUserLogin().get();
-        dateModif = Instant.now();
     }
 }

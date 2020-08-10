@@ -20,7 +20,7 @@ export interface IPointageUpdateProps extends StateProps, DispatchProps, RouteCo
 
 export const PointageUpdate = (props: IPointageUpdateProps) => {
   const [employeId, setEmployeId] = useState('0');
-  const [fichepointageId, setFichepointageId] = useState('0');
+  const [fichePointageId, setFichePointageId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
   const { pointageEntity, employes, fichePointages, loading, updating } = props;
@@ -122,7 +122,7 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
                 </Label>
                 <AvField id="pointage-remarques" type="text" name="remarques" />
               </AvGroup>
-             {/*  <AvGroup>
+              <AvGroup>
                 <Label id="userModifLabel" for="pointage-userModif">
                   <Translate contentKey="ibamApp.pointage.userModif">User Modif</Translate>
                 </Label>
@@ -133,7 +133,7 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
                   <Translate contentKey="ibamApp.pointage.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="pointage-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup> */}
+              </AvGroup>
               <AvGroup>
                 <Label for="pointage-employe">
                   <Translate contentKey="ibamApp.pointage.employe">Employe</Translate>
@@ -143,17 +143,17 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
                   {employes
                     ? employes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.prenom+""+otherEntity.nom+"("+otherEntity.matricule+")"}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}
                 </AvInput>
               </AvGroup>
               <AvGroup>
-                <Label for="pointage-fichepointage">
-                  <Translate contentKey="ibamApp.pointage.fichepointage">Fichepointage</Translate>
+                <Label for="pointage-fichePointage">
+                  <Translate contentKey="ibamApp.pointage.fichePointage">Fiche Pointage</Translate>
                 </Label>
-                <AvInput id="pointage-fichepointage" type="select" className="form-control" name="fichepointage.id">
+                <AvInput id="pointage-fichePointage" type="select" className="form-control" name="fichePointage.id">
                   <option value="" key="0" />
                   {fichePointages
                     ? fichePointages.map(otherEntity => (

@@ -23,25 +23,12 @@ export const PointageJourUpdate = (props: IPointageJourUpdateProps) => {
   const [dateJourPointage,setDateJourPointage]=useState('')
   const [projet,setProjet]=useState('')
   
-  const { fichePointageEntity,fichePointageList,projetEntity,loading} = props;
-
+  
   useEffect(() => {
     props.getEntity(props.match.params.id);
+    
   }, []);
 
-  useEffect(() => {
-    props.getEntitiesPointage(Number(props.match.params.id));
-    setModal(true);
-  }, []);
-
-  useEffect(() => {
-    if(fichePointageEntity!=null && fichePointageEntity.dateJour && fichePointageEntity.projet.id ){
-    setDateJourPointage(fichePointageEntity.dateJour);
-    setProjet(fichePointageEntity.projet.libelle);
-    window.console.log(fichePointageEntity);
-  }
-  });
- 
   const handleClose = () => {
     props.history.push('/fiche-pointage' + props.location.search);
   };
@@ -53,6 +40,22 @@ export const PointageJourUpdate = (props: IPointageJourUpdateProps) => {
   }, [props.updateSuccess]);
   
 
+  const { fichePointageEntity,fichePointageList,loading} = props;
+
+  useEffect(() => {
+    if(fichePointageEntity.id!==undefined ){
+      fichePointageEntity.dateJour!==null ? setDateJourPointage(fichePointageEntity.dateJour):setDateJourPointage(null)
+      fichePointageEntity.projet!==null ? setProjet(fichePointageEntity.projet.libelle):setProjet(null)
+    }
+    props.getEntitiesPointage(Number(props.match.params.id));
+  },[fichePointageEntity]);
+
+
+   useEffect(()=>{
+    setModal(true);
+   },[fichePointageEntity]);
+   
+  
   const toggle = () => setModal(!modal);
 
   const  saveEntity=(event,errors,values)=>{
@@ -95,7 +98,7 @@ export const PointageJourUpdate = (props: IPointageJourUpdateProps) => {
       <AvForm   onSubmit={saveEntity}>
           <ModalHeader> 
             <Row>
-              <Col xs="auto">
+              <Col xs="auto" >
                 <b>Date : </b>  {dateJourPointage}
               </Col>
               <Col xs="auto">

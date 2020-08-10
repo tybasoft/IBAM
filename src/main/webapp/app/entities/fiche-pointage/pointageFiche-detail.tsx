@@ -6,7 +6,7 @@ import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { IRootState } from 'app/shared/reducers';
-import { getEntity,getEntitiesPointage } from './fiche-pointage.reducer';
+import { getEntity   as getFichePointage,getEntitiesPointage } from './fiche-pointage.reducer';
 import { IFichePointage } from 'app/shared/model/fiche-pointage.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { Table, Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
@@ -21,28 +21,27 @@ export const FichePointagePointagesDetail = (props: IFichePointageDetailProps) =
   const [dateJourPointage,setDateJourPointage]=useState('')
   const [projet,setProjet]=useState('')
   
-
-
-  const { fichePointageEntity,fichePointageList,projetEntity,loading } = props;
-
   useEffect(() => {
-    props.getEntity(props.match.params.id);
+    props.getFichePointage(props.match.params.id);
+    
   }, []);
 
+  const { fichePointageEntity,fichePointageList,loading} = props;
+
   useEffect(() => {
+
+    if(fichePointageEntity.id!==undefined){
+      fichePointageEntity.dateJour!==null ? setDateJourPointage(fichePointageEntity.dateJour):setDateJourPointage(null)
+      fichePointageEntity.projet!==null ? setProjet(fichePointageEntity.projet.libelle):setProjet(null)
+      
+    }
     props.getEntitiesPointage(Number(props.match.params.id));
-    setModal(true);
-  }, []);
+  },[fichePointageEntity]);
 
-  useEffect(() => {
-    if(fichePointageEntity!=null && fichePointageEntity.dateJour && fichePointageEntity.projet.id ){
-    setDateJourPointage(fichePointageEntity.dateJour);
-    setProjet(fichePointageEntity.projet.libelle);
-    window.console.log(fichePointageEntity);
-  }
-  });
-
-
+ useEffect(()=>{
+  setModal(true);
+ },[fichePointageEntity]);
+ 
   const toggle = () => setModal(!modal);
   
   return (
@@ -132,7 +131,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.fichePointage.loading
 });
 
-const mapDispatchToProps = {getProjet, getEntity,getEntitiesPointage };
+const mapDispatchToProps = {getProjet, getFichePointage,getEntitiesPointage };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import {Link, RouteComponentProps } from 'react-router-dom';
 import {  AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { IRootState } from 'app/shared/reducers';
 import { Button, Col, Row, Table ,Label} from 'reactstrap';
@@ -61,12 +61,13 @@ export const PointageJour = (props: IPointageJourProps) => {
   /* Pour tester si le pointage est deja effectue pour la meme projet dans la meme date */
   function  ValidatePointageJour(projectId,datejour){
     let compt=0;
-    pointageList.map(pointageelement=>{     
-      if(pointageelement.employe.projet.id===Number(projectId)
-          &&  pointageelement.dateJour===datejour)
+    pointageList.map(pointageelement=>{ 
+      if(pointageelement.employe!==null && pointageelement.employe.projet!==null){    
+      if (pointageelement.employe.projet.id===Number(projectId) &&  pointageelement.dateJour===datejour)
           compt++;
+        }
     })
-
+  
       if(compt>0) 
       return false;
       return  true;
@@ -103,17 +104,20 @@ export const PointageJour = (props: IPointageJourProps) => {
              }    
            )
 
-            
+          
            if(errors.length === 0 && tab.length>0){
+             if(tab[0].projet!=null){
              const valider=ValidatePointageJour(tab[0].projet.id,Moment(new Date()).format('YYYY-MM-DD'));
              if(valider===true){
              props.CreateList(tab);
-           
+             
             }else{
              alert("le pointage est déjà effectue ");
             }
           }
-   }
+        }
+        
+      }
     }
 
    
@@ -203,11 +207,18 @@ export const PointageJour = (props: IPointageJourProps) => {
           )
         )}
       </div>    
-              <Button color="primary" id="save-entity" type="submit" >
+              <Button color="primary" id="save-entity" type="submit" className="btn btn-primary mr-2 float-right jh-create-entity">
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button> 
+              <Button tag={Link} id="cancel-save" to="/fiche-pointage"  className="btn btn-primary mr-2 float-right jh-create-entity"  replace color="info">
+                    <FontAwesomeIcon icon="arrow-left" />
+                      &nbsp;
+                    <span className="d-none d-md-inline">
+                      <Translate contentKey="entity.action.back">Back</Translate>
+                    </span>
+              </Button>
           </AvForm>      
    </div> 
   );

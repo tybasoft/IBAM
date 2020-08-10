@@ -35,7 +35,7 @@ export const FichePointageDetail = (props: IFichePointageDetailProps) => {
               <TextFormat value={fichePointageEntity.dateJour} type="date" format={APP_LOCAL_DATE_FORMAT} />
             ) : null}
           </dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.fichePointage.userModif">User Modif</Translate>
             </span>
@@ -50,7 +50,7 @@ export const FichePointageDetail = (props: IFichePointageDetailProps) => {
             {fichePointageEntity.dateModif ? (
               <TextFormat value={fichePointageEntity.dateModif} type="date" format={APP_DATE_FORMAT} />
             ) : null}
-          </dd>
+          </dd> */}
           <dt>
             <Translate contentKey="ibamApp.fichePointage.projet">Projet</Translate>
           </dt>

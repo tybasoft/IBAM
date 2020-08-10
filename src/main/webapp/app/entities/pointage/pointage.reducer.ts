@@ -14,6 +14,7 @@ export const ACTION_TYPES = {
   DELETE_POINTAGE: 'pointage/DELETE_POINTAGE',
   CREATE_POINTAGE_LIST: 'pointage/CREATE_POINTAGE_LIST',
   UPDATE_POINTAGEBYFICHE: 'pointage/UPDATE_POINTAGEBYFICHE',
+  REPPORT: 'pointage/REPPORT',
   RESET: 'pointage/RESET'
 };
 
@@ -55,9 +56,9 @@ export default (state: PointageState = initialState, action): PointageState => {
       };
     case FAILURE(ACTION_TYPES.FETCH_POINTAGE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_POINTAGE):
+    case FAILURE(ACTION_TYPES.CREATE_POINTAGE):
     case FAILURE(ACTION_TYPES.CREATE_POINTAGE_LIST):
     case FAILURE(ACTION_TYPES.UPDATE_POINTAGEBYFICHE):
-    case FAILURE(ACTION_TYPES.CREATE_POINTAGE):
     case FAILURE(ACTION_TYPES.UPDATE_POINTAGE):
     case FAILURE(ACTION_TYPES.DELETE_POINTAGE):
       return {
@@ -96,7 +97,6 @@ export default (state: PointageState = initialState, action): PointageState => {
         updateSuccess: true,
         entitiespointage: action.payload.data
       };
-
     case SUCCESS(ACTION_TYPES.CREATE_POINTAGE):
     case SUCCESS(ACTION_TYPES.UPDATE_POINTAGE):
       return {
@@ -112,16 +112,23 @@ export default (state: PointageState = initialState, action): PointageState => {
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/pointages';
+export const apiUrl = 'api/pointages';
 
 // Actions
 
@@ -164,7 +171,6 @@ export const deleteEntity: ICrudDeleteAction<IPointage> = id => async dispatch =
     type: ACTION_TYPES.DELETE_POINTAGE,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -172,7 +178,6 @@ export const reset = () => ({
   type: ACTION_TYPES.RESET
 });
 
-/* Pour l'enregistrement des pointages d'une liste donne */
 export const CreateList = (tab: any[]) => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_POINTAGE_LIST,
@@ -182,7 +187,6 @@ export const CreateList = (tab: any[]) => async dispatch => {
   return result;
 };
 
-/* Pour la modification de list de pointage appartient a une fichePointage donne */
 export const UpdatePointageList = (tab: any[]) => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_POINTAGEBYFICHE,

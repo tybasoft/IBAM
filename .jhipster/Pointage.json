@@ -42,7 +42,7 @@
       "otherEntityField": "id"
     },
     {
-      "relationshipName": "fichepointage",
+      "relationshipName": "fichePointage",
       "otherEntityName": "fichePointage",
       "relationshipType": "many-to-one",
       "otherEntityField": "id",

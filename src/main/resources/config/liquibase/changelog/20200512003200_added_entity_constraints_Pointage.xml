@@ -14,9 +14,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="employe"/>
 
-        <addForeignKeyConstraint baseColumnNames="fichepointage_id"
+        <addForeignKeyConstraint baseColumnNames="fiche_pointage_id"
                                  baseTableName="pointage"
-                                 constraintName="fk_pointage_fichepointage_id"
+                                 constraintName="fk_pointage_fiche_pointage_id"
                                  referencedColumnNames="id"
                                  referencedTableName="fiche_pointage"/>
 

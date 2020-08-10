@@ -76,9 +76,9 @@ export const PointageDetail = (props: IPointageDetailProps) => {
           </dt>
           <dd>{pointageEntity.employe ? pointageEntity.employe.cin : ''}</dd>
           <dt>
-            <Translate contentKey="ibamApp.pointage.fichepointage">Fichepointage</Translate>
+            <Translate contentKey="ibamApp.pointage.fichePointage">Fiche Pointage</Translate>
           </dt>
-          <dd>{pointageEntity.fichepointage ? pointageEntity.fichepointage.id : ''}</dd>
+          <dd>{pointageEntity.fichePointage ? pointageEntity.fichePointage.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/pointage" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
