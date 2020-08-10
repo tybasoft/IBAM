@@ -26,15 +26,31 @@ export const FichePointageDetail = (props: IFichePointageDetailProps) => {
         </h2>
         <dl className="jh-entity-details">
           <dt>
-            <span id="datejour">
-              <Translate contentKey="ibamApp.fichePointage.datejour">Datejour</Translate>
+            <span id="dateJour">
+              <Translate contentKey="ibamApp.fichePointage.dateJour">Date Jour</Translate>
             </span>
           </dt>
           <dd>
-            {fichePointageEntity.datejour ? (
-              <TextFormat value={fichePointageEntity.datejour} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            {fichePointageEntity.dateJour ? (
+              <TextFormat value={fichePointageEntity.dateJour} type="date" format={APP_LOCAL_DATE_FORMAT} />
             ) : null}
           </dd>
+          {/* <dt>
+            <span id="userModif">
+              <Translate contentKey="ibamApp.fichePointage.userModif">User Modif</Translate>
+            </span>
+          </dt>
+          <dd>{fichePointageEntity.userModif}</dd>
+          <dt>
+            <span id="dateModif">
+              <Translate contentKey="ibamApp.fichePointage.dateModif">Date Modif</Translate>
+            </span>
+          </dt>
+          <dd>
+            {fichePointageEntity.dateModif ? (
+              <TextFormat value={fichePointageEntity.dateModif} type="date" format={APP_DATE_FORMAT} />
+            ) : null}
+          </dd> */}
           <dt>
             <Translate contentKey="ibamApp.fichePointage.projet">Projet</Translate>
           </dt>

@@ -20,7 +20,7 @@ export interface IPointageUpdateProps extends StateProps, DispatchProps, RouteCo
 
 export const PointageUpdate = (props: IPointageUpdateProps) => {
   const [employeId, setEmployeId] = useState('0');
-  const [fichepointageId, setFichepointageId] = useState('0');
+  const [fichePointageId, setFichePointageId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
   const { pointageEntity, employes, fichePointages, loading, updating } = props;
@@ -150,10 +150,10 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
                 </AvInput>
               </AvGroup>
               <AvGroup>
-                <Label for="pointage-fichepointage">
-                  <Translate contentKey="ibamApp.pointage.fichepointage">Fichepointage</Translate>
+                <Label for="pointage-fichePointage">
+                  <Translate contentKey="ibamApp.pointage.fichePointage">Fiche Pointage</Translate>
                 </Label>
-                <AvInput id="pointage-fichepointage" type="select" className="form-control" name="fichepointage.id">
+                <AvInput id="pointage-fichePointage" type="select" className="form-control" name="fichePointage.id">
                   <option value="" key="0" />
                   {fichePointages
                     ? fichePointages.map(otherEntity => (

@@ -1,12 +1,15 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tybasoft.ibam.security.SecurityUtils;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +30,13 @@ public class FichePointage implements Serializable {
     private Long id;
 
     @Column(name = "date_jour")
-    private LocalDate datejour;
+    private LocalDate dateJour;
+
+    @Column(name = "user_modif")
+    private String userModif;
+
+    @Column(name = "date_modif")
+    private Instant dateModif;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "fichePointages", allowSetters = true)
@@ -46,17 +55,43 @@ public class FichePointage implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDatejour() {
-        return datejour;
+    public LocalDate getDateJour() {
+        return dateJour;
     }
 
-    public FichePointage datejour(LocalDate datejour) {
-        this.datejour = datejour;
+    public FichePointage dateJour(LocalDate dateJour) {
+        this.dateJour = dateJour;
         return this;
     }
 
-    public void setDatejour(LocalDate datejour) {
-        this.datejour = datejour;
+    public void setDateJour(LocalDate dateJour) {
+        this.dateJour = dateJour;
+    }
+
+    public String getUserModif() {
+        return userModif;
+    }
+
+    public FichePointage userModif(String userModif) {
+        this.userModif = userModif;
+        return this;
+    }
+
+    public void setUserModif(String userModif) {
+        this.userModif = userModif;
+    }
+
+    public Instant getDateModif() {
+        return dateModif;
+    }
+
+    public FichePointage dateModif(Instant dateModif) {
+        this.dateModif = dateModif;
+        return this;
+    }
+
+    public void setDateModif(Instant dateModif) {
+        this.dateModif = dateModif;
     }
 
     public Projet getProjet() {
@@ -119,7 +154,22 @@ public class FichePointage implements Serializable {
     public String toString() {
         return "FichePointage{" +
             "id=" + getId() +
-            ", datejour='" + getDatejour() + "'" +
+            ", dateJour='" + getDateJour() + "'" +
+            ", userModif='" + getUserModif() + "'" +
+            ", dateModif='" + getDateModif() + "'" +
             "}";
+    }
+    
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = Instant.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+  
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = Instant.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
     }
 }

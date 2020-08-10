@@ -15,7 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.time.Instant;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,8 +33,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class FichePointageResourceIT {
 
-    private static final LocalDate DEFAULT_DATEJOUR = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_DATEJOUR = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate DEFAULT_DATE_JOUR = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DATE_JOUR = LocalDate.now(ZoneId.systemDefault());
+
+    private static final String DEFAULT_USER_MODIF = "AAAAAAAAAA";
+    private static final String UPDATED_USER_MODIF = "BBBBBBBBBB";
+
+    private static final Instant DEFAULT_DATE_MODIF = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE_MODIF = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private FichePointageRepository fichePointageRepository;
@@ -53,7 +61,9 @@ public class FichePointageResourceIT {
      */
     public static FichePointage createEntity(EntityManager em) {
         FichePointage fichePointage = new FichePointage()
-            .datejour(DEFAULT_DATEJOUR);
+            .dateJour(DEFAULT_DATE_JOUR)
+            .userModif(DEFAULT_USER_MODIF)
+            .dateModif(DEFAULT_DATE_MODIF);
         return fichePointage;
     }
     /**
@@ -64,7 +74,9 @@ public class FichePointageResourceIT {
      */
     public static FichePointage createUpdatedEntity(EntityManager em) {
         FichePointage fichePointage = new FichePointage()
-            .datejour(UPDATED_DATEJOUR);
+            .dateJour(UPDATED_DATE_JOUR)
+            .userModif(UPDATED_USER_MODIF)
+            .dateModif(UPDATED_DATE_MODIF);
         return fichePointage;
     }
 
@@ -87,7 +99,9 @@ public class FichePointageResourceIT {
         List<FichePointage> fichePointageList = fichePointageRepository.findAll();
         assertThat(fichePointageList).hasSize(databaseSizeBeforeCreate + 1);
         FichePointage testFichePointage = fichePointageList.get(fichePointageList.size() - 1);
-        assertThat(testFichePointage.getDatejour()).isEqualTo(DEFAULT_DATEJOUR);
+        assertThat(testFichePointage.getDateJour()).isEqualTo(DEFAULT_DATE_JOUR);
+        assertThat(testFichePointage.getUserModif()).isEqualTo(DEFAULT_USER_MODIF);
+        assertThat(testFichePointage.getDateModif()).isEqualTo(DEFAULT_DATE_MODIF);
     }
 
     @Test
@@ -121,7 +135,9 @@ public class FichePointageResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(fichePointage.getId().intValue())))
-            .andExpect(jsonPath("$.[*].datejour").value(hasItem(DEFAULT_DATEJOUR.toString())));
+            .andExpect(jsonPath("$.[*].dateJour").value(hasItem(DEFAULT_DATE_JOUR.toString())))
+            .andExpect(jsonPath("$.[*].userModif").value(hasItem(DEFAULT_USER_MODIF)))
+            .andExpect(jsonPath("$.[*].dateModif").value(hasItem(DEFAULT_DATE_MODIF.toString())));
     }
     
     @Test
@@ -135,7 +151,9 @@ public class FichePointageResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(fichePointage.getId().intValue()))
-            .andExpect(jsonPath("$.datejour").value(DEFAULT_DATEJOUR.toString()));
+            .andExpect(jsonPath("$.dateJour").value(DEFAULT_DATE_JOUR.toString()))
+            .andExpect(jsonPath("$.userModif").value(DEFAULT_USER_MODIF))
+            .andExpect(jsonPath("$.dateModif").value(DEFAULT_DATE_MODIF.toString()));
     }
     @Test
     @Transactional
@@ -158,7 +176,9 @@ public class FichePointageResourceIT {
         // Disconnect from session so that the updates on updatedFichePointage are not directly saved in db
         em.detach(updatedFichePointage);
         updatedFichePointage
-            .datejour(UPDATED_DATEJOUR);
+            .dateJour(UPDATED_DATE_JOUR)
+            .userModif(UPDATED_USER_MODIF)
+            .dateModif(UPDATED_DATE_MODIF);
 
         restFichePointageMockMvc.perform(put("/api/fiche-pointages")
             .contentType(MediaType.APPLICATION_JSON)
@@ -169,7 +189,9 @@ public class FichePointageResourceIT {
         List<FichePointage> fichePointageList = fichePointageRepository.findAll();
         assertThat(fichePointageList).hasSize(databaseSizeBeforeUpdate);
         FichePointage testFichePointage = fichePointageList.get(fichePointageList.size() - 1);
-        assertThat(testFichePointage.getDatejour()).isEqualTo(UPDATED_DATEJOUR);
+        assertThat(testFichePointage.getDateJour()).isEqualTo(UPDATED_DATE_JOUR);
+        assertThat(testFichePointage.getUserModif()).isEqualTo(UPDATED_USER_MODIF);
+        assertThat(testFichePointage.getDateModif()).isEqualTo(UPDATED_DATE_MODIF);
     }
 
     @Test

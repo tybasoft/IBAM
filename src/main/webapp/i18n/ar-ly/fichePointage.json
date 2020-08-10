@@ -16,7 +16,9 @@
       "detail": {
         "title": "Fiche Pointage"
       },
-      "datejour": "Datejour",
+      "dateJour": "Date Jour",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
       "projet": "Projet",
       "pointages": "Pointages"
     }

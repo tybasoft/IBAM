@@ -139,7 +139,9 @@
       "save": "Sauvegarder",
       "view": "Voir",
       "download": "Télécharger",
-      "genererpaie": "générer"
+      "genererpaie": "générer",
+      "editPointage": "Editer Pointage",
+      "viewPointage": "Voir Pointage"
     },
     "detail": {
       "field": "Champs",

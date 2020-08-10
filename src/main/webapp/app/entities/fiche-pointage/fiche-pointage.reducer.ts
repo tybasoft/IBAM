@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IFichePointage, defaultValue } from 'app/shared/model/fiche-pointage.model';
+import { IPointage } from 'app/shared/model/pointage.model';
 
 export const ACTION_TYPES = {
   FETCH_FICHEPOINTAGE_LIST: 'fichePointage/FETCH_FICHEPOINTAGE_LIST',
@@ -12,17 +13,19 @@ export const ACTION_TYPES = {
   CREATE_FICHEPOINTAGE: 'fichePointage/CREATE_FICHEPOINTAGE',
   UPDATE_FICHEPOINTAGE: 'fichePointage/UPDATE_FICHEPOINTAGE',
   DELETE_FICHEPOINTAGE: 'fichePointage/DELETE_FICHEPOINTAGE',
-  RESET: 'fichePointage/RESET'
+  RESET: 'fichePointage/RESET',
+  FETCH_POINTAGEBYFICHE_LIST: 'fichePointage/FETCH_POINTAGEBYFICHE_LIST'
 };
 
 const initialState = {
   loading: false,
   errorMessage: null,
   entities: [] as ReadonlyArray<IFichePointage>,
+  entitiespointage: [] as ReadonlyArray<IPointage>,
   entity: defaultValue,
   updating: false,
-  totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  totalItems: 0
 };
 
 export type FichePointageState = Readonly<typeof initialState>;
@@ -32,13 +35,14 @@ export type FichePointageState = Readonly<typeof initialState>;
 export default (state: FichePointageState = initialState, action): FichePointageState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST):
-    case REQUEST(ACTION_TYPES.FETCH_FICHEPOINTAGE):
+    case REQUEST(ACTION_TYPES.FETCH_POINTAGEBYFICHE_LIST):
       return {
         ...state,
         errorMessage: null,
         updateSuccess: false,
         loading: true
       };
+
     case REQUEST(ACTION_TYPES.CREATE_FICHEPOINTAGE):
     case REQUEST(ACTION_TYPES.UPDATE_FICHEPOINTAGE):
     case REQUEST(ACTION_TYPES.DELETE_FICHEPOINTAGE):
@@ -49,6 +53,7 @@ export default (state: FichePointageState = initialState, action): FichePointage
         updating: true
       };
     case FAILURE(ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_POINTAGEBYFICHE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_FICHEPOINTAGE):
     case FAILURE(ACTION_TYPES.CREATE_FICHEPOINTAGE):
     case FAILURE(ACTION_TYPES.UPDATE_FICHEPOINTAGE):
@@ -67,6 +72,15 @@ export default (state: FichePointageState = initialState, action): FichePointage
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
+
+    case SUCCESS(ACTION_TYPES.FETCH_POINTAGEBYFICHE_LIST):
+      return {
+        ...state,
+        loading: false,
+        entitiespointage: action.payload.data,
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+      };
+
     case SUCCESS(ACTION_TYPES.FETCH_FICHEPOINTAGE):
       return {
         ...state,
@@ -101,13 +115,10 @@ const apiUrl = 'api/fiche-pointages';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IFichePointage> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  return {
-    type: ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST,
-    payload: axios.get<IFichePointage>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
-  };
-};
+export const getEntities: ICrudGetAllAction<IFichePointage> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST,
+  payload: axios.get<IFichePointage>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
+});
 
 export const getEntity: ICrudGetAction<IFichePointage> = id => {
   const requestUrl = `${apiUrl}/${id}`;
@@ -146,4 +157,9 @@ export const deleteEntity: ICrudDeleteAction<IFichePointage> = id => async dispa
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET
+});
+
+export const getEntitiesPointage: ICrudGetAllAction<IPointage> = id => ({
+  type: ACTION_TYPES.FETCH_POINTAGEBYFICHE_LIST,
+  payload: axios.get<IPointage>(`${apiUrl}/${id}/listPointageOfFiche`)
 });

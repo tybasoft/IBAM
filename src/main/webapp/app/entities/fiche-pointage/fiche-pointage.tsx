@@ -11,10 +11,11 @@ import { IFichePointage } from 'app/shared/model/fiche-pointage.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
+
 export interface IFichePointageProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const FichePointage = (props: IFichePointageProps) => {
-  const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -56,6 +57,11 @@ export const FichePointage = (props: IFichePointageProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.fichePointage.home.createLabel">Create new Fiche Pointage</Translate>
         </Link>
+        <Link to={`${match.url}/pointer`}  className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.pointage.home.pointer">Pointer</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {fichePointageList && fichePointageList.length > 0 ? (
@@ -65,9 +71,15 @@ export const FichePointage = (props: IFichePointageProps) => {
                 <th className="hand" onClick={sort('id')}>
                   <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('datejour')}>
-                  <Translate contentKey="ibamApp.fichePointage.datejour">Datejour</Translate> <FontAwesomeIcon icon="sort" />
+                <th className="hand" onClick={sort('dateJour')}>
+                  <Translate contentKey="ibamApp.fichePointage.dateJour">Date Jour</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+               {/*  <th className="hand" onClick={sort('userModif')}>
+                  <Translate contentKey="ibamApp.fichePointage.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('dateModif')}>
+                  <Translate contentKey="ibamApp.fichePointage.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th> */}
                 <th>
                   <Translate contentKey="ibamApp.fichePointage.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -83,14 +95,18 @@ export const FichePointage = (props: IFichePointageProps) => {
                     </Button>
                   </td>
                   <td>
-                    {fichePointage.datejour ? (
-                      <TextFormat type="date" value={fichePointage.datejour} format={APP_LOCAL_DATE_FORMAT} />
+                    {fichePointage.dateJour ? (
+                      <TextFormat type="date" value={fichePointage.dateJour} format={APP_LOCAL_DATE_FORMAT} />
                     ) : null}
                   </td>
+                 {/*  <td>{fichePointage.userModif}</td>
+                  <td>
+                    {fichePointage.dateModif ? <TextFormat type="date" value={fichePointage.dateModif} format={APP_DATE_FORMAT} /> : null}
+                  </td> */}
                   <td>{fichePointage.projet ? <Link to={`projet/${fichePointage.projet.id}`}>{fichePointage.projet.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`${match.url}/${fichePointage.id}`} color="info" size="sm">
+                     {/*  <Button tag={Link} to={`${match.url}/${fichePointage.id}`} color="info" size="sm">
                         <FontAwesomeIcon icon="eye" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.view">View</Translate>
@@ -106,18 +122,27 @@ export const FichePointage = (props: IFichePointageProps) => {
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.edit">Edit</Translate>
                         </span>
+                      </Button> */}
+
+                      <Button tag={Link} to={`${match.url}/${fichePointage.id}/listPointageOfFiche`} color="info" size="sm">
+                        <FontAwesomeIcon icon="eye" />{' '}
+                        <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.viewPointage">View List</Translate>
+                        </span>
                       </Button>
-                      <Button
-                        tag={Link}
-                        to={`${match.url}/${fichePointage.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="danger"
-                        size="sm"
-                      >
+                      <Button tag={Link} to={`${match.url}/${fichePointage.id}/EditListPointage?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`} color="primary" size="sm">
+                        <FontAwesomeIcon icon="pencil-alt" />{' '}
+                        <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.editPointage">Editer Pointage</Translate>
+                        </span>
+                      </Button>
+                      <Button tag={Link} to={`${match.url}/${fichePointage.id}/delete`} color="danger" size="sm">
                         <FontAwesomeIcon icon="trash" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.delete">Delete</Translate>
                         </span>
                       </Button>
+
                     </div>
                   </td>
                 </tr>

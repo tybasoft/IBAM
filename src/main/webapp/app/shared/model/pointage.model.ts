@@ -12,7 +12,7 @@ export interface IPointage {
   userModif?: string;
   dateModif?: string;
   employe?: IEmploye;
-  fichepointage?: IFichePointage;
+  fichePointage?: IFichePointage;
 }
 
 export const defaultValue: Readonly<IPointage> = {

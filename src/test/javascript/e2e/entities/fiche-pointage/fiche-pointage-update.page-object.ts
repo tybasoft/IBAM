@@ -1,4 +1,4 @@
-import { element, by, ElementFinder } from 'protractor';
+import { element, by, ElementFinder, protractor } from 'protractor';
 import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
 
 const expect = chai.expect;
@@ -7,19 +7,37 @@ export default class FichePointageUpdatePage {
   pageTitle: ElementFinder = element(by.id('ibamApp.fichePointage.home.createOrEditLabel'));
   saveButton: ElementFinder = element(by.id('save-entity'));
   cancelButton: ElementFinder = element(by.id('cancel-save'));
-  datejourInput: ElementFinder = element(by.css('input#fiche-pointage-datejour'));
+  dateJourInput: ElementFinder = element(by.css('input#fiche-pointage-dateJour'));
+  userModifInput: ElementFinder = element(by.css('input#fiche-pointage-userModif'));
+  dateModifInput: ElementFinder = element(by.css('input#fiche-pointage-dateModif'));
   projetSelect: ElementFinder = element(by.css('select#fiche-pointage-projet'));
 
   getPageTitle() {
     return this.pageTitle;
   }
 
-  async setDatejourInput(datejour) {
-    await this.datejourInput.sendKeys(datejour);
+  async setDateJourInput(dateJour) {
+    await this.dateJourInput.sendKeys(dateJour);
   }
 
-  async getDatejourInput() {
-    return this.datejourInput.getAttribute('value');
+  async getDateJourInput() {
+    return this.dateJourInput.getAttribute('value');
+  }
+
+  async setUserModifInput(userModif) {
+    await this.userModifInput.sendKeys(userModif);
+  }
+
+  async getUserModifInput() {
+    return this.userModifInput.getAttribute('value');
+  }
+
+  async setDateModifInput(dateModif) {
+    await this.dateModifInput.sendKeys(dateModif);
+  }
+
+  async getDateModifInput() {
+    return this.dateModifInput.getAttribute('value');
   }
 
   async projetSelectLastOption() {
@@ -55,8 +73,14 @@ export default class FichePointageUpdatePage {
 
   async enterData() {
     await waitUntilDisplayed(this.saveButton);
-    await this.setDatejourInput('01-01-2001');
-    expect(await this.getDatejourInput()).to.eq('2001-01-01');
+    await this.setDateJourInput('01-01-2001');
+    expect(await this.getDateJourInput()).to.eq('2001-01-01');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setUserModifInput('userModif');
+    expect(await this.getUserModifInput()).to.match(/userModif/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDateModifInput('01/01/2001' + protractor.Key.TAB + '02:30AM');
+    expect(await this.getDateModifInput()).to.contain('2001-01-01T02:30');
     await this.projetSelectLastOption();
     await this.save();
     await waitUntilHidden(this.saveButton);

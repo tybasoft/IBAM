@@ -18,8 +18,17 @@
   ],
   "fields": [
     {
-      "fieldName": "datejour",
-      "fieldType": "LocalDate"
+      "fieldName": "dateJour",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": []
+    },
+    {
+      "fieldName": "userModif",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateModif",
+      "fieldType": "Instant"
     }
   ],
   "changelogDate": "20200808131051",

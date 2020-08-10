@@ -39,7 +39,7 @@
             <column name="employe_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="fichepointage_id" type="bigint">
+            <column name="fiche_pointage_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->

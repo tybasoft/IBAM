@@ -50,11 +50,11 @@ public class Pointage implements Serializable {
     private LocalDate dateModif;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "pointages")
+    @JsonIgnoreProperties(value = "pointages", allowSetters = true)
     private Employe employe;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "pointages")
+    @JsonIgnoreProperties(value = "pointages", allowSetters = true)
     private FichePointage fichePointage;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -170,7 +170,7 @@ public class Pointage implements Serializable {
         this.employe = employe;
     }
 
-    public FichePointage getFichepointage() {
+    public FichePointage getFichePointage() {
         return fichePointage;
     }
 

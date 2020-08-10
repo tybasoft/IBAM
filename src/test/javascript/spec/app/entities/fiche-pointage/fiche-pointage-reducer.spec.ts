@@ -16,6 +16,7 @@ import reducer, {
 } from 'app/entities/fiche-pointage/fiche-pointage.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { IFichePointage, defaultValue } from 'app/shared/model/fiche-pointage.model';
+import { IPointage } from 'app/shared/model/pointage.model';
 
 describe('Entities reducer tests', () => {
   function isEmpty(element): boolean {
@@ -30,6 +31,7 @@ describe('Entities reducer tests', () => {
     loading: false,
     errorMessage: null,
     entities: [] as ReadonlyArray<IFichePointage>,
+    entitiespointage: [] as ReadonlyArray<IPointage>,
     entity: defaultValue,
     totalItems: 0,
     updating: false,

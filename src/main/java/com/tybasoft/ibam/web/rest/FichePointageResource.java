@@ -1,28 +1,28 @@
 package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.FichePointage;
+import com.tybasoft.ibam.domain.Pointage;
 import com.tybasoft.ibam.repository.FichePointageRepository;
+import com.tybasoft.ibam.repository.PointageRepository;
+import com.tybasoft.ibam.service.PointageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.FichePointage}.
@@ -40,9 +40,13 @@ public class FichePointageResource {
     private String applicationName;
 
     private final FichePointageRepository fichePointageRepository;
-
-    public FichePointageResource(FichePointageRepository fichePointageRepository) {
+    private final  PointageService   pointageService;
+    private final PointageRepository  pointageRepository;
+    
+    public FichePointageResource( PointageRepository  pointageRepository,FichePointageRepository fichePointageRepository,PointageService   pointageService) {
         this.fichePointageRepository = fichePointageRepository;
+        this.pointageService=pointageService;
+        this.pointageRepository=pointageRepository;
     }
 
     /**
@@ -88,15 +92,12 @@ public class FichePointageResource {
     /**
      * {@code GET  /fiche-pointages} : get all the fichePointages.
      *
-     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of fichePointages in body.
      */
     @GetMapping("/fiche-pointages")
-    public ResponseEntity<List<FichePointage>> getAllFichePointages(Pageable pageable) {
-        log.debug("REST request to get a page of FichePointages");
-        Page<FichePointage> page = fichePointageRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    public List<FichePointage> getAllFichePointages() {
+        log.debug("REST request to get all FichePointages");
+        return fichePointageRepository.findAll();
     }
 
     /**
@@ -111,17 +112,41 @@ public class FichePointageResource {
         Optional<FichePointage> fichePointage = fichePointageRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(fichePointage);
     }
-
+    
     /**
      * {@code DELETE  /fiche-pointages/:id} : delete the "id" fichePointage.
      *
      * @param id the id of the fichePointage to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
+    
     @DeleteMapping("/fiche-pointages/{id}")
     public ResponseEntity<Void> deleteFichePointage(@PathVariable Long id) {
         log.debug("REST request to delete FichePointage : {}", id);
-        fichePointageRepository.deleteById(id);
+        FichePointage    fiche=fichePointageRepository.findById(id).get();
+      
+           pointageService.deleteFichePointageEntity(fiche, log);
+        
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
-}
+    
+    
+    @GetMapping("/fiche-pointages/{id}/listPointageOfFiche")
+    public List<Pointage> getAllPointageByFichePointage(@PathVariable Long id) {
+    	 
+        log.debug("REST request to get FichePointage : {}", id);
+        List<Pointage>   currentlist=new ArrayList<Pointage>();
+   
+        try {
+        	
+        FichePointage fichePointage = fichePointageRepository.findById(id).get(); 
+            if(fichePointage!=null ) {
+        	   currentlist=pointageService.ViewPointagesByFicheId(fichePointage);
+           }
+        
+        }catch(Exception e) {
+        	System.out.println(e.getMessage());
+        }
+        return currentlist;
+      }
+     }

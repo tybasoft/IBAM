@@ -43,6 +43,8 @@ export const FichePointageUpdate = (props: IFichePointageUpdateProps) => {
   }, [props.updateSuccess]);
 
   const saveEntity = (event, errors, values) => {
+    values.dateModif = convertDateTimeToServer(values.dateModif);
+
     if (errors.length === 0) {
       const entity = {
         ...fichePointageEntity,
@@ -81,10 +83,29 @@ export const FichePointageUpdate = (props: IFichePointageUpdateProps) => {
                 </AvGroup>
               ) : null}
               <AvGroup>
-                <Label id="datejourLabel" for="fiche-pointage-datejour">
-                  <Translate contentKey="ibamApp.fichePointage.datejour">Datejour</Translate>
+                <Label id="dateJourLabel" for="fiche-pointage-dateJour">
+                  <Translate contentKey="ibamApp.fichePointage.dateJour">Date Jour</Translate>
                 </Label>
-                <AvField id="fiche-pointage-datejour" type="date" className="form-control" name="datejour" />
+                <AvField id="fiche-pointage-dateJour" type="date" className="form-control" name="dateJour" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="userModifLabel" for="fiche-pointage-userModif">
+                  <Translate contentKey="ibamApp.fichePointage.userModif">User Modif</Translate>
+                </Label>
+                <AvField id="fiche-pointage-userModif" type="text" name="userModif" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="dateModifLabel" for="fiche-pointage-dateModif">
+                  <Translate contentKey="ibamApp.fichePointage.dateModif">Date Modif</Translate>
+                </Label>
+                <AvInput
+                  id="fiche-pointage-dateModif"
+                  type="datetime-local"
+                  className="form-control"
+                  name="dateModif"
+                  placeholder={'YYYY-MM-DD HH:mm'}
+                  value={isNew ? displayDefaultDateTime() : convertDateTimeFromServer(props.fichePointageEntity.dateModif)}
+                />
               </AvGroup>
               <AvGroup>
                 <Label for="fiche-pointage-projet">
