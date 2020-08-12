@@ -1,0 +1,34 @@
+{
+  "ibamApp": {
+    "maintenance": {
+      "home": {
+        "title": "Maintenances",
+        "createLabel": "Créer un nouveau Maintenance",
+        "createOrEditLabel": "Créer ou éditer un Maintenance",
+        "notFound": "Aucun Maintenance trouvé"
+      },
+      "created": "Un nouveau Maintenance a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Maintenance avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Maintenance avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Maintenance {{ id }} ?"
+      },
+      "detail": {
+        "title": "Maintenance"
+      },
+      "reference": "Reference",
+      "datePanne": "Date Panne",
+      "frais": "Frais",
+      "technicien": "Technicien",
+      "motif": "Motif",
+      "problemeFrequent": "Probleme Frequent",
+      "remarque": "Remarque",
+      "dureePanne": "Duree Panne",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel",
+      "centreMaintenance": "Centre Maintenance",
+      "image": "Image"
+    }
+  }
+}

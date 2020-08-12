@@ -1,0 +1,33 @@
+{
+  "ibamApp": {
+    "consommation": {
+      "home": {
+        "title": "Consommations",
+        "createLabel": "Create a new Consommation",
+        "createOrEditLabel": "Create or edit a Consommation",
+        "notFound": "No Consommations found"
+      },
+      "created": "A new Consommation is created with identifier {{ param }}",
+      "updated": "A Consommation is updated with identifier {{ param }}",
+      "deleted": "A Consommation is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Consommation {{ id }}?"
+      },
+      "detail": {
+        "title": "Consommation"
+      },
+      "reference": "Reference",
+      "dateAchat": "Date Achat",
+      "typeCarburant": "Type Carburant",
+      "montant": "Montant",
+      "quantite": "Quantite",
+      "kilometrage": "Kilometrage",
+      "commentaire": "Commentaire",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel",
+      "fournisseur": "Fournisseur",
+      "image": "Image"
+    }
+  }
+}

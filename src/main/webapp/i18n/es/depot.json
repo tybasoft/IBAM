@@ -1,0 +1,31 @@
+{
+  "ibamApp": {
+    "depot": {
+      "home": {
+        "title": "Depots",
+        "createLabel": "Crear nuevo Depot",
+        "createOrEditLabel": "Crear o editar Depot",
+        "notFound": "Ningún Depots encontrado"
+      },
+      "created": "Un nuevo Depot ha sido creado con el identificador {{ param }}",
+      "updated": "Un Depot ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Depot ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Depot {{ id }}?"
+      },
+      "detail": {
+        "title": "Depot"
+      },
+      "libelle": "Libelle",
+      "adresse": "Adresse",
+      "tel": "Tel",
+      "ville": "Ville",
+      "pays": "Pays",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "bonCommande": "Bon Commande",
+      "bonReception": "Bon Reception",
+      "projet": "Projet"
+    }
+  }
+}

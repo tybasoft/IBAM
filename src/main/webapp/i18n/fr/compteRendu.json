@@ -1,0 +1,24 @@
+{
+  "ibamApp": {
+    "compteRendu": {
+      "home": {
+        "title": "CompteRendus",
+        "createLabel": "Créer un nouveau Compte Rendu",
+        "createOrEditLabel": "Créer ou éditer un Compte Rendu",
+        "notFound": "Aucun Compte Rendu trouvé"
+      },
+      "created": "Un nouveau Compte Rendu a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Compte Rendu avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Compte Rendu avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Compte Rendu {{ id }} ?"
+      },
+      "detail": {
+        "title": "Compte Rendu"
+      },
+      "titre": "Titre",
+      "contenu": "Contenu",
+      "employe": "Employe"
+    }
+  }
+}

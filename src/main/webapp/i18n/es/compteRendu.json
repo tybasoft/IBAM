@@ -1,0 +1,24 @@
+{
+  "ibamApp": {
+    "compteRendu": {
+      "home": {
+        "title": "Compte Rendus",
+        "createLabel": "Crear nuevo Compte Rendu",
+        "createOrEditLabel": "Crear o editar Compte Rendu",
+        "notFound": "Ningún Compte Rendus encontrado"
+      },
+      "created": "Un nuevo Compte Rendu ha sido creado con el identificador {{ param }}",
+      "updated": "Un Compte Rendu ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Compte Rendu ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Compte Rendu {{ id }}?"
+      },
+      "detail": {
+        "title": "Compte Rendu"
+      },
+      "titre": "Titre",
+      "contenu": "Contenu",
+      "employe": "Employe"
+    }
+  }
+}

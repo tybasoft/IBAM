@@ -1,0 +1,70 @@
+{
+    "name": "Depot",
+    "fields": [
+        {
+            "fieldName": "libelle",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "adresse",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tel",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "ville",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "pays",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "bonCommande",
+            "otherEntityRelationshipName": "depot",
+            "relationshipName": "bonCommande"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "bonReception",
+            "otherEntityRelationshipName": "depot",
+            "relationshipName": "bonReception"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "projet",
+            "otherEntityRelationshipName": "depot",
+            "relationshipName": "projet"
+        }
+    ],
+    "changelogDate": "20200512002800",
+    "entityTableName": "depot",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,50 @@
+{
+  "ibamApp": {
+    "employe": {
+      "home": {
+        "title": "Employes",
+        "createLabel": "Crear nuevo Employe",
+        "createOrEditLabel": "Crear o editar Employe",
+        "notFound": "Ningún Employes encontrado"
+      },
+      "created": "Un nuevo Employe ha sido creado con el identificador {{ param }}",
+      "updated": "Un Employe ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Employe ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Employe {{ id }}?"
+      },
+      "detail": {
+        "title": "Employe"
+      },
+      "nom": "Nom",
+      "prenom": "Prenom",
+      "matricule": "Matricule",
+      "cin": "Cin",
+      "sexe": "Sexe",
+      "tarifJournalier": "Tarif Journalier",
+      "dateNaissance": "Date Naissance",
+      "lieuNaissance": "Lieu Naissance",
+      "situationFam": "Situation Fam",
+      "nationalite": "Nationalite",
+      "dateEntree": "Date Entree",
+      "tel": "Tel",
+      "email": "Email",
+      "adresse": "Adresse",
+      "division": "Division",
+      "typeContrat": "Type Contrat",
+      "multiPorjet": "Multi Porjet",
+      "dateDepart": "Date Depart",
+      "motifDepart": "Motif Depart",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel",
+      "employe": "Employe",
+      "pointage": "Pointage",
+      "paie": "Paie",
+      "projet": "Projet",
+      "equipe": "Equipe",
+      "fonction": "Fonction",
+      "image": "Image"
+    }
+  }
+}

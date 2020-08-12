@@ -1,0 +1,28 @@
+{
+  "ibamApp": {
+    "document": {
+      "home": {
+        "title": "Documents",
+        "createLabel": "Crear nuevo Document",
+        "createOrEditLabel": "Crear o editar Document",
+        "notFound": "Ningún Documents encontrado"
+      },
+      "created": "Un nuevo Document ha sido creado con el identificador {{ param }}",
+      "updated": "Un Document ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Document ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Document {{ id }}?"
+      },
+      "detail": {
+        "title": "Document"
+      },
+      "titre": "Titre",
+      "type": "Type",
+      "path": "Path",
+      "commentaire": "Commentaire",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel"
+    }
+  }
+}

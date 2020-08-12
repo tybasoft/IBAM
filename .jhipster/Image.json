@@ -1,0 +1,82 @@
+{
+    "name": "Image",
+    "fields": [
+        {
+            "fieldName": "titre",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "path",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "materiau",
+            "otherEntityRelationshipName": "image",
+            "relationshipName": "materiau"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "entreprise",
+            "otherEntityRelationshipName": "image",
+            "relationshipName": "entreprise"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "materiel",
+            "otherEntityRelationshipName": "image",
+            "relationshipName": "materiel"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "consommation",
+            "otherEntityRelationshipName": "image",
+            "relationshipName": "consommation"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "maintenance",
+            "otherEntityRelationshipName": "image",
+            "relationshipName": "maintenance"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "employe",
+            "otherEntityRelationshipName": "image",
+            "relationshipName": "employee"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "bonReception",
+            "otherEntityRelationshipName": "image",
+            "relationshipName": "bonReception"
+        }
+    ],
+    "changelogDate": "20200512002100",
+    "entityTableName": "image",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

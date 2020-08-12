@@ -1,0 +1,30 @@
+{
+  "ibamApp": {
+    "centreMaintenance": {
+      "home": {
+        "title": "Centre Maintenances",
+        "createLabel": "Crear nuevo Centre Maintenance",
+        "createOrEditLabel": "Crear o editar Centre Maintenance",
+        "notFound": "Ningún Centre Maintenances encontrado"
+      },
+      "created": "Un nuevo Centre Maintenance ha sido creado con el identificador {{ param }}",
+      "updated": "Un Centre Maintenance ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Centre Maintenance ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Centre Maintenance {{ id }}?"
+      },
+      "detail": {
+        "title": "Centre Maintenance"
+      },
+      "libelle": "Libelle",
+      "specialite": "Specialite",
+      "responsable": "Responsable",
+      "adresse": "Adresse",
+      "telephone": "Telephone",
+      "email": "Email",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "maintenance": "Maintenance"
+    }
+  }
+}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity Materiel.
+    -->
+    <changeSet id="20200512003600-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="famille_id"
+                                 baseTableName="materiel"
+                                 constraintName="fk_materiel_famille_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="famille"/>
+
+        <addForeignKeyConstraint baseColumnNames="type_materiel_id"
+                                 baseTableName="materiel"
+                                 constraintName="fk_materiel_type_materiel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="type_materiel"/>
+
+        <addForeignKeyConstraint baseColumnNames="fournisseur_id"
+                                 baseTableName="materiel"
+                                 constraintName="fk_materiel_fournisseur_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="fournisseur"/>
+
+        <addForeignKeyConstraint baseColumnNames="marque_id"
+                                 baseTableName="materiel"
+                                 constraintName="fk_materiel_marque_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="marque"/>
+
+        <addForeignKeyConstraint baseColumnNames="document_id"
+                                 baseTableName="materiel"
+                                 constraintName="fk_materiel_document_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="document"/>
+
+        <addForeignKeyConstraint baseColumnNames="employe_id"
+                                 baseTableName="materiel"
+                                 constraintName="fk_materiel_employe_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="employe"/>
+
+        <addForeignKeyConstraint baseColumnNames="image_id"
+                                 baseTableName="materiel"
+                                 constraintName="fk_materiel_image_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="image"/>
+
+        <addForeignKeyConstraint baseColumnNames="projet_id"
+                                 baseTableName="materiel"
+                                 constraintName="fk_materiel_projet_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="projet"/>
+
+    </changeSet>
+</databaseChangeLog>

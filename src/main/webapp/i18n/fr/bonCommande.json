@@ -1,0 +1,30 @@
+{
+  "ibamApp": {
+    "bonCommande": {
+      "home": {
+        "title": "BonCommandes",
+        "createLabel": "Créer un nouveau Bon Commande",
+        "createOrEditLabel": "Créer ou éditer un Bon Commande",
+        "notFound": "Aucun Bon Commande trouvé"
+      },
+      "created": "Un nouveau Bon Commande a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Bon Commande avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Bon Commande avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Bon Commande {{ id }} ?"
+      },
+      "detail": {
+        "title": "Bon Commande"
+      },
+      "datePrevLiv": "Date Prev Liv",
+      "remarques": "Remarques",
+      "dateCreation": "Date Creation",
+      "valide": "Valide",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "ligneBonCom": "Ligne Bon Com",
+      "depot": "Depot",
+      "fournisseur": "Fournisseur"
+    }
+  }
+}
