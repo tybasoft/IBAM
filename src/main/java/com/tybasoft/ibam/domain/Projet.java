@@ -89,6 +89,12 @@ public class Projet implements Serializable {
     @JsonIgnoreProperties("projets")
     private Depot depot;
 
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not
     // remove
     public Long getId() {
@@ -367,6 +373,22 @@ public class Projet implements Serializable {
 
     public void setDepot(Depot depot) {
         this.depot = depot;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
