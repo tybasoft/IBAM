@@ -1,4 +1,7 @@
 import { element, by, ElementFinder } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class PointageUpdatePage {
   pageTitle: ElementFinder = element(by.id('ibamApp.pointage.home.createOrEditLabel'));
@@ -12,6 +15,7 @@ export default class PointageUpdatePage {
   userModifInput: ElementFinder = element(by.css('input#pointage-userModif'));
   dateModifInput: ElementFinder = element(by.css('input#pointage-dateModif'));
   employeSelect: ElementFinder = element(by.css('select#pointage-employe'));
+  fichePointageSelect: ElementFinder = element(by.css('select#pointage-fichePointage'));
 
   getPageTitle() {
     return this.pageTitle;
@@ -82,6 +86,25 @@ export default class PointageUpdatePage {
     return this.employeSelect.element(by.css('option:checked')).getText();
   }
 
+  async fichePointageSelectLastOption() {
+    await this.fichePointageSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
+  }
+
+  async fichePointageSelectOption(option) {
+    await this.fichePointageSelect.sendKeys(option);
+  }
+
+  getFichePointageSelect() {
+    return this.fichePointageSelect;
+  }
+
+  async getFichePointageSelectedOption() {
+    return this.fichePointageSelect.element(by.css('option:checked')).getText();
+  }
+
   async save() {
     await this.saveButton.click();
   }
@@ -92,5 +115,46 @@ export default class PointageUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDateJourInput('01-01-2001');
+    expect(await this.getDateJourInput()).to.eq('2001-01-01');
+    await waitUntilDisplayed(this.saveButton);
+    const selectedPresenceMatin = await this.getPresenceMatinInput().isSelected();
+    if (selectedPresenceMatin) {
+      await this.getPresenceMatinInput().click();
+      expect(await this.getPresenceMatinInput().isSelected()).to.be.false;
+    } else {
+      await this.getPresenceMatinInput().click();
+      expect(await this.getPresenceMatinInput().isSelected()).to.be.true;
+    }
+    await waitUntilDisplayed(this.saveButton);
+    const selectedPresenceAPM = await this.getPresenceAPMInput().isSelected();
+    if (selectedPresenceAPM) {
+      await this.getPresenceAPMInput().click();
+      expect(await this.getPresenceAPMInput().isSelected()).to.be.false;
+    } else {
+      await this.getPresenceAPMInput().click();
+      expect(await this.getPresenceAPMInput().isSelected()).to.be.true;
+    }
+    await waitUntilDisplayed(this.saveButton);
+    await this.setNbrHeureSupInput('nbrHeureSup');
+    expect(await this.getNbrHeureSupInput()).to.match(/nbrHeureSup/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setRemarquesInput('remarques');
+    expect(await this.getRemarquesInput()).to.match(/remarques/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setUserModifInput('userModif');
+    expect(await this.getUserModifInput()).to.match(/userModif/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDateModifInput('01-01-2001');
+    expect(await this.getDateModifInput()).to.eq('2001-01-01');
+    await this.employeSelectLastOption();
+    await this.fichePointageSelectLastOption();
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

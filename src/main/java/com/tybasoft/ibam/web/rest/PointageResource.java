@@ -1,5 +1,8 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Entreprise;
+import com.tybasoft.ibam.domain.FichePointage;
+import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.domain.Pointage;
 import com.tybasoft.ibam.repository.PointageRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -40,6 +43,7 @@ public class PointageResource {
     private final Logger log = LoggerFactory.getLogger(PointageResource.class);
 
     private static final String ENTITY_NAME = "pointage";
+    private static final String ENTITY_NAME1 = "fichePointage";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -169,14 +173,32 @@ public class PointageResource {
         return ResponseEntity.ok().body(true);
 
     }
-    
+
     /*Pour faire l'insertion du pointage du jour dans la base de donnees*/
     @PostMapping("/pointages/createPointageList")
-    public ResponseEntity<Pointage[]> createListPointage(@Valid @RequestBody Pointage []  tab) throws URISyntaxException {
-		    	Pointage [] result = pointageService.createPointage(tab);
-		        return   ResponseEntity.created(new URI("/api/pointages/" ))
-		                .headers(HeaderUtil.createEntityCreationAlert(applicationName,true,ENTITY_NAME,""))
-		                .body(result);  
+    public ResponseEntity<FichePointage> createListPointage(@Valid @RequestBody Pointage []  tab) throws URISyntaxException {
+    	      
+    	Pointage []  result = pointageService.EnregistrementPointage(tab);
+		       
+		          return   ResponseEntity
+		                  .created(new URI("/api/fiche-pointages/" + result[0].getFichePointage().getId())).headers(HeaderUtil
+		                          .createEntityCreationAlert(applicationName, true, ENTITY_NAME1, result[0].getFichePointage().getId().toString()))
+		                  .body(result[0].getFichePointage()); 
     }
-
+    
+    /*Pour la modification de la liste de pointag*/
+    @PutMapping("/pointages/editPointages")
+    public ResponseEntity<FichePointage> updateListPointage(@Valid @RequestBody Pointage [] pointage) throws URISyntaxException {
+       
+    	FichePointage  fiche=pointage[0].getFichePointage();
+    	if(pointage.length>0) {
+    	for(int i=0;i<pointage.length;i++) {
+    		pointageRepository.save(pointage[i]);
+    	}
+    	}
+        return ResponseEntity.ok().headers(
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME1, fiche.getId().toString()))
+                .body(fiche);
+    }
+    
 }

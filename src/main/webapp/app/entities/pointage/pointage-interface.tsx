@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import {Link, RouteComponentProps } from 'react-router-dom';
 import {  AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { IRootState } from 'app/shared/reducers';
 import { Button, Col, Row, Table ,Label} from 'reactstrap';
@@ -11,6 +11,10 @@ import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
 import {getEntities  as getPointages}  from 'app/entities/pointage/pointage.reducer';
 import Moment from 'moment';
 import {CreateList}  from './pointage.reducer';
+import { 
+  createEntity,
+  getEntity  as getFichePointage } 
+  from 'app/entities/fiche-pointage/fiche-pointage.reducer';
 
 
 
@@ -20,28 +24,31 @@ export interface IPointageJourProps extends StateProps, DispatchProps, RouteComp
 export const PointageJour = (props: IPointageJourProps) => {
   const [filter, setFilter] = useState('');
   
-  const { projets,employeList,pointageList,loading,updateSuccess} = props;  
-  const { account } = props;
+
+  
+  const { 
+    projets,
+    employeList,
+    pointageList,
+    FichePointageEntity,
+    PointageEntity,
+    loading,
+    updateSuccess,
+    account } = props;
  
   const handleClose = () => {
-    props.history.push('/pointage' + props.location.search);
+    props.history.push('/fiche-pointage' + props.location.search);
   };
 
   useEffect(() => {
-    if (props.updateSuccess) {
+    if (props.updateSuccess) {  
       handleClose();
     }
   }, [props.updateSuccess]);
 
   useEffect(() => {
     props.getProjets();
-  },[]);
-
-  useEffect(() => {
     props.getEntities();
-  },[]);
-
-  useEffect(() => {
     props.getPointages();
   },[]);
 
@@ -54,12 +61,13 @@ export const PointageJour = (props: IPointageJourProps) => {
   /* Pour tester si le pointage est deja effectue pour la meme projet dans la meme date */
   function  ValidatePointageJour(projectId,datejour){
     let compt=0;
-    pointageList.map(pointageelement=>{     
-      if(pointageelement.employe.projet.id===Number(projectId)
-          &&  pointageelement.dateJour===datejour)
+    pointageList.map(pointageelement=>{ 
+      if(pointageelement.employe!==null && pointageelement.employe.projet!==null){    
+      if (pointageelement.employe.projet.id===Number(projectId) &&  pointageelement.dateJour===datejour)
           compt++;
+        }
     })
-
+  
       if(compt>0) 
       return false;
       return  true;
@@ -68,11 +76,13 @@ export const PointageJour = (props: IPointageJourProps) => {
  /*  Pour le sauvegarde */
     const saveEntity = (event, errors, values) => {
       const tab=[];
+      let fichePointage;
       let cmpt=0;
-      
+    
       if (errors.length === 0) {
-             employeList.filter(filterByProjetId).map((employe,i=0)=>{
-              
+
+           employeList.filter(filterByProjetId).map((employe,i=0)=>{
+            
                tab[i]={
                 "dateJour": Moment(new Date()).format('YYYY-MM-DD'),
                 "projet" : Object.values(values)[0],
@@ -83,27 +93,37 @@ export const PointageJour = (props: IPointageJourProps) => {
                 "employe" : {
                   "id" : employe.id
                 }
+                ,
+                "fichePointage" : {
+                  dateJour: Moment(new Date()).format('YYYY-MM-DD'),
+                  projet: Object.values(values)[0]
+                }
                }
               cmpt+=4;
               i++;
              }    
            )
+
+          
            if(errors.length === 0 && tab.length>0){
+             if(tab[0].projet!=null){
              const valider=ValidatePointageJour(tab[0].projet.id,Moment(new Date()).format('YYYY-MM-DD'));
-             if(valider===true)
+             if(valider===true){
              props.CreateList(tab);
-             else
+             
+            }else{
              alert("le pointage est déjà effectue ");
+            }
           }
-   }
-       
-    
+        }
+        
+      }
     }
 
    
   return (
     <div>
-        <AvForm   onSubmit={saveEntity}>
+        <AvForm   onSubmit={saveEntity} >
             <AvGroup>
                 <Row >
                   <Col xs="5"><b>Pointeur : {account.login}</b></Col>
@@ -171,9 +191,9 @@ export const PointageJour = (props: IPointageJourProps) => {
                   <td>{employe.id} </td>
                   <td>{employe.matricule}</td>
                   <td>{employe.nom +"  "+ employe.prenom}</td>
-                  <td> <AvInput id={employe.id+"1"} type="checkbox" name={"Matin"+employe.id}/></td>
-                  <td> <AvInput id={employe.id+"2"} type="checkbox" name={"APM"+employe.id} /></td>
-                  <td> <AvInput id={employe.id+"3"} type="text" name={"nbsup"+employe.id} /></td>
+                  <td> <AvInput id={employe.id+"1"} type="checkbox" name={"Matin"+employe.id}  defaultChecked/></td>
+                  <td> <AvInput id={employe.id+"2"} type="checkbox" name={"APM"+employe.id}   defaultChecked/></td>
+                  <td> <AvInput id={employe.id+"3"} type="text" name={"nbsup"+employe.id}  /></td>
                   <td> <AvInput id={employe.id+"4"} type="text" name={"observation"+employe.id} /></td>
                 </tr>
               ))}
@@ -187,11 +207,18 @@ export const PointageJour = (props: IPointageJourProps) => {
           )
         )}
       </div>    
-              <Button color="primary" id="save-entity" type="submit" >
+              <Button color="primary" id="save-entity" type="submit" className="btn btn-primary mr-2 float-right jh-create-entity">
                 <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button> 
+              <Button tag={Link} id="cancel-save" to="/fiche-pointage"  className="btn btn-primary mr-2 float-right jh-create-entity"  replace color="info">
+                    <FontAwesomeIcon icon="arrow-left" />
+                      &nbsp;
+                    <span className="d-none d-md-inline">
+                      <Translate contentKey="entity.action.back">Back</Translate>
+                    </span>
+              </Button>
           </AvForm>      
    </div> 
   );
@@ -203,6 +230,8 @@ const mapStateToProps = (storeState: IRootState) => ({
     projets: storeState.projet.entities,
     employeList : storeState.employe.entities,
     pointageList : storeState.pointage.entities,
+    FichePointageEntity : storeState.fichePointage.entity,
+    PointageEntity :storeState.pointage.entity,
     loading: storeState.employe.loading,
     updateSuccess: storeState.pointage.updateSuccess
 });
@@ -211,6 +240,7 @@ const mapDispatchToProps = {
   getProjets,
   getEntities,
   getPointages,
+  createEntity,
   CreateList
 };
 

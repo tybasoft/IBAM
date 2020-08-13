@@ -13,6 +13,7 @@ export const ACTION_TYPES = {
   UPDATE_POINTAGE: 'pointage/UPDATE_POINTAGE',
   DELETE_POINTAGE: 'pointage/DELETE_POINTAGE',
   CREATE_POINTAGE_LIST: 'pointage/CREATE_POINTAGE_LIST',
+  UPDATE_POINTAGEBYFICHE: 'pointage/UPDATE_POINTAGEBYFICHE',
   REPPORT: 'pointage/REPPORT',
   RESET: 'pointage/RESET'
 };
@@ -21,6 +22,7 @@ const initialState = {
   loading: false,
   errorMessage: null,
   entities: [] as ReadonlyArray<IPointage>,
+  entitiespointage: [] as ReadonlyArray<IPointage>,
   entity: defaultValue,
   updating: false,
   totalItems: 0,
@@ -43,6 +45,7 @@ export default (state: PointageState = initialState, action): PointageState => {
       };
     case REQUEST(ACTION_TYPES.CREATE_POINTAGE):
     case REQUEST(ACTION_TYPES.CREATE_POINTAGE_LIST):
+    case REQUEST(ACTION_TYPES.UPDATE_POINTAGEBYFICHE):
     case REQUEST(ACTION_TYPES.UPDATE_POINTAGE):
     case REQUEST(ACTION_TYPES.DELETE_POINTAGE):
       return {
@@ -55,6 +58,7 @@ export default (state: PointageState = initialState, action): PointageState => {
     case FAILURE(ACTION_TYPES.FETCH_POINTAGE):
     case FAILURE(ACTION_TYPES.CREATE_POINTAGE):
     case FAILURE(ACTION_TYPES.CREATE_POINTAGE_LIST):
+    case FAILURE(ACTION_TYPES.UPDATE_POINTAGEBYFICHE):
     case FAILURE(ACTION_TYPES.UPDATE_POINTAGE):
     case FAILURE(ACTION_TYPES.DELETE_POINTAGE):
       return {
@@ -77,8 +81,23 @@ export default (state: PointageState = initialState, action): PointageState => {
         loading: false,
         entity: action.payload.data
       };
-    case SUCCESS(ACTION_TYPES.CREATE_POINTAGE):
+
     case SUCCESS(ACTION_TYPES.CREATE_POINTAGE_LIST):
+      return {
+        ...state,
+        updating: false,
+        updateSuccess: true,
+        entitiespointage: action.payload.data
+      };
+
+    case SUCCESS(ACTION_TYPES.UPDATE_POINTAGEBYFICHE):
+      return {
+        ...state,
+        updating: false,
+        updateSuccess: true,
+        entitiespointage: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.CREATE_POINTAGE):
     case SUCCESS(ACTION_TYPES.UPDATE_POINTAGE):
       return {
         ...state,
@@ -163,6 +182,15 @@ export const CreateList = (tab: any[]) => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_POINTAGE_LIST,
     payload: axios.post(`${apiUrl}/createPointageList`, tab)
+  });
+  dispatch(getEntities());
+  return result;
+};
+
+export const UpdatePointageList = (tab: any[]) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.UPDATE_POINTAGEBYFICHE,
+    payload: axios.put(`${apiUrl}/editPointages`, tab)
   });
   dispatch(getEntities());
   return result;

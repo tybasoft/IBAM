@@ -38,6 +38,7 @@
         "centreMaintenance": "Centre Maintenance",
         "visiteTechnique": "Visite Technique",
         "notification": "Notification",
+        "fichePointage": "Fiche Pointage",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "Materiel": "Matériel",
         "Materiau": "Matériau",
@@ -138,7 +139,9 @@
       "save": "Sauvegarder",
       "view": "Voir",
       "download": "Télécharger",
-      "genererpaie": "générer"
+      "genererpaie": "générer",
+      "editPointage": "Editer Pointage",
+      "viewPointage": "Voir Pointage"
     },
     "detail": {
       "field": "Champs",
