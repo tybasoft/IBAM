@@ -10,7 +10,6 @@ import { getEntities } from './avancement.reducer';
 import { IAvancement } from 'app/shared/model/avancement.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 
 export interface IAvancementProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 

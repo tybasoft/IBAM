@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
@@ -6,6 +7,7 @@ import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstr
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
+import { Storage } from 'react-jhipster';
 
 import { IEmploye } from 'app/shared/model/employe.model';
 import { getEntities as getEmployes } from 'app/entities/employe/employe.reducer';
@@ -13,15 +15,17 @@ import { getEntity, updateEntity, createEntity, reset } from './compte-rendu.red
 import { ICompteRendu } from 'app/shared/model/compte-rendu.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import TextEditor from './TextEditor';
+import { getSession } from 'app/shared/reducers/authentication';
 
 export interface ICompteRenduUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
   const [employeId, setEmployeId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
-
+  const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
+  const acc = Storage.session.get(AUTH_TOKEN_KEY);
   const { compteRenduEntity, employes, loading, updating } = props;
-
   const handleClose = () => {
     props.history.push('/compte-rendu' + props.location.search);
   };
@@ -56,6 +60,11 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
       }
     }
   };
+  var x;
+  var f = async (e)=>{ 
+    console.log(Storage.session.get(AUTH_TOKEN_KEY));
+    document.getElementById('contenu').value = e;
+    console.log(document.getElementById('contenu').value)}
 
   return (
     <div>
@@ -66,6 +75,7 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
           </h2>
         </Col>
       </Row>
+  
       <Row className="justify-content-center">
         <Col md="8">
           {loading ? (
@@ -86,25 +96,25 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
                 </Label>
                 <AvField id="compte-rendu-titre" type="text" name="titre" />
               </AvGroup>
-              <AvGroup>
+              <AvGroup  style={{display:"none"}}>
                 <Label id="contenuLabel" for="compte-rendu-contenu">
                   <Translate contentKey="ibamApp.compteRendu.contenu">Contenu</Translate>
                 </Label>
-                <AvField id="compte-rendu-contenu" type="text" name="contenu" />
+                <AvField id="compte-rendu-contenu" id="contenu"  type="text" name="contenu"  />
               </AvGroup>
               <AvGroup>
                 <Label for="compte-rendu-employe">
-                  <Translate contentKey="ibamApp.compteRendu.employe">Employe</Translate>
+                 Redacteur
                 </Label>
-                <AvInput id="compte-rendu-employe" type="select" className="form-control" name="employe.id">
-                  <option value="" key="0" />
-                  {employes
+                <AvInput id="compte-rendu-employe" type="text"  disabled className="form-control" value="2"  name="employe.id">
+                  { /*<option value="" key="0" />
+                  {/* {employes
                     ? employes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
                           {otherEntity.nom}
                         </option>
                       ))
-                    : null}
+                    : null} }*/ }
                 </AvInput>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/compte-rendu" replace color="info">
@@ -123,6 +133,9 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
             </AvForm>
           )}
         </Col>
+      </Row>
+      <Row className="justify-content-center">
+      <TextEditor content="" id="draft" classes={{}} onChange={f} />
       </Row>
     </div>
   );
