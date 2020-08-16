@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -54,9 +56,23 @@ public class CompteRenduResource {
      */
     @PostMapping("/compte-rendus")
     public ResponseEntity<CompteRendu> createCompteRendu(@RequestBody CompteRendu compteRendu) throws URISyntaxException {
+        System.out.println(compteRendu.getId());
+        System.out.println(compteRendu.getTitre());
+        System.out.println(compteRendu.getContenu());
+
         log.debug("REST request to save CompteRendu : {}", compteRendu);
         if (compteRendu.getId() != null) {
             throw new BadRequestAlertException("A new compteRendu cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        //
+        try {
+            FileWriter myWriter = new FileWriter("storage/compte_rendu_"+compteRendu.getId()+".html");
+            myWriter.write(compteRendu.getContenu());
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
         CompteRendu result = compteRenduRepository.save(compteRendu);
         return ResponseEntity.created(new URI("/api/compte-rendus/" + result.getId()))

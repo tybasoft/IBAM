@@ -54,18 +54,20 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
       };
 
       if (isNew) {
+        entity.contenu = content;
+        console.log(entity);
         props.createEntity(entity);
       } else {
         props.updateEntity(entity);
       }
     }
   };
-  var x;
-  var f = async (e)=>{ 
+  var content;
+  var f =  (e)=>{ 
     console.log(Storage.session.get(AUTH_TOKEN_KEY));
-    document.getElementById('contenu').value = e;
-    console.log(document.getElementById('contenu').value)}
-
+    document.getElementById('compte-rendu-contenu').value = e;
+    content = document.getElementById('compte-rendu-contenu').value;
+  }
   return (
     <div>
       <Row className="justify-content-center">
@@ -96,11 +98,11 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
                 </Label>
                 <AvField id="compte-rendu-titre" type="text" name="titre" />
               </AvGroup>
-              <AvGroup  style={{display:"none"}}>
+              <AvGroup  style={{visbility:"hidden"}}>
                 <Label id="contenuLabel" for="compte-rendu-contenu">
                   <Translate contentKey="ibamApp.compteRendu.contenu">Contenu</Translate>
                 </Label>
-                <AvField id="compte-rendu-contenu" id="contenu"  type="text" name="contenu"  />
+                <AvField id="compte-rendu-contenu"  type="text" name="contenu"  />
               </AvGroup>
               <AvGroup>
                 <Label for="compte-rendu-employe">
