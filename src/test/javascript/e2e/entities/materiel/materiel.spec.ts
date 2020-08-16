@@ -87,6 +87,14 @@ describe('Materiel e2e test', () => {
     expect(await materielUpdatePage.getUserModifInput()).to.match(/userModif/);
     await materielUpdatePage.setDateModifInput('01-01-2001');
     expect(await materielUpdatePage.getDateModifInput()).to.eq('2001-01-01');
+    const selectedMultiProjet = await materielUpdatePage.getMultiProjetInput().isSelected();
+    if (selectedMultiProjet) {
+      await materielUpdatePage.getMultiProjetInput().click();
+      expect(await materielUpdatePage.getMultiProjetInput().isSelected()).to.be.false;
+    } else {
+      await materielUpdatePage.getMultiProjetInput().click();
+      expect(await materielUpdatePage.getMultiProjetInput().isSelected()).to.be.true;
+    }
     await materielUpdatePage.familleSelectLastOption();
     await materielUpdatePage.typeMaterielSelectLastOption();
     await materielUpdatePage.fournisseurSelectLastOption();

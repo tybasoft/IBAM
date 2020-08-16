@@ -19,13 +19,14 @@ export interface IMateriel {
   matricule?: string;
   modele?: string;
   numCarteGrise?: string;
-  dateIdentification?: Moment;
+  dateIdentification?: string;
   compteurAchat?: string;
   etat?: string;
   location?: boolean;
   description?: string;
   userModif?: string;
-  dateModif?: Moment;
+  dateModif?: string;
+  multiProjet?: boolean;
   locations?: ILocation[];
   assurances?: IAssurance[];
   transferts?: ITransfertMateriel[];
@@ -42,5 +43,6 @@ export interface IMateriel {
 }
 
 export const defaultValue: Readonly<IMateriel> = {
-  location: false
+  location: false,
+  multiProjet: false
 };

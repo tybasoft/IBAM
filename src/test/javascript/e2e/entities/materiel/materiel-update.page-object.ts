@@ -15,6 +15,7 @@ export default class MaterielUpdatePage {
   descriptionInput: ElementFinder = element(by.css('input#materiel-description'));
   userModifInput: ElementFinder = element(by.css('input#materiel-userModif'));
   dateModifInput: ElementFinder = element(by.css('input#materiel-dateModif'));
+  multiProjetInput: ElementFinder = element(by.css('input#materiel-multiProjet'));
   familleSelect: ElementFinder = element(by.css('select#materiel-famille'));
   typeMaterielSelect: ElementFinder = element(by.css('select#materiel-typeMateriel'));
   fournisseurSelect: ElementFinder = element(by.css('select#materiel-fournisseur'));
@@ -110,6 +111,9 @@ export default class MaterielUpdatePage {
     return this.dateModifInput.getAttribute('value');
   }
 
+  getMultiProjetInput() {
+    return this.multiProjetInput;
+  }
   async familleSelectLastOption() {
     await this.familleSelect
       .all(by.tagName('option'))

@@ -34,6 +34,7 @@ import Consommation from './consommation';
 import Maintenance from './maintenance';
 import CentreMaintenance from './centre-maintenance';
 import VisiteTechnique from './visite-technique';
+import AffectationsMateriels from './affectations-materiels';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -70,6 +71,7 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}maintenance`} component={Maintenance} />
       <ErrorBoundaryRoute path={`${match.url}centre-maintenance`} component={CentreMaintenance} />
       <ErrorBoundaryRoute path={`${match.url}visite-technique`} component={VisiteTechnique} />
+      <ErrorBoundaryRoute path={`${match.url}affectations-materiels`} component={AffectationsMateriels} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

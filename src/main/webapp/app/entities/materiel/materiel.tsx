@@ -16,33 +16,50 @@ export interface IMaterielProps extends StateProps, DispatchProps, RouteComponen
 export const Materiel = (props: IMaterielProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
 
+
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
   const sortEntities = () => {
     getAllEntities();
-    props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
-    );
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
   };
 
   useEffect(() => {
     sortEntities();
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [props.location.search]);
+
   const sort = p => () => {
     setPaginationState({
       ...paginationState,
       order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p
+      sort: p,
     });
   };
 
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
-      activePage: currentPage
+      activePage: currentPage,
     });
 
   const { materielList, match, loading, totalItems } = props;
@@ -76,7 +93,10 @@ export const Materiel = (props: IMaterielProps) => {
                 <th className="hand" onClick={sort('numCarteGrise')}>
                   <Translate contentKey="ibamApp.materiel.numCarteGrise">Num Carte Grise</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('dateIdentification')}>
+                <th className="hand" onClick={sort('multiProjet')}>
+                  <Translate contentKey="ibamApp.materiel.multiProjet">MultiProjet</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                {/* <th className="hand" onClick={sort('dateIdentification')}>
                   <Translate contentKey="ibamApp.materiel.dateIdentification">Date Identification</Translate>{' '}
                   <FontAwesomeIcon icon="sort" />
                 </th>
@@ -118,7 +138,7 @@ export const Materiel = (props: IMaterielProps) => {
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.materiel.image">Image</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -134,7 +154,9 @@ export const Materiel = (props: IMaterielProps) => {
                   <td>{materiel.matricule}</td>
                   <td>{materiel.modele}</td>
                   <td>{materiel.numCarteGrise}</td>
-                  <td>
+                  <td>{materiel.multiProjet ? 'true' : 'false'}</td>
+
+                  {/* <td>
                     <TextFormat type="date" value={materiel.dateIdentification} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   <td>{materiel.compteurAchat}</td>
@@ -155,7 +177,7 @@ export const Materiel = (props: IMaterielProps) => {
                   <td>{materiel.marque ? <Link to={`marque/${materiel.marque.id}`}>{materiel.marque.id}</Link> : ''}</td>
                   <td>{materiel.document ? <Link to={`document/${materiel.document.id}`}>{materiel.document.id}</Link> : ''}</td>
                   <td>{materiel.employe ? <Link to={`employe/${materiel.employe.id}`}>{materiel.employe.id}</Link> : ''}</td>
-                  <td>{materiel.image ? <Link to={`image/${materiel.image.id}`}>{materiel.image.id}</Link> : ''}</td>
+                  <td>{materiel.image ? <Link to={`image/${materiel.image.id}`}>{materiel.image.id}</Link> : ''}</td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${materiel.id}`} color="info" size="sm">
@@ -200,20 +222,24 @@ export const Materiel = (props: IMaterielProps) => {
           )
         )}
       </div>
-      <div className={materielList && materielList.length > 0 ? '' : 'd-none'}>
-        <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
-        </Row>
-        <Row className="justify-content-center">
-          <JhiPagination
-            activePage={paginationState.activePage}
-            onSelect={handlePagination}
-            maxButtons={5}
-            itemsPerPage={paginationState.itemsPerPage}
-            totalItems={props.totalItems}
-          />
-        </Row>
-      </div>
+      {props.totalItems ? (
+        <div className={materielList && materielList.length > 0 ? '' : 'd-none'}>
+          <Row className="justify-content-center">
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+          </Row>
+          <Row className="justify-content-center">
+            <JhiPagination
+              activePage={paginationState.activePage}
+              onSelect={handlePagination}
+              maxButtons={5}
+              itemsPerPage={paginationState.itemsPerPage}
+              totalItems={props.totalItems}
+            />
+          </Row>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
@@ -221,11 +247,11 @@ export const Materiel = (props: IMaterielProps) => {
 const mapStateToProps = ({ materiel }: IRootState) => ({
   materielList: materiel.entities,
   loading: materiel.loading,
-  totalItems: materiel.totalItems
+  totalItems: materiel.totalItems,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -37,6 +37,7 @@
         "maintenance": "Maintenance",
         "centreMaintenance": "Centre Maintenance",
         "visiteTechnique": "Visite Technique",
+        "affectationsMateriels": "Affectations Materiels",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

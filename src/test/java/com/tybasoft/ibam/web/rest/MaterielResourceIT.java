@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link MaterielResource} REST controller.
  */
 @SpringBootTest(classes = IbamApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class MaterielResourceIT {
@@ -65,6 +64,9 @@ public class MaterielResourceIT {
     private static final LocalDate DEFAULT_DATE_MODIF = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_DATE_MODIF = LocalDate.now(ZoneId.systemDefault());
 
+    private static final Boolean DEFAULT_MULTI_PROJET = false;
+    private static final Boolean UPDATED_MULTI_PROJET = true;
+
     @Autowired
     private MaterielRepository materielRepository;
 
@@ -94,7 +96,8 @@ public class MaterielResourceIT {
             .location(DEFAULT_LOCATION)
             .description(DEFAULT_DESCRIPTION)
             .userModif(DEFAULT_USER_MODIF)
-            .dateModif(DEFAULT_DATE_MODIF);
+            .dateModif(DEFAULT_DATE_MODIF)
+            .multiProjet(DEFAULT_MULTI_PROJET);
         return materiel;
     }
     /**
@@ -115,7 +118,8 @@ public class MaterielResourceIT {
             .location(UPDATED_LOCATION)
             .description(UPDATED_DESCRIPTION)
             .userModif(UPDATED_USER_MODIF)
-            .dateModif(UPDATED_DATE_MODIF);
+            .dateModif(UPDATED_DATE_MODIF)
+            .multiProjet(UPDATED_MULTI_PROJET);
         return materiel;
     }
 
@@ -128,7 +132,6 @@ public class MaterielResourceIT {
     @Transactional
     public void createMateriel() throws Exception {
         int databaseSizeBeforeCreate = materielRepository.findAll().size();
-
         // Create the Materiel
         restMaterielMockMvc.perform(post("/api/materiels")
             .contentType(MediaType.APPLICATION_JSON)
@@ -150,6 +153,7 @@ public class MaterielResourceIT {
         assertThat(testMateriel.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testMateriel.getUserModif()).isEqualTo(DEFAULT_USER_MODIF);
         assertThat(testMateriel.getDateModif()).isEqualTo(DEFAULT_DATE_MODIF);
+        assertThat(testMateriel.isMultiProjet()).isEqualTo(DEFAULT_MULTI_PROJET);
     }
 
     @Test
@@ -181,6 +185,7 @@ public class MaterielResourceIT {
 
         // Create the Materiel, which fails.
 
+
         restMaterielMockMvc.perform(post("/api/materiels")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(materiel)))
@@ -198,6 +203,26 @@ public class MaterielResourceIT {
         materiel.setNumCarteGrise(null);
 
         // Create the Materiel, which fails.
+
+
+        restMaterielMockMvc.perform(post("/api/materiels")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(materiel)))
+            .andExpect(status().isBadRequest());
+
+        List<Materiel> materielList = materielRepository.findAll();
+        assertThat(materielList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkMultiProjetIsRequired() throws Exception {
+        int databaseSizeBeforeTest = materielRepository.findAll().size();
+        // set the field null
+        materiel.setMultiProjet(null);
+
+        // Create the Materiel, which fails.
+
 
         restMaterielMockMvc.perform(post("/api/materiels")
             .contentType(MediaType.APPLICATION_JSON)
@@ -229,7 +254,8 @@ public class MaterielResourceIT {
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.booleanValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].userModif").value(hasItem(DEFAULT_USER_MODIF)))
-            .andExpect(jsonPath("$.[*].dateModif").value(hasItem(DEFAULT_DATE_MODIF.toString())));
+            .andExpect(jsonPath("$.[*].dateModif").value(hasItem(DEFAULT_DATE_MODIF.toString())))
+            .andExpect(jsonPath("$.[*].multiProjet").value(hasItem(DEFAULT_MULTI_PROJET.booleanValue())));
     }
     
     @Test
@@ -253,9 +279,9 @@ public class MaterielResourceIT {
             .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION.booleanValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.userModif").value(DEFAULT_USER_MODIF))
-            .andExpect(jsonPath("$.dateModif").value(DEFAULT_DATE_MODIF.toString()));
+            .andExpect(jsonPath("$.dateModif").value(DEFAULT_DATE_MODIF.toString()))
+            .andExpect(jsonPath("$.multiProjet").value(DEFAULT_MULTI_PROJET.booleanValue()));
     }
-
     @Test
     @Transactional
     public void getNonExistingMateriel() throws Exception {
@@ -287,7 +313,8 @@ public class MaterielResourceIT {
             .location(UPDATED_LOCATION)
             .description(UPDATED_DESCRIPTION)
             .userModif(UPDATED_USER_MODIF)
-            .dateModif(UPDATED_DATE_MODIF);
+            .dateModif(UPDATED_DATE_MODIF)
+            .multiProjet(UPDATED_MULTI_PROJET);
 
         restMaterielMockMvc.perform(put("/api/materiels")
             .contentType(MediaType.APPLICATION_JSON)
@@ -309,14 +336,13 @@ public class MaterielResourceIT {
         assertThat(testMateriel.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testMateriel.getUserModif()).isEqualTo(UPDATED_USER_MODIF);
         assertThat(testMateriel.getDateModif()).isEqualTo(UPDATED_DATE_MODIF);
+        assertThat(testMateriel.isMultiProjet()).isEqualTo(UPDATED_MULTI_PROJET);
     }
 
     @Test
     @Transactional
     public void updateNonExistingMateriel() throws Exception {
         int databaseSizeBeforeUpdate = materielRepository.findAll().size();
-
-        // Create the Materiel
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restMaterielMockMvc.perform(put("/api/materiels")

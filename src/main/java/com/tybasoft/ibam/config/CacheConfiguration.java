@@ -114,6 +114,7 @@ public class CacheConfiguration {
             createCache(cm, com.tybasoft.ibam.domain.CentreMaintenance.class.getName());
             createCache(cm, com.tybasoft.ibam.domain.CentreMaintenance.class.getName() + ".maintenances");
             createCache(cm, com.tybasoft.ibam.domain.VisiteTechnique.class.getName());
+            createCache(cm, com.tybasoft.ibam.domain.AffectationsMateriels.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
