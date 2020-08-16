@@ -6,6 +6,7 @@ export default class CompteRenduUpdatePage {
   cancelButton: ElementFinder = element(by.id('cancel-save'));
   titreInput: ElementFinder = element(by.css('input#compte-rendu-titre'));
   contenuInput: ElementFinder = element(by.css('input#compte-rendu-contenu'));
+  filePathInput: ElementFinder = element(by.css('input#compte-rendu-filePath'));
   employeSelect: ElementFinder = element(by.css('select#compte-rendu-employe'));
 
   getPageTitle() {
@@ -26,6 +27,14 @@ export default class CompteRenduUpdatePage {
 
   async getContenuInput() {
     return this.contenuInput.getAttribute('value');
+  }
+
+  async setFilePathInput(filePath) {
+    await this.filePathInput.sendKeys(filePath);
+  }
+
+  async getFilePathInput() {
+    return this.filePathInput.getAttribute('value');
   }
 
   async employeSelectLastOption() {

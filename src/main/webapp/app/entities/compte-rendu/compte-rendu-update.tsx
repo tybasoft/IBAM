@@ -7,7 +7,6 @@ import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstr
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
-import { Storage } from 'react-jhipster';
 
 import { IEmploye } from 'app/shared/model/employe.model';
 import { getEntities as getEmployes } from 'app/entities/employe/employe.reducer';
@@ -16,16 +15,14 @@ import { ICompteRendu } from 'app/shared/model/compte-rendu.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import TextEditor from './TextEditor';
-import { getSession } from 'app/shared/reducers/authentication';
-
 export interface ICompteRenduUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
   const [employeId, setEmployeId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
-  const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
-  const acc = Storage.session.get(AUTH_TOKEN_KEY);
+
   const { compteRenduEntity, employes, loading, updating } = props;
+
   const handleClose = () => {
     props.history.push('/compte-rendu' + props.location.search);
   };
@@ -54,8 +51,8 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
       };
 
       if (isNew) {
-        entity.contenu = content;
-        console.log(entity);
+         entity.contenu = content;
+         entity.filePath = "storage/compte_rendu_"+title.slice(0, 2);
         props.createEntity(entity);
       } else {
         props.updateEntity(entity);
@@ -63,8 +60,12 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
     }
   };
   var content;
+  var title;
+  var path;
   var f =  (e)=>{ 
-    console.log(Storage.session.get(AUTH_TOKEN_KEY));
+     title = document.getElementById("compte-rendu-titre").value;
+    console.log(title);
+  //  path  ="storage/compte_rendu_"++"+html"
     document.getElementById('compte-rendu-contenu').value = e;
     content = document.getElementById('compte-rendu-contenu').value;
   }
@@ -77,7 +78,6 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
           </h2>
         </Col>
       </Row>
-  
       <Row className="justify-content-center">
         <Col md="8">
           {loading ? (
@@ -98,18 +98,12 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
                 </Label>
                 <AvField id="compte-rendu-titre" type="text" name="titre" />
               </AvGroup>
-              <AvGroup  style={{visbility:"hidden"}}>
-                <Label id="contenuLabel" for="compte-rendu-contenu">
-                  <Translate contentKey="ibamApp.compteRendu.contenu">Contenu</Translate>
-                </Label>
-                <AvField id="compte-rendu-contenu"  type="text" name="contenu"  />
-              </AvGroup>
+
               <AvGroup>
                 <Label for="compte-rendu-employe">
-                 Redacteur
-                </Label>
-                <AvInput id="compte-rendu-employe" type="text"  disabled className="form-control" value="2"  name="employe.id">
-                  { /*<option value="" key="0" />
+Redacteur                </Label>
+                <AvInput id="compte-rendu-employe" type="select" disabled className="form-control" value="2" name="employe.id">
+                { /*<option value="" key="0" />
                   {/* {employes
                     ? employes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
@@ -119,6 +113,21 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
                     : null} }*/ }
                 </AvInput>
               </AvGroup>
+              <TextEditor content="" id="draft" classes={{}} onChange={f} />
+
+              <AvGroup className="invisible"  >
+                <Label  id="contenuLabel" for="compte-rendu-contenu">
+                  <Translate contentKey="ibamApp.compteRendu.contenu">Contenu</Translate>
+                </Label>
+                <AvField id="compte-rendu-contenu" type="text" name="contenu" />
+              </AvGroup>
+              <AvGroup className="invisible">
+                <Label id="filePathLabel" for="compte-rendu-filePath">
+                  <Translate contentKey="ibamApp.compteRendu.filePath">File Path</Translate>
+                </Label>
+                <AvField  id="compte-rendu-filePath" type="text" name="filePath" />
+              </AvGroup>
+
               <Button tag={Link} id="cancel-save" to="/compte-rendu" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -137,7 +146,6 @@ export const CompteRenduUpdate = (props: ICompteRenduUpdateProps) => {
         </Col>
       </Row>
       <Row className="justify-content-center">
-      <TextEditor content="" id="draft" classes={{}} onChange={f} />
       </Row>
     </div>
   );

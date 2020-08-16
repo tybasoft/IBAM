@@ -65,6 +65,8 @@ describe('CompteRendu e2e test', () => {
     expect(await compteRenduUpdatePage.getTitreInput()).to.match(/titre/);
     await compteRenduUpdatePage.setContenuInput('contenu');
     expect(await compteRenduUpdatePage.getContenuInput()).to.match(/contenu/);
+    await compteRenduUpdatePage.setFilePathInput('filePath');
+    expect(await compteRenduUpdatePage.getFilePathInput()).to.match(/filePath/);
     await compteRenduUpdatePage.employeSelectLastOption();
     await waitUntilDisplayed(compteRenduUpdatePage.saveButton);
     await compteRenduUpdatePage.save();

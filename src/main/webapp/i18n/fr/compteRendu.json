@@ -18,6 +18,7 @@
       },
       "titre": "Titre",
       "contenu": "Contenu",
+      "filePath": "File Path",
       "employe": "Employe"
     }
   }

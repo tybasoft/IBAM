@@ -35,6 +35,9 @@ public class CompteRenduResourceIT {
     private static final String DEFAULT_CONTENU = "AAAAAAAAAA";
     private static final String UPDATED_CONTENU = "BBBBBBBBBB";
 
+    private static final String DEFAULT_FILE_PATH = "AAAAAAAAAA";
+    private static final String UPDATED_FILE_PATH = "BBBBBBBBBB";
+
     @Autowired
     private CompteRenduRepository compteRenduRepository;
 
@@ -55,7 +58,8 @@ public class CompteRenduResourceIT {
     public static CompteRendu createEntity(EntityManager em) {
         CompteRendu compteRendu = new CompteRendu()
             .titre(DEFAULT_TITRE)
-            .contenu(DEFAULT_CONTENU);
+            .contenu(DEFAULT_CONTENU)
+            .filePath(DEFAULT_FILE_PATH);
         return compteRendu;
     }
     /**
@@ -67,7 +71,8 @@ public class CompteRenduResourceIT {
     public static CompteRendu createUpdatedEntity(EntityManager em) {
         CompteRendu compteRendu = new CompteRendu()
             .titre(UPDATED_TITRE)
-            .contenu(UPDATED_CONTENU);
+            .contenu(UPDATED_CONTENU)
+            .filePath(UPDATED_FILE_PATH);
         return compteRendu;
     }
 
@@ -92,6 +97,7 @@ public class CompteRenduResourceIT {
         CompteRendu testCompteRendu = compteRenduList.get(compteRenduList.size() - 1);
         assertThat(testCompteRendu.getTitre()).isEqualTo(DEFAULT_TITRE);
         assertThat(testCompteRendu.getContenu()).isEqualTo(DEFAULT_CONTENU);
+        assertThat(testCompteRendu.getFilePath()).isEqualTo(DEFAULT_FILE_PATH);
     }
 
     @Test
@@ -126,7 +132,8 @@ public class CompteRenduResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(compteRendu.getId().intValue())))
             .andExpect(jsonPath("$.[*].titre").value(hasItem(DEFAULT_TITRE)))
-            .andExpect(jsonPath("$.[*].contenu").value(hasItem(DEFAULT_CONTENU)));
+            .andExpect(jsonPath("$.[*].contenu").value(hasItem(DEFAULT_CONTENU)))
+            .andExpect(jsonPath("$.[*].filePath").value(hasItem(DEFAULT_FILE_PATH)));
     }
     
     @Test
@@ -141,7 +148,8 @@ public class CompteRenduResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(compteRendu.getId().intValue()))
             .andExpect(jsonPath("$.titre").value(DEFAULT_TITRE))
-            .andExpect(jsonPath("$.contenu").value(DEFAULT_CONTENU));
+            .andExpect(jsonPath("$.contenu").value(DEFAULT_CONTENU))
+            .andExpect(jsonPath("$.filePath").value(DEFAULT_FILE_PATH));
     }
     @Test
     @Transactional
@@ -165,7 +173,8 @@ public class CompteRenduResourceIT {
         em.detach(updatedCompteRendu);
         updatedCompteRendu
             .titre(UPDATED_TITRE)
-            .contenu(UPDATED_CONTENU);
+            .contenu(UPDATED_CONTENU)
+            .filePath(UPDATED_FILE_PATH);
 
         restCompteRenduMockMvc.perform(put("/api/compte-rendus")
             .contentType(MediaType.APPLICATION_JSON)
@@ -178,6 +187,7 @@ public class CompteRenduResourceIT {
         CompteRendu testCompteRendu = compteRenduList.get(compteRenduList.size() - 1);
         assertThat(testCompteRendu.getTitre()).isEqualTo(UPDATED_TITRE);
         assertThat(testCompteRendu.getContenu()).isEqualTo(UPDATED_CONTENU);
+        assertThat(testCompteRendu.getFilePath()).isEqualTo(UPDATED_FILE_PATH);
     }
 
     @Test

@@ -29,6 +29,9 @@ public class CompteRendu implements Serializable {
     @Column(name = "contenu")
     private String contenu;
 
+    @Column(name = "file_path")
+    private String filePath;
+
     @ManyToOne
     @JsonIgnoreProperties(value = "compteRendus", allowSetters = true)
     private Employe employe;
@@ -68,6 +71,19 @@ public class CompteRendu implements Serializable {
         this.contenu = contenu;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public CompteRendu filePath(String filePath) {
+        this.filePath = filePath;
+        return this;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
     public Employe getEmploye() {
         return employe;
     }
@@ -105,6 +121,7 @@ public class CompteRendu implements Serializable {
             "id=" + getId() +
             ", titre='" + getTitre() + "'" +
             ", contenu='" + getContenu() + "'" +
+            ", filePath='" + getFilePath() + "'" +
             "}";
     }
 }

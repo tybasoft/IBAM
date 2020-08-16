@@ -56,17 +56,13 @@ public class CompteRenduResource {
      */
     @PostMapping("/compte-rendus")
     public ResponseEntity<CompteRendu> createCompteRendu(@RequestBody CompteRendu compteRendu) throws URISyntaxException {
-        System.out.println(compteRendu.getId());
-        System.out.println(compteRendu.getTitre());
-        System.out.println(compteRendu.getContenu());
-
         log.debug("REST request to save CompteRendu : {}", compteRendu);
         if (compteRendu.getId() != null) {
             throw new BadRequestAlertException("A new compteRendu cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        //
+        // write file
         try {
-            FileWriter myWriter = new FileWriter("storage/compte_rendu_"+compteRendu.getId()+".html");
+            FileWriter myWriter = new FileWriter(compteRendu.getFilePath());
             myWriter.write(compteRendu.getContenu());
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
@@ -74,6 +70,7 @@ public class CompteRenduResource {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+        compteRendu.setContenu(null);
         CompteRendu result = compteRenduRepository.save(compteRendu);
         return ResponseEntity.created(new URI("/api/compte-rendus/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -95,6 +92,7 @@ public class CompteRenduResource {
         if (compteRendu.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+
         CompteRendu result = compteRenduRepository.save(compteRendu);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, compteRendu.getId().toString()))

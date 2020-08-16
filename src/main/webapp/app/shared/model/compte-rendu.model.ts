@@ -4,6 +4,7 @@ export interface ICompteRendu {
   id?: number;
   titre?: string;
   contenu?: string;
+  filePath?: string;
   employe?: IEmploye;
 }
 

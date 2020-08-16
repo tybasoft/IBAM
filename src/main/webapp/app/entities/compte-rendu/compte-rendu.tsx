@@ -1,3 +1,5 @@
+ /* eslint-disable */
+
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
@@ -83,11 +85,14 @@ export const CompteRendu = (props: ICompteRenduProps) => {
                 <th className="hand" onClick={sort('titre')}>
                   <Translate contentKey="ibamApp.compteRendu.titre">Titre</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('contenu')}>
+                {/*<th className="hand" onClick={sort('contenu')}>
                   <Translate contentKey="ibamApp.compteRendu.contenu">Contenu</Translate> <FontAwesomeIcon icon="sort" />
+        </th>*/}
+                <th className="hand" onClick={sort('filePath')}>
+                  <Translate contentKey="ibamApp.compteRendu.filePath">File Path</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
-                  <Translate contentKey="ibamApp.compteRendu.employe">Employe</Translate> <FontAwesomeIcon icon="sort" />
+                  Redacteur <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -101,7 +106,8 @@ export const CompteRendu = (props: ICompteRenduProps) => {
                     </Button>
                   </td>
                   <td>{compteRendu.titre}</td>
-                  <td>{compteRendu.contenu}</td>
+                  {/*<td>{compteRendu.contenu}</td>*/}
+                  <td>{compteRendu.filePath}</td>
                   <td>{compteRendu.employe ? <Link to={`employe/${compteRendu.employe.id}`}>{compteRendu.employe.nom}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">

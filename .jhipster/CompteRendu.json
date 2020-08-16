@@ -20,6 +20,11 @@
       "fieldName": "contenu",
       "fieldType": "String",
       "fieldValidateRules": []
+    },
+    {
+      "fieldName": "filePath",
+      "fieldType": "String",
+      "fieldValidateRules": []
     }
   ],
   "changelogDate": "20200811212356",

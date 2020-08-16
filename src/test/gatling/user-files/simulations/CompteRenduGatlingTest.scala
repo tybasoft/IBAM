@@ -74,6 +74,7 @@ class CompteRenduGatlingTest extends Simulation {
                 "id":null
                 , "titre":"SAMPLE_TEXT"
                 , "contenu":"SAMPLE_TEXT"
+                , "filePath":"SAMPLE_TEXT"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_compteRendu_url"))).exitHereIfFailed

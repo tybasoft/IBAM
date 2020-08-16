@@ -38,6 +38,12 @@ export const CompteRenduDetail = (props: ICompteRenduDetailProps) => {
           </dt>
           <dd>{compteRenduEntity.contenu}</dd>
           <dt>
+            <span id="filePath">
+              <Translate contentKey="ibamApp.compteRendu.filePath">File Path</Translate>
+            </span>
+          </dt>
+          <dd>{compteRenduEntity.filePath}</dd>
+          <dt>
             <Translate contentKey="ibamApp.compteRendu.employe">Employe</Translate>
           </dt>
           <dd>{compteRenduEntity.employe ? compteRenduEntity.employe.nom : ''}</dd>
