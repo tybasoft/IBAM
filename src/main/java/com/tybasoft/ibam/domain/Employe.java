@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -97,35 +99,42 @@ public class Employe implements Serializable {
 
     @Column(name = "date_modif")
     private LocalDate dateModif;
-
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "employe")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Materiel> materiels = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "equipe")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Equipe> employes = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "employe")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Pointage> pointages = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "employe")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Paie> paies = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employes")
     private Projet projet;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employes")
     private Equipe equipe;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employes")
     private Fonction fonction;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employees")
     private Image image;
@@ -600,14 +609,14 @@ public class Employe implements Serializable {
     @Override
     public String toString() {
         return ("Employe{" + "id=" + getId() + ", nom='" + getNom() + "'" + ", prenom='" + getPrenom() + "'"
-                + ", matricule='" + getMatricule() + "'" + ", cin='" + getCin() + "'" + ", sexe='" + getSexe() + "'"
-                + ", tarifJournalier='" + getTarifJournalier() + "'" + ", dateNaissance='" + getDateNaissance() + "'"
-                + ", lieuNaissance='" + getLieuNaissance() + "'" + ", situationFam='" + getSituationFam() + "'"
-                + ", nationalite='" + getNationalite() + "'" + ", dateEntree='" + getDateEntree() + "'" + ", tel='"
-                + getTel() + "'" + ", email='" + getEmail() + "'" + ", adresse='" + getAdresse() + "'" + ", division='"
-                + getDivision() + "'" + ", typeContrat='" + getTypeContrat() + "'" + ", multiPorjet='" + isMultiPorjet()
-                + "'" + ", dateDepart='" + getDateDepart() + "'" + ", motifDepart='" + getMotifDepart() + "'"
-                + ", userModif='" + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}");
+            + ", matricule='" + getMatricule() + "'" + ", cin='" + getCin() + "'" + ", sexe='" + getSexe() + "'"
+            + ", tarifJournalier='" + getTarifJournalier() + "'" + ", dateNaissance='" + getDateNaissance() + "'"
+            + ", lieuNaissance='" + getLieuNaissance() + "'" + ", situationFam='" + getSituationFam() + "'"
+            + ", nationalite='" + getNationalite() + "'" + ", dateEntree='" + getDateEntree() + "'" + ", tel='"
+            + getTel() + "'" + ", email='" + getEmail() + "'" + ", adresse='" + getAdresse() + "'" + ", division='"
+            + getDivision() + "'" + ", typeContrat='" + getTypeContrat() + "'" + ", multiPorjet='" + isMultiPorjet()
+            + "'" + ", dateDepart='" + getDateDepart() + "'" + ", motifDepart='" + getMotifDepart() + "'"
+            + ", userModif='" + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}");
     }
 
     public Boolean getMultiPorjet() {

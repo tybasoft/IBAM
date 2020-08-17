@@ -1,0 +1,24 @@
+{
+  "ibamApp": {
+    "avancement": {
+      "home": {
+        "title": "Avancements",
+        "createLabel": "Créer un nouveau Avancement",
+        "createOrEditLabel": "Créer ou éditer un Avancement",
+        "notFound": "Aucun Avancement trouvé"
+      },
+      "created": "Un nouveau Avancement a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Avancement avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Avancement avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Avancement {{ id }} ?"
+      },
+      "detail": {
+        "title": "Avancement"
+      },
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "compteRendu": "Compte Rendu"
+    }
+  }
+}

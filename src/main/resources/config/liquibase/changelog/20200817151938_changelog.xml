@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="ASUS (generated)" id="1597677602450-2">
+        <createTable tableName="avancement">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="avancementPK"/>
+            </column>
+            <column name="created_at" type="date"/>
+            <column name="updated_at" type="date"/>
+            <column name="compte_rendu_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1597677602450-3">
+        <createTable tableName="compte_rendu">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="compte_renduPK"/>
+            </column>
+            <column name="contenu" type="VARCHAR(255)"/>
+            <column name="file_path" type="VARCHAR(255)"/>
+            <column name="titre" type="VARCHAR(255)"/>
+            <column name="employe_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1597677602450-4">
+        <addColumn tableName="depot">
+            <column name="latitude" type="double"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1597677602450-5">
+        <addColumn tableName="depot">
+            <column name="longitude" type="double"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1597677602450-6">
+        <addUniqueConstraint columnNames="compte_rendu_id" constraintName="UC_AVANCEMENTCOMPTE_RENDU_ID_COL" tableName="avancement"/>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1597677602450-7">
+        <addForeignKeyConstraint baseColumnNames="compte_rendu_id" baseTableName="avancement" constraintName="FKehajg2ja6bsnrju9xckgxxvry" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="compte_rendu" validate="true"/>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1597677602450-8">
+        <addForeignKeyConstraint baseColumnNames="employe_id" baseTableName="compte_rendu" constraintName="FKnut3jbhd9pr1gfnevx75gys6x" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="employe" validate="true"/>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1597677602450-1">
+        <alterSequence incrementBy="50" sequenceName="sequence_generator"/>
+    </changeSet>
+</databaseChangeLog>
