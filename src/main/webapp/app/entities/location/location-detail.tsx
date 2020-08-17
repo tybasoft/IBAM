@@ -88,7 +88,7 @@ export const LocationDetail = (props: ILocationDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.location.materiel">Materiel</Translate>
           </dt>
-          <dd>{locationEntity.materiel ? locationEntity.materiel.libelle : ''}</dd>
+          <dd>{locationEntity.materiel ? locationEntity.materiel.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/location" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

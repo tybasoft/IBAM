@@ -22,12 +22,7 @@ public final class AuthoritiesConstants {
 	    public static final String   RESPONSABLEME= "ME_ROLE";
 	    		
 	    public static final String   RESPONSABLEPROJET="AVT_ROLE";
-	    
-	    
-	    public static final String   ADD_EMP="ADDEMP_ROLE";
-	    public static final String   DELETE_EMP="DELETEEMP_ROLE";
-	    
 	
-        
+
     private AuthoritiesConstants() {}
 }

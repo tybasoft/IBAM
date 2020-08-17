@@ -118,7 +118,7 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
                   </td>
                   <td>
                     {ligneBonReception.materiau ? (
-                      <Link to={`materiau/${ligneBonReception.materiau.id}`}>{ligneBonReception.materiau.libelle}</Link>
+                      <Link to={`materiau/${ligneBonReception.materiau.id}`}>{ligneBonReception.materiau.id}</Link>
                     ) : (
                       ''
                     )}

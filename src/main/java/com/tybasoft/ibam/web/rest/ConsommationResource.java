@@ -187,8 +187,4 @@ public class ConsommationResource {
         } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
     }
-   
-    
-
-    
 }

@@ -25,10 +25,7 @@
       "dateModif": "Date Modif",
       "bonCommande": "Bon Commande",
       "bonReception": "Bon Reception",
-      "projet": "Projet",
-      "latitude": "Latitude",
-      "longitude": "Longitude",
-      "nolocal": "No geolocation informations found."
+      "projet": "Projet"
     }
   }
 }

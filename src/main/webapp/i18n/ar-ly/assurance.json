@@ -2,26 +2,26 @@
   "ibamApp": {
     "assurance": {
       "home": {
-        "title": "التأمينات",
-        "createLabel": "إنشاء تأمين جديد",
-        "createOrEditLabel": "إنشاء أو تعديل تأمين",
-        "notFound": "لم يتم العثور على تأمين"
+        "title": "Assurances",
+        "createLabel": "Create a new Assurance",
+        "createOrEditLabel": "Create or edit a Assurance",
+        "notFound": "No Assurances found"
       },
-      "created": "يتم إنشاء تأمين جديد مع معرف {{ param }}",
-      "updated": "يتم تحديث التأمين مع معرف {{ param }}",
-      "deleted": "يتم حذف التأمين مع معرف {{ param }}",
+      "created": "A new Assurance is created with identifier {{ param }}",
+      "updated": "A Assurance is updated with identifier {{ param }}",
+      "deleted": "A Assurance is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكد من أنك تريد حذف التأمين {{ id }}?"
+        "question": "Are you sure you want to delete Assurance {{ id }}?"
       },
       "detail": {
-        "title": "تأمين"
+        "title": "Assurance"
       },
-      "dateDebut": "تاريخ البدء",
-      "dateFin": "تاريخ الانتهاء",
-      "agence": "الوكاله",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "materiel": "أداة"
+      "dateDebut": "Date Debut",
+      "dateFin": "Date Fin",
+      "agence": "Agence",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel"
     }
   }
 }

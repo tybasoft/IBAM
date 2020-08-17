@@ -97,11 +97,11 @@ export const ConsommationDetail = (props: IConsommationDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.consommation.materiel">Materiel</Translate>
           </dt>
-          <dd>{consommationEntity.materiel ? consommationEntity.materiel.libelle: ''}</dd>
+          <dd>{consommationEntity.materiel ? consommationEntity.materiel.id : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.consommation.fournisseur">Fournisseur</Translate>
           </dt>
-          <dd>{consommationEntity.fournisseur ? consommationEntity.fournisseur.nomCommercial : ''}</dd>
+          <dd>{consommationEntity.fournisseur ? consommationEntity.fournisseur.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/consommation" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

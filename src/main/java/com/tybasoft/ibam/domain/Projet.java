@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -65,35 +67,35 @@ public class Projet implements Serializable {
     @Column(name = "date_modif")
     private Instant dateModif;
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "projet")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<TransfertMateriel> transferts = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "projet")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Equipe> equipes = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "projet")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Employe> employes = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("projets")
     private Entreprise entreprise;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("projets")
     private Horaire horaire;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("projets")
     private Depot depot;
-
-    @Column(name = "latitude")
-    private Double latitude;
-
-    @Column(name = "longitude")
-    private Double longitude;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not
     // remove
@@ -373,22 +375,6 @@ public class Projet implements Serializable {
 
     public void setDepot(Depot depot) {
         this.depot = depot;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and

@@ -2,49 +2,49 @@
   "ibamApp": {
     "employe": {
       "home": {
-        "title": "الموظفين",
-        "createLabel": "إنشاء موظف جديد",
-        "createOrEditLabel": "إنشاءأو تعديل موظف  ",
-        "notFound": "لم يتم العثور على موظفين"
+        "title": "Employes",
+        "createLabel": "Create a new Employe",
+        "createOrEditLabel": "Create or edit a Employe",
+        "notFound": "No Employes found"
       },
-      "created": " يتم إنشاء موظف جديد مع معرف {{ param }}",
-      "updated": " يتم تحديث  الموظف مع معرف {{ param }}",
-      "deleted": " تم  حذف الموظف مع معرف {{ param }}",
+      "created": "A new Employe is created with identifier {{ param }}",
+      "updated": "A Employe is updated with identifier {{ param }}",
+      "deleted": "A Employe is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكد أنك تريد حذف هذاالموظف {{ id }}?"
+        "question": "Are you sure you want to delete Employe {{ id }}?"
       },
       "detail": {
-        "title": "موظف"
+        "title": "Employe"
       },
-      "nom": "النسب",
-      "prenom": "الإسم",
-      "matricule": " رقم",
-      "cin": "البطاقة الوطنية للتعريف",
-      "sexe": "الجنس",
-      "tarifJournalier": "أجرة يومية",
-      "dateNaissance": "تاريخ الميلاد",
-      "lieuNaissance": "مكان الولادة",
-      "situationFam": "الحالة العائلية",
-      "nationalite": "الجنسية",
-      "dateEntree": "تاريخ الدخول",
-      "tel": "الهاتف",
-      "email": "البريد الإلكتروني",
-      "adresse": "العنوان",
-      "division": "شعبة",
-      "typeContrat": "نوع العقد",
-      "multiPorjet": "متعدد المشاريع",
-      "dateDepart": "تاريخ المغادرة",
-      "motifDepart": "سبب المغادرة",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "materiel": "أداة",
-      "employe": "موظف",
-      "pointage": "وقت حضور",
-      "paie": "راتب",
-      "projet": "مشروع",
-      "equipe": "فريق",
-      "fonction": "وظيفة",
-      "image": "صورة"
+      "nom": "Nom",
+      "prenom": "Prenom",
+      "matricule": "Matricule",
+      "cin": "Cin",
+      "sexe": "Sexe",
+      "tarifJournalier": "Tarif Journalier",
+      "dateNaissance": "Date Naissance",
+      "lieuNaissance": "Lieu Naissance",
+      "situationFam": "Situation Fam",
+      "nationalite": "Nationalite",
+      "dateEntree": "Date Entree",
+      "tel": "Tel",
+      "email": "Email",
+      "adresse": "Adresse",
+      "division": "Division",
+      "typeContrat": "Type Contrat",
+      "multiPorjet": "Multi Porjet",
+      "dateDepart": "Date Depart",
+      "motifDepart": "Motif Depart",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel",
+      "employe": "Employe",
+      "pointage": "Pointage",
+      "paie": "Paie",
+      "projet": "Projet",
+      "equipe": "Equipe",
+      "fonction": "Fonction",
+      "image": "Image"
     }
   }
 }

@@ -58,7 +58,7 @@ export const LigneBonReceptionDetail = (props: ILigneBonReceptionDetailProps) =>
           <dt>
             <Translate contentKey="ibamApp.ligneBonReception.materiau">Materiau</Translate>
           </dt>
-          <dd>{ligneBonReceptionEntity.materiau ? ligneBonReceptionEntity.materiau.libelle  : ''}</dd>
+          <dd>{ligneBonReceptionEntity.materiau ? ligneBonReceptionEntity.materiau.id  : ''}</dd>
         </dl>
         <Button tag={Link} to="/ligne-bon-reception" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

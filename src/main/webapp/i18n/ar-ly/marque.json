@@ -2,26 +2,26 @@
   "ibamApp": {
     "marque": {
       "home": {
-        "title": "العلامات التجاريه",
-        "createLabel": "إنشاء ماركة جديدة",
-        "createOrEditLabel": "إنشاء أو تعديل ماركة",
-        "notFound": "لم يتم العثور على أي علامة تجارية"
+        "title": "Marques",
+        "createLabel": "Create a new Marque",
+        "createOrEditLabel": "Create or edit a Marque",
+        "notFound": "No Marques found"
       },
-      "created": " يتم إنشاء علامة تجارية مع معرف {{ param }}",
-      "updated": "يتم  تحديث العلامة تجارية مع معرف {{ param }}",
-      "deleted": "لقد تم حذف العلامة تجارية مع معرف {{ param }}",
+      "created": "A new Marque is created with identifier {{ param }}",
+      "updated": "A Marque is updated with identifier {{ param }}",
+      "deleted": "A Marque is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكدأنك تريد حذف العلامة التجارية {{ id }}?"
+        "question": "Are you sure you want to delete Marque {{ id }}?"
       },
       "detail": {
-        "title": "علامة تجارية "
+        "title": "Marque"
       },
-      "libelle": "صياغة",
-      "description": "وصف",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "materiau": "المواد",
-      "materiel": "أداة"
+      "libelle": "Libelle",
+      "description": "Description",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiau": "Materiau",
+      "materiel": "Materiel"
     }
   }
 }

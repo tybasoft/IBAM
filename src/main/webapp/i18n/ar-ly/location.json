@@ -2,30 +2,30 @@
   "ibamApp": {
     "location": {
       "home": {
-        "title": "الإستئجارات",
-        "createLabel": "إنشاء إستئجار جديد",
-        "createOrEditLabel": "إنشاء أو تعديل إستئجار",
-        "notFound": "لم يتم العثور على إستئجارات"
+        "title": "Locations",
+        "createLabel": "Create a new Location",
+        "createOrEditLabel": "Create or edit a Location",
+        "notFound": "No Locations found"
       },
-      "created": " يتم إنشاء إستئجار جديد مع معرّف {{ param }}",
-      "updated": " يتم تحديث إستئجار مع معرف {{ param }}",
-      "deleted": " تم حذف الإستئجار مع معرف {{ param }}",
+      "created": "A new Location is created with identifier {{ param }}",
+      "updated": "A Location is updated with identifier {{ param }}",
+      "deleted": "A Location is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكد أنك  تريد حذف الإستئجار {{ id }}?"
+        "question": "Are you sure you want to delete Location {{ id }}?"
       },
       "detail": {
-        "title": "إستئجار"
+        "title": "Location"
       },
-      "reference": "مرجع",
-      "dateDebut": "تاريخ البدء",
-      "dateFin": "تاريخ الانتهاء",
-      "tarif": "أجرة",
-      "dureLocation": "مدة الإستئجار",
-      "montantLocation": "مبلغ الإستئجار",
-      "remarque": "ملاحظة",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "materiel": "أداة"
+      "reference": "Reference",
+      "dateDebut": "Date Debut",
+      "dateFin": "Date Fin",
+      "tarif": "Tarif",
+      "dureLocation": "Dure Location",
+      "montantLocation": "Montant Location",
+      "remarque": "Remarque",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel"
     }
   }
 }

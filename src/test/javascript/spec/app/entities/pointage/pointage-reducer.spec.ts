@@ -30,7 +30,6 @@ describe('Entities reducer tests', () => {
     loading: false,
     errorMessage: null,
     entities: [] as ReadonlyArray<IPointage>,
-    entitiespointage: [] as ReadonlyArray<IPointage>,
     entity: defaultValue,
     totalItems: 0,
     updating: false,
@@ -258,13 +257,6 @@ describe('Entities reducer tests', () => {
         },
         {
           type: SUCCESS(ACTION_TYPES.DELETE_POINTAGE),
-          payload: resolvedObject
-        },
-        {
-          type: REQUEST(ACTION_TYPES.FETCH_POINTAGE_LIST)
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.FETCH_POINTAGE_LIST),
           payload: resolvedObject
         }
       ];

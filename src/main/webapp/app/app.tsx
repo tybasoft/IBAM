@@ -37,14 +37,14 @@ export const App = (props: IAppProps) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
-/*   useEffect(() => {
+  useEffect(() => {
     if (props.isAuthenticated) {
       setTimeout(() => {
         props.logout();
         setModal(true);
-      }, 120000);
+      }, 1200000);
     }
-  }, [props.isAuthenticated]); */
+  }, [props.isAuthenticated]);
 
   const paddingTop = '60px';
   return (
@@ -89,7 +89,6 @@ export const App = (props: IAppProps) => {
               </ModalFooter>
             </Modal>
           </Card>
-         
           <Footer />
         </div>
       </div>

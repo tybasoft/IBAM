@@ -160,23 +160,23 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
               <dt>
                 <Translate contentKey="ibamApp.materiel.famille">Famille</Translate>
               </dt>
-              <dd>{materielEntity.famille ? materielEntity.famille.libelle: ''}</dd>
+              <dd>{materielEntity.famille ? materielEntity.famille.id : ''}</dd>
               <dt>
                 <Translate contentKey="ibamApp.materiel.typeMateriel">Type Materiel</Translate>
               </dt>
-              <dd>{materielEntity.typeMateriel ? materielEntity.typeMateriel.type : ''}</dd>
+              <dd>{materielEntity.typeMateriel ? materielEntity.typeMateriel.id : ''}</dd>
               <dt>
                 <Translate contentKey="ibamApp.materiel.fournisseur">Fournisseur</Translate>
               </dt>
-              <dd>{materielEntity.fournisseur ? materielEntity.fournisseur.nomCommercial : ''}</dd>
+              <dd>{materielEntity.fournisseur ? materielEntity.fournisseur.id : ''}</dd>
               <dt>
                 <Translate contentKey="ibamApp.materiel.marque">Marque</Translate>
               </dt>
-              <dd>{materielEntity.marque ? materielEntity.marque.libelle : ''}</dd>
+              <dd>{materielEntity.marque ? materielEntity.marque.id : ''}</dd>
               <dt>
                 <Translate contentKey="ibamApp.materiel.employe">Employe</Translate>
               </dt>
-              <dd>{materielEntity.employe ? materielEntity.employe.nom : ''}</dd>
+              <dd>{materielEntity.employe ? materielEntity.employe.id : ''}</dd>
             </dl>
             <Button tag={Link} to="/materiel" replace color="info">
               <FontAwesomeIcon icon="arrow-left" />{' '}

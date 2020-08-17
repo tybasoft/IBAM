@@ -2,24 +2,24 @@
   "ibamApp": {
     "typeMateriel": {
       "home": {
-        "title": "نوع المعدات",
-        "createLabel": "لقد تم إنشاء نوع جديد من الأجهزة",
-        "createOrEditLabel": "إنشاء أو تعديل نوع المعدات",
-        "notFound": "لم يتم العثور على أي نوع من المعدات"
+        "title": "Type Materiels",
+        "createLabel": "Create a new Type Materiel",
+        "createOrEditLabel": "Create or edit a Type Materiel",
+        "notFound": "No Type Materiels found"
       },
-      "created": "لقد تم إنشاء نوع جديد من المعدات مع معرف {{ param }}",
-      "updated": " يتم تحديث نوع المعدات مع معرف {{ param }}",
-      "deleted": " يتم حذف نوع من المعدات مع معرف {{ param }}",
+      "created": "A new Type Materiel is created with identifier {{ param }}",
+      "updated": "A Type Materiel is updated with identifier {{ param }}",
+      "deleted": "A Type Materiel is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكد أنك تريد حذف هذا النوع من المعدات {{ id }}?"
+        "question": "Are you sure you want to delete Type Materiel {{ id }}?"
       },
       "detail": {
-        "title": " نوع المعدات"
+        "title": "Type Materiel"
       },
-      "type": " نوع",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "materiel": "أداة"
+      "type": "Type",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel"
     }
   }
 }

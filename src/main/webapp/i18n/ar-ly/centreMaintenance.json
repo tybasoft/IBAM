@@ -2,29 +2,29 @@
   "ibamApp": {
     "centreMaintenance": {
       "home": {
-        "title": "مراكز الصيانة ",
-        "createLabel": "إنشاء مركز صيانة جديد",
-        "createOrEditLabel": "إنشاء أو تعديل مركز صيانة",
-        "notFound": "لم يتم العثور على أي مركز صيانة"
+        "title": "Centre Maintenances",
+        "createLabel": "Create a new Centre Maintenance",
+        "createOrEditLabel": "Create or edit a Centre Maintenance",
+        "notFound": "No Centre Maintenances found"
       },
-      "created": "يتم إنشاء مركز صيانة جديد مع معرف {{ param }}",
-      "updated": " يتم تحديث  مركز الصيانة مع معرف {{ param }}",
-      "deleted": " تم حذف مركز الصيانة مع معرف {{ param }}",
+      "created": "A new Centre Maintenance is created with identifier {{ param }}",
+      "updated": "A Centre Maintenance is updated with identifier {{ param }}",
+      "deleted": "A Centre Maintenance is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكدأنك تريد حذف مركز الصيانة {{ id }}?"
+        "question": "Are you sure you want to delete Centre Maintenance {{ id }}?"
       },
       "detail": {
-        "title": "مركزالصيانة "
+        "title": "Centre Maintenance"
       },
-      "libelle": "صياغة",
-      "specialite": "التخصص",
-      "responsable": "مسؤول",
-      "adresse": "العنوان",
-      "telephone": "الهاتف",
-      "email": "البريد الإلكتروني",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "maintenance": "صيانة "
+      "libelle": "Libelle",
+      "specialite": "Specialite",
+      "responsable": "Responsable",
+      "adresse": "Adresse",
+      "telephone": "Telephone",
+      "email": "Email",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "maintenance": "Maintenance"
     }
   }
 }

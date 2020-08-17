@@ -9,8 +9,6 @@ import { IRootState } from 'app/shared/reducers';
 
 import { IEmploye } from 'app/shared/model/employe.model';
 import { getEntities as getEmployes } from 'app/entities/employe/employe.reducer';
-import { IFichePointage } from 'app/shared/model/fiche-pointage.model';
-import { getEntities as getFichePointages } from 'app/entities/fiche-pointage/fiche-pointage.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './pointage.reducer';
 import { IPointage } from 'app/shared/model/pointage.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -20,10 +18,9 @@ export interface IPointageUpdateProps extends StateProps, DispatchProps, RouteCo
 
 export const PointageUpdate = (props: IPointageUpdateProps) => {
   const [employeId, setEmployeId] = useState('0');
-  const [fichePointageId, setFichePointageId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { pointageEntity, employes, fichePointages, loading, updating } = props;
+  const { pointageEntity, employes, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/pointage' + props.location.search);
@@ -37,7 +34,6 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
     }
 
     props.getEmployes();
-    props.getFichePointages();
   }, []);
 
   useEffect(() => {
@@ -50,7 +46,7 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...pointageEntity,
-        ...values,
+        ...values
       };
 
       if (isNew) {
@@ -94,7 +90,7 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
                   className="form-control"
                   name="dateJour"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') },
+                    required: { value: true, errorMessage: translate('entity.validation.required') }
                   }}
                 />
               </AvGroup>
@@ -122,7 +118,7 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
                 </Label>
                 <AvField id="pointage-remarques" type="text" name="remarques" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="pointage-userModif">
                   <Translate contentKey="ibamApp.pointage.userModif">User Modif</Translate>
                 </Label>
@@ -133,7 +129,7 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
                   <Translate contentKey="ibamApp.pointage.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="pointage-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="pointage-employe">
                   <Translate contentKey="ibamApp.pointage.employe">Employe</Translate>
@@ -143,22 +139,7 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
                   {employes
                     ? employes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
-                <Label for="pointage-fichePointage">
-                  <Translate contentKey="ibamApp.pointage.fichePointage">Fiche Pointage</Translate>
-                </Label>
-                <AvInput id="pointage-fichePointage" type="select" className="form-control" name="fichePointage.id">
-                  <option value="" key="0" />
-                  {fichePointages
-                    ? fichePointages.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.prenom+""+otherEntity.nom+"("+otherEntity.matricule+")"}
                         </option>
                       ))
                     : null}
@@ -187,20 +168,18 @@ export const PointageUpdate = (props: IPointageUpdateProps) => {
 
 const mapStateToProps = (storeState: IRootState) => ({
   employes: storeState.employe.entities,
-  fichePointages: storeState.fichePointage.entities,
   pointageEntity: storeState.pointage.entity,
   loading: storeState.pointage.loading,
   updating: storeState.pointage.updating,
-  updateSuccess: storeState.pointage.updateSuccess,
+  updateSuccess: storeState.pointage.updateSuccess
 });
 
 const mapDispatchToProps = {
   getEmployes,
-  getFichePointages,
   getEntity,
   updateEntity,
   createEntity,
-  reset,
+  reset
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

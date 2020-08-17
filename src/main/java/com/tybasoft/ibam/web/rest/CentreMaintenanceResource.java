@@ -29,9 +29,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.multipart.MultipartFile;
-
 /**
  * REST controller for managing
  * {@link com.tybasoft.ibam.domain.CentreMaintenance}.
@@ -173,7 +170,4 @@ public class CentreMaintenanceResource {
         return ResponseEntity.ok().body(true);
 
     }
-    
-
 }
-

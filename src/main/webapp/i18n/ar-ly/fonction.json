@@ -2,26 +2,26 @@
   "ibamApp": {
     "fonction": {
       "home": {
-        "title": "الوظائف",
-        "createLabel": "إنشاء وظيفة جديدة",
-        "createOrEditLabel": "إنشاء أو تعديل وظيفة",
-        "notFound": "لم يتم العثور على وظائف"
+        "title": "Fonctions",
+        "createLabel": "Create a new Fonction",
+        "createOrEditLabel": "Create or edit a Fonction",
+        "notFound": "No Fonctions found"
       },
-      "created": " يتم إنشاء وظيفة جديدة مع معرف {{ param }}",
-      "updated": " يتم تحديث الوظيفة مع معرف {{ param }}",
-      "deleted": " تم حذف الوظيفة مع معرف {{ param }}",
+      "created": "A new Fonction is created with identifier {{ param }}",
+      "updated": "A Fonction is updated with identifier {{ param }}",
+      "deleted": "A Fonction is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكد من أنك تريد حذف الوظيفة {{ id }}?"
+        "question": "Are you sure you want to delete Fonction {{ id }}?"
       },
       "detail": {
-        "title": "وظيفة"
+        "title": "Fonction"
       },
-      "libelle": "صياغة",
-      "description": "وصف",
-      "competences": "المهارات",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "employe": "الموظف"
+      "libelle": "Libelle",
+      "description": "Description",
+      "competences": "Competences",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "employe": "Employe"
     }
   }
 }

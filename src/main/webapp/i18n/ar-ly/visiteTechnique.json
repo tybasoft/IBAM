@@ -2,26 +2,26 @@
   "ibamApp": {
     "visiteTechnique": {
       "home": {
-        "title": "زيارة تقنية",
-        "createLabel": "إنشاء زيارة تقنية جديدة",
-        "createOrEditLabel": "إنشاء أو تعديل زيارة تقنية",
-        "notFound": "لم يتم العثور على زيارات تقنية"
+        "title": "Visite Techniques",
+        "createLabel": "Create a new Visite Technique",
+        "createOrEditLabel": "Create or edit a Visite Technique",
+        "notFound": "No Visite Techniques found"
       },
-      "created": "لقد تم إنشاء زيارة تقنية جديدة مع معرف {{ param }}",
-      "updated": " يتم تحديث الزيارة التقنية مع معرف {{ param }}",
-      "deleted": " يتم حذف الزيارة التقنية مع معرف {{ param }}",
+      "created": "A new Visite Technique is created with identifier {{ param }}",
+      "updated": "A Visite Technique is updated with identifier {{ param }}",
+      "deleted": "A Visite Technique is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكد أنك تريد حذف الزيارة التقنية {{ id }}?"
+        "question": "Are you sure you want to delete Visite Technique {{ id }}?"
       },
       "detail": {
-        "title": "زيارة تقنية"
+        "title": "Visite Technique"
       },
-      "reference": "مرجع",
-      "dateVisite": "تاريخ الزيارة",
-      "remarque": "ملاحظة",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "materiel": "أداة"
+      "reference": "Reference",
+      "dateVisite": "Date Visite",
+      "remarque": "Remarque",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "materiel": "Materiel"
     }
   }
 }

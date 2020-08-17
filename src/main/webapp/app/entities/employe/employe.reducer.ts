@@ -36,6 +36,12 @@ export default (state: EmployeState = initialState, action): EmployeState => {
       return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_EMPLOYE_LIST):
     case REQUEST(ACTION_TYPES.FETCH_EMPLOYE):
+      return {
+        ...state,
+        errorMessage: null,
+        updateSuccess: false,
+        loading: true
+      };
     case REQUEST(ACTION_TYPES.CREATE_EMPLOYE):
     case REQUEST(ACTION_TYPES.UPDATE_EMPLOYE):
     case REQUEST(ACTION_TYPES.DELETE_EMPLOYE):
@@ -94,7 +100,6 @@ export default (state: EmployeState = initialState, action): EmployeState => {
       return {
         ...initialState
       };
-
     default:
       return state;
   }

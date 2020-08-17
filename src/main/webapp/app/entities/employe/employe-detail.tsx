@@ -187,15 +187,15 @@ export const EmployeDetail = (props: IEmployeDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.employe.projet">Projet</Translate>
           </dt>
-          <dd>{employeEntity.projet ? employeEntity.projet.libelle: ''}</dd>
+          <dd>{employeEntity.projet ? employeEntity.projet.id : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.employe.equipe">Equipe</Translate>
           </dt>
-          <dd>{employeEntity.equipe ? employeEntity.equipe.libelle : ''}</dd>
+          <dd>{employeEntity.equipe ? employeEntity.equipe.id : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.employe.fonction">Fonction</Translate>
           </dt>
-          <dd>{employeEntity.fonction ? employeEntity.fonction.libelle : ''}</dd>
+          <dd>{employeEntity.fonction ? employeEntity.fonction.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/employe" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

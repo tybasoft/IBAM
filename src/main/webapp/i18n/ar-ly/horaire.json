@@ -2,29 +2,29 @@
   "ibamApp": {
     "horaire": {
       "home": {
-        "title": "الجداول الزمنية",
-        "createLabel": "إنشاء جدول زمني جديد",
-        "createOrEditLabel": "إنشاء أو تعديل جدول زمني  ",
-        "notFound": " لم يتم العثور على جداول زمنية "
+        "title": "Horaires",
+        "createLabel": "Create a new Horaire",
+        "createOrEditLabel": "Create or edit a Horaire",
+        "notFound": "No Horaires found"
       },
-      "created": " يتم إنشاء جدول زمني جديد مع معرف {{ param }}",
-      "updated": " يتم تحديث الجدول الزمني مع معرف{{ param }}",
-      "deleted": " تم حذف الجدول الزمني مع معرف {{ param }}",
+      "created": "A new Horaire is created with identifier {{ param }}",
+      "updated": "A Horaire is updated with identifier {{ param }}",
+      "deleted": "A Horaire is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكد  أنك تريد حذف الجدول الزمني {{ id }}?"
+        "question": "Are you sure you want to delete Horaire {{ id }}?"
       },
       "detail": {
-        "title": "الجدول الزمني"
+        "title": "Horaire"
       },
-      "libelle": "صياغة",
-      "nbrHeurParJr": "عدد الساعات في اليوم",
-      "nbrJourParSem": "عدد الأيام في الأسبوع",
-      "heureDebutJr": "ساعة البدء في اليوم",
-      "heureFinJr": "وقت الانتهاء في اليوم",
-      "dureePause": "مدة الاستراحة",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "projet": "المشروع"
+      "libelle": "Libelle",
+      "nbrHeurParJr": "Nbr Heur Par Jr",
+      "nbrJourParSem": "Nbr Jour Par Sem",
+      "heureDebutJr": "Heure Debut Jr",
+      "heureFinJr": "Heure Fin Jr",
+      "dureePause": "Duree Pause",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "projet": "Projet"
     }
   }
 }

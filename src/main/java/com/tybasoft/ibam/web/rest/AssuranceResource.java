@@ -26,8 +26,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-
-
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.Assurance}.
  */
@@ -41,7 +39,7 @@ public class AssuranceResource {
     private ReportService reportService;
 
     private static final String ENTITY_NAME = "assurance";
-   
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
@@ -161,7 +159,4 @@ public class AssuranceResource {
         } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
     }
-    
- 
-
 }

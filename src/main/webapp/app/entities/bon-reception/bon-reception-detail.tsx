@@ -73,11 +73,11 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.bonReception.depot">Depot</Translate>
           </dt>
-          <dd>{bonReceptionEntity.depot ? bonReceptionEntity.depot.libelle : ''}</dd>
+          <dd>{bonReceptionEntity.depot ? bonReceptionEntity.depot.id : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.bonReception.fournisseur">Fournisseur</Translate>
           </dt>
-          <dd>{bonReceptionEntity.fournisseur ? bonReceptionEntity.fournisseur.nomCommercial : ''}</dd>
+          <dd>{bonReceptionEntity.fournisseur ? bonReceptionEntity.fournisseur.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/bon-reception" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

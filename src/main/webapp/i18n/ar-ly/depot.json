@@ -2,33 +2,30 @@
   "ibamApp": {
     "depot": {
       "home": {
-        "title": "المستودعات",
-        "createLabel": "إنشاء مستودع جديد",
-        "createOrEditLabel": "إنشاءأو تعديل مستودع",
-        "notFound": "لم يتم العثور على مستودعات"
+        "title": "Depots",
+        "createLabel": "Create a new Depot",
+        "createOrEditLabel": "Create or edit a Depot",
+        "notFound": "No Depots found"
       },
-      "created": "يتم إنشاء مستودع جديد مع معرف {{ param }}",
-      "updated": " يتم تحديث المستودع مع معرف {{ param }}",
-      "deleted": " تم حذف المستودع مع معرف {{ param }}",
+      "created": "A new Depot is created with identifier {{ param }}",
+      "updated": "A Depot is updated with identifier {{ param }}",
+      "deleted": "A Depot is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكد من أنك تريد حذف المستودع {{ id }}?"
+        "question": "Are you sure you want to delete Depot {{ id }}?"
       },
       "detail": {
-        "title": "المستودع"
+        "title": "Depot"
       },
-      "libelle": "صياغة",
-      "adresse": "العنوان",
-      "tel": "الهاتف",
-      "ville": "المدينة",
-      "pays": "البلد",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "bonCommande": "طلب الشراء",
-      "bonReception": "إستلام الطلبية",
-      "projet": "المشروع",
-      "latitude": "خط العرض",
-      "longitude": "خط الطول",
-      "nolocal": "لا توجد معلومات عن الاحداثيات."
+      "libelle": "Libelle",
+      "adresse": "Adresse",
+      "tel": "Tel",
+      "ville": "Ville",
+      "pays": "Pays",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "bonCommande": "Bon Commande",
+      "bonReception": "Bon Reception",
+      "projet": "Projet"
     }
   }
 }

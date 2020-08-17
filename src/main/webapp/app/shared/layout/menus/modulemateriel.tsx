@@ -13,7 +13,6 @@ export const MaterielMenu = props => (
     name={translate('global.menu.entities.Materiel')}
     id="entity-menu"
     style={{ maxHeight: '80vh', overflow: 'auto' }}  >
-      
     <MenuItem icon="asterisk" to="/materiel">
       <Translate contentKey="global.menu.entities.materiel" />
     </MenuItem>

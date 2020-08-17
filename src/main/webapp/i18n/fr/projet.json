@@ -33,10 +33,7 @@
       "employe": "Employe",
       "entreprise": "Entreprise",
       "horaire": "Horaire",
-      "depot": "Depot",
-      "latitude": "Latitude",
-      "longitude": "Longitude",
-      "nolocal": "Aucune information trouvée sur la géolocalisation du projet."
+      "depot": "Depot"
     }
   }
 }

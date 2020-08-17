@@ -114,7 +114,7 @@ export const VisiteTechnique = (props: IVisiteTechniqueProps) => {
                   </td> */}
                   <td>
                     {visiteTechnique.materiel ? (
-                      <Link to={`materiel/${visiteTechnique.materiel.id}`}>{visiteTechnique.materiel.libelle}</Link>
+                      <Link to={`materiel/${visiteTechnique.materiel.id}`}>{visiteTechnique.materiel.id}</Link>
                     ) : (
                       ''
                     )}

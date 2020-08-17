@@ -1,8 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
-import com.tybasoft.ibam.domain.Document;
 import com.tybasoft.ibam.domain.Paie;
-import com.tybasoft.ibam.domain.Pointage;
 import com.tybasoft.ibam.repository.PaieRepository;
 import com.tybasoft.ibam.service.FileStorageService;
 import com.tybasoft.ibam.service.ReportService;
@@ -47,11 +45,9 @@ public class PaieResource {
     private String applicationName;
 
     private final PaieRepository paieRepository;
-   
 
     public PaieResource(PaieRepository paieRepository) {
         this.paieRepository = paieRepository;
-        
     }
 
     /**

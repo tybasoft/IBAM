@@ -114,7 +114,7 @@ export const Assurance = (props: IAssuranceProps) => {
                   <td>
                     <TextFormat type="date" value={assurance.dateModif} format={APP_LOCAL_DATE_FORMAT} />
                   </td> */}
-                  <td>{assurance.materiel ? <Link to={`materiel/${assurance.materiel.libelle}`}>{assurance.materiel.libelle}</Link> : ''}</td>
+                  <td>{assurance.materiel ? <Link to={`materiel/${assurance.materiel.id}`}>{assurance.materiel.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${assurance.id}`} color="info" size="sm">

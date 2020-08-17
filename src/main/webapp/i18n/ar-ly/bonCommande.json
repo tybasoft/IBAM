@@ -2,29 +2,29 @@
   "ibamApp": {
     "bonCommande": {
       "home": {
-        "title": "الطَلَبِيَات",
-        "createLabel": "إنشاء طلبية جديدة",
-        "createOrEditLabel": "إنشاء أو تعديل طلبية",
-        "notFound": "لم يتم العثور على أي طلبية"
+        "title": "Bon Commandes",
+        "createLabel": "Create a new Bon Commande",
+        "createOrEditLabel": "Create or edit a Bon Commande",
+        "notFound": "No Bon Commandes found"
       },
-      "created": "يتم إنشاء طلبية جديدة مع معرف {{ param }}",
-      "updated": "يتم تحديث الطلبية مع معرف {{ param }}",
-      "deleted": "تم حذف الطلبية مع معرف {{ param }}",
+      "created": "A new Bon Commande is created with identifier {{ param }}",
+      "updated": "A Bon Commande is updated with identifier {{ param }}",
+      "deleted": "A Bon Commande is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكد أنك تريد حذف الطلبية {{ id }}?"
+        "question": "Are you sure you want to delete Bon Commande {{ id }}?"
       },
       "detail": {
-        "title": "طَلَبِيَةٍ"
+        "title": "Bon Commande"
       },
-      "datePrevLiv": " تاريخ التسليم المتوقع",
-      "remarques": "ملاحظات",
-      "dateCreation": "تاريخ الإنشاء",
-      "valide": "صالح",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "ligneBonCom": "خط الطلبية",
-      "depot": "مستودع",
-      "fournisseur": "مُوَرِّد"
+      "datePrevLiv": "Date Prev Liv",
+      "remarques": "Remarques",
+      "dateCreation": "Date Creation",
+      "valide": "Valide",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "ligneBonCom": "Ligne Bon Com",
+      "depot": "Depot",
+      "fournisseur": "Fournisseur"
     }
   }
 }

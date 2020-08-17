@@ -137,9 +137,13 @@ import notification, {
   NotificationState
 } from 'app/entities/notification/notification.reducer';
 // prettier-ignore
-import fichePointage, {
-  FichePointageState
-} from 'app/entities/fiche-pointage/fiche-pointage.reducer';
+import avancement, {
+  AvancementState
+} from 'app/entities/avancement/avancement.reducer';
+// prettier-ignore
+import compteRendu, {
+  CompteRenduState
+} from 'app/entities/compte-rendu/compte-rendu.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -184,7 +188,8 @@ export interface IRootState {
   readonly centreMaintenance: CentreMaintenanceState;
   readonly visiteTechnique: VisiteTechniqueState;
   readonly notification: NotificationState;
-  readonly fichePointage: FichePointageState;
+  readonly avancement: AvancementState;
+  readonly compteRendu: CompteRenduState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -231,9 +236,10 @@ const rootReducer = combineReducers<IRootState>({
   centreMaintenance,
   visiteTechnique,
   notification,
-  fichePointage,
+  avancement,
+  compteRendu,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
-  loadingBar
+  loadingBar,
 });
 
 export default rootReducer;

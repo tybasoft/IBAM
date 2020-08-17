@@ -38,7 +38,8 @@
         "centreMaintenance": "Centre Maintenance",
         "visiteTechnique": "Visite Technique",
         "notification": "Notification",
-        "fichePointage": "Fiche Pointage",
+        "avancement": "Avancement",
+        "compteRendu": "Compte Rendu",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

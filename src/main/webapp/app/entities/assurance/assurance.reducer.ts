@@ -49,7 +49,6 @@ export default (state: AssuranceState = initialState, action): AssuranceState =>
         updateSuccess: false,
         updating: true
       };
-
     case FAILURE(ACTION_TYPES.FETCH_ASSURANCE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_ASSURANCE):
     case FAILURE(ACTION_TYPES.CREATE_ASSURANCE):

@@ -66,7 +66,6 @@ export default (state: PaieState = initialState, action): PaieState => {
         updateSuccess: false,
         errorMessage: action.payload
       };
-
     case SUCCESS(ACTION_TYPES.FETCH_PAIE_LIST):
       return {
         ...state,
@@ -95,7 +94,6 @@ export default (state: PaieState = initialState, action): PaieState => {
         updateSuccess: true,
         entity: {}
       };
-
     case ACTION_TYPES.RESET:
       return {
         ...initialState

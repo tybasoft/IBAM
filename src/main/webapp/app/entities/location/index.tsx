@@ -11,8 +11,6 @@ import { ACTION_TYPES, apiUrl } from './location.reducer';
 import Export from '../../shared/Repport/export';
 import Import from '../../shared/Repport/import';
 
-
-
 const Routes = ({ match }) => (
   <>
     <Switch>

@@ -15,8 +15,6 @@ export interface IDepot {
   bonCommandes?: IBonCommande[];
   bonReceptions?: IBonReception[];
   projets?: IProjet[];
-  latitude?: number,
-  longitude?: number
 }
 
 export const defaultValue: Readonly<IDepot> = {};

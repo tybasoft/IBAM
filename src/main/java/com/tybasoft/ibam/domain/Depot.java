@@ -65,13 +65,6 @@ public class Depot implements Serializable {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not
     // remove
-    @Column(name = "latitude")
-    private Double latitude;
-
-    @Column(name = "longitude")
-    private Double longitude;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -165,22 +158,6 @@ public class Depot implements Serializable {
     public Depot dateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
         return this;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
     }
 
     public void setDateModif(LocalDate dateModif) {
@@ -296,17 +273,8 @@ public class Depot implements Serializable {
 
     @Override
     public String toString() {
-        return "Depot{" +
-            "id=" + id +
-            ", libelle='" + libelle + '\'' +
-            ", adresse='" + adresse + '\'' +
-            ", tel='" + tel + '\'' +
-            ", ville='" + ville + '\'' +
-            ", pays='" + pays + '\'' +
-            ", userModif='" + userModif + '\'' +
-            ", dateModif=" + dateModif +
-            ", latitude=" + latitude +
-            ", longitude=" + longitude +
-            '}';
+        return "Depot{" + "id=" + getId() + ", libelle='" + getLibelle() + "'" + ", adresse='" + getAdresse() + "'"
+                + ", tel='" + getTel() + "'" + ", ville='" + getVille() + "'" + ", pays='" + getPays() + "'"
+                + ", userModif='" + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}";
     }
 }

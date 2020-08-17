@@ -2,33 +2,33 @@
   "ibamApp": {
     "materiau": {
       "home": {
-        "title": "المواد",
-        "createLabel": "إنشاء مادة جديدة",
-        "createOrEditLabel": "إنشاء أو تعديل مادة",
-        "notFound": "لم يتم العثور على مواد"
+        "title": "Materiaus",
+        "createLabel": "Create a new Materiau",
+        "createOrEditLabel": "Create or edit a Materiau",
+        "notFound": "No Materiaus found"
       },
-      "created": "يتم إنشاء مادة جديدة مع معرف {{ param }}",
-      "updated": " يتم تحديث المادة مع معرف {{ param }}",
-      "deleted": " تم حذف المادة مع معرف {{ param }}",
+      "created": "A new Materiau is created with identifier {{ param }}",
+      "updated": "A Materiau is updated with identifier {{ param }}",
+      "deleted": "A Materiau is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكد أنك تريد حذف  المادة{{ id }}?"
+        "question": "Are you sure you want to delete Materiau {{ id }}?"
       },
       "detail": {
-        "title": "مادة"
+        "title": "Materiau"
       },
-      "libelle": "صياغة",
-      "reference": "مرجع",
-      "poids": "وزن",
-      "volume": "حجم",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "ligneBonRec": "استلام",
-      "ligneBonCom": "طلبية",
-      "marque": "علامة تجارية ",
-      "unite": "وحدة",
-      "famille": "أسرة",
-      "tva": " ضريبة القيمة المضافة ",
-      "image": "صورة"
+      "libelle": "Libelle",
+      "reference": "Reference",
+      "poids": "Poids",
+      "volume": "Volume",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "ligneBonRec": "Ligne Bon Rec",
+      "ligneBonCom": "Ligne Bon Com",
+      "marque": "Marque",
+      "unite": "Unite",
+      "famille": "Famille",
+      "tva": "Tva",
+      "image": "Image"
     }
   }
 }
