@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -65,26 +67,32 @@ public class Projet implements Serializable {
     @Column(name = "date_modif")
     private Instant dateModif;
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "projet")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<TransfertMateriel> transferts = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "projet")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Equipe> equipes = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "projet")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Employe> employes = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("projets")
     private Entreprise entreprise;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("projets")
     private Horaire horaire;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("projets")
     private Depot depot;
