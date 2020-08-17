@@ -16,6 +16,8 @@ export interface IBonReceptionProps extends StateProps, DispatchProps, RouteComp
 export const BonReception = (props: IBonReceptionProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
 
+  const [search , setSearch] = useState('');
+
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
@@ -46,6 +48,15 @@ export const BonReception = (props: IBonReceptionProps) => {
     });
 
   const { bonReceptionList, match, loading, totalItems } = props;
+
+  const bonRecList = bonReceptionList.filter(reception => {
+    return reception.dateLivraison.includes(search) ||
+      reception.depot.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      reception.fournisseur.prenom.toLowerCase().includes(search.toLowerCase()) ||
+      reception.fournisseur.nom.toLowerCase().includes(search.toLowerCase()) ||
+      reception.livreur.toLowerCase().includes(search.toLowerCase()) ||
+      reception.remarques.toLowerCase().includes(search.toLowerCase());
+  })
   return (
     <div>
       <h2 id="bon-reception-heading">
@@ -56,6 +67,10 @@ export const BonReception = (props: IBonReceptionProps) => {
           <Translate contentKey="ibamApp.bonReception.home.createLabel">Create new Bon Reception</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {bonReceptionList && bonReceptionList.length > 0 ? (
           <Table responsive>
@@ -92,7 +107,7 @@ export const BonReception = (props: IBonReceptionProps) => {
               </tr>
             </thead>
             <tbody>
-              {bonReceptionList.map((bonReception, i) => (
+              {bonRecList.map((bonReception, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${bonReception.id}`} color="link" size="sm">
@@ -102,16 +117,16 @@ export const BonReception = (props: IBonReceptionProps) => {
                   <td>{bonReception.livreur}</td>
                   <td>{bonReception.remarques}</td>
                   <td>
-                    <TextFormat type="date" value={bonReception.dateLivraison} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={bonReception.dateLivraison} format="YYYY-MM-DD" />
                   </td>
                   <td>{bonReception.userModif}</td>
                   <td>
-                    <TextFormat type="date" value={bonReception.dateModif} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={bonReception.dateModif} format="YYYY-MM-DD" />
                   </td>
-                  <td>{bonReception.depot ? <Link to={`depot/${bonReception.depot.id}`}>{bonReception.depot.id}</Link> : ''}</td>
+                  <td>{bonReception.depot ? <Link to={`depot/${bonReception.depot.id}`}>{bonReception.depot.libelle}</Link> : ''}</td>
                   <td>
                     {bonReception.fournisseur ? (
-                      <Link to={`fournisseur/${bonReception.fournisseur.id}`}>{bonReception.fournisseur.id}</Link>
+                      <Link to={`fournisseur/${bonReception.fournisseur.id}`}>{bonReception.fournisseur.nom}{bonReception.fournisseur.prenom}</Link>
                     ) : (
                       ''
                     )}

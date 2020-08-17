@@ -15,6 +15,7 @@ export interface IDocumentProps extends StateProps, DispatchProps, RouteComponen
 
 export const Document = (props: IDocumentProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,12 @@ export const Document = (props: IDocumentProps) => {
     });
 
   const { documentList, match, loading, totalItems } = props;
+  const documentFiltre = documentList.filter(document =>{
+    return document.titre.toLowerCase().includes(search.toLowerCase()) ||
+      document.type.toLowerCase().includes(search.toLowerCase()) ||
+      document.path.toLowerCase().includes(search.toLowerCase()) ||
+      document.commentaire.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="document-heading">
@@ -56,6 +63,10 @@ export const Document = (props: IDocumentProps) => {
           <Translate contentKey="ibamApp.document.home.createLabel">Create new Document</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {documentList && documentList.length > 0 ? (
           <Table responsive>
@@ -86,7 +97,7 @@ export const Document = (props: IDocumentProps) => {
               </tr>
             </thead>
             <tbody>
-              {documentList.map((document, i) => (
+              {documentFiltre.map((document, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${document.id}`} color="link" size="sm">

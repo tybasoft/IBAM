@@ -5,7 +5,7 @@ import { IProjet } from 'app/shared/model/projet.model';
 export interface ITransfertMateriel {
   id?: number;
   reference?: string;
-  dateTransfert?: Moment;
+  dateTransfert?: string;
   commentaire?: string;
   userModif?: string;
   dateModif?: Moment;

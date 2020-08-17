@@ -15,6 +15,7 @@ export interface IMaintenanceProps extends StateProps, DispatchProps, RouteCompo
 
 export const Maintenance = (props: IMaintenanceProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,18 @@ export const Maintenance = (props: IMaintenanceProps) => {
     });
 
   const { maintenanceList, match, loading, totalItems } = props;
+  const maitenanceFitlre = maintenanceList.filter(maitenance =>{
+    return maitenance.reference.toLowerCase().includes(search.toLowerCase()) ||
+      maitenance.datePanne.includes(search) ||
+      maitenance.frais.toLowerCase().includes(search.toLowerCase()) ||
+      maitenance.technicien.toLowerCase().includes(search.toLowerCase()) ||
+      maitenance.motif.toLowerCase().includes(search.toLowerCase()) ||
+      maitenance.remarque.toLowerCase().includes(search.toLowerCase()) ||
+      maitenance.dureePanne.toLowerCase().includes(search.toLowerCase()) ||
+      maitenance.materiel.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      maitenance.centreMaintenance.libelle.toLowerCase().includes(search.toLowerCase()) ;
+
+  })
   return (
     <div>
       <h2 id="maintenance-heading">
@@ -56,6 +69,10 @@ export const Maintenance = (props: IMaintenanceProps) => {
           <Translate contentKey="ibamApp.maintenance.home.createLabel">Create new Maintenance</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {maintenanceList && maintenanceList.length > 0 ? (
           <Table responsive>
@@ -88,12 +105,6 @@ export const Maintenance = (props: IMaintenanceProps) => {
                 <th className="hand" onClick={sort('dureePanne')}>
                   <Translate contentKey="ibamApp.maintenance.dureePanne">Duree Panne</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.maintenance.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.maintenance.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.maintenance.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -108,7 +119,7 @@ export const Maintenance = (props: IMaintenanceProps) => {
               </tr>
             </thead>
             <tbody>
-              {maintenanceList.map((maintenance, i) => (
+              {maitenanceFitlre.map((maintenance, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${maintenance.id}`} color="link" size="sm">
@@ -117,7 +128,7 @@ export const Maintenance = (props: IMaintenanceProps) => {
                   </td>
                   <td>{maintenance.reference}</td>
                   <td>
-                    <TextFormat type="date" value={maintenance.datePanne} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={maintenance.datePanne} format="YYYY-MM-DD" />
                   </td>
                   <td>{maintenance.frais}</td>
                   <td>{maintenance.technicien}</td>
@@ -125,14 +136,10 @@ export const Maintenance = (props: IMaintenanceProps) => {
                   <td>{maintenance.problemeFrequent ? 'true' : 'false'}</td>
                   <td>{maintenance.remarque}</td>
                   <td>{maintenance.dureePanne}</td>
-                  <td>{maintenance.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={maintenance.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
-                  <td>{maintenance.materiel ? <Link to={`materiel/${maintenance.materiel.id}`}>{maintenance.materiel.id}</Link> : ''}</td>
+                  <td>{maintenance.materiel ? <Link to={`materiel/${maintenance.materiel.id}`}>{maintenance.materiel.libelle}</Link> : ''}</td>
                   <td>
                     {maintenance.centreMaintenance ? (
-                      <Link to={`centre-maintenance/${maintenance.centreMaintenance.id}`}>{maintenance.centreMaintenance.id}</Link>
+                      <Link to={`centre-maintenance/${maintenance.centreMaintenance.id}`}>{maintenance.centreMaintenance.libelle}</Link>
                     ) : (
                       ''
                     )}

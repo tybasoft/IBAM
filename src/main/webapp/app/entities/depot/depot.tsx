@@ -13,11 +13,21 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 export interface IDepotProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Depot = (props: IDepotProps) => {
+
+  const [search , setSearch] = useState('');
+
   useEffect(() => {
     props.getEntities();
   }, []);
 
   const { depotList, match, loading } = props;
+  const depotFiltre = depotList.filter(depot =>{
+    return depot.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      depot.adresse.toLowerCase().includes(search.toLowerCase()) ||
+      depot.tel.toLowerCase().includes(search.toLowerCase()) ||
+      depot.ville.toLowerCase().includes(search.toLowerCase()) ||
+      depot.pays.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="depot-heading">
@@ -28,6 +38,10 @@ export const Depot = (props: IDepotProps) => {
           <Translate contentKey="ibamApp.depot.home.createLabel">Create new Depot</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {depotList && depotList.length > 0 ? (
           <Table responsive>
@@ -61,7 +75,7 @@ export const Depot = (props: IDepotProps) => {
               </tr>
             </thead>
             <tbody>
-              {depotList.map((depot, i) => (
+              {depotFiltre.map((depot, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${depot.id}`} color="link" size="sm">

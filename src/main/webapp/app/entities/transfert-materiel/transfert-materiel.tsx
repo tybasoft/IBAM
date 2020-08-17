@@ -15,6 +15,7 @@ export interface ITransfertMaterielProps extends StateProps, DispatchProps, Rout
 
 export const TransfertMateriel = (props: ITransfertMaterielProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,13 @@ export const TransfertMateriel = (props: ITransfertMaterielProps) => {
     });
 
   const { transfertMaterielList, match, loading, totalItems } = props;
+  const transfertFiltre = transfertMaterielList.filter(transfert =>{
+    return transfert.reference.toLowerCase().includes(search.toLowerCase()) ||
+      transfert.dateTransfert.includes(search) ||
+      transfert.commentaire.toLowerCase().includes(search.toLowerCase()) ||
+      transfert.materiel.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      transfert.projet.libelle.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="transfert-materiel-heading">
@@ -56,6 +64,10 @@ export const TransfertMateriel = (props: ITransfertMaterielProps) => {
           <Translate contentKey="ibamApp.transfertMateriel.home.createLabel">Create new Transfert Materiel</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {transfertMaterielList && transfertMaterielList.length > 0 ? (
           <Table responsive>
@@ -73,12 +85,6 @@ export const TransfertMateriel = (props: ITransfertMaterielProps) => {
                 <th className="hand" onClick={sort('commentaire')}>
                   <Translate contentKey="ibamApp.transfertMateriel.commentaire">Commentaire</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.transfertMateriel.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.transfertMateriel.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.transfertMateriel.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -89,7 +95,7 @@ export const TransfertMateriel = (props: ITransfertMaterielProps) => {
               </tr>
             </thead>
             <tbody>
-              {transfertMaterielList.map((transfertMateriel, i) => (
+              {transfertFiltre.map((transfertMateriel, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${transfertMateriel.id}`} color="link" size="sm">
@@ -98,23 +104,19 @@ export const TransfertMateriel = (props: ITransfertMaterielProps) => {
                   </td>
                   <td>{transfertMateriel.reference}</td>
                   <td>
-                    <TextFormat type="date" value={transfertMateriel.dateTransfert} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={transfertMateriel.dateTransfert} format="YYYY-MM-DD" />
                   </td>
                   <td>{transfertMateriel.commentaire}</td>
-                  <td>{transfertMateriel.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={transfertMateriel.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td>
                     {transfertMateriel.materiel ? (
-                      <Link to={`materiel/${transfertMateriel.materiel.id}`}>{transfertMateriel.materiel.id}</Link>
+                      <Link to={`materiel/${transfertMateriel.materiel.id}`}>{transfertMateriel.materiel.libelle}</Link>
                     ) : (
                       ''
                     )}
                   </td>
                   <td>
                     {transfertMateriel.projet ? (
-                      <Link to={`projet/${transfertMateriel.projet.id}`}>{transfertMateriel.projet.id}</Link>
+                      <Link to={`projet/${transfertMateriel.projet.id}`}>{transfertMateriel.projet.libelle}</Link>
                     ) : (
                       ''
                     )}

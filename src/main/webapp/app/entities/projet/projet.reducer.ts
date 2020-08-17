@@ -126,6 +126,15 @@ export const createEntity: ICrudPutAction<IProjet> = entity => async dispatch =>
   return result;
 };
 
+export const searchEntity: ICrudPutAction<IProjet> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.FETCH_PROJET,
+    payload: axios.post(apiUrl + '/search', entity)
+  });
+  // dispatch(getEntities());
+  return result;
+};
+
 export const updateEntity: ICrudPutAction<IProjet> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_PROJET,

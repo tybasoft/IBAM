@@ -13,11 +13,19 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 export interface IEntrepriseProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Entreprise = (props: IEntrepriseProps) => {
+  const [search , setSearch] = useState('');
+
   useEffect(() => {
     props.getEntities();
   }, []);
 
   const { entrepriseList, match, loading } = props;
+  const entrepriseFiltre = entrepriseList.filter(enterprise =>{
+    return enterprise.entiteJuridique.toLowerCase().includes(search.toLowerCase()) ||
+      enterprise.nomCommercial.toLowerCase().includes(search.toLowerCase()) ||
+      enterprise.adresse.toLowerCase().includes(search.toLowerCase()) ||
+      enterprise.capital.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="entreprise-heading">
@@ -28,6 +36,10 @@ export const Entreprise = (props: IEntrepriseProps) => {
           <Translate contentKey="ibamApp.entreprise.home.createLabel">Create new Entreprise</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {entrepriseList && entrepriseList.length > 0 ? (
           <Table responsive>
@@ -75,7 +87,7 @@ export const Entreprise = (props: IEntrepriseProps) => {
               </tr>
             </thead>
             <tbody>
-              {entrepriseList.map((entreprise, i) => (
+              {entrepriseFiltre.map((entreprise, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${entreprise.id}`} color="link" size="sm">

@@ -15,6 +15,7 @@ export interface IMarqueProps extends StateProps, DispatchProps, RouteComponentP
 
 export const Marque = (props: IMarqueProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,10 @@ export const Marque = (props: IMarqueProps) => {
     });
 
   const { marqueList, match, loading, totalItems } = props;
+  const marqueFiltre = marqueList.filter(marque =>{
+    return marque.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      marque.description.toLowerCase().includes(search.toLowerCase());
+  })
   return (
     <div>
       <h2 id="marque-heading">
@@ -56,6 +61,10 @@ export const Marque = (props: IMarqueProps) => {
           <Translate contentKey="ibamApp.marque.home.createLabel">Create new Marque</Translate>
         </Link>
       </h2>
+        <form className="md-form search">
+          <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+        </form>
+        <br/>
       <div className="table-responsive">
         {marqueList && marqueList.length > 0 ? (
           <Table responsive>
@@ -70,17 +79,11 @@ export const Marque = (props: IMarqueProps) => {
                 <th className="hand" onClick={sort('description')}>
                   <Translate contentKey="ibamApp.marque.description">Description</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.marque.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.marque.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {marqueList.map((marque, i) => (
+              {marqueFiltre.map((marque, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${marque.id}`} color="link" size="sm">
@@ -89,10 +92,6 @@ export const Marque = (props: IMarqueProps) => {
                   </td>
                   <td>{marque.libelle}</td>
                   <td>{marque.description}</td>
-                  <td>{marque.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={marque.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${marque.id}`} color="info" size="sm">

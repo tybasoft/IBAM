@@ -3,7 +3,7 @@ import { IEmploye } from 'app/shared/model/employe.model';
 
 export interface IPointage {
   id?: number;
-  dateJour?: Moment;
+  dateJour?: string;
   presenceMatin?: boolean;
   presenceAPM?: boolean;
   nbrHeureSup?: string;

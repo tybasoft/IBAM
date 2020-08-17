@@ -16,6 +16,13 @@ export interface IMaterielProps extends StateProps, DispatchProps, RouteComponen
 export const Materiel = (props: IMaterielProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
 
+  const [search , setSearch] = useState('');
+  const [value , setValue] = useState('');
+  const [filtre , setFiltre] = useState([]);
+  const { materielList, match, loading, totalItems } = props;
+
+
+
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -37,6 +44,11 @@ export const Materiel = (props: IMaterielProps) => {
     const params = new URLSearchParams(props.location.search);
     const page = params.get('page');
     const sort = params.get('sort');
+    // setFiltre(
+    //   materielList.filter( materiel => {
+    //     return materiel.libelle.toLowerCase().includes(search.toLowerCase());
+    //   })
+    // )
     if (page && sort) {
       const sortSplit = sort.split(',');
       setPaginationState({
@@ -62,17 +74,44 @@ export const Materiel = (props: IMaterielProps) => {
       activePage: currentPage,
     });
 
-  const { materielList, match, loading, totalItems } = props;
+
+
+
+  const filtreMateriels = materielList.filter( materiel => {
+     return materiel.libelle.toLowerCase().includes(search.toLowerCase()) ||
+       materiel.matricule.toLowerCase().includes(search.toLowerCase()) ||
+       materiel.modele.toLowerCase().includes(search.toLowerCase()) ||
+         materiel.numCarteGrise.toLowerCase().includes(search.toLowerCase()) ||
+       materiel.etat.toLowerCase().includes(search.toLowerCase()) ||
+       materiel.compteurAchat.toLowerCase().includes(search.toLowerCase()) ||
+       materiel.description.toLowerCase().includes(search.toLowerCase()) ||
+       materiel.fournisseur.prenom.toLowerCase().includes(search.toLowerCase()) ||
+       materiel.fournisseur.nom.toLowerCase().includes(search.toLowerCase()) ||
+       materiel.famille.libelle.toLowerCase().includes(search.toLowerCase()) ;
+
+  })
+
+
+
+
+
   return (
     <div>
       <h2 id="materiel-heading">
         <Translate contentKey="ibamApp.materiel.home.title">Materiels</Translate>
+
         <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
           <Translate contentKey="ibamApp.materiel.home.createLabel">Create new Materiel</Translate>
         </Link>
       </h2>
+
+        <form className="md-form search">
+          <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+        </form>
+        <br/>
+
       <div className="table-responsive">
         {materielList && materielList.length > 0 ? (
           <Table responsive>
@@ -94,56 +133,12 @@ export const Materiel = (props: IMaterielProps) => {
                   <Translate contentKey="ibamApp.materiel.numCarteGrise">Num Carte Grise</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('multiProjet')}>
-                  <Translate contentKey="ibamApp.materiel.multiProjet">MultiProjet</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="ibamApp.materiel.multiProjet">Multi Projet</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                {/* <th className="hand" onClick={sort('dateIdentification')}>
-                  <Translate contentKey="ibamApp.materiel.dateIdentification">Date Identification</Translate>{' '}
-                  <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('compteurAchat')}>
-                  <Translate contentKey="ibamApp.materiel.compteurAchat">Compteur Achat</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('etat')}>
-                  <Translate contentKey="ibamApp.materiel.etat">Etat</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('location')}>
-                  <Translate contentKey="ibamApp.materiel.location">Location</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('description')}>
-                  <Translate contentKey="ibamApp.materiel.description">Description</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.materiel.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.materiel.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiel.famille">Famille</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiel.typeMateriel">Type Materiel</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiel.fournisseur">Fournisseur</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiel.marque">Marque</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiel.document">Document</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiel.employe">Employe</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.materiel.image">Image</Translate> <FontAwesomeIcon icon="sort" />
-                </th> */}
-                <th />
               </tr>
             </thead>
             <tbody>
-              {materielList.map((materiel, i) => (
+              {filtreMateriels.map((materiel, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${materiel.id}`} color="link" size="sm">
@@ -154,30 +149,27 @@ export const Materiel = (props: IMaterielProps) => {
                   <td>{materiel.matricule}</td>
                   <td>{materiel.modele}</td>
                   <td>{materiel.numCarteGrise}</td>
-                  <td>{materiel.multiProjet ? 'true' : 'false'}</td>
-
-                  {/* <td>
-                    <TextFormat type="date" value={materiel.dateIdentification} format={APP_LOCAL_DATE_FORMAT} />
+                  <td>
+                    {materiel.dateIdentification ? (
+                      <TextFormat type="date" value={materiel.dateIdentification} format="YYYY-MM-DD" />
+                    ) : null}
                   </td>
                   <td>{materiel.compteurAchat}</td>
                   <td>{materiel.etat}</td>
                   <td>{materiel.location ? 'true' : 'false'}</td>
                   <td>{materiel.description}</td>
-                  <td>{materiel.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={materiel.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
-                  <td>{materiel.famille ? <Link to={`famille/${materiel.famille.id}`}>{materiel.famille.id}</Link> : ''}</td>
+                  <td>{materiel.multiProjet ? 'true' : 'false'}</td>
+                  <td>{materiel.famille ? <Link to={`famille/${materiel.famille.id}`}>{materiel.famille.libelle}</Link> : ''}</td>
                   <td>
                     {materiel.typeMateriel ? <Link to={`type-materiel/${materiel.typeMateriel.id}`}>{materiel.typeMateriel.id}</Link> : ''}
                   </td>
                   <td>
-                    {materiel.fournisseur ? <Link to={`fournisseur/${materiel.fournisseur.id}`}>{materiel.fournisseur.id}</Link> : ''}
+                    {materiel.fournisseur ? <Link to={`fournisseur/${materiel.fournisseur.id}`}>{materiel.fournisseur.nom} {materiel.fournisseur.prenom}</Link> : ''}
                   </td>
                   <td>{materiel.marque ? <Link to={`marque/${materiel.marque.id}`}>{materiel.marque.id}</Link> : ''}</td>
                   <td>{materiel.document ? <Link to={`document/${materiel.document.id}`}>{materiel.document.id}</Link> : ''}</td>
                   <td>{materiel.employe ? <Link to={`employe/${materiel.employe.id}`}>{materiel.employe.id}</Link> : ''}</td>
-                  <td>{materiel.image ? <Link to={`image/${materiel.image.id}`}>{materiel.image.id}</Link> : ''}</td> */}
+                  <td>{materiel.image ? <Link to={`image/${materiel.image.id}`}>{materiel.image.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${materiel.id}`} color="info" size="sm">

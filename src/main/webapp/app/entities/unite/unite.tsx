@@ -15,6 +15,7 @@ export interface IUniteProps extends StateProps, DispatchProps, RouteComponentPr
 
 export const Unite = (props: IUniteProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,11 @@ export const Unite = (props: IUniteProps) => {
     });
 
   const { uniteList, match, loading, totalItems } = props;
+  const uniteFiltre = uniteList.filter( unite =>{
+    return unite.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      unite.symbole.toLowerCase().includes(search.toLowerCase()) ||
+      unite.description.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="unite-heading">
@@ -56,6 +62,10 @@ export const Unite = (props: IUniteProps) => {
           <Translate contentKey="ibamApp.unite.home.createLabel">Create new Unite</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {uniteList && uniteList.length > 0 ? (
           <Table responsive>
@@ -73,17 +83,11 @@ export const Unite = (props: IUniteProps) => {
                 <th className="hand" onClick={sort('description')}>
                   <Translate contentKey="ibamApp.unite.description">Description</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.unite.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.unite.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {uniteList.map((unite, i) => (
+              {uniteFiltre.map((unite, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${unite.id}`} color="link" size="sm">
@@ -93,10 +97,6 @@ export const Unite = (props: IUniteProps) => {
                   <td>{unite.libelle}</td>
                   <td>{unite.symbole}</td>
                   <td>{unite.description}</td>
-                  <td>{unite.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={unite.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${unite.id}`} color="info" size="sm">

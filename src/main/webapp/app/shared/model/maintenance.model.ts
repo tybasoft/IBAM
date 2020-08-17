@@ -6,7 +6,7 @@ import { IImage } from 'app/shared/model/image.model';
 export interface IMaintenance {
   id?: number;
   reference?: string;
-  datePanne?: Moment;
+  datePanne?: string;
   frais?: string;
   technicien?: string;
   motif?: string;

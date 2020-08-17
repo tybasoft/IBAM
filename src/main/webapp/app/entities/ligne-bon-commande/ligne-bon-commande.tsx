@@ -15,6 +15,7 @@ export interface ILigneBonCommandeProps extends StateProps, DispatchProps, Route
 
 export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,10 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
     });
 
   const { ligneBonCommandeList, match, loading, totalItems } = props;
+  const ligneBonFiltre = ligneBonCommandeList.filter(ligneBon =>{
+    return ligneBon.quantite.toLowerCase().includes(search.toLowerCase()) ||
+      ligneBon.materiau.libelle.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="ligne-bon-commande-heading">
@@ -56,6 +61,10 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
           <Translate contentKey="ibamApp.ligneBonCommande.home.createLabel">Create new Ligne Bon Commande</Translate>
         </Link>
       </h2>
+        <form className="md-form search">
+          <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+        </form>
+        <br/>
       <div className="table-responsive">
         {ligneBonCommandeList && ligneBonCommandeList.length > 0 ? (
           <Table responsive>
@@ -67,12 +76,6 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
                 <th className="hand" onClick={sort('quantite')}>
                   <Translate contentKey="ibamApp.ligneBonCommande.quantite">Quantite</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.ligneBonCommande.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.ligneBonCommande.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.ligneBonCommande.bonCommande">Bon Commande</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -83,7 +86,7 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
               </tr>
             </thead>
             <tbody>
-              {ligneBonCommandeList.map((ligneBonCommande, i) => (
+              {ligneBonFiltre.map((ligneBonCommande, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${ligneBonCommande.id}`} color="link" size="sm">
@@ -91,10 +94,6 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
                     </Button>
                   </td>
                   <td>{ligneBonCommande.quantite}</td>
-                  <td>{ligneBonCommande.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={ligneBonCommande.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td>
                     {ligneBonCommande.bonCommande ? (
                       <Link to={`bon-commande/${ligneBonCommande.bonCommande.id}`}>{ligneBonCommande.bonCommande.id}</Link>
@@ -104,7 +103,7 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
                   </td>
                   <td>
                     {ligneBonCommande.materiau ? (
-                      <Link to={`materiau/${ligneBonCommande.materiau.id}`}>{ligneBonCommande.materiau.id}</Link>
+                      <Link to={`materiau/${ligneBonCommande.materiau.id}`}>{ligneBonCommande.materiau.libelle}</Link>
                     ) : (
                       ''
                     )}

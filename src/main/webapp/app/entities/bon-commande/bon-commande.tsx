@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntities } from './bon-commande.reducer';
-import { IBonCommande } from 'app/shared/model/bon-commande.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
@@ -15,6 +14,8 @@ export interface IBonCommandeProps extends StateProps, DispatchProps, RouteCompo
 
 export const BonCommande = (props: IBonCommandeProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,13 @@ export const BonCommande = (props: IBonCommandeProps) => {
     });
 
   const { bonCommandeList, match, loading, totalItems } = props;
+  const bonCommandeFiltre = bonCommandeList.filter(bon => {
+    return bon.fournisseur.nom.toLowerCase().includes(search.toLowerCase()) ||
+      bon.fournisseur.prenom.toLowerCase().includes(search.toLowerCase()) ||
+      bon.dateCreation.includes(search) ||
+      bon.datePrevLiv.includes(search) ||
+      bon.remarques.toLowerCase().includes(search.toLowerCase());
+  })
   return (
     <div>
       <h2 id="bon-commande-heading">
@@ -56,6 +64,10 @@ export const BonCommande = (props: IBonCommandeProps) => {
           <Translate contentKey="ibamApp.bonCommande.home.createLabel">Create new Bon Commande</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {bonCommandeList && bonCommandeList.length > 0 ? (
           <Table responsive>
@@ -92,7 +104,7 @@ export const BonCommande = (props: IBonCommandeProps) => {
               </tr>
             </thead>
             <tbody>
-              {bonCommandeList.map((bonCommande, i) => (
+              {bonCommandeFiltre.map((bonCommande, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${bonCommande.id}`} color="link" size="sm">
@@ -100,11 +112,11 @@ export const BonCommande = (props: IBonCommandeProps) => {
                     </Button>
                   </td>
                   <td>
-                    <TextFormat type="date" value={bonCommande.datePrevLiv} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={bonCommande.datePrevLiv} format="YYYY-MM-DD"/>
                   </td>
                   <td>{bonCommande.remarques}</td>
                   <td>
-                    <TextFormat type="date" value={bonCommande.dateCreation} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={bonCommande.dateCreation} format="YYYY-MM-DD" />
                   </td>
                   <td>{bonCommande.valide ? 'true' : 'false'}</td>
                   <td>{bonCommande.userModif}</td>
@@ -114,7 +126,7 @@ export const BonCommande = (props: IBonCommandeProps) => {
                   <td>{bonCommande.depot ? <Link to={`depot/${bonCommande.depot.id}`}>{bonCommande.depot.id}</Link> : ''}</td>
                   <td>
                     {bonCommande.fournisseur ? (
-                      <Link to={`fournisseur/${bonCommande.fournisseur.id}`}>{bonCommande.fournisseur.id}</Link>
+                      <Link to={`fournisseur/${bonCommande.fournisseur.id}`}>{bonCommande.fournisseur.nom} {bonCommande.fournisseur.prenom}</Link>
                     ) : (
                       ''
                     )}

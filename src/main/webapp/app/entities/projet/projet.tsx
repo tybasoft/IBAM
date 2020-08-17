@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
+import { Button, Col, Row, Table , Label} from 'reactstrap';
 import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AvFeedback, AvForm, AvGroup, AvInput, AvField  } from 'availity-reactstrap-validation';
+
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './projet.reducer';
+import { getEntities , searchEntity} from './projet.reducer';
 import { IProjet } from 'app/shared/model/projet.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
@@ -15,6 +17,7 @@ export interface IProjetProps extends StateProps, DispatchProps, RouteComponentP
 
 export const Projet = (props: IProjetProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +49,24 @@ export const Projet = (props: IProjetProps) => {
     });
 
   const { projetList, match, loading, totalItems } = props;
+  const projetFiltre = projetList.filter(projet =>{
+    return projet.reference.toLowerCase().includes(search.toLowerCase()) ||
+      projet.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      projet.description.toLowerCase().includes(search.toLowerCase()) ||
+      projet.dateDebut.includes(search);
+  })
+
+  // const seachAffectation = (event, errors, values) => {
+  //   if (errors.length === 0) {
+  //     const entity = {
+  //       ...projetList,
+  //       ...values,
+  //     };
+  //     props.searchEntity(entity);
+  //
+  //   }
+  // };
+
   return (
     <div>
       <h2 id="projet-heading">
@@ -56,6 +77,13 @@ export const Projet = (props: IProjetProps) => {
           <Translate contentKey="ibamApp.projet.home.createLabel">Create new Projet</Translate>
         </Link>
       </h2>
+
+
+        <form className="md-form search">
+          <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+        </form>
+        <br/>
+
       <div className="table-responsive">
         {projetList && projetList.length > 0 ? (
           <Table responsive>
@@ -113,7 +141,7 @@ export const Projet = (props: IProjetProps) => {
               </tr>
             </thead>
             <tbody>
-              {projetList.map((projet, i) => (
+              {projetFiltre.map((projet, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${projet.id}`} color="link" size="sm">
@@ -124,7 +152,7 @@ export const Projet = (props: IProjetProps) => {
                   <td>{projet.libelle}</td>
                   <td>{projet.description}</td>
                   <td>
-                    <TextFormat type="date" value={projet.dateDebut} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={projet.dateDebut} format="YYYY-MM-DD" />
                   </td>
                   {/* <td>
                     <TextFormat type="date" value={projet.dateFin} format={APP_LOCAL_DATE_FORMAT} />
@@ -210,7 +238,8 @@ const mapStateToProps = ({ projet }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
+  searchEntity
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -15,6 +15,7 @@ export interface IVisiteTechniqueProps extends StateProps, DispatchProps, RouteC
 
 export const VisiteTechnique = (props: IVisiteTechniqueProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,12 @@ export const VisiteTechnique = (props: IVisiteTechniqueProps) => {
     });
 
   const { visiteTechniqueList, match, loading, totalItems } = props;
+  const visiteFiltre = visiteTechniqueList.filter(visite =>{
+    return visite.reference.toLowerCase().includes(search.toLowerCase()) ||
+      visite.dateVisite.includes(search) ||
+      visite.remarque.toLowerCase().includes(search.toLowerCase()) ||
+      visite.materiel.libelle.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="visite-technique-heading">
@@ -56,6 +63,10 @@ export const VisiteTechnique = (props: IVisiteTechniqueProps) => {
           <Translate contentKey="ibamApp.visiteTechnique.home.createLabel">Create new Visite Technique</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {visiteTechniqueList && visiteTechniqueList.length > 0 ? (
           <Table responsive>
@@ -73,12 +84,6 @@ export const VisiteTechnique = (props: IVisiteTechniqueProps) => {
                 <th className="hand" onClick={sort('remarque')}>
                   <Translate contentKey="ibamApp.visiteTechnique.remarque">Remarque</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.visiteTechnique.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.visiteTechnique.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.visiteTechnique.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -86,7 +91,7 @@ export const VisiteTechnique = (props: IVisiteTechniqueProps) => {
               </tr>
             </thead>
             <tbody>
-              {visiteTechniqueList.map((visiteTechnique, i) => (
+              {visiteFiltre.map((visiteTechnique, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${visiteTechnique.id}`} color="link" size="sm">
@@ -95,16 +100,12 @@ export const VisiteTechnique = (props: IVisiteTechniqueProps) => {
                   </td>
                   <td>{visiteTechnique.reference}</td>
                   <td>
-                    <TextFormat type="date" value={visiteTechnique.dateVisite} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={visiteTechnique.dateVisite} format="YYYY-MM-DD" />
                   </td>
                   <td>{visiteTechnique.remarque}</td>
-                  <td>{visiteTechnique.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={visiteTechnique.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td>
                     {visiteTechnique.materiel ? (
-                      <Link to={`materiel/${visiteTechnique.materiel.id}`}>{visiteTechnique.materiel.id}</Link>
+                      <Link to={`materiel/${visiteTechnique.materiel.id}`}>{visiteTechnique.materiel.libelle}</Link>
                     ) : (
                       ''
                     )}

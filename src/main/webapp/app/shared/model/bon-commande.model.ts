@@ -5,12 +5,12 @@ import { IFournisseur } from 'app/shared/model/fournisseur.model';
 
 export interface IBonCommande {
   id?: number;
-  datePrevLiv?: Moment;
+  datePrevLiv?: string;
   remarques?: string;
-  dateCreation?: Moment;
+  dateCreation?: string;
   valide?: boolean;
   userModif?: string;
-  dateModif?: Moment;
+  dateModif?: string;
   ligneBonComs?: ILigneBonCommande[];
   depot?: IDepot;
   fournisseur?: IFournisseur;

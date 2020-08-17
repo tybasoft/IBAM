@@ -13,11 +13,17 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 export interface ITvaProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Tva = (props: ITvaProps) => {
+
+  const [search , setSearch] = useState('');
+
   useEffect(() => {
     props.getEntities();
   }, []);
 
   const { tvaList, match, loading } = props;
+  const tvaFiltre = tvaList.filter(tva =>{
+    return tva.taux.toLowerCase().includes(search.toLowerCase());
+  })
   return (
     <div>
       <h2 id="tva-heading">
@@ -28,6 +34,10 @@ export const Tva = (props: ITvaProps) => {
           <Translate contentKey="ibamApp.tva.home.createLabel">Create new Tva</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {tvaList && tvaList.length > 0 ? (
           <Table responsive>
@@ -39,17 +49,11 @@ export const Tva = (props: ITvaProps) => {
                 <th>
                   <Translate contentKey="ibamApp.tva.taux">Taux</Translate>
                 </th>
-                <th>
-                  <Translate contentKey="ibamApp.tva.userModif">User Modif</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.tva.dateModif">Date Modif</Translate>
-                </th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {tvaList.map((tva, i) => (
+              {tvaFiltre.map((tva, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${tva.id}`} color="link" size="sm">
@@ -57,10 +61,6 @@ export const Tva = (props: ITvaProps) => {
                     </Button>
                   </td>
                   <td>{tva.taux}</td>
-                  <td>{tva.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={tva.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${tva.id}`} color="info" size="sm">

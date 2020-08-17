@@ -13,11 +13,18 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 export interface IHoraireProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Horaire = (props: IHoraireProps) => {
+  const [search , setSearch] = useState('');
+
   useEffect(() => {
     props.getEntities();
   }, []);
 
   const { horaireList, match, loading } = props;
+  const horaireFiltre = horaireList.filter(horaire =>{
+    return horaire.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      horaire.nbrHeurParJr.toLowerCase().includes(search.toLowerCase()) ||
+      horaire.nbrJourParSem.toLowerCase().includes(search.toLowerCase());
+  })
   return (
     <div>
       <h2 id="horaire-heading">
@@ -28,6 +35,10 @@ export const Horaire = (props: IHoraireProps) => {
           <Translate contentKey="ibamApp.horaire.home.createLabel">Create new Horaire</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {horaireList && horaireList.length > 0 ? (
           <Table responsive>
@@ -64,7 +75,7 @@ export const Horaire = (props: IHoraireProps) => {
               </tr>
             </thead>
             <tbody>
-              {horaireList.map((horaire, i) => (
+              {horaireFiltre.map((horaire, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${horaire.id}`} color="link" size="sm">

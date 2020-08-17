@@ -165,7 +165,7 @@ export const LocationUpdate = (props: ILocationUpdateProps) => {
                   {materiels
                     ? materiels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}

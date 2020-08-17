@@ -4,8 +4,8 @@ import { IMateriel } from 'app/shared/model/materiel.model';
 export interface ILocation {
   id?: number;
   reference?: string;
-  dateDebut?: Moment;
-  dateFin?: Moment;
+  dateDebut?: string;
+  dateFin?: string;
   tarif?: string;
   dureLocation?: string;
   montantLocation?: string;

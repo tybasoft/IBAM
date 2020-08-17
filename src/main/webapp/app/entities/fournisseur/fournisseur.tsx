@@ -15,6 +15,7 @@ export interface IFournisseurProps extends StateProps, DispatchProps, RouteCompo
 
 export const Fournisseur = (props: IFournisseurProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,17 @@ export const Fournisseur = (props: IFournisseurProps) => {
     });
 
   const { fournisseurList, match, loading, totalItems } = props;
+  const fournisseurFiltre = fournisseurList.filter(fournisseur =>{
+    return fournisseur.nom.toLowerCase().includes(search.toLowerCase()) ||
+      fournisseur.prenom.toLowerCase().includes(search.toLowerCase()) ||
+      fournisseur.type.toLowerCase().includes(search.toLowerCase()) ||
+      fournisseur.nomCommercial.toLowerCase().includes(search.toLowerCase()) ||
+      fournisseur.fax.toLowerCase().includes(search.toLowerCase()) ||
+      fournisseur.email.toLowerCase().includes(search.toLowerCase()) ||
+      fournisseur.tel.toLowerCase().includes(search.toLowerCase()) ||
+      fournisseur.adresse.toLowerCase().includes(search.toLowerCase()) ||
+      fournisseur.adresse.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="fournisseur-heading">
@@ -56,6 +68,10 @@ export const Fournisseur = (props: IFournisseurProps) => {
           <Translate contentKey="ibamApp.fournisseur.home.createLabel">Create new Fournisseur</Translate>
         </Link>
       </h2>
+        <form className="md-form search">
+          <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+        </form>
+        <br/>
       <div className="table-responsive">
         {fournisseurList && fournisseurList.length > 0 ? (
           <Table responsive>
@@ -101,7 +117,7 @@ export const Fournisseur = (props: IFournisseurProps) => {
               </tr>
             </thead>
             <tbody>
-              {fournisseurList.map((fournisseur, i) => (
+              {fournisseurFiltre.map((fournisseur, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${fournisseur.id}`} color="link" size="sm">

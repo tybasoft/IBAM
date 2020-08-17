@@ -15,6 +15,7 @@ export interface IMateriauProps extends StateProps, DispatchProps, RouteComponen
 
 export const Materiau = (props: IMateriauProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,16 @@ export const Materiau = (props: IMateriauProps) => {
     });
 
   const { materiauList, match, loading, totalItems } = props;
+  const materiauFiltre  =materiauList.filter( materiau =>{
+    return materiau.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      materiau.reference.toLowerCase().includes(search.toLowerCase()) ||
+      materiau.poids.toLowerCase().includes(search.toLowerCase()) ||
+      materiau.volume.toLowerCase().includes(search.toLowerCase()) ||
+      materiau.marque.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      materiau.unite.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      materiau.famille.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      materiau.tva.taux.toLowerCase().includes(search.toLowerCase());
+  })
   return (
     <div>
       <h2 id="materiau-heading">
@@ -56,6 +67,10 @@ export const Materiau = (props: IMateriauProps) => {
           <Translate contentKey="ibamApp.materiau.home.createLabel">Create new Materiau</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {materiauList && materiauList.length > 0 ? (
           <Table responsive>
@@ -76,12 +91,6 @@ export const Materiau = (props: IMateriauProps) => {
                 <th className="hand" onClick={sort('volume')}>
                   <Translate contentKey="ibamApp.materiau.volume">Volume</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.materiau.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.materiau.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.materiau.marque">Marque</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -101,7 +110,7 @@ export const Materiau = (props: IMateriauProps) => {
               </tr>
             </thead>
             <tbody>
-              {materiauList.map((materiau, i) => (
+              {materiauFiltre.map((materiau, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${materiau.id}`} color="link" size="sm">
@@ -112,14 +121,10 @@ export const Materiau = (props: IMateriauProps) => {
                   <td>{materiau.reference}</td>
                   <td>{materiau.poids}</td>
                   <td>{materiau.volume}</td>
-                  <td>{materiau.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={materiau.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
-                  <td>{materiau.marque ? <Link to={`marque/${materiau.marque.id}`}>{materiau.marque.id}</Link> : ''}</td>
-                  <td>{materiau.unite ? <Link to={`unite/${materiau.unite.id}`}>{materiau.unite.id}</Link> : ''}</td>
-                  <td>{materiau.famille ? <Link to={`famille/${materiau.famille.id}`}>{materiau.famille.id}</Link> : ''}</td>
-                  <td>{materiau.tva ? <Link to={`tva/${materiau.tva.id}`}>{materiau.tva.id}</Link> : ''}</td>
+                  <td>{materiau.marque ? <Link to={`marque/${materiau.marque.id}`}>{materiau.marque.libelle}</Link> : ''}</td>
+                  <td>{materiau.unite ? <Link to={`unite/${materiau.unite.id}`}>{materiau.unite.libelle}</Link> : ''}</td>
+                  <td>{materiau.famille ? <Link to={`famille/${materiau.famille.id}`}>{materiau.famille.libelle}</Link> : ''}</td>
+                  <td>{materiau.tva ? <Link to={`tva/${materiau.tva.id}`}>{materiau.tva.taux}</Link> : ''}</td>
                   <td>{materiau.image ? <Link to={`image/${materiau.image.id}`}>{materiau.image.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">

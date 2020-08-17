@@ -8,9 +8,9 @@ export interface IBonReception {
   id?: number;
   livreur?: string;
   remarques?: string;
-  dateLivraison?: Moment;
+  dateLivraison?: string;
   userModif?: string;
-  dateModif?: Moment;
+  dateModif?: string;
   ligneBonRecs?: ILigneBonReception[];
   depot?: IDepot;
   fournisseur?: IFournisseur;

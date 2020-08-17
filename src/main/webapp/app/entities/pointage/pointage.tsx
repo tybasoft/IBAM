@@ -15,6 +15,7 @@ export interface IPointageProps extends StateProps, DispatchProps, RouteComponen
 
 export const Pointage = (props: IPointageProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,10 @@ export const Pointage = (props: IPointageProps) => {
     });
 
   const { pointageList, match, loading, totalItems } = props;
+  const pointageFiltre = pointageList.filter(pointage => {
+    return pointage.dateJour.includes(search) ||
+      pointage.nbrHeureSup.toLowerCase().includes(search.toLowerCase());
+  })
   return (
     <div>
       <h2 id="pointage-heading">
@@ -56,6 +61,10 @@ export const Pointage = (props: IPointageProps) => {
           <Translate contentKey="ibamApp.pointage.home.createLabel">Create new Pointage</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {pointageList && pointageList.length > 0 ? (
           <Table responsive>
@@ -92,7 +101,7 @@ export const Pointage = (props: IPointageProps) => {
               </tr>
             </thead>
             <tbody>
-              {pointageList.map((pointage, i) => (
+              {pointageFiltre.map((pointage, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${pointage.id}`} color="link" size="sm">
@@ -100,7 +109,7 @@ export const Pointage = (props: IPointageProps) => {
                     </Button>
                   </td>
                   <td>
-                    <TextFormat type="date" value={pointage.dateJour} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={pointage.dateJour} format="YYYY-MM-DD" />
                   </td>
                   <td>{pointage.presenceMatin ? 'true' : 'false'}</td>
                   <td>{pointage.presenceAPM ? 'true' : 'false'}</td>

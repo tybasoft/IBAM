@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+  import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
@@ -19,6 +19,7 @@ export const Consommation = (props: IConsommationProps) => {
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
+  const [search , setSearch] = useState('');
 
   const sortEntities = () => {
     getAllEntities();
@@ -46,6 +47,20 @@ export const Consommation = (props: IConsommationProps) => {
     });
 
   const { consommationList, match, loading, totalItems } = props;
+  const consommationFiltre = consommationList.filter(consommation => {
+    return consommation.reference.toLowerCase().includes(search.toLowerCase()) ||
+      consommation.dateAchat.includes(search) ||
+      consommation.typeCarburant.toLowerCase().includes(search.toLowerCase()) ||
+      consommation.montant.toLowerCase().includes(search.toLowerCase()) ||
+      consommation.quantite.toLowerCase().includes(search.toLowerCase()) ||
+      consommation.kilometrage.toLowerCase().includes(search.toLowerCase()) ||
+      consommation.commentaire.toLowerCase().includes(search.toLowerCase()) ||
+      consommation.materiel.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      consommation.fournisseur.prenom.toLowerCase().includes(search.toLowerCase()) ||
+      consommation.fournisseur.nom.toLowerCase().includes(search.toLowerCase());
+
+  })
+
   return (
     <div>
       <h2 id="consommation-heading">
@@ -56,6 +71,10 @@ export const Consommation = (props: IConsommationProps) => {
           <Translate contentKey="ibamApp.consommation.home.createLabel">Create new Consommation</Translate>
         </Link>
       </h2>
+        <form className="md-form search">
+          <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+        </form>
+        <br/>
       <div className="table-responsive">
         {consommationList && consommationList.length > 0 ? (
           <Table responsive>
@@ -104,7 +123,7 @@ export const Consommation = (props: IConsommationProps) => {
               </tr>
             </thead>
             <tbody>
-              {consommationList.map((consommation, i) => (
+              {consommationFiltre.map((consommation, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${consommation.id}`} color="link" size="sm">
@@ -113,7 +132,7 @@ export const Consommation = (props: IConsommationProps) => {
                   </td>
                   <td>{consommation.reference}</td>
                   <td>
-                    <TextFormat type="date" value={consommation.dateAchat} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={consommation.dateAchat} format="YYYY-MM-DD" />
                   </td>
                   <td>{consommation.typeCarburant}</td>
                   <td>{consommation.montant}</td>
@@ -125,11 +144,11 @@ export const Consommation = (props: IConsommationProps) => {
                     <TextFormat type="date" value={consommation.dateModif} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   <td>
-                    {consommation.materiel ? <Link to={`materiel/${consommation.materiel.id}`}>{consommation.materiel.id}</Link> : ''}
+                    {consommation.materiel ? <Link to={`materiel/${consommation.materiel.id}`}>{consommation.materiel.libelle}</Link> : ''}
                   </td>
                   <td>
                     {consommation.fournisseur ? (
-                      <Link to={`fournisseur/${consommation.fournisseur.id}`}>{consommation.fournisseur.id}</Link>
+                      <Link to={`fournisseur/${consommation.fournisseur.id}`}>{consommation.fournisseur.nom} {consommation.fournisseur.prenom}</Link>
                     ) : (
                       ''
                     )}

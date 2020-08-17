@@ -3,8 +3,8 @@ import { IMateriel } from 'app/shared/model/materiel.model';
 
 export interface IAssurance {
   id?: number;
-  dateDebut?: Moment;
-  dateFin?: Moment;
+  dateDebut?: string;
+  dateFin?: string;
   agence?: string;
   userModif?: string;
   dateModif?: Moment;

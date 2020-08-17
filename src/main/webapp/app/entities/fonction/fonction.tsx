@@ -15,6 +15,7 @@ export interface IFonctionProps extends StateProps, DispatchProps, RouteComponen
 
 export const Fonction = (props: IFonctionProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,11 @@ export const Fonction = (props: IFonctionProps) => {
     });
 
   const { fonctionList, match, loading, totalItems } = props;
+  const fonctionFiltre = fonctionList.filter(fonction =>{
+    return fonction.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      fonction.description.toLowerCase().includes(search.toLowerCase()) ||
+      fonction.competences.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="fonction-heading">
@@ -56,6 +62,10 @@ export const Fonction = (props: IFonctionProps) => {
           <Translate contentKey="ibamApp.fonction.home.createLabel">Create new Fonction</Translate>
         </Link>
       </h2>
+        <form className="md-form search">
+          <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+        </form>
+        <br/>
       <div className="table-responsive">
         {fonctionList && fonctionList.length > 0 ? (
           <Table responsive>
@@ -83,7 +93,7 @@ export const Fonction = (props: IFonctionProps) => {
               </tr>
             </thead>
             <tbody>
-              {fonctionList.map((fonction, i) => (
+              {fonctionFiltre.map((fonction, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${fonction.id}`} color="link" size="sm">

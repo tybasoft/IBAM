@@ -15,6 +15,7 @@ export interface ILigneBonReceptionProps extends StateProps, DispatchProps, Rout
 
 export const LigneBonReception = (props: ILigneBonReceptionProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,11 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
     });
 
   const { ligneBonReceptionList, match, loading, totalItems } = props;
+  const ligneRecFiltre = ligneBonReceptionList.filter(ligneRec => {
+    return ligneRec.quantite.toLowerCase().includes(search.toLowerCase()) ||
+      ligneRec.prixHt.toLowerCase().includes(search.toLowerCase()) ||
+      ligneRec.materiau.libelle.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="ligne-bon-reception-heading">
@@ -56,6 +62,10 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
           <Translate contentKey="ibamApp.ligneBonReception.home.createLabel">Create new Ligne Bon Reception</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {ligneBonReceptionList && ligneBonReceptionList.length > 0 ? (
           <Table responsive>
@@ -70,12 +80,6 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
                 <th className="hand" onClick={sort('prixHt')}>
                   <Translate contentKey="ibamApp.ligneBonReception.prixHt">Prix Ht</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.ligneBonReception.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.ligneBonReception.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.ligneBonReception.bonReception">Bon Reception</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -86,7 +90,7 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
               </tr>
             </thead>
             <tbody>
-              {ligneBonReceptionList.map((ligneBonReception, i) => (
+              {ligneRecFiltre.map((ligneBonReception, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${ligneBonReception.id}`} color="link" size="sm">
@@ -95,10 +99,6 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
                   </td>
                   <td>{ligneBonReception.quantite}</td>
                   <td>{ligneBonReception.prixHt}</td>
-                  <td>{ligneBonReception.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={ligneBonReception.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td>
                     {ligneBonReception.bonReception ? (
                       <Link to={`bon-reception/${ligneBonReception.bonReception.id}`}>{ligneBonReception.bonReception.id}</Link>
@@ -108,7 +108,7 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
                   </td>
                   <td>
                     {ligneBonReception.materiau ? (
-                      <Link to={`materiau/${ligneBonReception.materiau.id}`}>{ligneBonReception.materiau.id}</Link>
+                      <Link to={`materiau/${ligneBonReception.materiau.id}`}>{ligneBonReception.materiau.libelle}</Link>
                     ) : (
                       ''
                     )}

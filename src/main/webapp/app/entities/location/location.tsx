@@ -15,6 +15,7 @@ export interface ILocationProps extends StateProps, DispatchProps, RouteComponen
 
 export const Location = (props: ILocationProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,16 @@ export const Location = (props: ILocationProps) => {
     });
 
   const { locationList, match, loading, totalItems } = props;
+  const locationFilte = locationList.filter(location =>{
+    return location.reference.toLowerCase().includes(search.toLowerCase()) ||
+      location.dateDebut.includes(search) ||
+      location.dateFin.includes(search) ||
+      location.tarif.toLowerCase().includes(search.toLowerCase()) ||
+      location.dureLocation.toLowerCase().includes(search.toLowerCase()) ||
+      location.montantLocation.toLowerCase().includes(search.toLowerCase()) ||
+      location.remarque.toLowerCase().includes(search.toLowerCase()) ||
+      location.materiel.libelle.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="location-heading">
@@ -56,6 +67,10 @@ export const Location = (props: ILocationProps) => {
           <Translate contentKey="ibamApp.location.home.createLabel">Create new Location</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {locationList && locationList.length > 0 ? (
           <Table responsive>
@@ -85,12 +100,6 @@ export const Location = (props: ILocationProps) => {
                 <th className="hand" onClick={sort('remarque')}>
                   <Translate contentKey="ibamApp.location.remarque">Remarque</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.location.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.location.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.location.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -98,7 +107,7 @@ export const Location = (props: ILocationProps) => {
               </tr>
             </thead>
             <tbody>
-              {locationList.map((location, i) => (
+              {locationFilte.map((location, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${location.id}`} color="link" size="sm">
@@ -107,20 +116,16 @@ export const Location = (props: ILocationProps) => {
                   </td>
                   <td>{location.reference}</td>
                   <td>
-                    <TextFormat type="date" value={location.dateDebut} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={location.dateDebut} format="YYYY-MM-DD" />
                   </td>
                   <td>
-                    <TextFormat type="date" value={location.dateFin} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={location.dateFin} format="YYYY-MM-DD" />
                   </td>
                   <td>{location.tarif}</td>
                   <td>{location.dureLocation}</td>
                   <td>{location.montantLocation}</td>
                   <td>{location.remarque}</td>
-                  <td>{location.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={location.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
-                  <td>{location.materiel ? <Link to={`materiel/${location.materiel.id}`}>{location.materiel.id}</Link> : ''}</td>
+                  <td>{location.materiel ? <Link to={`materiel/${location.materiel.id}`}>{location.materiel.libelle}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${location.id}`} color="info" size="sm">

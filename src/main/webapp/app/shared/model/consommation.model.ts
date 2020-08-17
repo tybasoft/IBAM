@@ -6,7 +6,7 @@ import { IImage } from 'app/shared/model/image.model';
 export interface IConsommation {
   id?: number;
   reference?: string;
-  dateAchat?: Moment;
+  dateAchat?: string;
   typeCarburant?: string;
   montant?: string;
   quantite?: string;

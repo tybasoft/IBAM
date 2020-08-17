@@ -15,6 +15,7 @@ export interface IEmployeProps extends StateProps, DispatchProps, RouteComponent
 
 export const Employe = (props: IEmployeProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,12 @@ export const Employe = (props: IEmployeProps) => {
     });
 
   const { employeList, match, loading, totalItems } = props;
+  const employeFiltre = employeList.filter(employe =>{
+    return employe.nom.toLowerCase().includes(search.toLowerCase()) ||
+      employe.prenom.toLowerCase().includes(search.toLowerCase()) ||
+      employe.matricule.toLowerCase().includes(search.toLowerCase()) ||
+      employe.cin.toLowerCase().includes(search.toLowerCase());
+  })
   return (
     <div>
       <h2 id="employe-heading">
@@ -56,6 +63,10 @@ export const Employe = (props: IEmployeProps) => {
           <Translate contentKey="ibamApp.employe.home.createLabel">Create new Employe</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {employeList && employeList.length > 0 ? (
           <Table responsive>
@@ -145,7 +156,7 @@ export const Employe = (props: IEmployeProps) => {
               </tr>
             </thead>
             <tbody>
-              {employeList.map((employe, i) => (
+              {employeFiltre.map((employe, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${employe.id}`} color="link" size="sm">

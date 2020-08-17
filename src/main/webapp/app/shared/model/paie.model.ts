@@ -3,12 +3,12 @@ import { IEmploye } from 'app/shared/model/employe.model';
 
 export interface IPaie {
   id?: number;
-  datePaiement?: Moment;
+  datePaiement?: string;
   nbrJourTravail?: string;
   montantPay?: string;
   nbrHeurSup?: string;
-  dateDebut?: Moment;
-  dateFin?: Moment;
+  dateDebut?: string;
+  dateFin?: string;
   remarques?: string;
   userModif?: string;
   dateModif?: Moment;

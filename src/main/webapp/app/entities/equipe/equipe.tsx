@@ -15,6 +15,7 @@ export interface IEquipeProps extends StateProps, DispatchProps, RouteComponentP
 
 export const Equipe = (props: IEquipeProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,9 @@ export const Equipe = (props: IEquipeProps) => {
     });
 
   const { equipeList, match, loading, totalItems } = props;
+  const equipeFiltre = equipeList.filter(equipe => {
+    return equipe.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      equipe.projet.libelle.toLowerCase().includes(search.toLowerCase());})
   return (
     <div>
       <h2 id="equipe-heading">
@@ -56,6 +60,10 @@ export const Equipe = (props: IEquipeProps) => {
           <Translate contentKey="ibamApp.equipe.home.createLabel">Create new Equipe</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {equipeList && equipeList.length > 0 ? (
           <Table responsive>
@@ -78,14 +86,11 @@ export const Equipe = (props: IEquipeProps) => {
                 <th>
                   <Translate contentKey="ibamApp.equipe.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  <Translate contentKey="ibamApp.equipe.equipe">Equipe</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {equipeList.map((equipe, i) => (
+              {equipeFiltre.map((equipe, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${equipe.id}`} color="link" size="sm">

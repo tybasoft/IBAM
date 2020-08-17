@@ -4,7 +4,7 @@ import { IMateriel } from 'app/shared/model/materiel.model';
 export interface IVisiteTechnique {
   id?: number;
   reference?: string;
-  dateVisite?: Moment;
+  dateVisite?: string;
   remarque?: string;
   userModif?: string;
   dateModif?: Moment;

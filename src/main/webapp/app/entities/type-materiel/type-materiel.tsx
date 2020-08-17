@@ -13,11 +13,16 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 export interface ITypeMaterielProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const TypeMateriel = (props: ITypeMaterielProps) => {
+  const [search , setSearch] = useState('');
+
   useEffect(() => {
     props.getEntities();
   }, []);
 
   const { typeMaterielList, match, loading } = props;
+  const typeMaterielFiltre = typeMaterielList.filter(typeMat =>{
+    return typeMat.type.toLowerCase().includes(search.toLowerCase());
+  })
   return (
     <div>
       <h2 id="type-materiel-heading">
@@ -28,6 +33,10 @@ export const TypeMateriel = (props: ITypeMaterielProps) => {
           <Translate contentKey="ibamApp.typeMateriel.home.createLabel">Create new Type Materiel</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {typeMaterielList && typeMaterielList.length > 0 ? (
           <Table responsive>
@@ -39,17 +48,10 @@ export const TypeMateriel = (props: ITypeMaterielProps) => {
                 <th>
                   <Translate contentKey="ibamApp.typeMateriel.type">Type</Translate>
                 </th>
-                <th>
-                  <Translate contentKey="ibamApp.typeMateriel.userModif">User Modif</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.typeMateriel.dateModif">Date Modif</Translate>
-                </th>
-                <th />
               </tr>
             </thead>
             <tbody>
-              {typeMaterielList.map((typeMateriel, i) => (
+              {typeMaterielFiltre.map((typeMateriel, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${typeMateriel.id}`} color="link" size="sm">
@@ -57,10 +59,6 @@ export const TypeMateriel = (props: ITypeMaterielProps) => {
                     </Button>
                   </td>
                   <td>{typeMateriel.type}</td>
-                  <td>{typeMateriel.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={typeMateriel.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${typeMateriel.id}`} color="info" size="sm">

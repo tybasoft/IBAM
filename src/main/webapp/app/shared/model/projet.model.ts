@@ -11,8 +11,8 @@ export interface IProjet {
   reference?: string;
   libelle?: string;
   description?: string;
-  dateDebut?: Moment;
-  dateFin?: Moment;
+  dateDebut?: string;
+  dateFin?: string;
   nbrEmploye?: string;
   budget?: string;
   adresse?: string;

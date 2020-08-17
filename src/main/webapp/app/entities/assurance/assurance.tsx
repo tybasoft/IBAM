@@ -16,6 +16,8 @@ export interface IAssuranceProps extends StateProps, DispatchProps, RouteCompone
 export const Assurance = (props: IAssuranceProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
 
+  const [search , setSearch] = useState('');
+
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
@@ -46,6 +48,13 @@ export const Assurance = (props: IAssuranceProps) => {
     });
 
   const { assuranceList, match, loading, totalItems } = props;
+
+  const assuranceFiltre = assuranceList.filter(assurance => {
+    return assurance.agence.toLowerCase().includes(search.toLowerCase()) ||
+      assurance.dateDebut.includes(search) ||
+      assurance.dateFin.includes(search) ||
+      assurance.materiel.libelle.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="assurance-heading">
@@ -56,6 +65,10 @@ export const Assurance = (props: IAssuranceProps) => {
           <Translate contentKey="ibamApp.assurance.home.createLabel">Create new Assurance</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {assuranceList && assuranceList.length > 0 ? (
           <Table responsive>
@@ -73,12 +86,6 @@ export const Assurance = (props: IAssuranceProps) => {
                 <th className="hand" onClick={sort('agence')}>
                   <Translate contentKey="ibamApp.assurance.agence">Agence</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.assurance.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.assurance.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.assurance.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -86,7 +93,7 @@ export const Assurance = (props: IAssuranceProps) => {
               </tr>
             </thead>
             <tbody>
-              {assuranceList.map((assurance, i) => (
+              {assuranceFiltre.map((assurance, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${assurance.id}`} color="link" size="sm">
@@ -94,17 +101,13 @@ export const Assurance = (props: IAssuranceProps) => {
                     </Button>
                   </td>
                   <td>
-                    <TextFormat type="date" value={assurance.dateDebut} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={assurance.dateDebut} format="YYYY-MM-DD" />
                   </td>
                   <td>
-                    <TextFormat type="date" value={assurance.dateFin} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={assurance.dateFin} format="YYYY-MM-DD" />
                   </td>
                   <td>{assurance.agence}</td>
-                  <td>{assurance.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={assurance.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
-                  <td>{assurance.materiel ? <Link to={`materiel/${assurance.materiel.id}`}>{assurance.materiel.id}</Link> : ''}</td>
+                  <td>{assurance.materiel ? <Link to={`materiel/${assurance.materiel.id}`}>{assurance.materiel.libelle}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${assurance.id}`} color="info" size="sm">

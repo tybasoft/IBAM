@@ -15,6 +15,7 @@ export interface IImageProps extends StateProps, DispatchProps, RouteComponentPr
 
 export const Image = (props: IImageProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,10 @@ export const Image = (props: IImageProps) => {
     });
 
   const { imageList, match, loading, totalItems } = props;
+  const imageFiltre = imageList.filter(image =>{
+    return image.titre.toLowerCase().includes(search.toLowerCase()) ||
+      image.path.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="image-heading">
@@ -56,6 +61,10 @@ export const Image = (props: IImageProps) => {
           <Translate contentKey="ibamApp.image.home.createLabel">Create new Image</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {imageList && imageList.length > 0 ? (
           <Table responsive>
@@ -80,7 +89,7 @@ export const Image = (props: IImageProps) => {
               </tr>
             </thead>
             <tbody>
-              {imageList.map((image, i) => (
+              {imageFiltre.map((image, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${image.id}`} color="link" size="sm">

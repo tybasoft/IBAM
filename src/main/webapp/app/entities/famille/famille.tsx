@@ -15,6 +15,7 @@ export interface IFamilleProps extends StateProps, DispatchProps, RouteComponent
 
 export const Famille = (props: IFamilleProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,10 @@ export const Famille = (props: IFamilleProps) => {
     });
 
   const { familleList, match, loading, totalItems } = props;
+  const familleFiltre = familleList.filter(famille =>{
+    return famille.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      famille.description.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="famille-heading">
@@ -56,6 +61,10 @@ export const Famille = (props: IFamilleProps) => {
           <Translate contentKey="ibamApp.famille.home.createLabel">Create new Famille</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {familleList && familleList.length > 0 ? (
           <Table responsive>
@@ -70,17 +79,12 @@ export const Famille = (props: IFamilleProps) => {
                 <th className="hand" onClick={sort('description')}>
                   <Translate contentKey="ibamApp.famille.description">Description</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.famille.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.famille.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+
                 <th />
               </tr>
             </thead>
             <tbody>
-              {familleList.map((famille, i) => (
+              {familleFiltre.map((famille, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${famille.id}`} color="link" size="sm">
@@ -89,10 +93,6 @@ export const Famille = (props: IFamilleProps) => {
                   </td>
                   <td>{famille.libelle}</td>
                   <td>{famille.description}</td>
-                  <td>{famille.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={famille.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${famille.id}`} color="info" size="sm">

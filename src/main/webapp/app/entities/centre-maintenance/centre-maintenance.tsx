@@ -10,11 +10,13 @@ import { getEntities } from './centre-maintenance.reducer';
 import { ICentreMaintenance } from 'app/shared/model/centre-maintenance.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import maintenance from "app/entities/maintenance/maintenance";
 
 export interface ICentreMaintenanceProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const CentreMaintenance = (props: ICentreMaintenanceProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +48,14 @@ export const CentreMaintenance = (props: ICentreMaintenanceProps) => {
     });
 
   const { centreMaintenanceList, match, loading, totalItems } = props;
+  const centreMaintenanceFiltre = centreMaintenanceList.filter(centre =>{
+    return centre.libelle.toLowerCase().includes(search.toLowerCase()) ||
+      centre.adresse.toLowerCase().includes(search.toLowerCase()) ||
+      centre.email.toLowerCase().includes(search.toLowerCase()) ||
+      centre.responsable.toLowerCase().includes(search.toLowerCase()) ||
+      centre.specialite.toLowerCase().includes(search.toLowerCase()) ||
+      centre.telephone.includes(search) ;
+  })
   return (
     <div>
       <h2 id="centre-maintenance-heading">
@@ -56,6 +66,10 @@ export const CentreMaintenance = (props: ICentreMaintenanceProps) => {
           <Translate contentKey="ibamApp.centreMaintenance.home.createLabel">Create new Centre Maintenance</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {centreMaintenanceList && centreMaintenanceList.length > 0 ? (
           <Table responsive>
@@ -92,7 +106,7 @@ export const CentreMaintenance = (props: ICentreMaintenanceProps) => {
               </tr>
             </thead>
             <tbody>
-              {centreMaintenanceList.map((centreMaintenance, i) => (
+              {centreMaintenanceFiltre.map((centreMaintenance, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${centreMaintenance.id}`} color="link" size="sm">

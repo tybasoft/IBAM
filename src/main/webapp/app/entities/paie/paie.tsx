@@ -15,6 +15,7 @@ export interface IPaieProps extends StateProps, DispatchProps, RouteComponentPro
 
 export const Paie = (props: IPaieProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -46,6 +47,14 @@ export const Paie = (props: IPaieProps) => {
     });
 
   const { paieList, match, loading, totalItems } = props;
+  const paieFiltre = paieList.filter(paie =>{
+    return paie.dateDebut.includes(search) ||
+      paie.dateFin.includes(search) ||
+      paie.datePaiement.includes(search) ||
+      paie.montantPay.toLowerCase().includes(search.toLowerCase()) ||
+      paie.nbrHeurSup.toLowerCase().includes(search.toLowerCase()) ||
+      paie.nbrJourTravail.toLowerCase().includes(search.toLowerCase());
+  })
   return (
     <div>
       <h2 id="paie-heading">
@@ -56,6 +65,10 @@ export const Paie = (props: IPaieProps) => {
           <Translate contentKey="ibamApp.paie.home.createLabel">Create new Paie</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {paieList && paieList.length > 0 ? (
           <Table responsive>
@@ -98,7 +111,7 @@ export const Paie = (props: IPaieProps) => {
               </tr>
             </thead>
             <tbody>
-              {paieList.map((paie, i) => (
+              {paieFiltre.map((paie, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${paie.id}`} color="link" size="sm">
@@ -106,7 +119,7 @@ export const Paie = (props: IPaieProps) => {
                     </Button>
                   </td>
                   <td>
-                    <TextFormat type="date" value={paie.datePaiement} format={APP_LOCAL_DATE_FORMAT} />
+                    <TextFormat type="date" value={paie.datePaiement} format="YYYY-MM-DD" />
                   </td>
                   <td>{paie.nbrJourTravail}</td>
                   <td>{paie.montantPay}</td>
