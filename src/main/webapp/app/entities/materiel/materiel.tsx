@@ -81,13 +81,7 @@ export const Materiel = (props: IMaterielProps) => {
      return materiel.libelle.toLowerCase().includes(search.toLowerCase()) ||
        materiel.matricule.toLowerCase().includes(search.toLowerCase()) ||
        materiel.modele.toLowerCase().includes(search.toLowerCase()) ||
-         materiel.numCarteGrise.toLowerCase().includes(search.toLowerCase()) ||
-       materiel.etat.toLowerCase().includes(search.toLowerCase()) ||
-       materiel.compteurAchat.toLowerCase().includes(search.toLowerCase()) ||
-       materiel.description.toLowerCase().includes(search.toLowerCase()) ||
-       materiel.fournisseur.prenom.toLowerCase().includes(search.toLowerCase()) ||
-       materiel.fournisseur.nom.toLowerCase().includes(search.toLowerCase()) ||
-       materiel.famille.libelle.toLowerCase().includes(search.toLowerCase()) ;
+         materiel.numCarteGrise.toLowerCase().includes(search.toLowerCase()) ;
 
   })
 
@@ -149,27 +143,8 @@ export const Materiel = (props: IMaterielProps) => {
                   <td>{materiel.matricule}</td>
                   <td>{materiel.modele}</td>
                   <td>{materiel.numCarteGrise}</td>
-                  <td>
-                    {materiel.dateIdentification ? (
-                      <TextFormat type="date" value={materiel.dateIdentification} format="YYYY-MM-DD" />
-                    ) : null}
-                  </td>
-                  <td>{materiel.compteurAchat}</td>
-                  <td>{materiel.etat}</td>
-                  <td>{materiel.location ? 'true' : 'false'}</td>
-                  <td>{materiel.description}</td>
                   <td>{materiel.multiProjet ? 'true' : 'false'}</td>
-                  <td>{materiel.famille ? <Link to={`famille/${materiel.famille.id}`}>{materiel.famille.libelle}</Link> : ''}</td>
-                  <td>
-                    {materiel.typeMateriel ? <Link to={`type-materiel/${materiel.typeMateriel.id}`}>{materiel.typeMateriel.id}</Link> : ''}
-                  </td>
-                  <td>
-                    {materiel.fournisseur ? <Link to={`fournisseur/${materiel.fournisseur.id}`}>{materiel.fournisseur.nom} {materiel.fournisseur.prenom}</Link> : ''}
-                  </td>
-                  <td>{materiel.marque ? <Link to={`marque/${materiel.marque.id}`}>{materiel.marque.id}</Link> : ''}</td>
-                  <td>{materiel.document ? <Link to={`document/${materiel.document.id}`}>{materiel.document.id}</Link> : ''}</td>
-                  <td>{materiel.employe ? <Link to={`employe/${materiel.employe.id}`}>{materiel.employe.id}</Link> : ''}</td>
-                  <td>{materiel.image ? <Link to={`image/${materiel.image.id}`}>{materiel.image.id}</Link> : ''}</td>
+
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${materiel.id}`} color="info" size="sm">
