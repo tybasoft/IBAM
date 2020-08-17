@@ -136,6 +136,10 @@ import visiteTechnique, {
 import affectationsMateriels, {
   AffectationsMaterielsState
 } from 'app/entities/affectations-materiels/affectations-materiels.reducer';
+// prettier-ignore
+import situationFinanciere, {
+  SituationFinanciereState
+} from 'app/entities/situation-financiere/situation-financiere.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -180,6 +184,7 @@ export interface IRootState {
   readonly centreMaintenance: CentreMaintenanceState;
   readonly visiteTechnique: VisiteTechniqueState;
   readonly affectationsMateriels: AffectationsMaterielsState;
+  readonly situationFinanciere: SituationFinanciereState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -226,6 +231,7 @@ const rootReducer = combineReducers<IRootState>({
   centreMaintenance,
   visiteTechnique,
   affectationsMateriels,
+  situationFinanciere,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

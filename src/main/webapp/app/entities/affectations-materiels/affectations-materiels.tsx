@@ -6,12 +6,10 @@ import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBase
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './affectations-materiels.reducer';
-import { IAffectationsMateriels } from 'app/shared/model/affectations-materiels.model';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { getEntities ,searchInEntities } from './affectations-materiels.reducer';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
-export interface IAffectationsMaterielsProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IAffectationsMaterielsProps extends StateProps1 ,DispatchProps1 ,StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
@@ -23,6 +21,10 @@ export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
+  const searchAllEntities= () => {
+     props.searchInEntities();
+  };
+
   const sortEntities = () => {
     getAllEntities();
     const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
@@ -30,6 +32,7 @@ export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
       props.history.push(`${props.location.pathname}${endURL}`);
     }
   };
+
 
   useEffect(() => {
     sortEntities();
@@ -58,19 +61,38 @@ export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
     });
   };
 
+
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
       activePage: currentPage,
     });
+  const searchAffectations =  () => {
+    if (search !== null) {
+      searchAllEntities();
+    }
+    else {
+      sortEntities();
+    }
+    // if(search===''){
+    //   getAllEntities();
+    // }
+    // else{
+    //   searchAllEntities();
+    // }
+  }
+
 
   const { affectationsMaterielsList, match, loading, totalItems } = props;
+
+
   const affectationsFiltre = affectationsMaterielsList.filter( affectation => {
-    return affectation.projet.libelle.toLowerCase().includes(search.toLowerCase()) ||
+    return  affectation.projet.libelle.toLowerCase().includes(search.toLowerCase()) ||
       affectation.materiel.libelle.toLowerCase().includes(search.toLowerCase()) ||
       affectation.description.includes(search) ||
       affectation.dateDebut.includes(search) ||
-      affectation.dateFin.includes(search);})
+      affectation.dateFin.includes(search);
+  })
 
   return (
     <div>
@@ -83,7 +105,7 @@ export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
         </Link>
       </h2>
       <form className="md-form search">
-        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onClick={searchAffectations} onChange={e => setSearch(e.target.value)} />
       </form>
       <br/>
       <div className="table-responsive">
@@ -213,15 +235,28 @@ export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
 
 const mapStateToProps = ({ affectationsMateriels }: IRootState) => ({
   affectationsMaterielsList: affectationsMateriels.entities,
+  affectationsMaterielsearch: affectationsMateriels.entities,
   loading: affectationsMateriels.loading,
   totalItems: affectationsMateriels.totalItems,
 });
+const mapStateToProps1 = ({ affectationsMateriels }: IRootState) => ({
+  affectationsMaterielsearch: affectationsMateriels.entities,
+});
+
 
 const mapDispatchToProps = {
   getEntities,
+  searchInEntities,
+};
+const mapDispatchToProps1 = {
+  searchInEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
+type StateProps1 = ReturnType<typeof mapStateToProps1>;
 type DispatchProps = typeof mapDispatchToProps;
+type DispatchProps1 = typeof mapDispatchToProps1;
 
-export default connect(mapStateToProps, mapDispatchToProps)(AffectationsMateriels);
+export  default  connect(mapStateToProps ,mapDispatchToProps)(AffectationsMateriels);
+
+
