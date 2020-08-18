@@ -17,8 +17,14 @@ import { getEntity, updateEntity, createEntity, reset } from './projet.reducer';
 import { IProjet } from 'app/shared/model/projet.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import {GoogleMap, LoadScript, Marker} from "@react-google-maps/api";
 
 export interface IProjetUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+
+const containerStyle = {
+  width: '100%',
+  height: '400px'
+};
 
 export const ProjetUpdate = (props: IProjetUpdateProps) => {
   const [entrepriseId, setEntrepriseId] = useState('0');
@@ -26,7 +32,18 @@ export const ProjetUpdate = (props: IProjetUpdateProps) => {
   const [depotId, setDepotId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
+  const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
+
+
   const { projetEntity, entreprises, horaires, depots, loading, updating } = props;
+
+  const onClick = (e) => {
+    /* eslint-disable no-console */
+    console.log("Map clicked", e);
+    console.log("Lat", e.latLng.lat());
+    console.log("Lng", e.latLng.lng());
+    setCoordinates({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+  };
 
   const handleClose = () => {
     props.history.push('/projet' + props.location.search);
@@ -37,6 +54,8 @@ export const ProjetUpdate = (props: IProjetUpdateProps) => {
       props.reset();
     } else {
       props.getEntity(props.match.params.id);
+      setCoordinates({ lat: projetEntity.latitude, lng: projetEntity.longitude });
+
     }
 
     props.getEntreprises();
@@ -54,7 +73,9 @@ export const ProjetUpdate = (props: IProjetUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...projetEntity,
-        ...values
+        ...values,
+        latitude: coordinates.lat,
+        longitude: coordinates.lng
       };
 
       if (isNew) {
@@ -220,6 +241,23 @@ export const ProjetUpdate = (props: IProjetUpdateProps) => {
                     : null}
                 </AvInput>
               </AvGroup>
+              <div className="mt-2 mb-2">
+                <LoadScript
+                  googleMapsApiKey="AIzaSyC3ptr9KQuVbnjrokZLtgQH01RLrtQeWMA"
+                >
+                  <GoogleMap
+                    mapContainerStyle={containerStyle}
+                    center={{ lat: 31.76849668242614, lng: -8.264991494140633 }}
+                    zoom={10}
+                    onClick={onClick}
+                  >
+                    { coordinates.lng != null && <Marker position={{ lat: coordinates.lat, lng: coordinates.lng }}/>}
+                    {/*{ !isNew && coordinates.lng != null && <Marker position={{ lat: coordinates.lat, lng: coordinates.lng }}/>}*/}
+
+                    <></>
+                  </GoogleMap>
+                </LoadScript>
+              </div>
               <Button tag={Link} id="cancel-save" to="/projet" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

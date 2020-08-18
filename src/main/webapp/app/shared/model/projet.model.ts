@@ -26,6 +26,8 @@ export interface IProjet {
   entreprise?: IEntreprise;
   horaire?: IHoraire;
   depot?: IDepot;
+  latitude?: number;
+  longitude?: number;
 }
 
 export const defaultValue: Readonly<IProjet> = {};

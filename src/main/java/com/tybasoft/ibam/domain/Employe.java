@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -98,10 +100,12 @@ public class Employe implements Serializable {
     @Column(name = "date_modif")
     private LocalDate dateModif;
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "employe")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Materiel> materiels = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "equipe")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Equipe> employes = new HashSet<>();
@@ -110,22 +114,27 @@ public class Employe implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Pointage> pointages = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "employe")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Paie> paies = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employes")
     private Projet projet;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employes")
     private Equipe equipe;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employes")
     private Fonction fonction;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employees")
     private Image image;

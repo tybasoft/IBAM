@@ -11,13 +11,32 @@ import { getEntity, updateEntity, createEntity, reset } from './depot.reducer';
 import { IDepot } from 'app/shared/model/depot.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import {GoogleMap, LoadScript, Marker} from "@react-google-maps/api";
+import set = Reflect.set;
+
+const containerStyle = {
+  width: '100%',
+  height: '400px'
+};
+
 
 export interface IDepotUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const DepotUpdate = (props: IDepotUpdateProps) => {
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
+  const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
+
   const { depotEntity, loading, updating } = props;
+
+  const onClick = (e) => {
+    /* eslint-disable no-console */
+    console.log("Map clicked", e);
+    console.log("Lat", e.latLng.lat());
+    console.log("Lng", e.latLng.lng());
+    setCoordinates({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+  };
+
 
   const handleClose = () => {
     props.history.push('/depot');
@@ -28,6 +47,7 @@ export const DepotUpdate = (props: IDepotUpdateProps) => {
       props.reset();
     } else {
       props.getEntity(props.match.params.id);
+      setCoordinates({ lat: depotEntity.latitude, lng: depotEntity.longitude });
     }
   }, []);
 
@@ -41,8 +61,13 @@ export const DepotUpdate = (props: IDepotUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...depotEntity,
-        ...values
+        ...values,
+        latitude: coordinates.lat,
+        longitude: coordinates.lng
       };
+
+      /* eslint-disable no-console */
+      console.log("entity to save", entity);
 
       if (isNew) {
         props.createEntity(entity);
@@ -131,18 +156,23 @@ export const DepotUpdate = (props: IDepotUpdateProps) => {
                 </Label>
                 <AvField id="depot-dateModif" type="date" className="form-control" name="dateModif" />
               </AvGroup>
-              <AvGroup>
-                <Label id="latitudeLabel" for="depot-latitude">
-                  <Translate contentKey="ibamApp.depot.latitude">Latitude</Translate>
-                </Label>
-                <AvField id="depot-latitude" type="number" className="form-control" name="latitude" />
-              </AvGroup>
-              <AvGroup>
-                <Label id="longitudeLabel" for="depot-longitude">
-                  <Translate contentKey="ibamApp.depot.longitude">Longitude</Translate>
-                </Label>
-                <AvField id="depot-longitude" type="number" className="form-control" name="longitude" />
-              </AvGroup>
+              <div className="mt-2 mb-2">
+              <LoadScript
+                googleMapsApiKey="AIzaSyC3ptr9KQuVbnjrokZLtgQH01RLrtQeWMA"
+              >
+                <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  center={{ lat: 31.76849668242614, lng: -8.264991494140633 }}
+                  zoom={10}
+                  onClick={onClick}
+                >
+                  { coordinates.lng != null && <Marker position={{ lat: coordinates.lat, lng: coordinates.lng }}/>}
+                  {/*{ !isNew && coordinates.lng != null && <Marker position={{ lat: coordinates.lat, lng: coordinates.lng }}/>}*/}
+
+                  <></>
+                </GoogleMap>
+              </LoadScript>
+              </div>
               <Button tag={Link} id="cancel-save" to="/depot" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
