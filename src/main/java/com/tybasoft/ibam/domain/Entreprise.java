@@ -3,6 +3,7 @@ package com.tybasoft.ibam.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tybasoft.ibam.security.SecurityUtils;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -60,10 +61,12 @@ public class Entreprise implements Serializable {
     @Column(name = "date_modif")
     private LocalDate dateModif;
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "entreprise")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Projet> projets = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("entreprises")
     private Image image;

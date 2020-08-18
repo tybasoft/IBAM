@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -47,30 +49,37 @@ public class Materiau implements Serializable {
     @Column(name = "date_modif")
     private LocalDate dateModif;
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "materiau")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LigneBonReception> ligneBonRecs = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "materiau")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LigneBonCommande> ligneBonComs = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("materiaus")
     private Marque marque;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("materiaus")
     private Unite unite;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("materiaus")
     private Famille famille;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("materiaus")
     private Tva tva;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("materiaus")
     private Image image;

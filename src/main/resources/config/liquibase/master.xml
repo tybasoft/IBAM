@@ -67,7 +67,6 @@
     <include file="config/liquibase/changelog/20200512004500_added_entity_constraints_VisiteTechnique.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200620092328_added_entity_constraints_Notification.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200808131051_added_entity_constraints_FichePointage.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20200817151938_changelog.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200523052350_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200523054708_changelog.xml" relativeToChangelogFile="false"/>
