@@ -48,9 +48,7 @@ export const BonCommande = (props: IBonCommandeProps) => {
 
   const { bonCommandeList, match, loading, totalItems } = props;
   const bonCommandeFiltre = bonCommandeList.filter(bon => {
-    return bon.fournisseur.nom.toLowerCase().includes(search.toLowerCase()) ||
-      bon.fournisseur.prenom.toLowerCase().includes(search.toLowerCase()) ||
-      bon.dateCreation.includes(search) ||
+    return bon.dateCreation.includes(search) ||
       bon.datePrevLiv.includes(search) ||
       bon.remarques.toLowerCase().includes(search.toLowerCase());
   })

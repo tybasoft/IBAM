@@ -5,6 +5,7 @@ import { Button, Col, Row, Table } from 'reactstrap';
 import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+
 import { IRootState } from 'app/shared/reducers';
 import { getEntities ,searchInEntities } from './affectations-materiels.reducer';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
@@ -15,6 +16,9 @@ export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
   const [search , setSearch] = useState('');
   const [field , setField] = useState('');
+  // const searchBar: boolean =false;
+  // const activeSearch : boolean = false;
+
 
 
   const getAllEntities = () => {
@@ -68,18 +72,25 @@ export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
       activePage: currentPage,
     });
   const searchAffectations =  () => {
-    if (search !== null) {
-      searchAllEntities();
-    }
-    else {
-      sortEntities();
-    }
+    // if (search !== null) {
+    searchAllEntities();
+    // activeSearch = true;
+
+  // }
+    // else {
+    //   sortEntities();
+    // }
     // if(search===''){
     //   getAllEntities();
     // }
     // else{
     //   searchAllEntities();
     // }
+  }
+  const disabledSearch = ()=>{
+
+    // activeSearch = false;
+    getAllEntities();
   }
 
 
@@ -106,7 +117,9 @@ export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
       </h2>
       <form className="md-form search">
         <input className="form-control" type="text" placeholder="Search" aria-label="Search" onClick={searchAffectations} onChange={e => setSearch(e.target.value)} />
-      </form>
+        <Link className=" form-control btn btn-primary float-right jh-create-entity" onClick={disabledSearch}>Annuler</Link>
+        </form>
+      <br/>
       <br/>
       <div className="table-responsive">
         {affectationsMaterielsList && affectationsMaterielsList.length > 0 ? (
