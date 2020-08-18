@@ -86,12 +86,6 @@ export const BonCommande = (props: IBonCommandeProps) => {
                 <th className="hand" onClick={sort('valide')}>
                   <Translate contentKey="ibamApp.bonCommande.valide">Valide</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.bonCommande.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.bonCommande.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.bonCommande.depot">Depot</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -117,11 +111,7 @@ export const BonCommande = (props: IBonCommandeProps) => {
                     <TextFormat type="date" value={bonCommande.dateCreation} format="YYYY-MM-DD" />
                   </td>
                   <td>{bonCommande.valide ? 'true' : 'false'}</td>
-                  <td>{bonCommande.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={bonCommande.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
-                  <td>{bonCommande.depot ? <Link to={`depot/${bonCommande.depot.id}`}>{bonCommande.depot.id}</Link> : ''}</td>
+                  <td>{bonCommande.depot ? <Link to={`depot/${bonCommande.depot.id}`}>{bonCommande.depot.libelle}</Link> : ''}</td>
                   <td>
                     {bonCommande.fournisseur ? (
                       <Link to={`fournisseur/${bonCommande.fournisseur.id}`}>{bonCommande.fournisseur.nom} {bonCommande.fournisseur.prenom}</Link>

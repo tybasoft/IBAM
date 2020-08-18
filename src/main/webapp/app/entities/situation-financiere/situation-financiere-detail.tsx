@@ -32,7 +32,7 @@ export const SituationFinanciereDetail = (props: ISituationFinanciereDetailProps
 
     const img = 'content/images/logo-jhipster.png'
     doc.addImage(img, 'png', 10, 10, 180, 40)
-
+    doc.table(1,1,"test", ['hello'],1);
     doc.setFontSize(25);
     doc.setFont('helvetica','bold');
     doc.text('Situation Financiere ',200,100);

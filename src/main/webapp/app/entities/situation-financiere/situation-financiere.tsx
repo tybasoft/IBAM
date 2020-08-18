@@ -15,6 +15,8 @@ export interface ISituationFinanciereProps extends StateProps, DispatchProps, Ro
 
 export const SituationFinanciere = (props: ISituationFinanciereProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
+  const [search , setSearch] = useState('');
+
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -62,6 +64,11 @@ export const SituationFinanciere = (props: ISituationFinanciereProps) => {
     });
 
   const { situationFinanciereList, match, loading, totalItems } = props;
+  const situationFiltre = situationFinanciereList.filter(situation =>{
+    return situation.montantEnCours.toLowerCase().includes(search.toLowerCase()) ||
+      situation.montantFacture.toLowerCase().includes(search.toLowerCase()) ||
+      situation.dateFacturation.toLowerCase().includes(search.toLowerCase()) ;
+  })
   return (
     <div>
       <h2 id="situation-financiere-heading">
@@ -72,6 +79,10 @@ export const SituationFinanciere = (props: ISituationFinanciereProps) => {
           <Translate contentKey="ibamApp.situationFinanciere.home.createLabel">Create new Situation Financiere</Translate>
         </Link>
       </h2>
+      <form className="md-form search">
+        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
+      </form>
+      <br/>
       <div className="table-responsive">
         {situationFinanciereList && situationFinanciereList.length > 0 ? (
           <Table responsive>
@@ -99,7 +110,7 @@ export const SituationFinanciere = (props: ISituationFinanciereProps) => {
               </tr>
             </thead>
             <tbody>
-              {situationFinanciereList.map((situationFinanciere, i) => (
+              {situationFiltre.map((situationFinanciere, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${situationFinanciere.id}`} color="link" size="sm">

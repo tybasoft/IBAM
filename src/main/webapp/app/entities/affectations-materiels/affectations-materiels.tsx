@@ -117,7 +117,7 @@ export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
       </h2>
       <form className="md-form search">
         <input className="form-control" type="text" placeholder="Search" aria-label="Search" onClick={searchAffectations} onChange={e => setSearch(e.target.value)} />
-        <Link className=" form-control btn btn-primary float-right jh-create-entity" onClick={disabledSearch}>Annuler</Link>
+        <Button lassName=" form-control btn btn-primary float-right jh-create-entity" onClick={disabledSearch} >Annuler</Button>
         </form>
       <br/>
       <br/>

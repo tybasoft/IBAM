@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { PureComponent ,useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
@@ -10,8 +10,9 @@ import { getEntity } from './bon-reception.reducer';
 import { getEntity as getImage, reset as resetImage } from 'app/entities/image/image.reducer';
 import { IBonReception } from 'app/shared/model/bon-reception.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import jsPDF from "jspdf";
 
-export interface IBonReceptionDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IBonReceptionDetailProps extends PureComponent , StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
   const { bonReceptionEntity, imageEntity } = props;
@@ -28,6 +29,48 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
       }
     }
   }, [bonReceptionEntity]);
+
+  const jsPdfGenerator = ()=>{
+    const doc = new jsPDF('p','pt');
+    // const img = new Image()
+
+    const img = 'content/images/logo-jhipster.png'
+    doc.addImage(img, 'png', 10, 10, 180, 40)
+    doc.setPage(2);
+    doc.setFontSize(25);
+    doc.setFont('helvetica','bold');
+    doc.text('Bon de Reception ',180,100);
+    doc.setFontSize(17);
+    doc.setFont('times','normal');
+    doc.text('Id : '+bonReceptionEntity.id,40,180);
+    doc.text('Date Prev Liv : '+bonReceptionEntity.livreur ,40,220);
+    doc.text('Remarques : '+bonReceptionEntity.remarques ,40,260);
+    doc.text('Date Creation : '+bonReceptionEntity.dateLivraison ,40,300);
+    doc.setFontSize(20);
+    doc.setFont('times','bold');
+    doc.text('Depot Info : ',40,340);
+    doc.setFontSize(17);
+    doc.setFont('times','normal');
+    doc.text('Libelle : '+bonReceptionEntity.depot.libelle,80,380);
+    doc.text('Adresse : '+bonReceptionEntity.depot.adresse,80,410);
+    doc.text('Telephone : '+bonReceptionEntity.depot.tel,80,440);
+    doc.text('Ville : '+bonReceptionEntity.depot.ville,80,470);
+    doc.text('Pays : '+bonReceptionEntity.depot.pays,80,500);
+    doc.setFontSize(20);
+    doc.setFont('times','bold');
+    doc.text('Fournisseur Info : ',40,540);
+    doc.setFontSize(17);
+    doc.setFont('times','normal');
+    doc.text('Nom : '+bonReceptionEntity.fournisseur.nom,80,580);
+    doc.text('Prenom : '+bonReceptionEntity.fournisseur.prenom,80,610);
+    doc.text('Email : '+bonReceptionEntity.fournisseur.email,80,640);
+    doc.text('Type : '+bonReceptionEntity.fournisseur.type,80,670);
+    doc.text('Fax : '+bonReceptionEntity.fournisseur.fax,80,700);
+    doc.text('Telephone : '+bonReceptionEntity.fournisseur.tel,80,730);
+    doc.text('Adresse : '+bonReceptionEntity.fournisseur.adresse,80,760);
+    doc.text('Description : '+bonReceptionEntity.fournisseur.description,80,790);
+    doc.save('Bon_Reception_'+bonReceptionEntity.id+'.pdf');
+  }
 
   return (
     <Row>
@@ -78,6 +121,10 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
             <Translate contentKey="ibamApp.bonReception.fournisseur">Fournisseur</Translate>
           </dt>
           <dd>{bonReceptionEntity.fournisseur ? bonReceptionEntity.fournisseur.id : ''}</dd>
+          <div>
+
+            <Button style={{ height: 60,weight:100, marginTop: 10 }} onClick={jsPdfGenerator} color="success" >Download</Button>
+          </div>
         </dl>
         <Button tag={Link} to="/bon-reception" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

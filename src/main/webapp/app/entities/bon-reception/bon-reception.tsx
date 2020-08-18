@@ -88,12 +88,6 @@ export const BonReception = (props: IBonReceptionProps) => {
                 <th className="hand" onClick={sort('dateLivraison')}>
                   <Translate contentKey="ibamApp.bonReception.dateLivraison">Date Livraison</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.bonReception.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.bonReception.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.bonReception.depot">Depot</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -118,10 +112,6 @@ export const BonReception = (props: IBonReceptionProps) => {
                   <td>{bonReception.remarques}</td>
                   <td>
                     <TextFormat type="date" value={bonReception.dateLivraison} format="YYYY-MM-DD" />
-                  </td>
-                  <td>{bonReception.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={bonReception.dateModif} format="YYYY-MM-DD" />
                   </td>
                   <td>{bonReception.depot ? <Link to={`depot/${bonReception.depot.id}`}>{bonReception.depot.libelle}</Link> : ''}</td>
                   <td>

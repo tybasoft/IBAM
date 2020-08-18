@@ -9,7 +9,7 @@ import { IBonCommande } from 'app/shared/model/bon-commande.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './bon-commande.reducer';
 
-export interface IBonCommandeDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IBonCommandeDeleteDialogProps extends   StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const BonCommandeDeleteDialog = (props: IBonCommandeDeleteDialogProps) => {
   useEffect(() => {
@@ -31,6 +31,8 @@ export const BonCommandeDeleteDialog = (props: IBonCommandeDeleteDialogProps) =>
   };
 
   const { bonCommandeEntity } = props;
+
+
   return (
     <Modal isOpen toggle={handleClose}>
       <ModalHeader toggle={handleClose}>
