@@ -24,15 +24,19 @@ export const SituationFinanciereDetail = (props: ISituationFinanciereDetailProps
   const [file] = useState('');
 
 
+
   const { situationFinanciereEntity } = props;
 
+
   const jsPdfGenerator = ()=>{
-    const doc = new jsPDF('p','pt');
-    // const img = new Image()
+    // const elementToPrint = document.getElementById('target');
+
+    const doc = new jsPDF('p','pt','a4');
+
 
     const img = 'content/images/logo-jhipster.png'
+    // doc.fromHTML(elementToPrint,15,15);
     doc.addImage(img, 'png', 10, 10, 180, 40)
-    doc.table(1,1,"test", ['hello'],1);
     doc.setFontSize(25);
     doc.setFont('helvetica','bold');
     doc.text('Situation Financiere ',200,100);
@@ -52,11 +56,13 @@ export const SituationFinanciereDetail = (props: ISituationFinanciereDetailProps
     doc.text('Description : '+situationFinanciereEntity.projet.description,80,460);
     doc.text('Date Debut : '+situationFinanciereEntity.projet.dateDebut,80,500);
     doc.save('Situation_Financiere_'+situationFinanciereEntity.id+'.pdf');
+
+
   }
   return (
     <Row>
 
-      <Col md="8">
+      <Col md="8" id="target">
         <h2>
           <Translate contentKey="ibamApp.situationFinanciere.detail.title">SituationFinanciere</Translate> [
           <b>{situationFinanciereEntity.id}</b>]

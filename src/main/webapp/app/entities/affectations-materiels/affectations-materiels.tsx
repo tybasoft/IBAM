@@ -71,26 +71,22 @@ export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
       ...paginationState,
       activePage: currentPage,
     });
+
   const searchAffectations =  () => {
-    // if (search !== null) {
+    (document.getElementById('target') as HTMLInputElement).hidden = false;
     searchAllEntities();
-    // activeSearch = true;
-
-  // }
-    // else {
-    //   sortEntities();
-    // }
-    // if(search===''){
-    //   getAllEntities();
-    // }
-    // else{
-    //   searchAllEntities();
-    // }
   }
-  const disabledSearch = ()=>{
+  const disabledSearch = e =>{
+    // this.setSearch=useState('');
+    // (document.getElementById('inputSearch') as HTMLInputElement).value = '';
+    // (document.getElementById('inputSearch') as HTMLInputElement).formTarget='';
+    // (document.getElementById('target') as HTMLInputElement).hidden = true;
+    // sortEntities();
 
-    // activeSearch = false;
-    getAllEntities();
+    /***
+     * @Reload just for test , its not a solution :)
+     */
+    // window.location.reload();
   }
 
 
@@ -116,8 +112,8 @@ export const AffectationsMateriels = (props: IAffectationsMaterielsProps) => {
         </Link>
       </h2>
       <form className="md-form search">
-        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onClick={searchAffectations} onChange={e => setSearch(e.target.value)} />
-        <Button lassName=" form-control btn btn-primary float-right jh-create-entity" onClick={disabledSearch} >Annuler</Button>
+        <input className="form-control" type="text" id="inputSearch" placeholder="Search" aria-label="Search" onClick={searchAffectations} onChange={e => setSearch(e.target.value)} />
+        <Button className="form-control btn btn-primary float-right" id="target" onClick={disabledSearch} hidden>Annuler</Button>
         </form>
       <br/>
       <br/>
