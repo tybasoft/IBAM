@@ -4,8 +4,8 @@ import { IProjet } from 'app/shared/model/projet.model';
 export interface ISituationFinanciere {
   id?: number;
   montantFacture?: string;
-  montantEnCours?: string;
   dateFacturation?: string;
+  montantEnCours?: string;
   projet?: IProjet;
 }
 

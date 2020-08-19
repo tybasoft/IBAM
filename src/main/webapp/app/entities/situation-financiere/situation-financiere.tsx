@@ -15,7 +15,6 @@ export interface ISituationFinanciereProps extends StateProps, DispatchProps, Ro
 
 export const SituationFinanciere = (props: ISituationFinanciereProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
-  const [search , setSearch] = useState('');
 
 
   const getAllEntities = () => {
@@ -64,11 +63,6 @@ export const SituationFinanciere = (props: ISituationFinanciereProps) => {
     });
 
   const { situationFinanciereList, match, loading, totalItems } = props;
-  const situationFiltre = situationFinanciereList.filter(situation =>{
-    return situation.montantEnCours.toLowerCase().includes(search.toLowerCase()) ||
-      situation.montantFacture.toLowerCase().includes(search.toLowerCase()) ||
-      situation.dateFacturation.toLowerCase().includes(search.toLowerCase()) ;
-  })
   return (
     <div>
       <h2 id="situation-financiere-heading">
@@ -79,10 +73,6 @@ export const SituationFinanciere = (props: ISituationFinanciereProps) => {
           <Translate contentKey="ibamApp.situationFinanciere.home.createLabel">Create new Situation Financiere</Translate>
         </Link>
       </h2>
-      <form className="md-form search">
-        <input className="form-control" type="text" placeholder="Search" aria-label="Search" onChange={e => setSearch(e.target.value)} />
-      </form>
-      <br/>
       <div className="table-responsive">
         {situationFinanciereList && situationFinanciereList.length > 0 ? (
           <Table responsive>
@@ -91,16 +81,20 @@ export const SituationFinanciere = (props: ISituationFinanciereProps) => {
                 <th className="hand" onClick={sort('id')}>
                   <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('budget')}>
+                  <Translate contentKey="ibamApp.projet.budget">Budget</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
+                </th>
                 <th className="hand" onClick={sort('montantFacture')}>
                   <Translate contentKey="ibamApp.situationFinanciere.montantFacture">Montant Facture</Translate>{' '}
                   <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('montantEnCours')}>
-                  <Translate contentKey="ibamApp.situationFinanciere.montantEnCours">Montant En Cours</Translate>{' '}
-                  <FontAwesomeIcon icon="sort" />
-                </th>
                 <th className="hand" onClick={sort('dateFacturation')}>
                   <Translate contentKey="ibamApp.situationFinanciere.dateFacturation">Date Facturation</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('montantEnCours')}>
+                  <Translate contentKey="ibamApp.situationFinanciere.montantEnCours">Montant En Cours</Translate>{' '}
                   <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
@@ -110,20 +104,21 @@ export const SituationFinanciere = (props: ISituationFinanciereProps) => {
               </tr>
             </thead>
             <tbody>
-              {situationFiltre.map((situationFinanciere, i) => (
+              {situationFinanciereList.map((situationFinanciere, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
                     <Button tag={Link} to={`${match.url}/${situationFinanciere.id}`} color="link" size="sm">
                       {situationFinanciere.id}
                     </Button>
                   </td>
+                  <td>{situationFinanciere.projet.budget}</td>
                   <td>{situationFinanciere.montantFacture}</td>
-                  <td>{situationFinanciere.montantEnCours}</td>
                   <td>
                     {situationFinanciere.dateFacturation ? (
                       <TextFormat type="date" value={situationFinanciere.dateFacturation} format={APP_LOCAL_DATE_FORMAT} />
                     ) : null}
                   </td>
+                  <td>{situationFinanciere.montantEnCours}</td>
                   <td>
                     {situationFinanciere.projet ? (
                       <Link to={`projet/${situationFinanciere.projet.id}`}>{situationFinanciere.projet.libelle}</Link>
