@@ -10,6 +10,10 @@ import { getEntity } from './bon-commande.reducer';
 import { IBonCommande } from 'app/shared/model/bon-commande.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import jsPDF from "jspdf";
+import PDFJS from 'pdfjs-dist';
+import autoTable  from "jspdf-autotable";
+
+
 
 
 export interface IBonCommandeDetailProps extends PureComponent ,StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,47 +25,116 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
 
   const { bonCommandeEntity } = props;
 
-  const jsPdfGenerator = ()=>{
-    const doc = new jsPDF('p','pt');
+
+  const jsPdfGenerator = ()=> {
+    const headers = [
+      {key: 'title', label: 'Title'},
+      {key: 'release_date', label: 'Release'},
+      {key: 'overview', label: 'Overview'},
+      {key: 'vote_average', label: 'Vote Average'},
+    ]
+    const headers1 = [
+      {label: 'Title'},
+      {label: 'Release'},
+      {label: 'Overview'},
+      {label: 'Vote Average'},
+    ]
+    const doc = new jsPDF('p', 'pt');
     // const img = new Image()
 
+
     const img = 'content/images/logo-jhipster.png'
-    doc.addImage(img, 'png', 10, 10, 180, 40)
-    doc.setPage(2);
-    doc.setFontSize(25);
-    doc.setFont('helvetica','bold');
-    doc.text('Bon de Commande ',180,100);
-    doc.setFontSize(17);
-    doc.setFont('times','normal');
-    doc.text('Id : '+bonCommandeEntity.id,40,180);
-    doc.text('Date Prev Liv : '+bonCommandeEntity.datePrevLiv ,40,220);
-    doc.text('Remarques : '+bonCommandeEntity.remarques ,40,260);
-    doc.text('Date Creation : '+bonCommandeEntity.dateCreation ,40,300);
-    doc.text('Valide : '+bonCommandeEntity.valide ,40,340);
-    doc.setFontSize(20);
-    doc.setFont('times','bold');
-    doc.text('Depot Info : ',40,380);
-    doc.setFontSize(17);
-    doc.setFont('times','normal');
-    doc.text('Libelle : '+bonCommandeEntity.depot.libelle,80,420);
-    doc.text('Adresse : '+bonCommandeEntity.depot.adresse,80,450);
-    doc.text('Telephone : '+bonCommandeEntity.depot.tel,80,480);
-    doc.text('Ville : '+bonCommandeEntity.depot.ville,80,510);
-    doc.text('Pays : '+bonCommandeEntity.depot.pays,80,540);
-    doc.setFontSize(20);
-    doc.setFont('times','bold');
-    doc.text('Fournisseur Info : ',40,580);
-    doc.setFontSize(17);
-    doc.setFont('times','normal');
-    doc.text('Nom : '+bonCommandeEntity.fournisseur.nom,80,620);
-    doc.text('Prenom : '+bonCommandeEntity.fournisseur.prenom,80,650);
-    doc.text('Email : '+bonCommandeEntity.fournisseur.email,80,680);
-    doc.text('Type : '+bonCommandeEntity.fournisseur.type,80,710);
-    doc.text('Fax : '+bonCommandeEntity.fournisseur.fax,80,740);
-    doc.text('Telephone : '+bonCommandeEntity.fournisseur.tel,80,770);
-    doc.text('Adresse : '+bonCommandeEntity.fournisseur.adresse,80,800);
-    doc.text('Description : '+bonCommandeEntity.fournisseur.description,80,830);
-    doc.save('Bon_Commande_'+bonCommandeEntity.id+'.pdf');
+    doc.addImage(img, 'png', 10, 10, 180, 40);
+    // doc.cell(22,22,40,40,"test",1,"just a test");
+    // doc.setFontSize(25);
+    // doc.setFont('helvetica', 'bold');
+    // doc.text('Bon de Commande ', 180, 100);
+    // doc.setFontSize(17);
+    // doc.setFont('times', 'normal');
+    // doc.text('Id : ' + bonCommandeEntity.id, 40, 180);
+    // doc.text('Date Prev Liv : ' + bonCommandeEntity.datePrevLiv, 40, 220);
+    // doc.text('Remarques : ' + bonCommandeEntity.remarques, 40, 260);
+    // doc.text('Date Creation : ' + bonCommandeEntity.dateCreation, 40, 300);
+    // doc.text('Valide : ' + bonCommandeEntity.valide, 40, 340);
+    // doc.setFontSize(20);
+    // doc.setFont('times', 'bold');
+    // doc.text('Depot Info : ', 40, 380);
+    // doc.setFontSize(17);
+    // doc.setFont('times', 'normal');
+    // doc.text('Libelle : ' + bonCommandeEntity.depot.libelle, 80, 420);
+    // doc.text('Adresse : ' + bonCommandeEntity.depot.adresse, 80, 450);
+    // doc.text('Telephone : ' + bonCommandeEntity.depot.tel, 80, 480);
+    // doc.text('Ville : ' + bonCommandeEntity.depot.ville, 80, 510);
+    // doc.text('Pays : ' + bonCommandeEntity.depot.pays, 80, 540);
+    // doc.setFontSize(20);
+    // doc.setFont('times', 'bold');
+    // doc.text('Fournisseur Info : ', 40, 580);
+    // doc.setFontSize(17);
+    // doc.setFont('times', 'normal');
+    // doc.text('Nom : ' + bonCommandeEntity.fournisseur.nom, 80, 620);
+    // doc.text('Prenom : ' + bonCommandeEntity.fournisseur.prenom, 80, 650);
+    // doc.text('Email : ' + bonCommandeEntity.fournisseur.email, 80, 680);
+    // doc.text('Type : ' + bonCommandeEntity.fournisseur.type, 80, 710);
+    // doc.text('Fax : ' + bonCommandeEntity.fournisseur.fax, 80, 740);
+    // doc.text('Telephone : ' + bonCommandeEntity.fournisseur.tel, 80, 770);
+    // doc.text('Adresse : ' + bonCommandeEntity.fournisseur.adresse, 80, 800);
+    // doc.text('Description : ' + bonCommandeEntity.fournisseur.description, 80, 830);
+
+
+    const x = 40;
+    const y = 240;
+    const h = 40;
+    const w = 100;
+    const ln = 10;
+    doc.setFontSize(28);
+    doc.setFont('times', 'bold');
+    doc.text('Bon de Commande ', 300, 60);
+    doc.setFontSize(12);
+    doc.text('Id de commande: ' + bonCommandeEntity.id, 300, 120);
+    doc.text('Date Prev Liv : ' + bonCommandeEntity.datePrevLiv, 300, 140);
+    doc.text('Remarques : ' + bonCommandeEntity.remarques, 300, 160);
+    doc.text('Date Creation : ' + bonCommandeEntity.dateCreation, 300, 180);
+    doc.text('Valide : ' + bonCommandeEntity.valide, 300, 200);
+
+    //DEPOT Info :
+    doc.setFontSize(16);
+    doc.setFont('times', 'bold');
+    doc.cell(x,y,w,h,"Depot",ln-1,"");
+    doc.setFontSize(15);
+    doc.cell(x,y,w,h,"Libelle",ln,"")
+    doc.cell(x,y+10,w,h,"Adresse",ln,"")
+    doc.cell(x,y+20,w,h,"Telephone",ln,"")
+    doc.cell(x,y+30,w,h,"Ville",ln,"")
+    doc.cell(x,y+40,w,h,"Pays",ln,"")
+    doc.setFontSize(12);
+    doc.setFont('times', 'normal');
+    doc.cell(x,y,100,h+10, bonCommandeEntity.depot.libelle,ln+1,"")
+    doc.cell(x,y+10,w,h+10,bonCommandeEntity.depot.adresse,ln+1,"")
+    doc.cell(x,y+20,w,h+10,bonCommandeEntity.depot.tel,ln+1,"")
+    doc.cell(x,y+30,w,h+10,bonCommandeEntity.depot.ville,ln+1,"")
+    doc.cell(x,y+50,w,h+10,bonCommandeEntity.depot.pays,ln+1,"")
+
+    //Fournisseur Info :
+
+    doc.setFontSize(16);
+    doc.setFont('times', 'bold');
+    doc.cell(x,y+10,w,h,"Fournisseur",ln+5,"");
+    doc.setFontSize(15);
+    doc.cell(x,y,w,h,"Nom/Prenom",ln,"")
+    doc.cell(x,y+10,w,h,"Email",ln,"")
+    doc.cell(x,y+20,w+10,h,"Telephone/Fax",ln,"")
+    doc.cell(x,y+30,w-10,h,"Adresse",ln,"")
+    doc.cell(x,y+40,w,h,"Type",ln,"")
+    doc.setFontSize(12);
+    doc.setFont('times', 'normal');
+    doc.cell(x,y,100,h+50,bonCommandeEntity.fournisseur.nom +" "+bonCommandeEntity.fournisseur.prenom,ln+1,"")
+    doc.cell(x,y+10,w,h+50,bonCommandeEntity.fournisseur.email,ln+1,"")
+    doc.cell(x,y+20,w+10,h+50,bonCommandeEntity.fournisseur.tel+" "+bonCommandeEntity.fournisseur.fax,ln+1,"")
+    doc.cell(x,y+30,w-10,h+50,bonCommandeEntity.fournisseur.adresse,ln+1,"")
+    doc.cell(x,y+50,w,h+50,bonCommandeEntity.fournisseur.type,ln+1,"")
+
+    doc.save('test.pdf');
+    doc.save('Bon_Commande_' + bonCommandeEntity.id + '.pdf');
   }
   return (
     <Row>
@@ -120,10 +193,10 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
             <Translate contentKey="ibamApp.bonCommande.fournisseur">Fournisseur</Translate>
           </dt>
           <dd>{bonCommandeEntity.fournisseur ? bonCommandeEntity.fournisseur.id : ''}</dd>
-          <div>
+            <div>
 
-            <Button style={{ height: 60,weight:100, marginTop: 10 }} onClick={jsPdfGenerator} color="success" >Download</Button>
-          </div>
+              <Button style={{ height: 60,weight:100, marginTop: 10 }} onClick={jsPdfGenerator} color="success" >Download</Button>
+            </div>
         </dl>
         <Button tag={Link} to="/bon-commande" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
