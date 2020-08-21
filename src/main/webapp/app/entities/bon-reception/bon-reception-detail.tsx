@@ -60,28 +60,35 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
 
     //DEPOT Info :
     doc.setFontSize(16);
+    doc.setTextColor("red");
     doc.setFont('times', 'bold');
     doc.cell(x,y,w,h,"Depot",ln-1,"");
     doc.setFontSize(15);
     doc.cell(x,y,w,h,"Libelle",ln,"")
     doc.cell(x,y+10,w,h,"Adresse",ln,"")
-    doc.cell(x,y+20,w,h,"Telephone",ln,"")
-    doc.cell(x,y+30,w,h,"Ville",ln,"")
+    doc.cell(x,y+20,w+10,h,"Telephone",ln,"")
+    doc.cell(x,y+30,w-10,h,"Ville",ln,"")
     doc.cell(x,y+40,w,h,"Pays",ln,"")
     doc.setFontSize(12);
+    doc.setTextColor("black");
     doc.setFont('times', 'normal');
     doc.cell(x,y,100,h+50, bonReceptionEntity.depot.libelle,ln+1,"");
     doc.cell(x,y+10,w,h+50,bonReceptionEntity.depot.adresse,ln+1,"");
-    doc.cell(x,y+20,w,h+50,bonReceptionEntity.depot.tel,ln+1,"");
-    doc.cell(x,y+30,w,h+50,bonReceptionEntity.depot.ville,ln+1,"");
+    doc.cell(x,y+20,w+10,h+50,bonReceptionEntity.depot.tel,ln+1,"");
+    doc.cell(x,y+30,w-10,h+50,bonReceptionEntity.depot.ville,ln+1,"");
     doc.cell(x,y+50,w,h+50,bonReceptionEntity.depot.pays,ln+1,"");
 
     //Fournisseur Info :
 
 
     doc.setFontSize(16);
+    doc.setTextColor("red");
     doc.setFont('times', 'bold');
     doc.cell(x,y+10,w,h,"Fournisseur",ln+5,"");
+    doc.cell(x,y+10,w,h," ",ln+5,"");
+    doc.cell(x,y+10,w+10,h," ",ln+5,"");
+    doc.cell(x,y+10,w-10,h," ",ln+5,"");
+    doc.cell(x,y+10,w,h," ",ln+5,"");
     doc.setFontSize(15);
     doc.cell(x,y,w,h,"Nom/Prenom",ln,"");
     doc.cell(x,y+10,w,h,"Email",ln,"");
@@ -90,6 +97,7 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
     doc.cell(x,y+40,w,h,"Type",ln,"");
     doc.setFontSize(12);
     doc.setFont('times', 'normal');
+    doc.setTextColor("black");
     doc.cell(x,y,100,h+50,bonReceptionEntity.fournisseur.nom +" "+bonReceptionEntity.fournisseur.prenom,ln+1,"");
     doc.cell(x,y+10,w,h+50,bonReceptionEntity.fournisseur.email,ln+1,"");
     doc.cell(x,y+20,w+10,h+50,bonReceptionEntity.fournisseur.tel+" "+bonReceptionEntity.fournisseur.fax,ln+1,"");
@@ -99,6 +107,7 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
     //Image
     doc.setFont('times', 'bold');
     doc.setFontSize(16);
+    doc.setTextColor("red");
     doc.cell(x,y+60,w,h+200,"Image : ",ln+6,"");
     doc.cell(x,y+60,w+300,h+200," ",ln+6,"");
     doc.addImage(imgContent, 'png', x+150, y+360, 300, 200);
