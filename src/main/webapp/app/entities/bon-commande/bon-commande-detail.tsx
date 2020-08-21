@@ -92,7 +92,7 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
     doc.setFontSize(11);
     doc.setFont('courier', 'normal');
     doc.text('IBAM Enterprise ', x-10, 65);
-    doc.text('ibam@gmail.com ', x-10, 85);
+    doc.text('ibam@tybasoft.com ', x-10, 85);
     doc.text('Casablanca', x-10, 105);
     doc.text('40140', x-10, 125);
     doc.setFontSize(12);
