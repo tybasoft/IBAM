@@ -117,18 +117,6 @@ export const BonCommandeUpdate = (props: IBonCommandeUpdateProps) => {
                 </Label>
               </AvGroup>
               <AvGroup>
-                <Label id="userModifLabel" for="bon-commande-userModif">
-                  <Translate contentKey="ibamApp.bonCommande.userModif">User Modif</Translate>
-                </Label>
-                <AvField id="bon-commande-userModif" type="text" name="userModif" />
-              </AvGroup>
-              <AvGroup>
-                <Label id="dateModifLabel" for="bon-commande-dateModif">
-                  <Translate contentKey="ibamApp.bonCommande.dateModif">Date Modif</Translate>
-                </Label>
-                <AvField id="bon-commande-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
-              <AvGroup>
                 <Label for="bon-commande-depot">
                   <Translate contentKey="ibamApp.bonCommande.depot">Depot</Translate>
                 </Label>

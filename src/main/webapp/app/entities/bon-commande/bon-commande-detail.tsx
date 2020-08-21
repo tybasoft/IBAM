@@ -89,6 +89,12 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
     doc.setFontSize(28);
     doc.setFont('times', 'bold');
     doc.text('Bon de Commande ', 300, 60);
+    doc.setFontSize(11);
+    doc.setFont('courier', 'normal');
+    doc.text('IBAM Enterprise ', x-10, 65);
+    doc.text('ibam@gmail.com ', x-10, 85);
+    doc.text('Casablanca', x-10, 105);
+    doc.text('40140', x-10, 125);
     doc.setFontSize(12);
     doc.text('Id de commande: ' + bonCommandeEntity.id, 300, 120);
     doc.text('Date Prev Liv : ' + bonCommandeEntity.datePrevLiv, 300, 140);

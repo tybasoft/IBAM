@@ -99,8 +99,9 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
     //Image
     doc.setFont('times', 'bold');
     doc.setFontSize(16);
-    doc.cell(x,y+60,w+400,h+200,"Image : ",ln+6,"");
-    doc.addImage(imgContent, 'png', x+150, y+360, 250, 200);
+    doc.cell(x,y+60,w,h+200,"Image : ",ln+6,"");
+    doc.cell(x,y+60,w+300,h+200," ",ln+6,"");
+    doc.addImage(imgContent, 'png', x+150, y+360, 300, 200);
 
 
 
