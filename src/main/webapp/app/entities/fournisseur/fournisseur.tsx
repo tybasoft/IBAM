@@ -107,12 +107,6 @@ export const Fournisseur = (props: IFournisseurProps) => {
                 <th className="hand" onClick={sort('description')}>
                   <Translate contentKey="ibamApp.fournisseur.description">Description</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.fournisseur.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.fournisseur.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th />
               </tr>
             </thead>
@@ -133,10 +127,6 @@ export const Fournisseur = (props: IFournisseurProps) => {
                   <td>{fournisseur.tel}</td>
                   <td>{fournisseur.adresse}</td>
                   <td>{fournisseur.description}</td>
-                  <td>{fournisseur.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={fournisseur.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${fournisseur.id}`} color="info" size="sm">

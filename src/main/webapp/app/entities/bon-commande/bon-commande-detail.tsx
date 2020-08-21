@@ -108,13 +108,14 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
     doc.cell(x,y+40,w,h,"Pays",ln,"")
     doc.setFontSize(12);
     doc.setFont('times', 'normal');
-    doc.cell(x,y,100,h+10, bonCommandeEntity.depot.libelle,ln+1,"")
-    doc.cell(x,y+10,w,h+10,bonCommandeEntity.depot.adresse,ln+1,"")
-    doc.cell(x,y+20,w,h+10,bonCommandeEntity.depot.tel,ln+1,"")
-    doc.cell(x,y+30,w,h+10,bonCommandeEntity.depot.ville,ln+1,"")
-    doc.cell(x,y+50,w,h+10,bonCommandeEntity.depot.pays,ln+1,"")
+    doc.cell(x,y,100,h+50, bonCommandeEntity.depot.libelle,ln+1,"")
+    doc.cell(x,y+10,w,h+50,bonCommandeEntity.depot.adresse,ln+1,"")
+    doc.cell(x,y+20,w,h+50,bonCommandeEntity.depot.tel,ln+1,"")
+    doc.cell(x,y+30,w,h+50,bonCommandeEntity.depot.ville,ln+1,"")
+    doc.cell(x,y+50,w,h+50,bonCommandeEntity.depot.pays,ln+1,"")
 
     //Fournisseur Info :
+
 
     doc.setFontSize(16);
     doc.setFont('times', 'bold');
@@ -133,7 +134,6 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
     doc.cell(x,y+30,w-10,h+50,bonCommandeEntity.fournisseur.adresse,ln+1,"")
     doc.cell(x,y+50,w,h+50,bonCommandeEntity.fournisseur.type,ln+1,"")
 
-    doc.save('test.pdf');
     doc.save('Bon_Commande_' + bonCommandeEntity.id + '.pdf');
   }
   return (

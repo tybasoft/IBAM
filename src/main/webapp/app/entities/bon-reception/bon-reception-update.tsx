@@ -213,18 +213,6 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                 />
               </AvGroup>
               <AvGroup>
-                <Label id="userModifLabel" for="bon-reception-userModif">
-                  <Translate contentKey="ibamApp.bonReception.userModif">User Modif</Translate>
-                </Label>
-                <AvField id="bon-reception-userModif" type="text" name="userModif" />
-              </AvGroup>
-              <AvGroup>
-                <Label id="dateModifLabel" for="bon-reception-dateModif">
-                  <Translate contentKey="ibamApp.bonReception.dateModif">Date Modif</Translate>
-                </Label>
-                <AvField id="bon-reception-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
-              <AvGroup>
                 <Label for="bon-reception-depot">
                   <Translate contentKey="ibamApp.bonReception.depot">Depot</Translate>
                 </Label>

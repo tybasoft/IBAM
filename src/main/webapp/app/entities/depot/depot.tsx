@@ -65,12 +65,6 @@ export const Depot = (props: IDepotProps) => {
                 <th>
                   <Translate contentKey="ibamApp.depot.pays">Pays</Translate>
                 </th>
-                <th>
-                  <Translate contentKey="ibamApp.depot.userModif">User Modif</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.depot.dateModif">Date Modif</Translate>
-                </th>
                 <th />
               </tr>
             </thead>
@@ -87,10 +81,6 @@ export const Depot = (props: IDepotProps) => {
                   <td>{depot.tel}</td>
                   <td>{depot.ville}</td>
                   <td>{depot.pays}</td>
-                  <td>{depot.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={depot.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${depot.id}`} color="info" size="sm">

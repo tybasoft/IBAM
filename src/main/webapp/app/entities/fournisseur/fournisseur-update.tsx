@@ -143,18 +143,6 @@ export const FournisseurUpdate = (props: IFournisseurUpdateProps) => {
                 </Label>
                 <AvField id="fournisseur-description" type="text" name="description" />
               </AvGroup>
-              <AvGroup>
-                <Label id="userModifLabel" for="fournisseur-userModif">
-                  <Translate contentKey="ibamApp.fournisseur.userModif">User Modif</Translate>
-                </Label>
-                <AvField id="fournisseur-userModif" type="text" name="userModif" />
-              </AvGroup>
-              <AvGroup>
-                <Label id="dateModifLabel" for="fournisseur-dateModif">
-                  <Translate contentKey="ibamApp.fournisseur.dateModif">Date Modif</Translate>
-                </Label>
-                <AvField id="fournisseur-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/fournisseur" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

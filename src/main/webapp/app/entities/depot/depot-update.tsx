@@ -119,18 +119,6 @@ export const DepotUpdate = (props: IDepotUpdateProps) => {
                 </Label>
                 <AvField id="depot-pays" type="text" name="pays" />
               </AvGroup>
-              <AvGroup>
-                <Label id="userModifLabel" for="depot-userModif">
-                  <Translate contentKey="ibamApp.depot.userModif">User Modif</Translate>
-                </Label>
-                <AvField id="depot-userModif" type="text" name="userModif" />
-              </AvGroup>
-              <AvGroup>
-                <Label id="dateModifLabel" for="depot-dateModif">
-                  <Translate contentKey="ibamApp.depot.dateModif">Date Modif</Translate>
-                </Label>
-                <AvField id="depot-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/depot" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

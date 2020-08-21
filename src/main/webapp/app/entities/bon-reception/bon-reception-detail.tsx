@@ -35,40 +35,75 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
     // const img = new Image()
 
     const img = 'content/images/logo-jhipster.png'
-    doc.addImage(img, 'png', 10, 10, 180, 40)
-    doc.setPage(2);
-    doc.setFontSize(25);
-    doc.setFont('helvetica','bold');
-    doc.text('Bon de Reception ',180,100);
-    doc.setFontSize(17);
-    doc.setFont('times','normal');
-    doc.text('Id : '+bonReceptionEntity.id,40,180);
-    doc.text('Date Prev Liv : '+bonReceptionEntity.livreur ,40,220);
-    doc.text('Remarques : '+bonReceptionEntity.remarques ,40,260);
-    doc.text('Date Creation : '+bonReceptionEntity.dateLivraison ,40,300);
-    doc.setFontSize(20);
-    doc.setFont('times','bold');
-    doc.text('Depot Info : ',40,340);
-    doc.setFontSize(17);
-    doc.setFont('times','normal');
-    doc.text('Libelle : '+bonReceptionEntity.depot.libelle,80,380);
-    doc.text('Adresse : '+bonReceptionEntity.depot.adresse,80,410);
-    doc.text('Telephone : '+bonReceptionEntity.depot.tel,80,440);
-    doc.text('Ville : '+bonReceptionEntity.depot.ville,80,470);
-    doc.text('Pays : '+bonReceptionEntity.depot.pays,80,500);
-    doc.setFontSize(20);
-    doc.setFont('times','bold');
-    doc.text('Fournisseur Info : ',40,540);
-    doc.setFontSize(17);
-    doc.setFont('times','normal');
-    doc.text('Nom : '+bonReceptionEntity.fournisseur.nom,80,580);
-    doc.text('Prenom : '+bonReceptionEntity.fournisseur.prenom,80,610);
-    doc.text('Email : '+bonReceptionEntity.fournisseur.email,80,640);
-    doc.text('Type : '+bonReceptionEntity.fournisseur.type,80,670);
-    doc.text('Fax : '+bonReceptionEntity.fournisseur.fax,80,700);
-    doc.text('Telephone : '+bonReceptionEntity.fournisseur.tel,80,730);
-    doc.text('Adresse : '+bonReceptionEntity.fournisseur.adresse,80,760);
-    doc.text('Description : '+bonReceptionEntity.fournisseur.description,80,790);
+    const imgContent = bonReceptionEntity.image.path;
+    const x = 40;
+    const y = 240;
+    const h = 40;
+    const w = 100;
+    const ln = 10;
+    doc.addImage(img, 'png', 10, 10, 180, 40);
+    doc.setFontSize(28);
+    doc.setFont('times', 'bold');
+    doc.text('Bon de Reception ', 300, 60);
+    doc.setFontSize(11);
+    doc.setFont('courier', 'normal');
+    doc.text('IBAM Enterprise ', x-10, 65);
+    doc.text('ibam@gmail.com ', x-10, 85);
+    doc.text('Casablanca', x-10, 105);
+    doc.text('40140', x-10, 125);
+    doc.setFontSize(12);
+    // doc.setFont('times', 'bold');
+    doc.text('Id de commande     :  ' + bonReceptionEntity.id, 300, 120);
+    doc.text('Date Prev Liv      :  ' + bonReceptionEntity.dateLivraison, 300, 140);
+    doc.text('Remarques          :  ' + bonReceptionEntity.remarques, 300, 160);
+    doc.text('Date Creation      :  ' + bonReceptionEntity.livreur, 300, 180);
+
+    //DEPOT Info :
+    doc.setFontSize(16);
+    doc.setFont('times', 'bold');
+    doc.cell(x,y,w,h,"Depot",ln-1,"");
+    doc.setFontSize(15);
+    doc.cell(x,y,w,h,"Libelle",ln,"")
+    doc.cell(x,y+10,w,h,"Adresse",ln,"")
+    doc.cell(x,y+20,w,h,"Telephone",ln,"")
+    doc.cell(x,y+30,w,h,"Ville",ln,"")
+    doc.cell(x,y+40,w,h,"Pays",ln,"")
+    doc.setFontSize(12);
+    doc.setFont('times', 'normal');
+    doc.cell(x,y,100,h+50, bonReceptionEntity.depot.libelle,ln+1,"");
+    doc.cell(x,y+10,w,h+50,bonReceptionEntity.depot.adresse,ln+1,"");
+    doc.cell(x,y+20,w,h+50,bonReceptionEntity.depot.tel,ln+1,"");
+    doc.cell(x,y+30,w,h+50,bonReceptionEntity.depot.ville,ln+1,"");
+    doc.cell(x,y+50,w,h+50,bonReceptionEntity.depot.pays,ln+1,"");
+
+    //Fournisseur Info :
+
+
+    doc.setFontSize(16);
+    doc.setFont('times', 'bold');
+    doc.cell(x,y+10,w,h,"Fournisseur",ln+5,"");
+    doc.setFontSize(15);
+    doc.cell(x,y,w,h,"Nom/Prenom",ln,"");
+    doc.cell(x,y+10,w,h,"Email",ln,"");
+    doc.cell(x,y+20,w+10,h,"Telephone/Fax",ln,"");
+    doc.cell(x,y+30,w-10,h,"Adresse",ln,"");
+    doc.cell(x,y+40,w,h,"Type",ln,"");
+    doc.setFontSize(12);
+    doc.setFont('times', 'normal');
+    doc.cell(x,y,100,h+50,bonReceptionEntity.fournisseur.nom +" "+bonReceptionEntity.fournisseur.prenom,ln+1,"");
+    doc.cell(x,y+10,w,h+50,bonReceptionEntity.fournisseur.email,ln+1,"");
+    doc.cell(x,y+20,w+10,h+50,bonReceptionEntity.fournisseur.tel+" "+bonReceptionEntity.fournisseur.fax,ln+1,"");
+    doc.cell(x,y+30,w-10,h+50,bonReceptionEntity.fournisseur.adresse,ln+1,"");
+    doc.cell(x,y+50,w,h+50,bonReceptionEntity.fournisseur.type,ln+1,"");
+
+    //Image
+    doc.setFont('times', 'bold');
+    doc.setFontSize(16);
+    doc.cell(x,y+60,w+400,h+200,"Image : ",ln+6,"");
+    doc.addImage(imgContent, 'png', x+150, y+360, 250, 200);
+
+
+
     doc.save('Bon_Reception_'+bonReceptionEntity.id+'.pdf');
   }
 
