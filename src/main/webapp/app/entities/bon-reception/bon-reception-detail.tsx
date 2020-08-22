@@ -112,6 +112,12 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
     doc.cell(x,y+60,w+300,h+200," ",ln+6,"");
     doc.addImage(imgContent, 'png', x+150, y+360, 300, 200);
 
+    doc.setFontSize(12);
+    doc.setFont('times', 'normal');
+    doc.setTextColor("black");
+    doc.text('Merci pour votre confiance ', x+180, 840);
+
+
 
 
     doc.save('Bon_Reception_'+bonReceptionEntity.id+'.pdf');
