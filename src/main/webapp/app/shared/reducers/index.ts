@@ -5,144 +5,164 @@ import locale, { LocaleState } from './locale';
 import authentication, { AuthenticationState } from './authentication';
 import applicationProfile, { ApplicationProfileState } from './application-profile';
 
-import administration, { AdministrationState } from 'app/modules/administration/administration.reducer';
-import userManagement, { UserManagementState } from 'app/modules/administration/user-management/user-management.reducer';
-import register, { RegisterState } from 'app/modules/account/register/register.reducer';
-import activate, { ActivateState } from 'app/modules/account/activate/activate.reducer';
-import password, { PasswordState } from 'app/modules/account/password/password.reducer';
-import settings, { SettingsState } from 'app/modules/account/settings/settings.reducer';
-import passwordReset, { PasswordResetState } from 'app/modules/account/password-reset/password-reset.reducer';
+import administration, { AdministrationState } from '../../modules/administration/administration.reducer';
+import userManagement, { UserManagementState } from '../../modules/administration/user-management/user-management.reducer';
+import register, { RegisterState } from '../../modules/account/register/register.reducer';
+import activate, { ActivateState } from '../../modules/account/activate/activate.reducer';
+import password, { PasswordState } from '../../modules/account/password/password.reducer';
+import settings, { SettingsState } from '../../modules/account/settings/settings.reducer';
+import passwordReset, { PasswordResetState } from '../../modules/account/password-reset/password-reset.reducer';
 // prettier-ignore
 import materiau, {
   MateriauState
-} from 'app/entities/materiau/materiau.reducer';
+} from '../../entities/materiau/materiau.reducer';
 // prettier-ignore
 import tva, {
   TvaState
-} from 'app/entities/tva/tva.reducer';
+} from '../../entities/tva/tva.reducer';
 // prettier-ignore
 import marque, {
   MarqueState
-} from 'app/entities/marque/marque.reducer';
+} from '../../entities/marque/marque.reducer';
 // prettier-ignore
 import unite, {
   UniteState
-} from 'app/entities/unite/unite.reducer';
+} from '../../entities/unite/unite.reducer';
 // prettier-ignore
 import famille, {
   FamilleState
-} from 'app/entities/famille/famille.reducer';
+} from '../../entities/famille/famille.reducer';
 // prettier-ignore
 import image, {
   ImageState
-} from 'app/entities/image/image.reducer';
+} from '../../entities/image/image.reducer';
 // prettier-ignore
 import entreprise, {
   EntrepriseState
-} from 'app/entities/entreprise/entreprise.reducer';
+} from '../../entities/entreprise/entreprise.reducer';
 // prettier-ignore
 import ligneBonCommande, {
   LigneBonCommandeState
-} from 'app/entities/ligne-bon-commande/ligne-bon-commande.reducer';
+} from '../../entities/ligne-bon-commande/ligne-bon-commande.reducer';
 // prettier-ignore
 import ligneBonReception, {
   LigneBonReceptionState
-} from 'app/entities/ligne-bon-reception/ligne-bon-reception.reducer';
+} from '../../entities/ligne-bon-reception/ligne-bon-reception.reducer';
 // prettier-ignore
 import bonCommande, {
   BonCommandeState
-} from 'app/entities/bon-commande/bon-commande.reducer';
+} from '../../entities/bon-commande/bon-commande.reducer';
 // prettier-ignore
 import bonReception, {
   BonReceptionState
-} from 'app/entities/bon-reception/bon-reception.reducer';
+} from '../../entities/bon-reception/bon-reception.reducer';
 // prettier-ignore
 import fournisseur, {
   FournisseurState
-} from 'app/entities/fournisseur/fournisseur.reducer';
+} from '../../entities/fournisseur/fournisseur.reducer';
 // prettier-ignore
 import depot, {
   DepotState
-} from 'app/entities/depot/depot.reducer';
+} from '../../entities/depot/depot.reducer';
 // prettier-ignore
 import projet, {
   ProjetState
-} from 'app/entities/projet/projet.reducer';
+} from '../../entities/projet/projet.reducer';
 // prettier-ignore
 import equipe, {
   EquipeState
-} from 'app/entities/equipe/equipe.reducer';
+} from '../../entities/equipe/equipe.reducer';
 // prettier-ignore
 import fonction, {
   FonctionState
-} from 'app/entities/fonction/fonction.reducer';
+} from '../../entities/fonction/fonction.reducer';
 // prettier-ignore
 import pointage, {
   PointageState
-} from 'app/entities/pointage/pointage.reducer';
+} from '../../entities/pointage/pointage.reducer';
 // prettier-ignore
 import paie, {
   PaieState
-} from 'app/entities/paie/paie.reducer';
+} from '../../entities/paie/paie.reducer';
 // prettier-ignore
 import horaire, {
   HoraireState
-} from 'app/entities/horaire/horaire.reducer';
+} from '../../entities/horaire/horaire.reducer';
 // prettier-ignore
 import employe, {
   EmployeState
-} from 'app/entities/employe/employe.reducer';
+} from '../../entities/employe/employe.reducer';
 // prettier-ignore
 import materiel, {
   MaterielState
-} from 'app/entities/materiel/materiel.reducer';
+} from '../../entities/materiel/materiel.reducer';
 // prettier-ignore
 import assurance, {
   AssuranceState
-} from 'app/entities/assurance/assurance.reducer';
+} from '../../entities/assurance/assurance.reducer';
 // prettier-ignore
 import typeMateriel, {
   TypeMaterielState
-} from 'app/entities/type-materiel/type-materiel.reducer';
+} from '../../entities/type-materiel/type-materiel.reducer';
 // prettier-ignore
 import document, {
   DocumentState
-} from 'app/entities/document/document.reducer';
+} from '../../entities/document/document.reducer';
 // prettier-ignore
 import location, {
   LocationState
-} from 'app/entities/location/location.reducer';
+} from '../../entities/location/location.reducer';
 // prettier-ignore
 import transfertMateriel, {
   TransfertMaterielState
-} from 'app/entities/transfert-materiel/transfert-materiel.reducer';
+} from '../../entities/transfert-materiel/transfert-materiel.reducer';
 // prettier-ignore
 import consommation, {
   ConsommationState
-} from 'app/entities/consommation/consommation.reducer';
+} from '../../entities/consommation/consommation.reducer';
 // prettier-ignore
 import maintenance, {
   MaintenanceState
-} from 'app/entities/maintenance/maintenance.reducer';
+} from '../../entities/maintenance/maintenance.reducer';
 // prettier-ignore
 import centreMaintenance, {
   CentreMaintenanceState
-} from 'app/entities/centre-maintenance/centre-maintenance.reducer';
+} from '../../entities/centre-maintenance/centre-maintenance.reducer';
 // prettier-ignore
 import visiteTechnique, {
   VisiteTechniqueState
-} from 'app/entities/visite-technique/visite-technique.reducer';
+} from '../../entities/visite-technique/visite-technique.reducer';
 // prettier-ignore
 import notification, {
   NotificationState
-} from 'app/entities/notification/notification.reducer';
+} from '../../entities/notification/notification.reducer';
 // prettier-ignore
 import fichePointage, {
   FichePointageState
-} from 'app/entities/fiche-pointage/fiche-pointage.reducer';
+} from '../../entities/fiche-pointage/fiche-pointage.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
+// import external modules
+// import internal(own) modules
+import calenderReducer from '../../new-template/redux/reducers/calenderReducer';
+import emailReducer from '../../new-template/redux/reducers/email/';
+// import chatReducer from "./chatReducer";
+import chatReducer from '../../new-template/redux/reducers/chat/';
+import contactsReducer from '../../new-template/redux/reducers/contacts/';
+import todoReducer from '../../new-template/redux/reducers/todo/';
+import customizer from '../../new-template/redux/reducers/customizer/';
+
+import { reducer as toastrReducer } from 'react-redux-toastr';
+// import Customizer from 'app/new-template/components/customizer/customizer';
+
 export interface IRootState {
+  // readonly calendar: any;
+  // readonly emailApp: any;
+  // readonly contactApp: any;
+  // readonly todoApp: any;
+  // readonly toastr: any; // <- Mounted at toastr.
+  // readonly chatApp: any;
+  readonly customizer: any;
   readonly authentication: AuthenticationState;
   readonly locale: LocaleState;
   readonly applicationProfile: ApplicationProfileState;
@@ -190,6 +210,14 @@ export interface IRootState {
 }
 
 const rootReducer = combineReducers<IRootState>({
+  // calendar,
+  // emailApp,
+  // contactApp,
+  // todoApp,
+  // toastr, // <- Mounted at toastr.
+  // chatApp,
+  customizer,
+  //
   authentication,
   locale,
   applicationProfile,
