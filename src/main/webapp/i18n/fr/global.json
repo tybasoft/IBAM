@@ -40,6 +40,7 @@
         "notification": "Notification",
         "fichePointage": "Fiche Pointage",
         "affectationMateriels": "Affectation Materiels",
+        "situationFinanciere": "Situation Financiere",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "Materiel": "Matériel",
         "Materiau": "Matériau",

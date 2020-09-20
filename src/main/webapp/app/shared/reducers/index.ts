@@ -144,6 +144,10 @@ import fichePointage, {
 import affectationMateriels, {
   AffectationMaterielsState
 } from 'app/entities/affectation-materiels/affectation-materiels.reducer';
+// prettier-ignore
+import situationFinanciere, {
+  SituationFinanciereState
+} from 'app/entities/situation-financiere/situation-financiere.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -190,6 +194,7 @@ export interface IRootState {
   readonly notification: NotificationState;
   readonly fichePointage: FichePointageState;
   readonly affectationMateriels: AffectationMaterielsState;
+  readonly situationFinanciere: SituationFinanciereState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -238,6 +243,7 @@ const rootReducer = combineReducers<IRootState>({
   notification,
   fichePointage,
   affectationMateriels,
+  situationFinanciere,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });
