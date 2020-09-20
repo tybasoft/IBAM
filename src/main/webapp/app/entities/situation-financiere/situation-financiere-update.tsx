@@ -93,26 +93,44 @@ export const SituationFinanciereUpdate = (props: ISituationFinanciereUpdateProps
                   }}
                 />
               </AvGroup>
-              <AvGroup>
-                <Label id="dateFacturationLabel" for="situation-financiere-dateFacturation">
-                  <Translate contentKey="ibamApp.situationFinanciere.dateFacturation">Date Facturation</Translate>
-                </Label>
-                <AvField
-                  id="situation-financiere-dateFacturation"
-                  type="date"
-                  className="form-control"
-                  name="dateFacturation"
-                  validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') },
-                  }}
-                />
-              </AvGroup>
-              {/*<AvGroup>
-                <Label id="montantEnCoursLabel" for="situation-financiere-montantEnCours">
-                  <Translate contentKey="ibamApp.situationFinanciere.montantEnCours">Montant En Cours</Translate>
-                </Label>
-                <AvField id="situation-financiere-montantEnCours" type="text" name="montantEnCours" />
-              </AvGroup>*/}
+              {isNew ? (
+                <AvGroup>
+                  <Label id="dateFacturationLabel" for="situation-financiere-dateFacturation">
+                    <Translate contentKey="ibamApp.situationFinanciere.dateFacturation">Date Facturation</Translate>
+                  </Label>
+                  <AvField
+                    id="situation-financiere-dateFacturation"
+                    type="date"
+                    className="form-control"
+                    name="dateFacturation"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') },
+                    }}
+                  />
+                </AvGroup>
+              ) : null}
+              {!isNew ? (
+                <AvGroup>
+                  <Label id="dateFacturationLabel" for="situation-financiere-dateFacturation">
+                    <Translate contentKey="ibamApp.situationFinanciere.dateFacturation">Date Facturation</Translate>
+                  </Label>
+                  <AvField
+                    id="situation-financiere-dateFacturation"
+                    type="date"
+                    className="form-control"
+                    name="dateFacturation"
+                    readOnly
+                  />
+                </AvGroup>
+              ) : null}
+              {!isNew ? (
+                <AvGroup>
+                  <Label id="montantEnCoursLabel" for="situation-financiere-montantEnCours">
+                    <Translate contentKey="ibamApp.situationFinanciere.montantEnCours">Montant En Cours</Translate>
+                  </Label>
+                  <AvField id="situation-financiere-montantEnCours" type="text" name="montantEnCours" readOnly />
+                </AvGroup>
+              ) : null}
               <AvGroup>
                 <Label for="situation-financiere-projet">
                   <Translate contentKey="ibamApp.situationFinanciere.projet">Projet</Translate>
@@ -121,10 +139,10 @@ export const SituationFinanciereUpdate = (props: ISituationFinanciereUpdateProps
                   <option value="" key="0" />
                   {projets
                     ? projets.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle}
-                        </option>
-                      ))
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.libelle}
+                      </option>
+                    ))
                     : null}
                 </AvInput>
               </AvGroup>
