@@ -1,4 +1,7 @@
 import { element, by, ElementFinder } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class MaterielUpdatePage {
   pageTitle: ElementFinder = element(by.id('ibamApp.materiel.home.createOrEditLabel'));
@@ -15,6 +18,7 @@ export default class MaterielUpdatePage {
   descriptionInput: ElementFinder = element(by.css('input#materiel-description'));
   userModifInput: ElementFinder = element(by.css('input#materiel-userModif'));
   dateModifInput: ElementFinder = element(by.css('input#materiel-dateModif'));
+  multiProjetInput: ElementFinder = element(by.css('input#materiel-multiProjet'));
   familleSelect: ElementFinder = element(by.css('select#materiel-famille'));
   typeMaterielSelect: ElementFinder = element(by.css('select#materiel-typeMateriel'));
   fournisseurSelect: ElementFinder = element(by.css('select#materiel-fournisseur'));
@@ -111,8 +115,14 @@ export default class MaterielUpdatePage {
     return this.dateModifInput.getAttribute('value');
   }
 
+  getMultiProjetInput() {
+    return this.multiProjetInput;
+  }
   async familleSelectLastOption() {
-    await this.familleSelect.all(by.tagName('option')).last().click();
+    await this.familleSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
   }
 
   async familleSelectOption(option) {
@@ -128,7 +138,10 @@ export default class MaterielUpdatePage {
   }
 
   async typeMaterielSelectLastOption() {
-    await this.typeMaterielSelect.all(by.tagName('option')).last().click();
+    await this.typeMaterielSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
   }
 
   async typeMaterielSelectOption(option) {
@@ -144,7 +157,10 @@ export default class MaterielUpdatePage {
   }
 
   async fournisseurSelectLastOption() {
-    await this.fournisseurSelect.all(by.tagName('option')).last().click();
+    await this.fournisseurSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
   }
 
   async fournisseurSelectOption(option) {
@@ -160,7 +176,10 @@ export default class MaterielUpdatePage {
   }
 
   async marqueSelectLastOption() {
-    await this.marqueSelect.all(by.tagName('option')).last().click();
+    await this.marqueSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
   }
 
   async marqueSelectOption(option) {
@@ -176,7 +195,10 @@ export default class MaterielUpdatePage {
   }
 
   async documentSelectLastOption() {
-    await this.documentSelect.all(by.tagName('option')).last().click();
+    await this.documentSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
   }
 
   async documentSelectOption(option) {
@@ -192,7 +214,10 @@ export default class MaterielUpdatePage {
   }
 
   async employeSelectLastOption() {
-    await this.employeSelect.all(by.tagName('option')).last().click();
+    await this.employeSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
   }
 
   async employeSelectOption(option) {
@@ -208,7 +233,10 @@ export default class MaterielUpdatePage {
   }
 
   async imageSelectLastOption() {
-    await this.imageSelect.all(by.tagName('option')).last().click();
+    await this.imageSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
   }
 
   async imageSelectOption(option) {
@@ -224,7 +252,10 @@ export default class MaterielUpdatePage {
   }
 
   async projetSelectLastOption() {
-    await this.projetSelect.all(by.tagName('option')).last().click();
+    await this.projetSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
   }
 
   async projetSelectOption(option) {
@@ -249,5 +280,67 @@ export default class MaterielUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setLibelleInput('libelle');
+    expect(await this.getLibelleInput()).to.match(/libelle/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setMatriculeInput('matricule');
+    expect(await this.getMatriculeInput()).to.match(/matricule/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setModeleInput('modele');
+    expect(await this.getModeleInput()).to.match(/modele/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setNumCarteGriseInput('numCarteGrise');
+    expect(await this.getNumCarteGriseInput()).to.match(/numCarteGrise/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDateIdentificationInput('01-01-2001');
+    expect(await this.getDateIdentificationInput()).to.eq('2001-01-01');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setCompteurAchatInput('compteurAchat');
+    expect(await this.getCompteurAchatInput()).to.match(/compteurAchat/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setEtatInput('etat');
+    expect(await this.getEtatInput()).to.match(/etat/);
+    await waitUntilDisplayed(this.saveButton);
+    const selectedLocation = await this.getLocationInput().isSelected();
+    if (selectedLocation) {
+      await this.getLocationInput().click();
+      expect(await this.getLocationInput().isSelected()).to.be.false;
+    } else {
+      await this.getLocationInput().click();
+      expect(await this.getLocationInput().isSelected()).to.be.true;
+    }
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDescriptionInput('description');
+    expect(await this.getDescriptionInput()).to.match(/description/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setUserModifInput('userModif');
+    expect(await this.getUserModifInput()).to.match(/userModif/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDateModifInput('01-01-2001');
+    expect(await this.getDateModifInput()).to.eq('2001-01-01');
+    await waitUntilDisplayed(this.saveButton);
+    const selectedMultiProjet = await this.getMultiProjetInput().isSelected();
+    if (selectedMultiProjet) {
+      await this.getMultiProjetInput().click();
+      expect(await this.getMultiProjetInput().isSelected()).to.be.false;
+    } else {
+      await this.getMultiProjetInput().click();
+      expect(await this.getMultiProjetInput().isSelected()).to.be.true;
+    }
+    await this.familleSelectLastOption();
+    await this.typeMaterielSelectLastOption();
+    await this.fournisseurSelectLastOption();
+    await this.marqueSelectLastOption();
+    await this.documentSelectLastOption();
+    await this.employeSelectLastOption();
+    await this.imageSelectLastOption();
+    await this.projetSelectLastOption();
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

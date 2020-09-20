@@ -14,8 +14,7 @@
         "question": "Are you sure you want to delete Materiel {{ id }}?"
       },
       "detail": {
-        "title": "Materiel",
-        "consommation": "Generate Consommation Report"
+        "title": "Materiel"
       },
       "libelle": "Libelle",
       "matricule": "Matricule",
@@ -28,6 +27,7 @@
       "description": "Description",
       "userModif": "User Modif",
       "dateModif": "Date Modif",
+      "multiProjet": "Multi Projet",
       "location": "Location",
       "assurance": "Assurance",
       "transfert": "Transfert",
@@ -41,9 +41,7 @@
       "document": "Document",
       "employe": "Employe",
       "image": "Image",
-      "projet": "projet",
-      "etatFieldON": "Operational",
-      "etatFieldOFF": "out of service"
+      "projet": "Projet"
     }
   }
 }

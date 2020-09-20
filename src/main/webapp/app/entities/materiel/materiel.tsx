@@ -16,33 +16,50 @@ export interface IMaterielProps extends StateProps, DispatchProps, RouteComponen
 export const Materiel = (props: IMaterielProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
 
+
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
   const sortEntities = () => {
     getAllEntities();
-    props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
-    );
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
   };
 
   useEffect(() => {
     sortEntities();
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [props.location.search]);
+
   const sort = p => () => {
     setPaginationState({
       ...paginationState,
       order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p
+      sort: p,
     });
   };
 
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
-      activePage: currentPage
+      activePage: currentPage,
     });
 
   const { materielList, match, loading, totalItems } = props;
@@ -55,16 +72,6 @@ export const Materiel = (props: IMaterielProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.materiel.home.createLabel">Create new Materiel</Translate>
         </Link>
-        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
-        </Link>
-        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
-        </Link>
       </h2>
       <div className="table-responsive">
         {materielList && materielList.length > 0 ? (
@@ -73,6 +80,9 @@ export const Materiel = (props: IMaterielProps) => {
               <tr>
                 <th className="hand" onClick={sort('id')}>
                   <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('multiProjet')}>
+                  <Translate contentKey="ibamApp.materiel.multiProjet">Multi Projet</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('libelle')}>
                   <Translate contentKey="ibamApp.materiel.libelle">Libelle</Translate> <FontAwesomeIcon icon="sort" />
@@ -108,6 +118,7 @@ export const Materiel = (props: IMaterielProps) => {
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.materiel.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+
                 <th>
                   <Translate contentKey="ibamApp.materiel.famille">Famille</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -128,7 +139,11 @@ export const Materiel = (props: IMaterielProps) => {
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.materiel.image">Image</Translate> <FontAwesomeIcon icon="sort" />
-                </th> */}
+                </th>
+                <th>
+                  <Translate contentKey="ibamApp.materiel.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                */}
                 <th />
               </tr>
             </thead>
@@ -140,12 +155,15 @@ export const Materiel = (props: IMaterielProps) => {
                       {materiel.id}
                     </Button>
                   </td>
+                  <td>{materiel.multiProjet ? 'true' : 'false'}</td>
                   <td>{materiel.libelle}</td>
                   <td>{materiel.matricule}</td>
                   <td>{materiel.modele}</td>
                   <td>{materiel.numCarteGrise}</td>
                   {/* <td>
-                    <TextFormat type="date" value={materiel.dateIdentification} format={APP_LOCAL_DATE_FORMAT} />
+                    {materiel.dateIdentification ? (
+                      <TextFormat type="date" value={materiel.dateIdentification} format={APP_LOCAL_DATE_FORMAT} />
+                    ) : null}
                   </td>
                   <td>{materiel.compteurAchat}</td>
                   <td>{materiel.etat}</td>
@@ -153,7 +171,7 @@ export const Materiel = (props: IMaterielProps) => {
                   <td>{materiel.description}</td>
                   <td>{materiel.userModif}</td>
                   <td>
-                    <TextFormat type="date" value={materiel.dateModif} format={APP_LOCAL_DATE_FORMAT} />
+                    {materiel.dateModif ? <TextFormat type="date" value={materiel.dateModif} format={APP_LOCAL_DATE_FORMAT} /> : null}
                   </td>
                   <td>{materiel.famille ? <Link to={`famille/${materiel.famille.id}`}>{materiel.famille.id}</Link> : ''}</td>
                   <td>
@@ -165,7 +183,9 @@ export const Materiel = (props: IMaterielProps) => {
                   <td>{materiel.marque ? <Link to={`marque/${materiel.marque.id}`}>{materiel.marque.id}</Link> : ''}</td>
                   <td>{materiel.document ? <Link to={`document/${materiel.document.id}`}>{materiel.document.id}</Link> : ''}</td>
                   <td>{materiel.employe ? <Link to={`employe/${materiel.employe.id}`}>{materiel.employe.id}</Link> : ''}</td>
-                  <td>{materiel.image ? <Link to={`image/${materiel.image.id}`}>{materiel.image.id}</Link> : ''}</td> */}
+                  <td>{materiel.image ? <Link to={`image/${materiel.image.id}`}>{materiel.image.id}</Link> : ''}</td>
+                  <td>{materiel.projet ? <Link to={`projet/${materiel.projet.id}`}>{materiel.projet.id}</Link> : ''}</td>
+                  */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${materiel.id}`} color="info" size="sm">
@@ -210,20 +230,24 @@ export const Materiel = (props: IMaterielProps) => {
           )
         )}
       </div>
-      <div className={materielList && materielList.length > 0 ? '' : 'd-none'}>
-        <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
-        </Row>
-        <Row className="justify-content-center">
-          <JhiPagination
-            activePage={paginationState.activePage}
-            onSelect={handlePagination}
-            maxButtons={5}
-            itemsPerPage={paginationState.itemsPerPage}
-            totalItems={props.totalItems}
-          />
-        </Row>
-      </div>
+      {props.totalItems ? (
+        <div className={materielList && materielList.length > 0 ? '' : 'd-none'}>
+          <Row className="justify-content-center">
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+          </Row>
+          <Row className="justify-content-center">
+            <JhiPagination
+              activePage={paginationState.activePage}
+              onSelect={handlePagination}
+              maxButtons={5}
+              itemsPerPage={paginationState.itemsPerPage}
+              totalItems={props.totalItems}
+            />
+          </Row>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
@@ -231,11 +255,11 @@ export const Materiel = (props: IMaterielProps) => {
 const mapStateToProps = ({ materiel }: IRootState) => ({
   materielList: materiel.entities,
   loading: materiel.loading,
-  totalItems: materiel.totalItems
+  totalItems: materiel.totalItems,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
