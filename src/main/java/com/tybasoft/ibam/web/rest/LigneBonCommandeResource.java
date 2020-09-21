@@ -108,6 +108,7 @@ public class LigneBonCommandeResource {
     @GetMapping("/ligne-bon-commandes")
     public ResponseEntity<List<LigneBonCommande>> getAllLigneBonCommandes(Pageable pageable) {
         log.debug("REST request to get a page of LigneBonCommandes");
+        log.info(" TEST ON GETTING ALL LIGNE BON COMMANDES");
         Page<LigneBonCommande> page = ligneBonCommandeRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil
                 .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
