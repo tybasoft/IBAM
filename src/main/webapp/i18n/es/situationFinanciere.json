@@ -1,0 +1,25 @@
+{
+  "ibamApp": {
+    "situationFinanciere": {
+      "home": {
+        "title": "Situation Financieres",
+        "createLabel": "Crear nuevo Situation Financiere",
+        "createOrEditLabel": "Crear o editar Situation Financiere",
+        "notFound": "Ningún Situation Financieres encontrado"
+      },
+      "created": "Un nuevo Situation Financiere ha sido creado con el identificador {{ param }}",
+      "updated": "Un Situation Financiere ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Situation Financiere ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Situation Financiere {{ id }}?"
+      },
+      "detail": {
+        "title": "Situation Financiere"
+      },
+      "montantFacture": "Montant Facture",
+      "dateFacturation": "Date Facturation",
+      "montantEnCours": "Montant En Cours",
+      "projet": "Projet"
+    }
+  }
+}
