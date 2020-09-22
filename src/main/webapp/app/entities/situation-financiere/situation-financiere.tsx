@@ -6,7 +6,7 @@ import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBase
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './situation-financiere.reducer';
+import { getEntities ,getReportEntity} from './situation-financiere.reducer';
 import { ISituationFinanciere } from 'app/shared/model/situation-financiere.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
@@ -200,6 +200,7 @@ const mapStateToProps = ({ situationFinanciere }: IRootState) => ({
 
 const mapDispatchToProps = {
   getEntities,
+  getReportEntity
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

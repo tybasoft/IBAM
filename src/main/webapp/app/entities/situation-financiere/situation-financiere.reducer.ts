@@ -117,6 +117,14 @@ export const getEntity: ICrudGetAction<ISituationFinanciere> = id => {
   };
 };
 
+export const getReportEntity: ICrudGetAction<ISituationFinanciere> = id => {
+  const requestUrl = `${apiUrl}/report/${id}`;
+  return {
+    type: ACTION_TYPES.FETCH_SITUATIONFINANCIERE,
+    payload: axios.get<ISituationFinanciere>(requestUrl)
+  };
+};
+
 export const createEntity: ICrudPutAction<ISituationFinanciere> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_SITUATIONFINANCIERE,

@@ -6,7 +6,7 @@ import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntity } from './situation-financiere.reducer';
+import { getEntity,getReportEntity } from './situation-financiere.reducer';
 import { ISituationFinanciere } from 'app/shared/model/situation-financiere.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import jsPDF from "jspdf";
@@ -23,6 +23,7 @@ export const SituationFinanciereDetail = (props: ISituationFinanciereDetailProps
   const { situationFinanciereEntity } = props;
 
   const jsPdfGenerator = ()=> {
+    props.getReportEntity(situationFinanciereEntity.id);
     const doc = new jsPDF('p', 'pt');
     // const img = new Image()
     const img = 'content/images/logo-jhipster.png'
@@ -122,7 +123,7 @@ const mapStateToProps = ({ situationFinanciere }: IRootState) => ({
   situationFinanciereEntity: situationFinanciere.entity,
 });
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getEntity,getReportEntity };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
