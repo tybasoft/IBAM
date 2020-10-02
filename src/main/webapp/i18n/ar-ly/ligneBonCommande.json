@@ -2,25 +2,25 @@
   "ibamApp": {
     "ligneBonCommande": {
       "home": {
-        "title": " خط الطَلَبِيَات ",
-        "createLabel": "إنشاء خط الطَلَبِيَات جديد",
-        "createOrEditLabel": " إنشاء أو تعديل خط الطَلَبِيَات",
-        "notFound": "لم يتم العثور على خط طَلَبِيَات"
+        "title": "Ligne Bon Commandes",
+        "createLabel": "Create a new Ligne Bon Commande",
+        "createOrEditLabel": "Create or edit a Ligne Bon Commande",
+        "notFound": "No Ligne Bon Commandes found"
       },
-      "created": "يتم إنشاء خط  طلبية جديد مع معرف{{ param }}",
-      "updated": "يتم تحديث خط طلبية مع معرف {{ param }}",
-      "deleted": "يتم حذف  خط طلبية مع معرف {{ param }}",
+      "created": "A new Ligne Bon Commande is created with identifier {{ param }}",
+      "updated": "A Ligne Bon Commande is updated with identifier {{ param }}",
+      "deleted": "A Ligne Bon Commande is deleted with identifier {{ param }}",
       "delete": {
-        "question": "هل أنت متأكدأنك تريد حذف خط الطلبية {{ id }}?"
+        "question": "Are you sure you want to delete Ligne Bon Commande {{ id }}?"
       },
       "detail": {
-        "title": "خط الطلبية"
+        "title": "Ligne Bon Commande"
       },
-      "quantite": "كمية ",
-      "userModif": "المستخدم الذي أجرى التغيير",
-      "dateModif": "تاريخ التغيير",
-      "bonCommande": "طَلَبِيَةٍ",
-      "materiau": "مادة"
+      "quantite": "Quantite",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "bonCommande": "Bon Commande",
+      "materiau": "Materiau"
     }
   }
 }

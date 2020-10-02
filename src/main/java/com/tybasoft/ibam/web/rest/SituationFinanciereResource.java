@@ -1,5 +1,9 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.tybasoft.ibam.domain.Projet;
 import com.tybasoft.ibam.domain.SituationFinanciere;
 import com.tybasoft.ibam.repository.ProjetRepository;
@@ -14,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -26,8 +31,21 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.util.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.SituationFinanciere}.
@@ -43,13 +61,13 @@ public class SituationFinanciereResource {
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
+
     @Autowired
     ProjetRepository projetRepository;
-
+    @Autowired
+    SituationFinanciereRepository situationFinanciereRepository;
     @Autowired
     ReportService reportService;
-
-    private final SituationFinanciereRepository situationFinanciereRepository;
 
     public SituationFinanciereResource(SituationFinanciereRepository situationFinanciereRepository) {
         this.situationFinanciereRepository = situationFinanciereRepository;
@@ -183,6 +201,7 @@ public class SituationFinanciereResource {
             .body(result);
     }
 
+
     /**
      * {@code GET  /situation-financieres} : get all the situationFinancieres.
      *
@@ -210,17 +229,6 @@ public class SituationFinanciereResource {
         return ResponseUtil.wrapOrNotFound(situationFinanciere);
     }
 
-    @GetMapping("/situation-financieres/report/{id}")
-    public boolean getReportSituationFinanciere(@PathVariable Long id) {
-        log.debug("REST request to get SituationFinanciere REPORT: {}", id);
-        log.info("Downloading for ID : {} ", id);
-        reportService.setName(ENTITY_NAME);
-        reportService.setDataSource((List) situationFinanciereRepository.findAll());
-        return reportService.exportReport("pdf");
-//        Optional<SituationFinanciere> situationFinanciere = situationFinanciereRepository.findById(id);
-//        return ResponseUtil.wrapOrNotFound();
-    }
-
     /**
      * {@code DELETE  /situation-financieres/:id} : delete the "id" situationFinanciere.
      *
@@ -232,5 +240,105 @@ public class SituationFinanciereResource {
         log.debug("REST request to delete SituationFinanciere : {}", id);
         situationFinanciereRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/situation-financieres/report/{id}")
+    @ResponseBody
+    public Resource getFile(HttpServletRequest request , @PathVariable Long id) throws IOException, URISyntaxException, BadElementException {
+        log.debug("DOWNLOAD FILE TEST : {}",id);
+        SituationFinanciere situationFinanciereCourante = situationFinanciereRepository
+            .findById(id).orElseThrow(
+                ()-> new BadRequestAlertException("Situation_Financiere not found", ENTITY_NAME, "SituationFinanciere"));
+
+        List<SituationFinanciere> situationCollection = situationFinanciereRepository
+            .findAllByProjetIdAndDateFacturationBefore(situationFinanciereCourante.
+                getProjet().
+                getId(),situationFinanciereCourante.
+                getDateFacturation());
+        int size =  situationCollection.size();
+
+        Document document = new Document();
+        String logoPath = Paths.get("./src/main/webapp/content/images/").resolve("logo-jhipster.png").toAbsolutePath()
+            .normalize().toString();
+        Image img = Image.getInstance(logoPath);
+        PdfPTable table = new PdfPTable(4);
+        PdfPTable table1 = new PdfPTable(4);
+        PdfPTable table2 = new PdfPTable(4);
+        try
+        {
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("HelloWorld.pdf"));
+            document.open();
+            document.addTitle("My first PDF");
+            Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD,20,BaseColor.BLACK);
+            Chunk chunk = new Chunk("\n                               Situation Financière");
+            chunk.setFont(titleFont);
+            LocalDate date = LocalDate.now();
+            Paragraph p = new Paragraph();
+            p.add("\n IBAM Enterprise                                                                                      le "+date);
+            p.add("\n ibam@tybasoft.com");
+            p.add("\n Casablanca");
+            p.add("\n 40140");
+            document.add(img);
+            document.add(p);
+            document.add(chunk);
+            Chunk chunk1 = new Chunk("\n        ");
+            document.add(chunk1);
+            Stream.of("Projet", "Date de Debut", "Date de fin", "Budget").forEach(columnTitle -> {
+                PdfPCell header1 = new PdfPCell();
+                header1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                header1.setBorderWidth(2);
+                header1.setPhrase(new Phrase(columnTitle));
+                table1.addCell(header1);
+            });
+            table1.addCell(situationFinanciereCourante.getProjet().getLibelle());
+            table1.addCell(situationFinanciereCourante.getProjet().getDateDebut().toString());
+            table1.addCell(situationFinanciereCourante.getProjet().getDateFin().toString());
+            table1.addCell(situationFinanciereCourante.getProjet().getBudget());
+            Chunk chunk2 = new Chunk("\n       ");
+            document.add(table1);
+            document.add(chunk2);
+            Stream.of("Les Situations financière","Date Facturation","Montant Facture", "Montant En Cours").forEach(columnTitle -> {
+                PdfPCell header = new PdfPCell();
+                header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                header.setBorderWidth(2);
+                header.setPhrase(new Phrase(columnTitle));
+                table.addCell(header);
+            });
+            for(int i =0 ; i<size ; i++){
+                table.addCell(situationCollection.get(i).getId().toString());
+                table.addCell(situationCollection.get(i).getDateFacturation().toString());
+                table.addCell(situationCollection.get(i).getMontantFacture());
+                table.addCell(situationCollection.get(i).getMontantEnCours());
+            }
+            table.addCell(situationFinanciereCourante.getId().toString());
+            table.addCell(situationFinanciereCourante.getDateFacturation().toString());
+            table.addCell(situationFinanciereCourante.getMontantFacture());
+            table.addCell(situationFinanciereCourante.getMontantEnCours());
+            document.add(table);
+            Chunk chunk3 = new Chunk("\n       ");
+            document.add(chunk3);
+            table2.addCell("Le Montant Restant");
+            table2.addCell("");
+            table2.addCell("");
+            table2.addCell(situationFinanciereCourante.getMontantEnCours());
+            document.add(table2);
+
+            document.close();
+            writer.close();
+
+            log.info("DONE CREATING FILE");
+
+        } catch (DocumentException e)
+        {
+            e.printStackTrace();
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        Resource resource = reportService.downloadReport(request,"HelloWorld.pdf");
+
+        return resource;
     }
 }

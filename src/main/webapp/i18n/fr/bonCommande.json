@@ -4,7 +4,7 @@
       "home": {
         "title": "BonCommandes",
         "createLabel": "Créer un nouveau Bon Commande",
-        "createOrEditLabel": "Créer ou éditer un Bon Commande",
+        "createOrEditLabelLigne": "Créer ou éditer une ligne de Bon Commande",
         "notFound": "Aucun Bon Commande trouvé"
       },
       "created": "Un nouveau Bon Commande a été créé avec l'identifiant {{ param }}",
@@ -16,14 +16,20 @@
       "detail": {
         "title": "Bon Commande"
       },
+      "create": "Créer une nouvelle ligne",
+      "add": "Ajouter",
+      "newline": "+ Ajouter nouveau ligne",
+      "tableTitle": "Tableau des lignes",
       "datePrevLiv": "Date Prev Liv",
       "remarques": "Remarques",
+      "quantity": "Quantity",
       "dateCreation": "Date Creation",
       "valide": "Valide",
       "userModif": "User Modif",
       "dateModif": "Date Modif",
       "ligneBonCom": "Ligne Bon Com",
       "depot": "Depot",
+      "materiau": "Materiau",
       "fournisseur": "Fournisseur"
     }
   }

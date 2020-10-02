@@ -9,9 +9,6 @@ import { IRootState } from 'app/shared/reducers';
 import { getEntity,getReportEntity } from './situation-financiere.reducer';
 import { ISituationFinanciere } from 'app/shared/model/situation-financiere.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import jsPDF from "jspdf";
-// import PDFJS from 'pdfjs-dist';
-// import autoTable  from "jspdf-autotable";
 
 export interface ISituationFinanciereDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -20,47 +17,11 @@ export const SituationFinanciereDetail = (props: ISituationFinanciereDetailProps
     props.getEntity(props.match.params.id);
   }, []);
 
-  const { situationFinanciereEntity } = props;
 
+
+  const { situationFinanciereEntity } = props;
   const jsPdfGenerator = ()=> {
     props.getReportEntity(situationFinanciereEntity.id);
-    const doc = new jsPDF('p', 'pt');
-    // const img = new Image()
-    const img = 'content/images/logo-jhipster.png'
-    doc.addImage(img, 'png', 10, 10, 180, 40);
-    const x = 40;
-    const y = 240;
-    const h = 40;
-    const w = 100;
-    const ln = 10;
-    doc.setFontSize(28);
-    doc.setFont('times', 'bold');
-    doc.text('Situation Financiere ', 300, 60);
-    doc.setFontSize(11);
-    doc.setFont('courier', 'normal');
-    doc.text('IBAM Enterprise ', x-10, 65);
-    doc.text('ibam@tybasoft.com ', x-10, 85);
-    doc.text('Casablanca', x-10, 105);
-    doc.text('40140', x-10, 125);
-    doc.setFont('times', 'bold');
-    // doc.setTextColor("red");
-    doc.setFontSize(15);
-    doc.cell(x,y,w,h,"Nom/Prenom",ln,"")
-    doc.cell(x,y+10,w,h,"Email",ln,"")
-    doc.cell(x,y+20,w+10,h,"Telephone/Fax",ln,"")
-    doc.cell(x,y+30,w-10,h,"Adresse",ln,"")
-    doc.cell(x,y+40,w,h,"Reste",ln,"")
-    doc.setFontSize(12);
-    doc.setTextColor("black");
-    doc.setFont('times', 'normal');
-    doc.cell(x,y,100,h+50,situationFinanciereEntity.montantFacture,ln+1,"")
-    doc.cell(x,y+10,w,h+50,situationFinanciereEntity.montantEnCours,ln+1,"")
-    doc.cell(x,y+20,w+10,h+50,situationFinanciereEntity.dateFacturation,ln+1,"")
-    doc.cell(x,y+30,w-10,h+50,situationFinanciereEntity.projet.libelle,ln+1,"")
-
-    doc.text('Merci pour votre confiance ', x+180, 830);
-
-    doc.save('Situation_financiere' + situationFinanciereEntity.id+ '.pdf');
   }
   return (
     <Row>
@@ -100,7 +61,6 @@ export const SituationFinanciereDetail = (props: ISituationFinanciereDetailProps
             <Button style={{ height: 60,weight:100, marginTop: 10 }} onClick={jsPdfGenerator} color="success" >Télécharger</Button>
           </div>
         </dl>
-
         <Button tag={Link} to="/situation-financiere" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">

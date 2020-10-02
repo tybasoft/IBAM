@@ -5,6 +5,7 @@ import com.tybasoft.ibam.domain.SituationFinanciere;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -14,5 +15,7 @@ import java.util.List;
 @Repository
 public interface SituationFinanciereRepository extends JpaRepository<SituationFinanciere, Long> {
     List<SituationFinanciere> findAllByProjet_IdOrderByMontantEnCours(Long id);
+
+    List<SituationFinanciere> findAllByProjetIdAndDateFacturationBefore(Long projet_id, LocalDate dateFacturation);
 
 }

@@ -6,7 +6,7 @@ import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBase
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities ,getReportEntity} from './situation-financiere.reducer';
+import { getEntities } from './situation-financiere.reducer';
 import { ISituationFinanciere } from 'app/shared/model/situation-financiere.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
@@ -81,10 +81,6 @@ export const SituationFinanciere = (props: ISituationFinanciereProps) => {
                 <th className="hand" onClick={sort('id')}>
                   <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('budget')}>
-                  <Translate contentKey="ibamApp.projet.budget">Budget</Translate>{' '}
-                  <FontAwesomeIcon icon="sort" />
-                </th>
                 <th className="hand" onClick={sort('montantFacture')}>
                   <Translate contentKey="ibamApp.situationFinanciere.montantFacture">Montant Facture</Translate>{' '}
                   <FontAwesomeIcon icon="sort" />
@@ -111,7 +107,6 @@ export const SituationFinanciere = (props: ISituationFinanciereProps) => {
                       {situationFinanciere.id}
                     </Button>
                   </td>
-                  <td>{situationFinanciere.projet.budget}</td>
                   <td>{situationFinanciere.montantFacture}</td>
                   <td>
                     {situationFinanciere.dateFacturation ? (
@@ -121,7 +116,7 @@ export const SituationFinanciere = (props: ISituationFinanciereProps) => {
                   <td>{situationFinanciere.montantEnCours}</td>
                   <td>
                     {situationFinanciere.projet ? (
-                      <Link to={`projet/${situationFinanciere.projet.id}`}>{situationFinanciere.projet.libelle}</Link>
+                      <Link to={`projet/${situationFinanciere.projet.id}`}>{situationFinanciere.projet.id}</Link>
                     ) : (
                       ''
                     )}
@@ -200,7 +195,6 @@ const mapStateToProps = ({ situationFinanciere }: IRootState) => ({
 
 const mapDispatchToProps = {
   getEntities,
-  getReportEntity
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
