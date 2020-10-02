@@ -229,6 +229,19 @@ public class SituationFinanciereResource {
         return ResponseUtil.wrapOrNotFound(situationFinanciere);
     }
 
+    @GetMapping("/situation-financieres/search-entities/{keyword}")
+    public ResponseEntity<Collection<SituationFinanciere>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<SituationFinanciere> situationFinancieres ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        situationFinancieres = situationFinanciereRepository.findByProjet_LibelleIsContainingOrMontantEnCoursIsContainingOrMontantFactureIsContaining(keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(situationFinancieres.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), situationFinancieres);
+
+        return ResponseEntity.ok().headers(headers).body(situationFinancieres.getContent());
+    }
+
     /**
      * {@code DELETE  /situation-financieres/:id} : delete the "id" situationFinanciere.
      *

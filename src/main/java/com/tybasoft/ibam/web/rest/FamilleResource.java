@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Equipe;
 import com.tybasoft.ibam.domain.Famille;
 import com.tybasoft.ibam.repository.FamilleRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -123,6 +125,20 @@ public class FamilleResource {
         log.debug("REST request to get Famille : {}", id);
         Optional<Famille> famille = familleRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(famille);
+    }
+
+
+    @GetMapping("/familles/search-entities/{keyword}")
+    public ResponseEntity<Collection<Famille>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Famille> familles ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        familles = familleRepository.findByLibelleIsContainingOrDescriptionIsContaining(keyword,keyword,pageable);
+        log.debug(String.valueOf(familles.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), familles);
+
+        return ResponseEntity.ok().headers(headers).body(familles.getContent());
     }
 
     /**

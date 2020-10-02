@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Fournisseur;
 import com.tybasoft.ibam.domain.Horaire;
 import com.tybasoft.ibam.repository.HoraireRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -7,19 +8,25 @@ import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,6 +122,19 @@ public class HoraireResource {
         return ResponseUtil.wrapOrNotFound(horaire);
     }
 
+
+    @GetMapping("/horaires/search-entities/{keyword}")
+    public ResponseEntity<Collection<Horaire>> seachInAllEntities(@PathVariable String  keyword){
+        List<Horaire> horaires ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        horaires = horaireRepository.findByLibelleIsContainingOrNbrHeurParJrIsContainingOrNbrJourParSemIsContaining(keyword,keyword,keyword);
+        log.debug(String.valueOf(horaires.stream().count()));
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), fournisseurs);
+
+        return ResponseEntity.ok().body(horaires);
+    }
     /**
      * {@code DELETE  /horaires/:id} : delete the "id" horaire.
      *

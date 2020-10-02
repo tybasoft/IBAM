@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Employe;
 import com.tybasoft.ibam.domain.Fonction;
 import com.tybasoft.ibam.repository.FonctionRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -123,6 +125,19 @@ public class FonctionResource {
         log.debug("REST request to get Fonction : {}", id);
         Optional<Fonction> fonction = fonctionRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(fonction);
+    }
+
+    @GetMapping("/fonctions/search-entities/{keyword}")
+    public ResponseEntity<Collection<Fonction>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Fonction> fonctions ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        fonctions = fonctionRepository.findByLibelleIsContainingOrDescriptionIsContainingOrCompetencesIsContaining(keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(fonctions.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), fonctions);
+
+        return ResponseEntity.ok().headers(headers).body(fonctions.getContent());
     }
 
     /**

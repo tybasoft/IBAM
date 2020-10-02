@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Fournisseur;
 import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.ImageRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -11,6 +12,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -107,6 +109,19 @@ public class ImageResource {
         Page<Image> page = imageRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/image/search-entities/{keyword}")
+    public ResponseEntity<Collection<Image>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Image> images ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        images = imageRepository.findByTitreIsContainingOrPathIsContaining(keyword,keyword,pageable);
+        log.debug(String.valueOf(images.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), images);
+
+        return ResponseEntity.ok().headers(headers).body(images.getContent());
     }
 
     /**

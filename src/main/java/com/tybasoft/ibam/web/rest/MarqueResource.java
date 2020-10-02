@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Maintenance;
 import com.tybasoft.ibam.domain.Marque;
 import com.tybasoft.ibam.repository.MarqueRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -128,6 +130,20 @@ public class MarqueResource {
         return ResponseUtil.wrapOrNotFound(marque);
     }
 
+    @GetMapping("/marques/search-entities/{keyword}")
+    public ResponseEntity<Collection<Marque>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Marque> marques ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        marques = marqueRepository.findByDescriptionIsContainingOrLibelleIsContaining(keyword,keyword,pageable);
+        log.debug(String.valueOf(marques.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), marques);
+
+        return ResponseEntity.ok().headers(headers).body(marques.getContent());
+    }
+
+
     /**
      * {@code DELETE  /marques/:id} : delete the "id" marque.
      *
@@ -170,6 +186,6 @@ public class MarqueResource {
         return ResponseEntity.ok().body(true);
 
     }
-    
-   
+
+
 }

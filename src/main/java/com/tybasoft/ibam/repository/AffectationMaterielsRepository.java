@@ -23,5 +23,5 @@ public interface AffectationMaterielsRepository extends JpaRepository<Affectatio
     List<AffectationMateriels> findByMateriel(Materiel materiel);
     Collection<AffectationMateriels> findByDescriptionIsContaining(String description);
     //    Collection<AffectationsMateriels> findByDescriptionIsContainingOrProjet_LibelleIsContainingOrMateriel_LibelleIsContaining(String desp , String prj,String mat);
-    Page<AffectationMateriels> findByDescriptionIsContainingOrProjet_LibelleIsContainingOrMateriel_LibelleIsContaining(String desp , String prj, String mat, Pageable pageable);
+        Page<AffectationMateriels> findByDescriptionIsContainingOrProjet_LibelleIsContainingOrMateriel_LibelleIsContaining(String desp , String prj, String mat, Pageable pageable);
 }

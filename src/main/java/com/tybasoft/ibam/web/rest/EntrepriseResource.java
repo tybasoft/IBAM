@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Employe;
 import com.tybasoft.ibam.domain.Entreprise;
 import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.EntrepriseRepository;
@@ -9,9 +10,11 @@ import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -19,10 +22,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.Entreprise}.
@@ -137,6 +144,19 @@ public class EntrepriseResource {
         log.debug("REST request to get Entreprise : {}", id);
         Optional<Entreprise> entreprise = entrepriseRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(entreprise);
+    }
+
+    @GetMapping("/entreprises/search-entities/{keyword}")
+    public ResponseEntity<Collection<Entreprise>> seachInAllEntities(@PathVariable String  keyword){
+        List<Entreprise> entreprises;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        entreprises = entrepriseRepository.findByEntiteJuridiqueIsContainingOrNomCommercialIsContainingOrAdresseIsContainingOrCapitalIsContaining(keyword,keyword,keyword,keyword);
+        log.debug(String.valueOf(entreprises.stream().count()));
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), entreprises);
+
+        return ResponseEntity.ok().body(entreprises);
     }
 
     /**
