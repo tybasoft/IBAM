@@ -1,0 +1,39 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "projet",
+      "otherEntityName": "projet",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "situationFinanciere"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "montantFacture",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dateFacturation",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "montantEnCours",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20200920161340",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "no",
+  "entityTableName": "situation_financiere",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": false,
+  "pagination": "pagination"
+}
