@@ -1,4 +1,7 @@
 import { element, by, ElementFinder } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class LigneBonCommandeUpdatePage {
   pageTitle: ElementFinder = element(by.id('ibamApp.ligneBonCommande.home.createOrEditLabel'));
@@ -86,5 +89,22 @@ export default class LigneBonCommandeUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setQuantiteInput('quantite');
+    expect(await this.getQuantiteInput()).to.match(/quantite/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setUserModifInput('userModif');
+    expect(await this.getUserModifInput()).to.match(/userModif/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDateModifInput('01-01-2001');
+    expect(await this.getDateModifInput()).to.eq('2001-01-01');
+    await this.bonCommandeSelectLastOption();
+    await this.materiauSelectLastOption();
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

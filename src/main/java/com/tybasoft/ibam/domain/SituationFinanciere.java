@@ -24,6 +24,8 @@ public class SituationFinanciere implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+
+
     @NotNull
     @Column(name = "montant_facture", nullable = false)
     private String montantFacture;
