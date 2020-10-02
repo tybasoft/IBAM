@@ -1,0 +1,34 @@
+{
+  "ibamApp": {
+    "maintenance": {
+      "home": {
+        "title": "الصيانات",
+        "createLabel": "إنشاء صيانة جديدة",
+        "createOrEditLabel": "إنشاء أو تعديل صيانة ",
+        "notFound": "لم يتم العثور على عمليات صيانة"
+      },
+      "created": " يتم إنشاء صيانة جديدة مع معرف {{ param }}",
+      "updated": " يتم تحديث الصيانة مع معرف {{ param }}",
+      "deleted": " تم حذف الصيانة مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت  متأكد أنك تريد حذف الصيانة {{ id }}?"
+      },
+      "detail": {
+        "title": "الصيانة"
+      },
+      "reference": "مرجع",
+      "datePanne": "تاريخ العطب",
+      "frais": "تكاليف الصيانة",
+      "technicien": "تقني ",
+      "motif": "سبب",
+      "problemeFrequent": "مشكلة متكررة",
+      "remarque": "ملاحظة",
+      "dureePanne": "مدة العطب",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiel": "أداة",
+      "centreMaintenance": "مركز الصيانة",
+      "image": "صورة"
+    }
+  }
+}

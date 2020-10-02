@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "fonction": {
+      "home": {
+        "title": "الوظائف",
+        "createLabel": "إنشاء وظيفة جديدة",
+        "createOrEditLabel": "إنشاء أو تعديل وظيفة",
+        "notFound": "لم يتم العثور على وظائف"
+      },
+      "created": " يتم إنشاء وظيفة جديدة مع معرف {{ param }}",
+      "updated": " يتم تحديث الوظيفة مع معرف {{ param }}",
+      "deleted": " تم حذف الوظيفة مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد من أنك تريد حذف الوظيفة {{ id }}?"
+      },
+      "detail": {
+        "title": "وظيفة"
+      },
+      "libelle": "صياغة",
+      "description": "وصف",
+      "competences": "المهارات",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "employe": "الموظف"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "ibamApp": {
+    "paie": {
+      "home": {
+        "title": "Paies",
+        "createLabel": "Crear nuevo Paie",
+        "createOrEditLabel": "Crear o editar Paie",
+        "notFound": "Ningún Paies encontrado"
+      },
+      "created": "Un nuevo Paie ha sido creado con el identificador {{ param }}",
+      "updated": "Un Paie ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Paie ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Paie {{ id }}?"
+      },
+      "detail": {
+        "title": "Paie"
+      },
+      "datePaiement": "Date Paiement",
+      "nbrJourTravail": "Nbr Jour Travail",
+      "montantPay": "Montant Pay",
+      "nbrHeurSup": "Nbr Heur Sup",
+      "dateDebut": "Date Debut",
+      "dateFin": "Date Fin",
+      "remarques": "Remarques",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "employe": "Employe"
+    }
+  }
+}

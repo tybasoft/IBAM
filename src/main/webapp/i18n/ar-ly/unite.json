@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "unite": {
+      "home": {
+        "title": "وحدات",
+        "createLabel": "إنشاء وحدة جديدة",
+        "createOrEditLabel": "إنشاء أو تحريروحدة",
+        "notFound": "لم يتم العثور على وحدات"
+      },
+      "created": "لقد تم إنشاء وحدة جديدة مع معرف {{ param }}",
+      "updated": "لقد تم تحديث وحدة مع معرف{{ param }}",
+      "deleted": "لقد تم حذف وحدة مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد من أنك تريد حذف هذه الوحدة {{ id }}?"
+      },
+      "detail": {
+        "title": "وحدة"
+      },
+      "libelle": "صياغة",
+      "symbole": "رمز",
+      "description": "وصف",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiau": "مواد"
+    }
+  }
+}

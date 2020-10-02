@@ -1,0 +1,31 @@
+{
+  "ibamApp": {
+    "paie": {
+      "home": {
+        "title": " رواتب",
+        "createLabel": "إنشاء دفع جديد",
+        "createOrEditLabel": "إنشاء أو تعديل راتب",
+        "notFound": "لم يتم العثور على رواتب"
+      },
+      "created": "يتم إنشاء راتب جديد مع معرف {{ param }}",
+      "updated": "يتم تحديث  الراتب مع  معرف {{ param }}",
+      "deleted": "تم حذف الراتب مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد أنك تريد حذف الراتب {{ id }}?"
+      },
+      "detail": {
+        "title": "راتب"
+      },
+      "datePaiement": " تاريخ الدفع",
+      "nbrJourTravail": "عدد أيام العمل",
+      "montantPay": "المبلغ المدفوع",
+      "nbrHeurSup": "عدد ساعات العمل الإضافية",
+      "dateDebut": "تاريخ البدء",
+      "dateFin": " تاريخ الانتهاء",
+      "remarques": "ملاحظات",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "employe": "موظف"
+    }
+  }
+}

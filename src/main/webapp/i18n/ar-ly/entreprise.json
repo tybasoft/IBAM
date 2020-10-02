@@ -1,0 +1,33 @@
+{
+  "ibamApp": {
+    "entreprise": {
+      "home": {
+        "title": "الشركات",
+        "createLabel": "إنشاء شركة جديدة",
+        "createOrEditLabel": "إنشاء شركة أو تحريرها",
+        "notFound": "لم يتم العثور على أي شركات"
+      },
+      "created": " يتم إنشاء شركة جديدة مع معرف {{ param }}",
+      "updated": " يتم تحديث الشركة مع معرف {{ param }}",
+      "deleted": " تم حذف الشركة مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد أنك تريد حذف الشركة {{ id }}?"
+      },
+      "detail": {
+        "title": "شركة"
+      },
+      "entiteJuridique": "كيان قانوني",
+      "nomCommercial": "الاسم التجاري",
+      "adresse": "عنوان",
+      "capital": "رأس المال",
+      "direction": "إدارة",
+      "activite": "نشاط",
+      "telephone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "projet": "مشروع",
+      "image": "صورة"
+    }
+  }
+}

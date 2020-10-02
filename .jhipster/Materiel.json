@@ -1,0 +1,163 @@
+{
+  "name": "Materiel",
+  "fields": [
+    {
+      "fieldName": "libelle",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "matricule",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "modele",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "numCarteGrise",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dateIdentification",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "compteurAchat",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "etat",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "location",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "userModif",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateModif",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "multiProjet",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "location",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "location"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "assurance",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "assurance"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "transfertMateriel",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "transfert"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "consommation",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "consommation"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "maintenance",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "maintenance"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "visiteTechnique",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "visitetechnique"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "famille",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "famille",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "typeMateriel",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "typeMateriel",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "fournisseur",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "fournisseur",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "marque",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "marque",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "document",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "document",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "employe",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "employe",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "image",
+      "otherEntityRelationshipName": "materiel",
+      "relationshipName": "image",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipName": "projet",
+      "otherEntityName": "projet",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "materiel"
+    }
+  ],
+  "changelogDate": "20200512003600",
+  "entityTableName": "materiel",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "searchEngine": false,
+  "databaseType": "sql"
+}

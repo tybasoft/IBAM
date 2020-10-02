@@ -1,0 +1,21 @@
+{
+  "ibamApp": {
+    "entitetest": {
+      "home": {
+        "title": "Entitetests",
+        "createLabel": "Créer un nouveau Entitetest",
+        "createOrEditLabel": "Créer ou éditer un Entitetest",
+        "notFound": "Aucun Entitetest trouvé"
+      },
+      "created": "Un nouveau Entitetest a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Entitetest avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Entitetest avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Entitetest {{ id }} ?"
+      },
+      "detail": {
+        "title": "Entitetest"
+      }
+    }
+  }
+}

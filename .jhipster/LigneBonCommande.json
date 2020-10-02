@@ -1,0 +1,47 @@
+{
+    "name": "LigneBonCommande",
+    "fields": [
+        {
+            "fieldName": "quantite",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "bonCommande",
+            "otherEntityRelationshipName": "ligneBonCom",
+            "relationshipName": "bonCommande",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "materiau",
+            "otherEntityRelationshipName": "ligneBonCom",
+            "relationshipName": "materiau",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200512002300",
+    "entityTableName": "ligne_bon_commande",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

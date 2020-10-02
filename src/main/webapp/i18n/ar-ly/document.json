@@ -1,0 +1,28 @@
+{
+  "ibamApp": {
+    "document": {
+      "home": {
+        "title": "المُسْتَنَدات",
+        "createLabel": "إنشاء مستند جديد",
+        "createOrEditLabel": "إنشاءأو تعديل مستند ",
+        "notFound": "لم يتم العثور على مستندات"
+      },
+      "created": "  يتم إنشاء مستند جديد مع معرف  {{ param }}",
+      "updated": " يتم تحديث المستند مع معرف {{ param }}",
+      "deleted": " تم  حذف المستند مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكدأنك تريد حذف المستند {{ id }}?"
+      },
+      "detail": {
+        "title": "مستند"
+      },
+      "titre": "عنوان",
+      "type": "نوع",
+      "path": "مسار",
+      "commentaire": "تعليق",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiel": "أداة"
+    }
+  }
+}

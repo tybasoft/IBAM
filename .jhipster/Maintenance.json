@@ -1,0 +1,91 @@
+{
+    "name": "Maintenance",
+    "fields": [
+        {
+            "fieldName": "reference",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "datePanne",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "frais",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "technicien",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "motif",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "problemeFrequent",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "remarque",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dureePanne",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "materiel",
+            "otherEntityRelationshipName": "maintenance",
+            "relationshipName": "materiel",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "centreMaintenance",
+            "otherEntityRelationshipName": "maintenance",
+            "relationshipName": "centreMaintenance",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "image",
+            "otherEntityRelationshipName": "maintenance",
+            "relationshipName": "image",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200512004300",
+    "entityTableName": "maintenance",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

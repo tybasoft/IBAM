@@ -1,0 +1,30 @@
+{
+  "ibamApp": {
+    "bonCommande": {
+      "home": {
+        "title": "الطَلَبِيَات",
+        "createLabel": "إنشاء طلبية جديدة",
+        "createOrEditLabel": "إنشاء أو تعديل طلبية",
+        "notFound": "لم يتم العثور على أي طلبية"
+      },
+      "created": "يتم إنشاء طلبية جديدة مع معرف {{ param }}",
+      "updated": "يتم تحديث الطلبية مع معرف {{ param }}",
+      "deleted": "تم حذف الطلبية مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد أنك تريد حذف الطلبية {{ id }}?"
+      },
+      "detail": {
+        "title": "طَلَبِيَةٍ"
+      },
+      "datePrevLiv": " تاريخ التسليم المتوقع",
+      "remarques": "ملاحظات",
+      "dateCreation": "تاريخ الإنشاء",
+      "valide": "صالح",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "ligneBonCom": "خط الطلبية",
+      "depot": "مستودع",
+      "fournisseur": "مُوَرِّد"
+    }
+  }
+}

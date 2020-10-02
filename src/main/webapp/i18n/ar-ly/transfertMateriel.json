@@ -1,0 +1,28 @@
+{
+  "ibamApp": {
+    "transfertMateriel": {
+      "home": {
+        "title": "نقل المعدات",
+        "createLabel": "إنشاء نقل جديد للمعدات",
+        "createOrEditLabel": "إنشاء أو تعديل نقل للأجهزة",
+        "notFound": "لم يتم العثور على أي نقل للأجهزة"
+      },
+      "created": "لقد تم إنشاء  نقل جديد للمعدات مع معرف {{ param }}",
+      "updated": " يتم تحديث نقل معدات مع معرف {{ param }}",
+      "deleted": " يتم حدف نقل معدات مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد أنك تريد حذف  نقل المعدات {{ id }}?"
+      },
+      "detail": {
+        "title": "نقل المعدات"
+      },
+      "reference": "مرجع",
+      "dateTransfert": "تاريخ التحويل",
+      "commentaire": "التعليق",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiel": "أداة",
+      "projet": "مشروع"
+    }
+  }
+}

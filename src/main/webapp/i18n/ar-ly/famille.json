@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "famille": {
+      "home": {
+        "title": "عائلات",
+        "createLabel": "إنشاء عائلة جديدة",
+        "createOrEditLabel": "إنشاء أو تعديل عائلة",
+        "notFound": "لم يتم العثور على عائلات"
+      },
+      "created": "يتم إنشاء عائلة جديدة مع معرف {{ param }}",
+      "updated": " يتم تحديث العائلة مع معرف {{ param }}",
+      "deleted": " تم حذف العائلة مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد أنك تريد حذف العائلة {{ id }}?"
+      },
+      "detail": {
+        "title": "عائلة"
+      },
+      "libelle": "صياغة",
+      "description": "وصف",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiau": "مادة",
+      "materiel": "أداة"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "ibamApp": {
+    "consommation": {
+      "home": {
+        "title": "الإستهلاكات",
+        "createLabel": "إنشاءإستهلاك جديد",
+        "createOrEditLabel": "إنشاء أو تعديل إستهلاك",
+        "notFound": "لم يتم العثور على أي  إستهلاك"
+      },
+      "created": "يتم إنشاء إستهلاك جديد مع معرف {{ param }}",
+      "updated": "يتم تحديث الإستهلاك مع معرف {{ param }}",
+      "deleted": " تم حذف الإستهلاك مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد من أنك تريد حذف الإستهلاك {{ id }}?"
+      },
+      "detail": {
+        "title": "الإستهلاك"
+      },
+      "reference": "مرجع",
+      "dateAchat": "تاريخ الشراء",
+      "typeCarburant": "نوع الوقود",
+      "montant": "مبلغ",
+      "quantite": "كمية",
+      "kilometrage": "المسافه المقطوعة",
+      "commentaire": "تعليق",
+      "userModif": "تم إنشاؤها بواسطة",
+      "dateModif": "تاريخ الإنشاء",
+      "materiel": "أداة",
+      "fournisseur": "مورد",
+      "image": "صورة"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+    "name": "Entreprise",
+    "fields": [
+        {
+            "fieldName": "entiteJuridique",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nomCommercial",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "adresse",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "capital",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "direction",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "activite",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "telephone",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "userModif",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateModif",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "projet",
+            "otherEntityRelationshipName": "entreprise",
+            "relationshipName": "projet"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "image",
+            "otherEntityRelationshipName": "entreprise",
+            "relationshipName": "image",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200512002200",
+    "entityTableName": "entreprise",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

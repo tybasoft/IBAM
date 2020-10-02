@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "equipe": {
+      "home": {
+        "title": "Equipes",
+        "createLabel": "Crear nuevo Equipe",
+        "createOrEditLabel": "Crear o editar Equipe",
+        "notFound": "Ningún Equipes encontrado"
+      },
+      "created": "Un nuevo Equipe ha sido creado con el identificador {{ param }}",
+      "updated": "Un Equipe ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Equipe ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Equipe {{ id }}?"
+      },
+      "detail": {
+        "title": "Equipe"
+      },
+      "libelle": "Libelle",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "employe": "Employe",
+      "projet": "Projet",
+      "equipe": "Equipe"
+    }
+  }
+}

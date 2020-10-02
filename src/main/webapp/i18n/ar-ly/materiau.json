@@ -1,0 +1,34 @@
+{
+  "ibamApp": {
+    "materiau": {
+      "home": {
+        "title": "المواد",
+        "createLabel": "إنشاء مادة جديدة",
+        "createOrEditLabel": "إنشاء أو تعديل مادة",
+        "notFound": "لم يتم العثور على مواد"
+      },
+      "created": "يتم إنشاء مادة جديدة مع معرف {{ param }}",
+      "updated": " يتم تحديث المادة مع معرف {{ param }}",
+      "deleted": " تم حذف المادة مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد أنك تريد حذف  المادة{{ id }}?"
+      },
+      "detail": {
+        "title": "مادة"
+      },
+      "libelle": "صياغة",
+      "reference": "مرجع",
+      "poids": "وزن",
+      "volume": "حجم",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "ligneBonRec": "استلام",
+      "ligneBonCom": "طلبية",
+      "marque": "علامة تجارية ",
+      "unite": "وحدة",
+      "famille": "أسرة",
+      "tva": " ضريبة القيمة المضافة ",
+      "image": "صورة"
+    }
+  }
+}

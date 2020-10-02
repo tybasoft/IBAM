@@ -1,0 +1,31 @@
+{
+  "ibamApp": {
+    "location": {
+      "home": {
+        "title": "الإستئجارات",
+        "createLabel": "إنشاء إستئجار جديد",
+        "createOrEditLabel": "إنشاء أو تعديل إستئجار",
+        "notFound": "لم يتم العثور على إستئجارات"
+      },
+      "created": " يتم إنشاء إستئجار جديد مع معرّف {{ param }}",
+      "updated": " يتم تحديث إستئجار مع معرف {{ param }}",
+      "deleted": " تم حذف الإستئجار مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد أنك  تريد حذف الإستئجار {{ id }}?"
+      },
+      "detail": {
+        "title": "إستئجار"
+      },
+      "reference": "مرجع",
+      "dateDebut": "تاريخ البدء",
+      "dateFin": "تاريخ الانتهاء",
+      "tarif": "أجرة",
+      "dureLocation": "مدة الإستئجار",
+      "montantLocation": "مبلغ الإستئجار",
+      "remarque": "ملاحظة",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiel": "أداة"
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "name": "Pointage",
+  "fields": [
+    {
+      "fieldName": "dateJour",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "presenceMatin",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "presenceAPM",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nbrHeureSup",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "remarques",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "userModif",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateModif",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "employe",
+      "otherEntityRelationshipName": "pointage",
+      "relationshipName": "employe",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipName": "fichePointage",
+      "otherEntityName": "fichePointage",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "pointage"
+    }
+  ],
+  "changelogDate": "20200512003200",
+  "entityTableName": "pointage",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "searchEngine": false,
+  "databaseType": "sql"
+}

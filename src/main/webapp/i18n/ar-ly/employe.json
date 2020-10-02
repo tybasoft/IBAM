@@ -1,0 +1,50 @@
+{
+  "ibamApp": {
+    "employe": {
+      "home": {
+        "title": "الموظفين",
+        "createLabel": "إنشاء موظف جديد",
+        "createOrEditLabel": "إنشاءأو تعديل موظف  ",
+        "notFound": "لم يتم العثور على موظفين"
+      },
+      "created": " يتم إنشاء موظف جديد مع معرف {{ param }}",
+      "updated": " يتم تحديث  الموظف مع معرف {{ param }}",
+      "deleted": " تم  حذف الموظف مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد أنك تريد حذف هذاالموظف {{ id }}?"
+      },
+      "detail": {
+        "title": "موظف"
+      },
+      "nom": "النسب",
+      "prenom": "الإسم",
+      "matricule": " رقم",
+      "cin": "البطاقة الوطنية للتعريف",
+      "sexe": "الجنس",
+      "tarifJournalier": "أجرة يومية",
+      "dateNaissance": "تاريخ الميلاد",
+      "lieuNaissance": "مكان الولادة",
+      "situationFam": "الحالة العائلية",
+      "nationalite": "الجنسية",
+      "dateEntree": "تاريخ الدخول",
+      "tel": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "adresse": "العنوان",
+      "division": "شعبة",
+      "typeContrat": "نوع العقد",
+      "multiPorjet": "متعدد المشاريع",
+      "dateDepart": "تاريخ المغادرة",
+      "motifDepart": "سبب المغادرة",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiel": "أداة",
+      "employe": "موظف",
+      "pointage": "وقت حضور",
+      "paie": "راتب",
+      "projet": "مشروع",
+      "equipe": "فريق",
+      "fonction": "وظيفة",
+      "image": "صورة"
+    }
+  }
+}

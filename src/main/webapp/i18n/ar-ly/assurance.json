@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "assurance": {
+      "home": {
+        "title": "التأمينات",
+        "createLabel": "إنشاء تأمين جديد",
+        "createOrEditLabel": "إنشاء أو تعديل تأمين",
+        "notFound": "لم يتم العثور على تأمين"
+      },
+      "created": "يتم إنشاء تأمين جديد مع معرف {{ param }}",
+      "updated": "يتم تحديث التأمين مع معرف {{ param }}",
+      "deleted": "يتم حذف التأمين مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد من أنك تريد حذف التأمين {{ id }}?"
+      },
+      "detail": {
+        "title": "تأمين"
+      },
+      "dateDebut": "تاريخ البدء",
+      "dateFin": "تاريخ الانتهاء",
+      "agence": "الوكاله",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiel": "أداة"
+    }
+  }
+}

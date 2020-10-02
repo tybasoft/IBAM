@@ -1,0 +1,36 @@
+{
+  "ibamApp": {
+    "fournisseur": {
+      "home": {
+        "title": " المُوَرِّدين",
+        "createLabel": "إنشاء مورد جديد",
+        "createOrEditLabel": "إنشاءأو تعديل مورد  ",
+        "notFound": "لم يتم العثور على موردين"
+      },
+      "created": "لقد تم إنشاء  مُوَرِّد جديد مع معرف {{ param }}",
+      "updated": "لقد تم تحديث مُوَرِّد مع معرف {{ param }}",
+      "deleted": " تم حذف  المُوَرِّد مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد أنك تريد حذف المُوَرِّد {{ id }}?"
+      },
+      "detail": {
+        "title": "مُوَرِّد"
+      },
+      "nomCommercial": "إسم التاجر",
+      "type": "نوع",
+      "fax": "فاكس",
+      "nom": "النسب",
+      "prenom": "الإسم",
+      "email": "البريد الإلكتروني",
+      "tel": "الهاتف",
+      "adresse": "العنوان",
+      "description": "وصف",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiel": "أداة",
+      "consommation": "إستهلاك",
+      "bonCommande": "طلب الشراء",
+      "bonReception": "إستلام الطلبية"
+    }
+  }
+}

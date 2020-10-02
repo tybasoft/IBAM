@@ -1,0 +1,32 @@
+{
+  "ibamApp": {
+    "image": {
+      "home": {
+        "title": "الصور",
+        "createLabel": "إنشاء صورة جديدة",
+        "createOrEditLabel": " إنشاء  أو تعديل صورة",
+        "notFound": "لم يتم العثور على صور"
+      },
+      "created": "يتم إنشاء صورة جديدة مع المعرف {{ param }}",
+      "updated": " يتم تحديث الصورة مع معرف {{ param }}",
+      "deleted": "لقد تم حذف الصورة مع معرف {{ param }}",
+      "delete": {
+        "question": "هل أنت متأكد أنك تريد حذف الصورة {{ id }}?"
+      },
+      "detail": {
+        "title": "صورة"
+      },
+      "titre": "عنوان",
+      "path": "مسار",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiau": "مواد",
+      "entreprise": "شركة",
+      "materiel": "أداة",
+      "consommation": "إستهلاك",
+      "maintenance": "صيانة",
+      "employee": "الموظف",
+      "bonReception": "إستلام الطلبية"
+    }
+  }
+}
