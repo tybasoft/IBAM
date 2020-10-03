@@ -141,6 +141,7 @@ public class PaieResource {
         log.debug(String.valueOf(paies.stream().count()));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), paies);
 
+
         return ResponseEntity.ok().headers(headers).body(paies.getContent());
     }
 

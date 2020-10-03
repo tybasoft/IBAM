@@ -50,7 +50,7 @@ export const LigneBonCommandeUpdate = (props: ILigneBonCommandeUpdateProps) => {
     if (errors.length === 0) {
       const entity = {
         ...ligneBonCommandeEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -93,7 +93,7 @@ export const LigneBonCommandeUpdate = (props: ILigneBonCommandeUpdateProps) => {
                   type="text"
                   name="quantite"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') }
+                    required: { value: true, errorMessage: translate('entity.validation.required') },
                   }}
                 />
               </AvGroup>
@@ -133,7 +133,7 @@ export const LigneBonCommandeUpdate = (props: ILigneBonCommandeUpdateProps) => {
                   {materiaus
                     ? materiaus.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle+"("+otherEntity.reference+")"}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}
@@ -148,6 +148,7 @@ export const LigneBonCommandeUpdate = (props: ILigneBonCommandeUpdateProps) => {
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+                <FontAwesomeIcon icon="save" />
                 &nbsp;
                 <Translate contentKey="entity.action.save">Save</Translate>
               </Button>
@@ -165,7 +166,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   ligneBonCommandeEntity: storeState.ligneBonCommande.entity,
   loading: storeState.ligneBonCommande.loading,
   updating: storeState.ligneBonCommande.updating,
-  updateSuccess: storeState.ligneBonCommande.updateSuccess
+  updateSuccess: storeState.ligneBonCommande.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -174,7 +175,7 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

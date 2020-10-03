@@ -66,6 +66,8 @@ public class Document implements Serializable {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not
     // remove
+
+
     public Long getId() {
         return id;
     }
@@ -202,6 +204,6 @@ public class Document implements Serializable {
                 + ", path='" + getPath() + "'" + ", commentaire='" + getCommentaire() + "'" + ", userModif='"
                 + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}";
     }
-    
-    
+
+
 }

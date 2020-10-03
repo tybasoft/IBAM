@@ -1,8 +1,6 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tybasoft.ibam.security.SecurityUtils;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -10,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.LocalDate;
 
 /**
@@ -18,7 +15,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "ligne_bon_commande")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LigneBonCommande implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,15 +36,14 @@ public class LigneBonCommande implements Serializable {
     private LocalDate dateModif;
 
     @ManyToOne
-    @JsonIgnoreProperties("ligneBonComs")
+    @JsonIgnoreProperties(value = "ligneBonComs", allowSetters = true)
     private BonCommande bonCommande;
 
     @ManyToOne
-    @JsonIgnoreProperties("ligneBonComs")
+    @JsonIgnoreProperties(value = "ligneBonComs", allowSetters = true)
     private Materiau materiau;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
-    // remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -120,22 +116,7 @@ public class LigneBonCommande implements Serializable {
     public void setMateriau(Materiau materiau) {
         this.materiau = materiau;
     }
-
-    // Fonction executed when the object is created
-    @PrePersist
-    public void prePresist() {
-        this.dateModif = LocalDate.now();
-        this.userModif = SecurityUtils.getCurrentUserLogin().get();
-    }
-
-    // Fonction executed when the object is updated
-    @PreUpdate
-    public void preUpdate() {
-        this.dateModif = LocalDate.now();
-        this.userModif = SecurityUtils.getCurrentUserLogin().get();
-    }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
-    // setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -153,9 +134,14 @@ public class LigneBonCommande implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
-        return "LigneBonCommande{" + "id=" + getId() + ", quantite='" + getQuantite() + "'" + ", userModif='"
-                + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}";
+        return "LigneBonCommande{" +
+            "id=" + getId() +
+            ", quantite='" + getQuantite() + "'" +
+            ", userModif='" + getUserModif() + "'" +
+            ", dateModif='" + getDateModif() + "'" +
+            "}";
     }
 }

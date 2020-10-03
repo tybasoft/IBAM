@@ -66,6 +66,11 @@ export const BonCommande = (props: IBonCommandeProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
         </Link>
+        <Link to={`${match.url}/ligne`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.bonCommande.create">Create ligne</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {bonCommandeList && bonCommandeList.length > 0 ? (
