@@ -20,6 +20,8 @@ public interface SituationFinanciereRepository extends JpaRepository<SituationFi
 
     List<SituationFinanciere> findAllByProjetIdAndDateFacturationBefore(Long projet_id, LocalDate dateFacturation);
 
+
+
     Page<SituationFinanciere> findByProjet_LibelleIsContainingOrMontantEnCoursIsContainingOrMontantFactureIsContaining(String projet , String montantC , String montantF , Pageable pageable);
 
 }

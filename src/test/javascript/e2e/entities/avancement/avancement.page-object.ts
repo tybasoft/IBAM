@@ -4,13 +4,13 @@ import { waitUntilAnyDisplayed, waitUntilDisplayed, click, waitUntilHidden, isVi
 
 import NavBarPage from './../../page-objects/navbar-page';
 
-import LigneBonCommandeUpdatePage from './ligne-bon-commande-update.page-object';
+import AvancementUpdatePage from './avancement-update.page-object';
 
 const expect = chai.expect;
-export class LigneBonCommandeDeleteDialog {
+export class AvancementDeleteDialog {
   deleteModal = element(by.className('modal'));
-  private dialogTitle: ElementFinder = element(by.id('ibamApp.ligneBonCommande.delete.question'));
-  private confirmButton = element(by.id('jhi-confirm-delete-ligneBonCommande'));
+  private dialogTitle: ElementFinder = element(by.id('ibamApp.avancement.delete.question'));
+  private confirmButton = element(by.id('jhi-confirm-delete-avancement'));
 
   getDialogTitle() {
     return this.dialogTitle;
@@ -21,10 +21,10 @@ export class LigneBonCommandeDeleteDialog {
   }
 }
 
-export default class LigneBonCommandeComponentsPage {
+export default class AvancementComponentsPage {
   createButton: ElementFinder = element(by.id('jh-create-entity'));
   deleteButtons = element.all(by.css('div table .btn-danger'));
-  title: ElementFinder = element(by.id('ligne-bon-commande-heading'));
+  title: ElementFinder = element(by.id('avancement-heading'));
   noRecords: ElementFinder = element(by.css('#app-view-container .table-responsive div.alert.alert-warning'));
   table: ElementFinder = element(by.css('#app-view-container div.table-responsive > table'));
 
@@ -43,27 +43,27 @@ export default class LigneBonCommandeComponentsPage {
   }
 
   async goToPage(navBarPage: NavBarPage) {
-    await navBarPage.getEntityPage('ligne-bon-commande');
+    await navBarPage.getEntityPage('avancement');
     await waitUntilAnyDisplayed([this.noRecords, this.table]);
     return this;
   }
 
-  async goToCreateLigneBonCommande() {
+  async goToCreateAvancement() {
     await this.createButton.click();
-    return new LigneBonCommandeUpdatePage();
+    return new AvancementUpdatePage();
   }
 
-  async deleteLigneBonCommande() {
+  async deleteAvancement() {
     const deleteButton = this.getDeleteButton(this.records.last());
     await click(deleteButton);
 
-    const ligneBonCommandeDeleteDialog = new LigneBonCommandeDeleteDialog();
-    await waitUntilDisplayed(ligneBonCommandeDeleteDialog.deleteModal);
-    expect(await ligneBonCommandeDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/ibamApp.ligneBonCommande.delete.question/);
-    await ligneBonCommandeDeleteDialog.clickOnConfirmButton();
+    const avancementDeleteDialog = new AvancementDeleteDialog();
+    await waitUntilDisplayed(avancementDeleteDialog.deleteModal);
+    expect(await avancementDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/ibamApp.avancement.delete.question/);
+    await avancementDeleteDialog.clickOnConfirmButton();
 
-    await waitUntilHidden(ligneBonCommandeDeleteDialog.deleteModal);
+    await waitUntilHidden(avancementDeleteDialog.deleteModal);
 
-    expect(await isVisible(ligneBonCommandeDeleteDialog.deleteModal)).to.be.false;
+    expect(await isVisible(avancementDeleteDialog.deleteModal)).to.be.false;
   }
 }
