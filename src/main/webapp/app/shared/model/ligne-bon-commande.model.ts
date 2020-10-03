@@ -6,7 +6,7 @@ export interface ILigneBonCommande {
   id?: number;
   quantite?: string;
   userModif?: string;
-  dateModif?: Moment;
+  dateModif?: string;
   bonCommande?: IBonCommande;
   materiau?: IMateriau;
 }

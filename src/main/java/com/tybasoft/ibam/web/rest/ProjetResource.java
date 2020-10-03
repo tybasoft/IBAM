@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Pointage;
 import com.tybasoft.ibam.domain.Projet;
 import com.tybasoft.ibam.repository.ProjetRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,6 +127,19 @@ public class ProjetResource {
         log.debug("REST request to get Projet : {}", id);
         Optional<Projet> projet = projetRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(projet);
+    }
+
+    @GetMapping("/projets/search-entities/{keyword}")
+    public ResponseEntity<Collection<Projet>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Projet> projets ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        projets = projetRepository.findByLibelleIsContainingOrReferenceIsContainingOrDescriptionIsContaining(keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(projets.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), projets);
+
+        return ResponseEntity.ok().headers(headers).body(projets.getContent());
     }
 
     /**

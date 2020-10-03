@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.BonCommande;
 import com.tybasoft.ibam.domain.BonReception;
 import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.BonReceptionRepository;
@@ -13,6 +14,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -131,6 +133,19 @@ public class BonReceptionResource {
         Page<BonReception> page = bonReceptionRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/bon-receptions/search-entities/{keyword}")
+    public ResponseEntity<Collection<BonReception>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<BonReception> bonReceptions ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        bonReceptions = bonReceptionRepository.findByRemarquesIsContainingOrDepot_LibelleIsContainingOrFournisseur_EmailIsContaining(keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(bonReceptions.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), bonReceptions);
+
+        return ResponseEntity.ok().headers(headers).body(bonReceptions.getContent());
     }
 
     /**

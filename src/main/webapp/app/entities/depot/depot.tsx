@@ -61,12 +61,12 @@ export const Depot = (props: IDepotProps) => {
                 <th>
                   <Translate contentKey="ibamApp.depot.pays">Pays</Translate>
                 </th>
-                <th>
+                {/*<th>
                   <Translate contentKey="ibamApp.depot.userModif">User Modif</Translate>
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.depot.dateModif">Date Modif</Translate>
-                </th>
+                </th>*/}
                 <th />
               </tr>
             </thead>

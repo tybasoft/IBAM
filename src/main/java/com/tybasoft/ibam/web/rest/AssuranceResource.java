@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.AffectationMateriels;
 import com.tybasoft.ibam.domain.Assurance;
 import com.tybasoft.ibam.repository.AssuranceRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -10,6 +11,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -41,7 +43,7 @@ public class AssuranceResource {
     private ReportService reportService;
 
     private static final String ENTITY_NAME = "assurance";
-   
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
@@ -149,6 +151,19 @@ public class AssuranceResource {
         return reportService.exportReport(format);
     }
 
+    @GetMapping("/assurances/search-entities/{keyword}")
+    public ResponseEntity<Collection<Assurance>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+       Page<Assurance> assurances ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        assurances = assuranceRepository.findByMateriel_LibelleIsContainingOrAgenceIsContaining(keyword,keyword,pageable);
+        log.debug(String.valueOf(assurances.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), assurances);
+
+        return ResponseEntity.ok().headers(headers).body(assurances.getContent());
+    }
+
     @Autowired
     private FileStorageService fileStorageService;
 
@@ -161,7 +176,7 @@ public class AssuranceResource {
         } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
     }
-    
- 
+
+
 
 }

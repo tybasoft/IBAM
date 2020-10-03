@@ -1,0 +1,26 @@
+{
+  "ibamApp": {
+    "affectationMateriels": {
+      "home": {
+        "title": "AffectationMateriels",
+        "createLabel": "Créer un nouveau Affectation Materiels",
+        "createOrEditLabel": "Créer ou éditer un Affectation Materiels",
+        "notFound": "Aucun Affectation Materiels trouvé"
+      },
+      "created": "Un nouveau Affectation Materiels a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Affectation Materiels avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Affectation Materiels avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Affectation Materiels {{ id }} ?"
+      },
+      "detail": {
+        "title": "Affectation Materiels"
+      },
+      "dateDebut": "Date Debut",
+      "dateFin": "Date Fin",
+      "description": "Description",
+      "projet": "Projet",
+      "materiel": "Materiel"
+    }
+  }
+}

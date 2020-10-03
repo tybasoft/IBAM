@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.LigneBonCommande;
 import com.tybasoft.ibam.domain.LigneBonReception;
 import com.tybasoft.ibam.repository.LigneBonReceptionRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -128,6 +130,18 @@ public class LigneBonReceptionResource {
         return ResponseUtil.wrapOrNotFound(ligneBonReception);
     }
 
+//    @GetMapping("/ligne-bon-commandes/search-entities/{keyword}")
+//    public ResponseEntity<Collection<LigneBonReception>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+//        Page<LigneBonReception> ligneBonReceptions ;
+////        String key = keyword.toLowerCase();
+//        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+//        log.debug(keyword);
+//        ligneBonReceptions = ligneBonReceptionRepository.findByQuantiteIsContainingOrMateriau_LibelleIsContaining(keyword,keyword,pageable);
+//        log.debug(String.valueOf(ligneBonReceptions.stream().count()));
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), ligneBonReceptions);
+//
+//        return ResponseEntity.ok().headers(headers).body(ligneBonReceptions.getContent());
+//    }
     /**
      * {@code DELETE  /ligne-bon-receptions/:id} : delete the "id"
      * ligneBonReception.

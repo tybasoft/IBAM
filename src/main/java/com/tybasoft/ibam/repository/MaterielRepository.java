@@ -1,19 +1,21 @@
 package com.tybasoft.ibam.repository;
 
-import java.util.List;
-
 import com.tybasoft.ibam.domain.Materiel;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
- * Spring Data repository for the Materiel entity.
+ * Spring Data  repository for the Materiel entity.
  */
 @SuppressWarnings("unused")
 @Repository
 public interface MaterielRepository extends JpaRepository<Materiel, Long> {
-    @Query(value = "SELECT * FROM MATERIEL u WHERE u.projet_id = ?1", nativeQuery = true)
-    List<Materiel> findAllByProjetId(@Param("id") Long id);
+
+    List<Materiel> findAllByProjetId(Long id);
+    Page<Materiel> findByLibelleIsContainingOrMatriculeIsContainingOrModeleIsContainingOrNumCarteGriseIsContaining(String lib , String matricule, String modele , String num , Pageable pageable);
 }

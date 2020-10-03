@@ -1,6 +1,7 @@
 package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.Document;
+import com.tybasoft.ibam.domain.Materiel;
 import com.tybasoft.ibam.domain.Paie;
 import com.tybasoft.ibam.domain.Pointage;
 import com.tybasoft.ibam.repository.PaieRepository;
@@ -28,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,11 +49,11 @@ public class PaieResource {
     private String applicationName;
 
     private final PaieRepository paieRepository;
-   
+
 
     public PaieResource(PaieRepository paieRepository) {
         this.paieRepository = paieRepository;
-        
+
     }
 
     /**
@@ -127,6 +129,19 @@ public class PaieResource {
         log.debug("REST request to get Paie : {}", id);
         Optional<Paie> paie = paieRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(paie);
+    }
+
+    @GetMapping("/paies/search-entities/{keyword}")
+    public ResponseEntity<Collection<Paie>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Paie> paies ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        paies = paieRepository.findByRemarquesIsContainingOrNbrHeurSupIsContainingOrMontantPayIsContainingOrNbrHeurSupIsContaining(keyword,keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(paies.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), paies);
+
+        return ResponseEntity.ok().headers(headers).body(paies.getContent());
     }
 
     /**

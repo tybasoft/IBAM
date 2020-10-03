@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Document;
 import com.tybasoft.ibam.domain.Employe;
 import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.EmployeRepository;
@@ -13,6 +14,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -145,6 +147,19 @@ public class EmployeResource {
         log.debug("REST request to get Employe : {}", id);
         Optional<Employe> employe = employeRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(employe);
+    }
+
+    @GetMapping("/employes/search-entities/{keyword}")
+    public ResponseEntity<Collection<Employe>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Employe> employes ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        employes = employeRepository.findByNomIsContainingOrPrenomIsContainingOrMatriculeIsContainingOrCinIsContaining(keyword,keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(employes.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), employes);
+
+        return ResponseEntity.ok().headers(headers).body(employes.getContent());
     }
 
     /**

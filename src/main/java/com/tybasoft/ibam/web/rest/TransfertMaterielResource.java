@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.SituationFinanciere;
 import com.tybasoft.ibam.domain.TransfertMateriel;
 import com.tybasoft.ibam.repository.TransfertMaterielRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -126,6 +128,19 @@ public class TransfertMaterielResource {
         log.debug("REST request to get TransfertMateriel : {}", id);
         Optional<TransfertMateriel> transfertMateriel = transfertMaterielRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(transfertMateriel);
+    }
+
+    @GetMapping("/transfert-materiels/search-entities/{keyword}")
+    public ResponseEntity<Collection<TransfertMateriel>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<TransfertMateriel> transfertMateriels ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        transfertMateriels = transfertMaterielRepository.findByReferenceIsContainingOrCommentaireIsContainingOrMateriel_LibelleIsContaining(keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(transfertMateriels.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), transfertMateriels);
+
+        return ResponseEntity.ok().headers(headers).body(transfertMateriels.getContent());
     }
 
     /**

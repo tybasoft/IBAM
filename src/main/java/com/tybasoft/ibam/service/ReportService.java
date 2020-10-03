@@ -7,14 +7,12 @@ import com.tybasoft.ibam.domain.Materiel;
 import com.tybasoft.ibam.repository.ConsommationRepository;
 import com.tybasoft.ibam.repository.MaterielRepository;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,11 +29,19 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleWriterExporterOutput;
+import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 @Service
 public class ReportService {
@@ -74,6 +80,40 @@ public class ReportService {
 
         return generated;
     }
+    public Resource downloadReport(HttpServletRequest request , String fileName) throws IOException {
+        String absolutepath = Paths.get(".").resolve(fileName).toAbsolutePath()
+            .normalize().toString();
+
+        File file = ResourceUtils.getFile(absolutepath);
+//        String contentType = request.getServletContext().getMimeType(file.getFile().getAbsolutePath());
+
+
+//        Resource resource = (Resource) file.getAbsoluteFile();
+//        Path path = Paths.get("/home/vvoox/IBAM/HelloWorld.pdf");
+//        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        String contentType = request.getServletContext().getMimeType(file.getAbsolutePath());
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile("file",
+            file.getName(), contentType, IOUtils.toByteArray(input));
+        String source = "./"+multipartFile.getOriginalFilename();
+        String destination = "./src/main/webapp/content/uploads/documents/"+multipartFile.getOriginalFilename();
+
+        Path pathToSourceFile = Paths.get(source);
+        Path pathToFile = Paths.get(destination);
+
+        try{
+            Files.copy(multipartFile.getInputStream(),pathToFile, StandardCopyOption.REPLACE_EXISTING);
+            Files.delete(pathToSourceFile);
+        }catch (IOException c){
+            throw new RuntimeException(c);
+        }
+
+        UrlResource resource = new UrlResource(pathToFile.toUri());
+
+        return resource;
+    }
+
 
     public boolean exportConsommationReportParProjet(Long id) {
         boolean generated = true;

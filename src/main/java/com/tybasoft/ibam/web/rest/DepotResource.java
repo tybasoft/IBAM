@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Consommation;
 import com.tybasoft.ibam.domain.Depot;
 import com.tybasoft.ibam.repository.DepotRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -7,19 +8,25 @@ import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,6 +119,18 @@ public class DepotResource {
         log.debug("REST request to get Depot : {}", id);
         Optional<Depot> depot = depotRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(depot);
+    }
+    @GetMapping("/depots/search-entities/{keyword}")
+    public ResponseEntity<Collection<Depot>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Depot> depotPage ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        depotPage = depotRepository.findByLibelleIsContainingOrAdresseIsContainingOrTelIsContainingOrVilleIsContainingOrPaysIsContaining(keyword,keyword,keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(depotPage.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), depotPage);
+
+        return ResponseEntity.ok().headers(headers).body(depotPage.getContent());
     }
 
     /**

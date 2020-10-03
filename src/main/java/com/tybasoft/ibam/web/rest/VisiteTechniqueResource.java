@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Unite;
 import com.tybasoft.ibam.domain.VisiteTechnique;
 import com.tybasoft.ibam.repository.VisiteTechniqueRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -9,6 +10,7 @@ import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import liquibase.pro.packaged.V;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -146,6 +149,19 @@ public class VisiteTechniqueResource {
                 .build();
     }
 
+    @GetMapping("/visite-techniques/search-entities/{keyword}")
+    public ResponseEntity<Collection<VisiteTechnique>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<VisiteTechnique> visiteTechniques ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        visiteTechniques = visiteTechniqueRepository.findByReferenceIsContainingOrRemarqueIsContainingOrMateriel_LibelleIsContaining(keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(visiteTechniques.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), visiteTechniques);
+
+        return ResponseEntity.ok().headers(headers).body(visiteTechniques.getContent());
+    }
+
     @Autowired
     private ReportService reportService;
 
@@ -173,5 +189,5 @@ public class VisiteTechniqueResource {
         return ResponseEntity.ok().body(true);
 
     }
-    
+
 }
