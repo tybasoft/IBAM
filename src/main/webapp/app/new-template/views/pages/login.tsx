@@ -9,6 +9,7 @@ import { AvForm, AvField, AvGroup, AvInput } from 'availity-reactstrap-validatio
 import axios from 'axios';
 import { Storage } from 'react-jhipster';
 const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
+import { Translate, translate } from 'react-jhipster';
 
 export interface ILoginFormProps {
   loginError: boolean;
@@ -51,16 +52,18 @@ class Login extends Component<ILoginFormProps> {
           <Col xs="12" className="d-flex align-items-center justify-content-center">
             <Card className="gradient-indigo-purple text-center width-400">
               <CardBody>
-                <h2 className="white py-4">Se connecter</h2>
+                <h2 className="white py-4">
+                  <Translate contentKey="login.title">Authentification</Translate>
+                </h2>
                 <AvForm className="pt-2" onSubmit={this.handleSubmit}>
                   <FormGroup>
                     <Col md="12">
                       <AvField
                         name="username"
-                        // label={translate('global.form.username.label')}
-                        // placeholder={translate('global.form.username.placeholder')}
+                        label={translate('global.form.username.label')}
+                        placeholder={translate('global.form.username.placeholder')}
                         required
-                        errorMessage="Username cannot be empty!"
+                        errorMessage={translate('login.messages.error.username')}
                         autoFocus
                       />
                       {/* <Input type="text" className="form-control" name="username" id="inputEmail" placeholder="Username" required /> */}
@@ -75,7 +78,7 @@ class Login extends Component<ILoginFormProps> {
                         // label={translate('global.form.username.label')}
                         // placeholder={translate('global.form.username.placeholder')}
                         required
-                        errorMessage="Username cannot be empty!"
+                        errorMessage={translate('login.messages.error.password')}
                         autoFocus
                       />
                       {/* <Input type="password" className="form-control" name="password" id="inputPass" placeholder="Password" required /> */}
@@ -94,7 +97,7 @@ class Login extends Component<ILoginFormProps> {
                             id="rememberMe"
                           />
                           <Label className="custom-control-label float-left white" for="rememberme">
-                            Remember Me
+                            <Translate contentKey="login.form.rememberme">Remember me</Translate>
                           </Label>
                         </div>
                       </Col>
@@ -103,10 +106,7 @@ class Login extends Component<ILoginFormProps> {
                   <FormGroup>
                     <Col md="12">
                       <Button type="submit" color="danger" block className="btn-pink btn-raised">
-                        Submit
-                      </Button>
-                      <Button type="button" color="secondary" block className="btn-raised">
-                        Cancel
+                        <Translate contentKey="login.form.button">Submit</Translate>
                       </Button>
                     </Col>
                   </FormGroup>
@@ -115,12 +115,12 @@ class Login extends Component<ILoginFormProps> {
               <CardFooter>
                 <div className="float-left">
                   <NavLink to="/pages/forgot-password" className="text-white">
-                    Forgot Password?
+                    <Translate contentKey="login.password.forgot">Forgot Password?</Translate>
                   </NavLink>
                 </div>
                 <div className="float-right">
                   <NavLink to="/pages/register" className="text-white">
-                    Register Now
+                    <Translate contentKey="login.register">Register</Translate>
                   </NavLink>
                 </div>
               </CardFooter>

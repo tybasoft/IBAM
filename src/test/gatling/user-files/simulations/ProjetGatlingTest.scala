@@ -84,6 +84,8 @@ class ProjetGatlingTest extends Simulation {
                 , "pays":"SAMPLE_TEXT"
                 , "userModif":"SAMPLE_TEXT"
                 , "dateModif":"2020-01-01T00:00:00.000Z"
+                , "latitude":null
+                , "longitude":null
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_projet_url"))).exitHereIfFailed

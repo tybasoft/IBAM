@@ -27,6 +27,7 @@ export interface IMateriel {
   description?: string;
   userModif?: string;
   dateModif?: string;
+  multiProjet?: boolean;
   locations?: ILocation[];
   assurances?: IAssurance[];
   transferts?: ITransfertMateriel[];
@@ -45,4 +46,5 @@ export interface IMateriel {
 
 export const defaultValue: Readonly<IMateriel> = {
   location: false,
+  multiProjet: false
 };

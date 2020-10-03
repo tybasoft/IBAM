@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_ENTREPRISE: 'entreprise/UPDATE_ENTREPRISE',
   DELETE_ENTREPRISE: 'entreprise/DELETE_ENTREPRISE',
   RESET: 'entreprise/RESET',
-  REPPORT: 'entreprise/REPPORT'
+  REPPORT: 'entreprise/REPPORT',
+  FILTER_ENTREPRISE_LIST: 'entreprise/FILTER'
 };
 
 const initialState = {
@@ -22,7 +23,8 @@ const initialState = {
   entities: [] as ReadonlyArray<IEntreprise>,
   entity: defaultValue,
   updating: false,
-  updateSuccess: false
+  updateSuccess: false,
+  totalItems: 0
 };
 
 export type EntrepriseState = Readonly<typeof initialState>;
@@ -38,6 +40,12 @@ export default (state: EntrepriseState = initialState, action): EntrepriseState 
         errorMessage: null,
         updateSuccess: false,
         loading: true
+      };
+    case REQUEST(ACTION_TYPES.FILTER_ENTREPRISE_LIST):
+      return {
+        ...state,
+        loading: true
+        // entities: null
       };
     case REQUEST(ACTION_TYPES.CREATE_ENTREPRISE):
     case REQUEST(ACTION_TYPES.UPDATE_ENTREPRISE):
@@ -65,6 +73,7 @@ export default (state: EntrepriseState = initialState, action): EntrepriseState 
         ...state,
         loading: false,
         entities: action.payload.data
+        // totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
     case SUCCESS(ACTION_TYPES.FETCH_ENTREPRISE):
       return {
@@ -96,6 +105,12 @@ export default (state: EntrepriseState = initialState, action): EntrepriseState 
       return {
         ...initialState
       };
+    case SUCCESS(ACTION_TYPES.FILTER_ENTREPRISE_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case REQUEST('UPLOAD_FILE'):
       return { ...state };
     default:
@@ -107,9 +122,18 @@ export const apiUrl = 'api/entreprises';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IEntreprise> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_ENTREPRISE_LIST,
-  payload: axios.get<IEntreprise>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
+export const getEntities: ICrudGetAllAction<IEntreprise> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+
+  return {
+    type: ACTION_TYPES.FETCH_ENTREPRISE_LIST,
+    payload: axios.get<IEntreprise>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const filterEntities: ICrudGetAllAction<IEntreprise> = filter => ({
+  type: ACTION_TYPES.FILTER_ENTREPRISE_LIST,
+  payload: axios.get<IEntreprise>(`${apiUrl}?query=${filter}&cacheBuster=${new Date().getTime()}`)
 });
 
 export const getEntity: ICrudGetAction<IEntreprise> = id => {
@@ -134,6 +158,8 @@ export const updateEntity: ICrudPutAction<IEntreprise> = entity => async dispatc
     type: ACTION_TYPES.UPDATE_ENTREPRISE,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -143,6 +169,7 @@ export const deleteEntity: ICrudDeleteAction<IEntreprise> = id => async dispatch
     type: ACTION_TYPES.DELETE_ENTREPRISE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
   return result;
 };
 

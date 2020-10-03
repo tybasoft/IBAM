@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Input, ListGroup, ListGroupItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Search } from 'react-feather';
-
-class NavbarSearch extends Component {
+import { debounce } from 'lodash';
+class NavbarSearch extends Component<any, any> {
   state = {
     list: [
       {
@@ -82,41 +82,47 @@ class NavbarSearch extends Component {
     }
   };
 
+  handleSearch = () => {
+    let searchTerm = this.state.searchTerm;
+    if (searchTerm !== '') this.props.search(searchTerm);
+  };
   handleChange = e => {
+    // return debounce(e => this.props.search(e.target.value), 300);
+    // else
     // Variable to hold the original version of the list
-    let currentList: any = [];
+    // let currentList: any = [];
 
-    // Variable to hold the filtered list before putting into state
-    let newList = [];
+    // // Variable to hold the filtered list before putting into state
+    // let newList = [];
 
-    // If the search bar isn't empty
-    if (e.target.value !== '') {
-      // Assign the original list to currentList
-      currentList = this.state.list;
+    // // If the search bar isn't empty
+    // if (e.target.value !== '') {
+    //   // Assign the original list to currentList
+    //   currentList = this.state.list;
 
-      // Use .filter() to determine which items should be displayed
-      // based on the search terms
-      newList = currentList.filter(item => {
-        // change current item to lowercase
-        const lc = item.name.toLowerCase();
-        // change search term to lowercase
-        const filter = e.target.value.toLowerCase();
-        return lc.includes(filter);
-      });
-    } else {
-      // If the search bar is empty, set newList to original task list
-      newList = [];
-    }
+    //   // Use .filter() to determine which items should be displayed
+    //   // based on the search terms
+    //   newList = currentList.filter(item => {
+    //     // change current item to lowercase
+    //     const lc = item.name.toLowerCase();
+    //     // change search term to lowercase
+    //     const filter = e.target.value.toLowerCase();
+    //     return lc.includes(filter);
+    //   });
+    // } else {
+    //   // If the search bar is empty, set newList to original task list
+    //   newList = [];
+    // }
     // Set the filtered state based on what our rules added to newList
     this.setState({
-      filtered: newList,
+      // filtered: newList,
       searchTerm: e.target.value
     });
   };
   node: any;
 
   componentWillMount() {
-    document.addEventListener('mousedown', this.handleClick, true);
+    // document.addEventListener('mousedown', this.handleClick, true);
   }
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction, false);
@@ -139,7 +145,7 @@ class NavbarSearch extends Component {
           value={searchTerm}
         />
         <div className="form-control-position">
-          <Search size={16} className="mb-0" />
+          <Search onClick={() => this.handleSearch()} size={16} style={{ cursor: 'pointer' }} className="mb-0" />
         </div>
         {this.state.filtered ? (
           <div ref={node => (this.node = node)}>

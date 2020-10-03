@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.AffectationMateriels;
 import com.tybasoft.ibam.domain.CentreMaintenance;
 import com.tybasoft.ibam.repository.CentreMaintenanceRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -131,6 +133,19 @@ public class CentreMaintenanceResource {
         return ResponseUtil.wrapOrNotFound(centreMaintenance);
     }
 
+    @GetMapping("/centre-maintenances/search-entities/{keyword}")
+    public ResponseEntity<Collection<CentreMaintenance>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<CentreMaintenance> centreMaintenances ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        centreMaintenances = centreMaintenanceRepository.findByLibelleIsContainingOrAdresseIsContainingOrSpecialiteIsContainingOrResponsableIsContaining(keyword,keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(centreMaintenances.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), centreMaintenances);
+
+        return ResponseEntity.ok().headers(headers).body(centreMaintenances.getContent());
+    }
+
     /**
      * {@code DELETE  /centre-maintenances/:id} : delete the "id" centreMaintenance.
      *
@@ -173,7 +188,7 @@ public class CentreMaintenanceResource {
         return ResponseEntity.ok().body(true);
 
     }
-    
+
 
 }
 

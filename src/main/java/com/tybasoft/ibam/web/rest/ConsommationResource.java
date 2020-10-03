@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.CentreMaintenance;
 import com.tybasoft.ibam.domain.Consommation;
 import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.ConsommationRepository;
@@ -13,6 +14,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -147,6 +149,19 @@ public class ConsommationResource {
         return ResponseUtil.wrapOrNotFound(consommation);
     }
 
+    @GetMapping("/consommations/search-entities/{keyword}")
+    public ResponseEntity<Collection<Consommation>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Consommation> consommations ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        consommations = consommationRepository.findByQuantiteIsContainingOrTypeCarburantIsContainingOrMontantIsContaining(keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(consommations.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), consommations);
+
+        return ResponseEntity.ok().headers(headers).body(consommations.getContent());
+    }
+
     /**
      * {@code DELETE  /consommations/:id} : delete the "id" consommation.
      *
@@ -187,8 +202,8 @@ public class ConsommationResource {
         } catch (Exception e) {}
         return ResponseEntity.ok().body(true);
     }
-   
-    
 
-    
+
+
+
 }

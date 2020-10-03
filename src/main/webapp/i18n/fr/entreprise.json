@@ -5,7 +5,8 @@
         "title": "Entreprises",
         "createLabel": "Créer un nouveau Entreprise",
         "createOrEditLabel": "Créer ou éditer un Entreprise",
-        "notFound": "Aucun Entreprise trouvé"
+        "notFound": "Aucun Entreprise trouvé",
+        "description": "Une description sur les entreprises."
       },
       "created": "Un nouveau Entreprise a été créé avec l'identifiant {{ param }}",
       "updated": "Le Entreprise avec l'identifiant {{ param }} a été mis à jour",

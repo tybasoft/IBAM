@@ -1,9 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
-import com.tybasoft.ibam.domain.Entreprise;
-import com.tybasoft.ibam.domain.FichePointage;
-import com.tybasoft.ibam.domain.Image;
-import com.tybasoft.ibam.domain.Pointage;
+import com.tybasoft.ibam.domain.*;
 import com.tybasoft.ibam.repository.PointageRepository;
 import com.tybasoft.ibam.service.FileStorageService;
 import com.tybasoft.ibam.service.ReportService;
@@ -29,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,14 +68,14 @@ public class PointageResource {
         if (pointage.getId() != null) {
             throw new BadRequestAlertException("A new pointage cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        
+
         Pointage result = pointageRepository.save(pointage);
         return ResponseEntity
                 .created(new URI("/api/pointages/" + result.getId())).headers(HeaderUtil
                         .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
                 .body(result);
     }
-    
+
     /**
      * {@code PUT  /pointages} : Updates an existing pointage.
      *
@@ -131,6 +129,19 @@ public class PointageResource {
         return ResponseUtil.wrapOrNotFound(pointage);
     }
 
+    @GetMapping("/pointages/search-entities/{keyword}")
+    public ResponseEntity<Collection<Pointage>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Pointage> pointages ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        pointages = pointageRepository.findByRemarquesIsContainingOrNbrHeureSupIsContainingOrEmploye_EmailIsContaining(keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(pointages.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), pointages);
+
+        return ResponseEntity.ok().headers(headers).body(pointages.getContent());
+    }
+
     /**
      * {@code DELETE  /pointages/:id} : delete the "id" pointage.
      *
@@ -177,19 +188,19 @@ public class PointageResource {
     /*Pour faire l'insertion du pointage du jour dans la base de donnees*/
     @PostMapping("/pointages/createPointageList")
     public ResponseEntity<FichePointage> createListPointage(@Valid @RequestBody Pointage []  tab) throws URISyntaxException {
-    	      
+
     	Pointage []  result = pointageService.EnregistrementPointage(tab);
-		       
+
 		          return   ResponseEntity
 		                  .created(new URI("/api/fiche-pointages/" + result[0].getFichePointage().getId())).headers(HeaderUtil
 		                          .createEntityCreationAlert(applicationName, true, ENTITY_NAME1, result[0].getFichePointage().getId().toString()))
-		                  .body(result[0].getFichePointage()); 
+		                  .body(result[0].getFichePointage());
     }
-    
+
     /*Pour la modification de la liste de pointag*/
     @PutMapping("/pointages/editPointages")
     public ResponseEntity<FichePointage> updateListPointage(@Valid @RequestBody Pointage [] pointage) throws URISyntaxException {
-       
+
     	FichePointage  fiche=pointage[0].getFichePointage();
     	if(pointage.length>0) {
     	for(int i=0;i<pointage.length;i++) {
@@ -200,5 +211,5 @@ public class PointageResource {
                 HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME1, fiche.getId().toString()))
                 .body(fiche);
     }
-    
+
 }

@@ -1,6 +1,7 @@
 package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.Image;
+import com.tybasoft.ibam.domain.Location;
 import com.tybasoft.ibam.domain.Maintenance;
 import com.tybasoft.ibam.repository.ImageRepository;
 import com.tybasoft.ibam.repository.MaintenanceRepository;
@@ -13,6 +14,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -145,6 +147,19 @@ public class MaintenanceResource {
         log.debug("REST request to get Maintenance : {}", id);
         Optional<Maintenance> maintenance = maintenanceRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(maintenance);
+    }
+
+    @GetMapping("/maintenances/search-entities/{keyword}")
+    public ResponseEntity<Collection<Maintenance>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Maintenance> maintenances ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        maintenances = maintenanceRepository.findByReferenceIsContainingOrFraisIsContainingOrTechnicienIsContaining(keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(maintenances.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), maintenances);
+
+        return ResponseEntity.ok().headers(headers).body(maintenances.getContent());
     }
 
     /**

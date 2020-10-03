@@ -22,6 +22,7 @@ import {
   Users
 } from 'react-feather';
 import { NavLink } from 'react-router-dom';
+import { Translate, translate } from 'react-jhipster';
 
 // Styling
 import '../../../../assets/scss/components/sidebar/sidemenu/sidemenu.scss';
@@ -33,7 +34,7 @@ class SideMenuContent extends Component<any> {
     return (
       <SideMenu className="sidebar-content" toggleSidebarMenu={this.props.toggleSidebarMenu}>
         <SideMenu.MenuMultiItems
-          name="Tableau de bord"
+          name={translate('global.sidebar.dashboard')}
           Icon={<Home size={18} />}
           ArrowRight={<ChevronRight size={16} />}
           collapsedSidebar={this.props.collapsedSidebar}
@@ -69,7 +70,9 @@ class SideMenuContent extends Component<any> {
             <i className="menu-icon">
               <Users size={18} />
             </i>
-            <span className="menu-item-text">Employés</span>
+            <span className="menu-item-text">
+              <Translate contentKey="global.sidebar.employees">Employés</Translate>
+            </span>
           </NavLink>
         </SideMenu.MenuSingleItem>
         {/* <SideMenu.MenuSingleItem>
@@ -85,7 +88,10 @@ class SideMenuContent extends Component<any> {
             <i className="menu-icon">
               <Calendar size={18} />
             </i>
-            <span className="menu-item-text">Calendrier</span>
+
+            <span className="menu-item-text">
+              <Translate contentKey="global.sidebar.calendar">Calendrier</Translate>
+            </span>
           </NavLink>
         </SideMenu.MenuSingleItem>
         <SideMenu.MenuSingleItem>
@@ -93,7 +99,9 @@ class SideMenuContent extends Component<any> {
             <i className="menu-icon">
               <Copy size={18} />
             </i>
-            <span className="menu-item-text">Projets</span>
+            <span className="menu-item-text">
+              <Translate contentKey="global.sidebar.projects">Projets</Translate>
+            </span>
           </NavLink>
         </SideMenu.MenuSingleItem>
 
@@ -344,14 +352,15 @@ class SideMenuContent extends Component<any> {
         </SideMenu.MenuMultiItems> */}
 
         <SideMenu.MenuMultiItems
-          name="Modules"
+          // name="Modules"
+          name={translate('global.sidebar.modules')}
           Icon={<Grid size={18} />}
           ArrowRight={<ChevronRight size={16} />}
           collapsedSidebar={this.props.collapsedSidebar}
         >
           <SideMenu toggleSidebarMenu={this.props.toggleSidebarMenu}>
             <SideMenu.MenuMultiItems
-              name="Paramétrage"
+              name={translate('global.sidebar.settings')}
               ArrowRight={<ChevronRight size={16} />}
               collapsedSidebar={this.props.collapsedSidebar}
             >
@@ -369,10 +378,10 @@ class SideMenuContent extends Component<any> {
               </NavLink>
             </SideMenu.MenuMultiItems>
             <SideMenu.MenuMultiItems name="Matériel" ArrowRight={<ChevronRight size={16} />} collapsedSidebar={this.props.collapsedSidebar}>
-              <NavLink to="/react-tables/regular" className="item" activeClassName="active">
+              <NavLink to="/assurance" className="item" activeClassName="active">
                 <span className="menu-item-text">Assurance</span>
               </NavLink>
-              <NavLink to="/react-tables/extended" className="item" activeClassName="active">
+              <NavLink to="/centre-maintenance" className="item" activeClassName="active">
                 <span className="menu-item-text">Centre maintenance</span>
               </NavLink>
               <NavLink to="/react-tables/extended" className="item" activeClassName="active">
@@ -462,7 +471,9 @@ class SideMenuContent extends Component<any> {
             <i className="menu-icon">
               <Sliders size={18} />
             </i>
-            <span className="menu-item-text">Outils administratifs</span>
+            <span className="menu-item-text">
+              <Translate contentKey="global.sidebar.admintools">Outils administratifs</Translate>
+            </span>
           </NavLink>
         </SideMenu.MenuSingleItem>
         <SideMenu.MenuSingleItem>
@@ -470,7 +481,9 @@ class SideMenuContent extends Component<any> {
             <i className="menu-icon">
               <Book size={18} />
             </i>
-            <span className="menu-item-text">Documentaion</span>
+            <span className="menu-item-text">
+              <Translate contentKey="global.sidebar.documentation">Documentaion</Translate>
+            </span>
           </NavLink>
         </SideMenu.MenuSingleItem>
         {/* <SideMenu.MenuSingleItem>

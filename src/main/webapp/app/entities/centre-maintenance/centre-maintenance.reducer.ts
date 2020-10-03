@@ -139,6 +139,8 @@ export const updateEntity: ICrudPutAction<ICentreMaintenance> = entity => async 
     type: ACTION_TYPES.UPDATE_CENTREMAINTENANCE,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -148,6 +150,8 @@ export const deleteEntity: ICrudDeleteAction<ICentreMaintenance> = id => async d
     type: ACTION_TYPES.DELETE_CENTREMAINTENANCE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 

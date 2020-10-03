@@ -46,6 +46,11 @@
     {
       "fieldName": "dateModif",
       "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "multiProjet",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [

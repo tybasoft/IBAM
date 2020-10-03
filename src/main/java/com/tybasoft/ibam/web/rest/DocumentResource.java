@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Depot;
 import com.tybasoft.ibam.domain.Document;
 import com.tybasoft.ibam.repository.DocumentRepository;
 import com.tybasoft.ibam.service.DocumentService;
@@ -11,6 +12,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -122,6 +124,19 @@ public class DocumentResource {
         log.debug("REST request to get Document : {}", id);
         Optional<Document> document = documentRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(document);
+    }
+
+    @GetMapping("/documents/search-entities/{keyword}")
+    public ResponseEntity<Collection<Document>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Document> documents ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        documents = documentRepository.findByTitreIsContainingOrPathIsContainingOrTypeIsContainingOrCommentaireIsContaining(keyword,keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(documents.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), documents);
+
+        return ResponseEntity.ok().headers(headers).body(documents.getContent());
     }
 
     /**

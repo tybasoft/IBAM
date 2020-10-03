@@ -1,0 +1,26 @@
+{
+  "ibamApp": {
+    "affectationMateriels": {
+      "home": {
+        "title": "Affectation Materiels",
+        "createLabel": "Create a new Affectation Materiels",
+        "createOrEditLabel": "Create or edit a Affectation Materiels",
+        "notFound": "No Affectation Materiels found"
+      },
+      "created": "A new Affectation Materiels is created with identifier {{ param }}",
+      "updated": "A Affectation Materiels is updated with identifier {{ param }}",
+      "deleted": "A Affectation Materiels is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Affectation Materiels {{ id }}?"
+      },
+      "detail": {
+        "title": "Affectation Materiels"
+      },
+      "dateDebut": "Date Debut",
+      "dateFin": "Date Fin",
+      "description": "Description",
+      "projet": "Projet",
+      "materiel": "Materiel"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.LigneBonReception;
 import com.tybasoft.ibam.domain.Location;
 import com.tybasoft.ibam.repository.LocationRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -130,6 +132,19 @@ public class LocationResource {
         return ResponseUtil.wrapOrNotFound(location);
     }
 
+    @GetMapping("/locations/search-entities/{keyword}")
+    public ResponseEntity<Collection<Location>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Location> locations ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        locations = locationRepository.findByReferenceIsContainingOrTarifIsContaining(keyword,keyword,pageable);
+        log.debug(String.valueOf(locations.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), locations);
+
+        return ResponseEntity.ok().headers(headers).body(locations.getContent());
+    }
+
     /**
      * {@code DELETE  /locations/:id} : delete the "id" location.
      *
@@ -172,7 +187,7 @@ public class LocationResource {
         return ResponseEntity.ok().body(true);
 
     }
-   
-    
+
+
 
 }

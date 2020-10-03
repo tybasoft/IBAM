@@ -2,8 +2,20 @@
   "global": {
     "title": "IBAM",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "employees": "Employees",
+      "calendar": "Calendar",
+      "projects": "Projects",
+      "modules": "Modules",
+      "settings": "Settings",
+      "admintools": "Admin tools",
+      "documentation": "Documentation"
+    },
     "menu": {
       "home": "Home",
+      "profile": "My profile",
+      "logout": "Sign out",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
@@ -39,6 +51,8 @@
         "visiteTechnique": "Visite Technique",
         "notification": "Notification",
         "fichePointage": "Fiche Pointage",
+        "affectationMateriels": "Affectation Materiels",
+        "situationFinanciere": "Situation Financiere",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -133,7 +147,8 @@
       "open": "Open",
       "save": "Save",
       "view": "View",
-      "download": "Download"
+      "download": "Download",
+      "upload": "Upload"
     },
     "detail": {
       "field": "Field",

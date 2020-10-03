@@ -38,6 +38,8 @@ import PrivateRoute from 'app/shared/auth/private-route';
 import { AUTHORITIES } from 'app/config/constants';
 import Notification from './notification';
 import FichePointage from './fiche-pointage';
+import AffectationMateriels from './affectation-materiels';
+import SituationFinanciere from './situation-financiere';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -195,6 +197,10 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}notification`} component={Notification} />
       <ErrorBoundaryRoute path={`${match.url}fiche-pointage`} component={FichePointage} />
       <ErrorBoundaryRoute path={`${match.url}pointage`} component={Pointage} />
+      <ErrorBoundaryRoute path={`${match.url}affectation-materiels`} component={AffectationMateriels} />
+      <ErrorBoundaryRoute path={`${match.url}materiel`} component={Materiel} />
+      <ErrorBoundaryRoute path={`${match.url}situation-financiere`} component={SituationFinanciere} />
+      <ErrorBoundaryRoute path={`${match.url}ligne-bon-commande`} component={LigneBonCommande} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

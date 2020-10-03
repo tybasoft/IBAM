@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link LigneBonCommandeResource} REST controller.
  */
 @SpringBootTest(classes = IbamApp.class)
-
 @AutoConfigureMockMvc
 @WithMockUser
 public class LigneBonCommandeResourceIT {
@@ -88,7 +87,6 @@ public class LigneBonCommandeResourceIT {
     @Transactional
     public void createLigneBonCommande() throws Exception {
         int databaseSizeBeforeCreate = ligneBonCommandeRepository.findAll().size();
-
         // Create the LigneBonCommande
         restLigneBonCommandeMockMvc.perform(post("/api/ligne-bon-commandes")
             .contentType(MediaType.APPLICATION_JSON)
@@ -133,6 +131,7 @@ public class LigneBonCommandeResourceIT {
 
         // Create the LigneBonCommande, which fails.
 
+
         restLigneBonCommandeMockMvc.perform(post("/api/ligne-bon-commandes")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(ligneBonCommande)))
@@ -173,7 +172,6 @@ public class LigneBonCommandeResourceIT {
             .andExpect(jsonPath("$.userModif").value(DEFAULT_USER_MODIF))
             .andExpect(jsonPath("$.dateModif").value(DEFAULT_DATE_MODIF.toString()));
     }
-
     @Test
     @Transactional
     public void getNonExistingLigneBonCommande() throws Exception {
@@ -217,8 +215,6 @@ public class LigneBonCommandeResourceIT {
     @Transactional
     public void updateNonExistingLigneBonCommande() throws Exception {
         int databaseSizeBeforeUpdate = ligneBonCommandeRepository.findAll().size();
-
-        // Create the LigneBonCommande
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restLigneBonCommandeMockMvc.perform(put("/api/ligne-bon-commandes")

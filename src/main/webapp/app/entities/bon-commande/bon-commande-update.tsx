@@ -116,7 +116,7 @@ export const BonCommandeUpdate = (props: IBonCommandeUpdateProps) => {
                   <Translate contentKey="ibamApp.bonCommande.valide">Valide</Translate>
                 </Label>
               </AvGroup>
-              <AvGroup>
+              {/*<AvGroup>
                 <Label id="userModifLabel" for="bon-commande-userModif">
                   <Translate contentKey="ibamApp.bonCommande.userModif">User Modif</Translate>
                 </Label>
@@ -127,7 +127,7 @@ export const BonCommandeUpdate = (props: IBonCommandeUpdateProps) => {
                   <Translate contentKey="ibamApp.bonCommande.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="bon-commande-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup>*/}
               <AvGroup>
                 <Label for="bon-commande-depot">
                   <Translate contentKey="ibamApp.bonCommande.depot">Depot</Translate>

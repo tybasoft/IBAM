@@ -1,16 +1,16 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.tybasoft.ibam.security.SecurityUtils;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Materiel.
@@ -19,6 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "materiel")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Materiel implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -59,7 +60,11 @@ public class Materiel implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private Instant dateModif;
+    private LocalDate dateModif;
+
+    @NotNull
+    @Column(name = "multi_projet", nullable = false)
+    private Boolean multiProjet;
 
     @OneToMany(mappedBy = "materiel")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -125,6 +130,11 @@ public class Materiel implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Boolean getMultiProjet() {
+        return multiProjet;
+    }
+
 
     public String getLibelle() {
         return libelle;
@@ -256,17 +266,30 @@ public class Materiel implements Serializable {
         this.userModif = userModif;
     }
 
-    public Instant getDateModif() {
+    public LocalDate getDateModif() {
         return dateModif;
     }
 
-    public Materiel dateModif(Instant dateModif) {
+    public Materiel dateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(Instant dateModif) {
+    public void setDateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
+    }
+
+    public Boolean isMultiProjet() {
+        return multiProjet;
+    }
+
+    public Materiel multiProjet(Boolean multiProjet) {
+        this.multiProjet = multiProjet;
+        return this;
+    }
+
+    public void setMultiProjet(Boolean multiProjet) {
+        this.multiProjet = multiProjet;
     }
 
     public Set<Location> getLocations() {
@@ -522,9 +545,7 @@ public class Materiel implements Serializable {
     public void setProjet(Projet projet) {
         this.projet = projet;
     }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
-    // setters here
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -545,27 +566,20 @@ public class Materiel implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "Materiel{" + "id=" + getId() + ", libelle='" + getLibelle() + "'" + ", matricule='" + getMatricule()
-                + "'" + ", modele='" + getModele() + "'" + ", numCarteGrise='" + getNumCarteGrise() + "'"
-                + ", dateIdentification='" + getDateIdentification() + "'" + ", compteurAchat='" + getCompteurAchat()
-                + "'" + ", etat='" + getEtat() + "'" + ", location='" + isLocation() + "'" + ", description='"
-                + getDescription() + "'" + ", userModif='" + getUserModif() + "'" + ", dateModif='" + getDateModif()
-                + "'" + "}";
-    }
-
-    public Boolean getLocation() {
-        return location;
-    }
-
-    @PrePersist
-    public void onCreate() {
-        userModif = SecurityUtils.getCurrentUserLogin().get();
-        dateModif = Instant.now();
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        userModif = SecurityUtils.getCurrentUserLogin().get();
-        dateModif = Instant.now();
+        return "Materiel{" +
+            "id=" + getId() +
+            ", libelle='" + getLibelle() + "'" +
+            ", matricule='" + getMatricule() + "'" +
+            ", modele='" + getModele() + "'" +
+            ", numCarteGrise='" + getNumCarteGrise() + "'" +
+            ", dateIdentification='" + getDateIdentification() + "'" +
+            ", compteurAchat='" + getCompteurAchat() + "'" +
+            ", etat='" + getEtat() + "'" +
+            ", location='" + isLocation() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", userModif='" + getUserModif() + "'" +
+            ", dateModif='" + getDateModif() + "'" +
+            ", multiProjet='" + isMultiProjet() + "'" +
+            "}";
     }
 }

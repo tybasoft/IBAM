@@ -1,6 +1,12 @@
 // import external modules
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { LocaleMenu } from './locale';
+import { Translate, Storage, translate } from 'react-jhipster';
+// import { isRTL } from 'app/config/translation';
+import { setLocale } from '../../../../shared/reducers/locale';
+import { locales, languages } from 'app/config/translation';
+
 import { Form, Media, Collapse, Navbar, Nav, NavItem, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
@@ -26,6 +32,8 @@ import userImage from '../../../assets/img/portrait/small/avatar-s-1.png';
 import userImage2 from '../../../assets/img/portrait/small/avatar-s-2.png';
 import userImage3 from '../../../assets/img/portrait/small/avatar-s-3.png';
 import userImage4 from '../../../assets/img/portrait/small/avatar-s-4.png';
+import { connect } from 'react-redux';
+import { IRootState } from 'app/shared/reducers';
 
 class ThemeNavbar extends Component<any, any> {
   handleClick = e => {
@@ -45,6 +53,13 @@ class ThemeNavbar extends Component<any, any> {
     });
   }
 
+  handleLocaleChange = event => {
+    const langKey = event.target.value;
+    Storage.session.set('locale', langKey);
+    this.props.setLocale(langKey);
+    // document.querySelector('html').setAttribute('dir', isRTL(langKey) ? 'rtl' : 'ltr');
+  };
+
   render() {
     return (
       <Navbar className="navbar navbar-expand-lg navbar-light bg-faded">
@@ -63,9 +78,15 @@ class ThemeNavbar extends Component<any, any> {
               <Nav className="ml-auto float-right" navbar>
                 <UncontrolledDropdown nav inNavbar className="pr-1">
                   <DropdownToggle nav>
-                    <ReactCountryFlag code="us" countryCode="US" svg /> EN
+                    <ReactCountryFlag
+                      code={languages[this.props.currentLocale].code}
+                      countryCode={languages[this.props.currentLocale].code}
+                      svg
+                    />
+                    {languages[this.props.currentLocale].name}
                   </DropdownToggle>
-                  <DropdownMenu right>
+                  <LocaleMenu onClick={this.handleLocaleChange} />
+                  {/* <DropdownMenu right>
                     <DropdownItem>
                       <ReactCountryFlag code="us" countryCode="US" svg /> English
                     </DropdownItem>
@@ -74,11 +95,11 @@ class ThemeNavbar extends Component<any, any> {
                     </DropdownItem>
                     <DropdownItem>
                       <ReactCountryFlag code="ma" countryCode="MA" svg /> Arabe
-                    </DropdownItem>
-                    {/* <DropdownItem>
+                    </DropdownItem> */}
+                  {/* <DropdownItem>
                       <ReactCountryFlag code="cn" svg /> Chinese
                     </DropdownItem> */}
-                  </DropdownMenu>
+                  {/* </DropdownMenu> */}
                 </UncontrolledDropdown>
                 {/* <NavItem className="pr-1">
                   <Link to="/email/" className="nav-link">
@@ -197,7 +218,7 @@ class ThemeNavbar extends Component<any, any> {
 
                     <Link to="/pages/user-profile" className="p-0">
                       <DropdownItem>
-                        <User size={16} className="mr-1" /> Mon profil
+                        <User size={16} className="mr-1" /> <Translate contentKey="global.menu.profile">Mon profil</Translate>
                       </DropdownItem>
                     </Link>
                     {/* <Link to="/email" className="p-0">
@@ -223,7 +244,7 @@ class ThemeNavbar extends Component<any, any> {
                     </Link> */}
                     <Link to="/logout" className="p-0">
                       <DropdownItem>
-                        <LogOut size={16} className="mr-1" /> Se déconnecter
+                        <LogOut size={16} className="mr-1" /> <Translate contentKey="global.menu.logout">Se deconnecter</Translate>
                       </DropdownItem>
                     </Link>
                   </DropdownMenu>
@@ -237,4 +258,11 @@ class ThemeNavbar extends Component<any, any> {
   }
 }
 
-export default ThemeNavbar;
+const mapStateToProps = ({ locale }: IRootState) => ({
+  currentLocale: locale.currentLocale
+});
+const mapDispatchToProps = { setLocale };
+type DispatchProps = typeof mapDispatchToProps;
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(ThemeNavbar);

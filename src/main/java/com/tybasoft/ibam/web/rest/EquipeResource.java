@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Employe;
 import com.tybasoft.ibam.domain.Equipe;
 import com.tybasoft.ibam.repository.EquipeRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -123,6 +125,19 @@ public class EquipeResource {
         log.debug("REST request to get Equipe : {}", id);
         Optional<Equipe> equipe = equipeRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(equipe);
+    }
+
+    @GetMapping("/equipes/search-entities/{keyword}")
+    public ResponseEntity<Collection<Equipe>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Equipe> equipes ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        equipes = equipeRepository.findByLibelleIsContainingOrProjet_LibelleIsContainingOrEquipe_Email(keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(equipes.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), equipes);
+
+        return ResponseEntity.ok().headers(headers).body(equipes.getContent());
     }
 
     /**

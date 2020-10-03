@@ -1,5 +1,26 @@
 import { element, by, ElementFinder, ElementArrayFinder } from 'protractor';
 
+import { waitUntilAnyDisplayed, waitUntilDisplayed, click, waitUntilHidden, isVisible } from '../../util/utils';
+
+import NavBarPage from './../../page-objects/navbar-page';
+
+import MaterielUpdatePage from './materiel-update.page-object';
+
+const expect = chai.expect;
+export class MaterielDeleteDialog {
+  deleteModal = element(by.className('modal'));
+  private dialogTitle: ElementFinder = element(by.id('ibamApp.materiel.delete.question'));
+  private confirmButton = element(by.id('jhi-confirm-delete-materiel'));
+
+  getDialogTitle() {
+    return this.dialogTitle;
+  }
+
+  async clickOnConfirmButton() {
+    await this.confirmButton.click();
+  }
+}
+
 export default class MaterielComponentsPage {
   createButton: ElementFinder = element(by.id('jh-create-entity'));
   deleteButtons = element.all(by.css('div table .btn-danger'));
@@ -20,18 +41,29 @@ export default class MaterielComponentsPage {
   getDeleteButton(record: ElementFinder) {
     return record.element(by.css('a.btn.btn-danger.btn-sm'));
   }
-}
 
-export class MaterielDeleteDialog {
-  deleteModal = element(by.className('modal'));
-  private dialogTitle: ElementFinder = element(by.id('ibamApp.materiel.delete.question'));
-  private confirmButton = element(by.id('jhi-confirm-delete-materiel'));
-
-  getDialogTitle() {
-    return this.dialogTitle;
+  async goToPage(navBarPage: NavBarPage) {
+    await navBarPage.getEntityPage('materiel');
+    await waitUntilAnyDisplayed([this.noRecords, this.table]);
+    return this;
   }
 
-  async clickOnConfirmButton() {
-    await this.confirmButton.click();
+  async goToCreateMateriel() {
+    await this.createButton.click();
+    return new MaterielUpdatePage();
+  }
+
+  async deleteMateriel() {
+    const deleteButton = this.getDeleteButton(this.records.last());
+    await click(deleteButton);
+
+    const materielDeleteDialog = new MaterielDeleteDialog();
+    await waitUntilDisplayed(materielDeleteDialog.deleteModal);
+    expect(await materielDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/ibamApp.materiel.delete.question/);
+    await materielDeleteDialog.clickOnConfirmButton();
+
+    await waitUntilHidden(materielDeleteDialog.deleteModal);
+
+    expect(await isVisible(materielDeleteDialog.deleteModal)).to.be.false;
   }
 }

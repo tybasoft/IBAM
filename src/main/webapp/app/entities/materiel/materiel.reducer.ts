@@ -12,9 +12,7 @@ export const ACTION_TYPES = {
   CREATE_MATERIEL: 'materiel/CREATE_MATERIEL',
   UPDATE_MATERIEL: 'materiel/UPDATE_MATERIEL',
   DELETE_MATERIEL: 'materiel/DELETE_MATERIEL',
-  RESET: 'materiel/RESET',
-  CONSOMMATION: 'materiel/CONSOMMATION',
-  REPPORT: 'materiel/REPPORT'
+  RESET: 'materiel/RESET'
 };
 
 const initialState = {
@@ -75,15 +73,6 @@ export default (state: MaterielState = initialState, action): MaterielState => {
         loading: false,
         entity: action.payload.data
       };
-    case REQUEST(ACTION_TYPES.REPPORT):
-      return {
-        ...state,
-        loading: true
-      };
-    case REQUEST('UPLOAD_FILE'):
-      return { ...state };
-    case REQUEST(ACTION_TYPES.CONSOMMATION):
-      return { ...state };
     case SUCCESS(ACTION_TYPES.CREATE_MATERIEL):
     case SUCCESS(ACTION_TYPES.UPDATE_MATERIEL):
       return {
@@ -108,7 +97,7 @@ export default (state: MaterielState = initialState, action): MaterielState => {
   }
 };
 
-export const apiUrl = 'api/materiels';
+const apiUrl = 'api/materiels';
 
 // Actions
 
@@ -151,15 +140,7 @@ export const deleteEntity: ICrudDeleteAction<IMateriel> = id => async dispatch =
     type: ACTION_TYPES.DELETE_MATERIEL,
     payload: axios.delete(requestUrl)
   });
-  return result;
-};
-
-export const RapportConsommation = (Id: string) => async dispatch => {
-  const res = await axios.get(`${apiUrl}/consommation/${Id}`);
-  const result = dispatch({
-    type: ACTION_TYPES.CONSOMMATION,
-    payload: res
-  });
+  dispatch(getEntities());
   return result;
 };
 

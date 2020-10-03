@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Famille;
 import com.tybasoft.ibam.domain.FichePointage;
 import com.tybasoft.ibam.domain.Pointage;
 import com.tybasoft.ibam.repository.FichePointageRepository;
@@ -8,17 +9,23 @@ import com.tybasoft.ibam.service.PointageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +49,7 @@ public class FichePointageResource {
     private final FichePointageRepository fichePointageRepository;
     private final  PointageService   pointageService;
     private final PointageRepository  pointageRepository;
-    
+
     public FichePointageResource( PointageRepository  pointageRepository,FichePointageRepository fichePointageRepository,PointageService   pointageService) {
         this.fichePointageRepository = fichePointageRepository;
         this.pointageService=pointageService;
@@ -112,38 +119,50 @@ public class FichePointageResource {
         Optional<FichePointage> fichePointage = fichePointageRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(fichePointage);
     }
-    
+
+    @GetMapping("/fiche-pointages/search-entities/{keyword}")
+    public ResponseEntity<Collection<FichePointage>> seachInAllEntities(@PathVariable String  keyword){
+        List<FichePointage> fichePointages ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        fichePointages = fichePointageRepository.findByProjet_Libelle(keyword);
+        log.debug(String.valueOf(fichePointages.stream().count()));
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), fichePointages);
+
+        return ResponseEntity.ok().body(fichePointages);
+    }
     /**
      * {@code DELETE  /fiche-pointages/:id} : delete the "id" fichePointage.
      *
      * @param id the id of the fichePointage to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    
+
     @DeleteMapping("/fiche-pointages/{id}")
     public ResponseEntity<Void> deleteFichePointage(@PathVariable Long id) {
         log.debug("REST request to delete FichePointage : {}", id);
         FichePointage    fiche=fichePointageRepository.findById(id).get();
-      
+
            pointageService.deleteFichePointageEntity(fiche, log);
-        
+
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
-    
-    
+
+
     @GetMapping("/fiche-pointages/{id}/listPointageOfFiche")
     public List<Pointage> getAllPointageByFichePointage(@PathVariable Long id) {
-    	 
+
         log.debug("REST request to get FichePointage : {}", id);
         List<Pointage>   currentlist=new ArrayList<Pointage>();
-   
+
         try {
-        	
-        FichePointage fichePointage = fichePointageRepository.findById(id).get(); 
+
+        FichePointage fichePointage = fichePointageRepository.findById(id).get();
             if(fichePointage!=null ) {
         	   currentlist=pointageService.ViewPointagesByFicheId(fichePointage);
            }
-        
+
         }catch(Exception e) {
         	System.out.println(e.getMessage());
         }

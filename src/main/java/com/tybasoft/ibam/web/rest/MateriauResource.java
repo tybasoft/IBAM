@@ -1,6 +1,7 @@
 package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.Image;
+import com.tybasoft.ibam.domain.Marque;
 import com.tybasoft.ibam.domain.Materiau;
 import com.tybasoft.ibam.repository.ImageRepository;
 import com.tybasoft.ibam.repository.MateriauRepository;
@@ -13,6 +14,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -150,6 +152,19 @@ public class MateriauResource {
         log.debug("REST request to get Materiau : {}", id);
         Optional<Materiau> materiau = materiauRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(materiau);
+    }
+
+    @GetMapping("/materiaus/search-entities/{keyword}")
+    public ResponseEntity<Collection<Materiau>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Materiau> materiaus ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        materiaus = materiauRepository.findByLibelleIsContainingOrReferenceIsContainingOrPoidsIsContainingOrVolumeIsContaining(keyword,keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(materiaus.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), materiaus);
+
+        return ResponseEntity.ok().headers(headers).body(materiaus.getContent());
     }
 
     /**

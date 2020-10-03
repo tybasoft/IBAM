@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Fonction;
 import com.tybasoft.ibam.domain.Fournisseur;
 import com.tybasoft.ibam.repository.FournisseurRepository;
 import com.tybasoft.ibam.service.FileStorageService;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -126,6 +128,20 @@ public class FournisseurResource {
         Optional<Fournisseur> fournisseur = fournisseurRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(fournisseur);
     }
+
+
+//    @GetMapping("/fournisseurs/search-entities/{keyword}")
+//    public ResponseEntity<Collection<Fournisseur>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+//        Page<Fournisseur> fournisseurs ;
+////        String key = keyword.toLowerCase();
+//        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+//        log.debug(keyword);
+//        fournisseurs = fournisseurRepository.findByNomIsContainingOrPrenomIsContainingOrTypeIsContainingOrNomCommercialIsContainingOrFaxIsContaining(keyword,keyword,keyword,keyword,keyword,pageable);
+//        log.debug(String.valueOf(fournisseurs.stream().count()));
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), fournisseurs);
+//
+//        return ResponseEntity.ok().headers(headers).body(fournisseurs.getContent());
+//    }
 
     /**
      * {@code DELETE  /fournisseurs/:id} : delete the "id" fournisseur.
