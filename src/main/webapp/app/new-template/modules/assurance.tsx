@@ -1,4 +1,7 @@
 import React, { Component, Fragment, useEffect, useState } from 'react';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+
 import {
   Card,
   CardBody,
@@ -37,15 +40,18 @@ import {
   updateEntity,
   ACTION_TYPES,
   apiUrl
+
   //   filterEntities
-} from '../../entities/horaire/horaire.reducer';
-import { Translate, translate, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
+} from '../../entities/assurance/assurance.reducer';
+import { getEntities as getMateriels } from 'app/entities/materiel/materiel.reducer';
+
+import { Translate, translate, TextFormat, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavbarSearch from '../components/search/Search';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import HoraireDetails from './horaire-details';
+import AssuranceDetails from './assurance-details';
 
-const Horaire = (props: any) => {
+const Assurance = (props: any) => {
   console.log(props);
 
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
@@ -69,6 +75,7 @@ const Horaire = (props: any) => {
 
   useEffect(() => {
     sortEntities();
+    props.getMateriels();
   }, []);
 
   const handlePagination = currentPage =>
@@ -88,7 +95,7 @@ const Horaire = (props: any) => {
     setModalOpen(false);
   };
 
-  const { list, totalItems } = props;
+  const { list, materiels, totalItems } = props;
 
   const openDetails = (id: number) => {
     setSelectedEntity(id);
@@ -146,19 +153,19 @@ const Horaire = (props: any) => {
           <Card>
             <CardBody>
               <CardTitle className="row" style={{ margin: 0 }}>
-                <Translate contentKey="ibamApp.horaire.home.title">Fonctions</Translate>
+                <Translate contentKey="ibamApp.assurance.home.title">assurances</Translate>
                 <Form className="navbar-form mt-1 ml-auto float-left" role="search">
                   <NavbarSearch search={filter} />
                 </Form>
               </CardTitle>
               <p>
                 {' '}
-                <Translate contentKey="ibamApp.horaire.home.description">fonction</Translate>
+                <Translate contentKey="ibamApp.assurance.home.description">assurance</Translate>
               </p>
 
               <div className="form-group mb-3 form-group-compose text-center">
                 <Button type="button" onClick={() => setModalOpen(true)} className="btn float-left btn-raised btn-danger  my-2 shadow-z-2">
-                  <Icon.Plus size={18} className="mr-1" /> <Translate contentKey="ibamApp.horaire.home.createLabel">Fonction</Translate>
+                  <Icon.Plus size={18} className="mr-1" /> <Translate contentKey="ibamApp.assurance.home.createLabel">assurance</Translate>
                 </Button>
                 <Button
                   onClick={() => setImportExportOpen('EXP')}
@@ -182,17 +189,20 @@ const Horaire = (props: any) => {
                 <Table striped>
                   <thead>
                     <tr>
-                      <th>
-                        <Translate contentKey="global.field.id">ID</Translate>
+                      <th className="hand" onClick={sort('id')}>
+                        <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th>
-                        <Translate contentKey="ibamApp.horaire.libelle">Libelle</Translate>
+                      <th className="hand" onClick={sort('dateDebut')}>
+                        <Translate contentKey="ibamApp.assurance.dateDebut">Date Debut</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th>
-                        <Translate contentKey="ibamApp.horaire.nbrHeurParJr">Nbr Heur Par Jr</Translate>
+                      <th className="hand" onClick={sort('dateFin')}>
+                        <Translate contentKey="ibamApp.assurance.dateFin">Date Fin</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th>
-                        <Translate contentKey="ibamApp.horaire.nbrJourParSem">Nbr Jour Par Sem</Translate>
+                      <th className="hand" onClick={sort('agence')}>
+                        <Translate contentKey="ibamApp.assurance.agence">Agence</Translate> <FontAwesomeIcon icon="sort" />
+                      </th>
+                      <th className="hand" onClick={sort('materiel')}>
+                        <Translate contentKey="ibamApp.assurance.materiel">Matériel</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
                       <th>
                         Actions
@@ -203,16 +213,26 @@ const Horaire = (props: any) => {
                   <tbody>
                     {list.map((element, i) => (
                       <tr key={`entity-${i}`}>
-                        <td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           {/* <Button tag={Link} to={`${match.url}/${entreprise.id}`} color="link" size="sm"> */}
                           {element.id}
                           {/* </Button> */}
                         </td>
-                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.libelle}
+
+                        <td>
+                          <TextFormat type="date" value={element.dateDebut} format={APP_LOCAL_DATE_FORMAT} />
                         </td>
-                        <td>{element.nbrHeurParJr}</td>
-                        <td>{element.nbrJourParSem}</td>
+                        <td>
+                          <TextFormat type="date" value={element.dateFin} format={APP_LOCAL_DATE_FORMAT} />
+                        </td>
+                        <td>{element.agence}</td>
+                        {/* <td>{assurance.userModif}</td>
+                  <td>
+                    <TextFormat type="date" value={assurance.dateModif} format={APP_LOCAL_DATE_FORMAT} />
+                  </td> */}
+                        <td>
+                          {element.materiel ? <Link to={`materiel/${element.materiel.libelle}`}>{element.materiel.libelle}</Link> : ''}
+                        </td>
                         <td>
                           <Icon.Edit onClick={() => editEntity(element)} size={18} className="mr-2" />
                           <Icon.Trash2 onClick={() => confirmDelete(element.id)} size={18} color="#FF586B" />
@@ -224,7 +244,7 @@ const Horaire = (props: any) => {
               ) : (
                 <div className="alert alert-warning">No Entreprises found</div>
               )}
-              {/* <div className={list && list.length > 0 ? '' : 'd-none'}>
+              <div className={list && list.length > 0 ? '' : 'd-none'}>
                 <Row className="justify-content-center">
                   <JhiItemCount
                     page={paginationState.activePage}
@@ -242,14 +262,14 @@ const Horaire = (props: any) => {
                     totalItems={props.totalItems}
                   />
                 </Row>
-              </div> */}
+              </div>
             </CardBody>
           </Card>
         </Col>
       </Row>
       <Modal isOpen={modalOpen} toggle={() => handleClose()} size="md">
         <ModalHeader toggle={() => handleClose()}>
-          <Translate contentKey="ibamApp.horaire.home.createLabel">Entreprises</Translate>
+          <Translate contentKey="ibamApp.assurance.home.createLabel">Entreprises</Translate>
         </ModalHeader>
         {/* <AddTodo /> */}
         <AvForm model={entityModel} onSubmit={saveEntity}>
@@ -257,13 +277,14 @@ const Horaire = (props: any) => {
             <Row>
               <Col md={12}>
                 <AvGroup>
-                  <Label id="libelleLabel" for="horaire-libelle">
-                    <Translate contentKey="ibamApp.horaire.libelle">Libelle</Translate>
+                  <Label id="dateDebutLabel" for="assurance-dateDebut">
+                    <Translate contentKey="ibamApp.assurance.dateDebut">Date Debut</Translate>
                   </Label>
                   <AvField
-                    id="horaire-libelle"
-                    type="text"
-                    name="libelle"
+                    id="assurance-dateDebut"
+                    type="date"
+                    className="form-control"
+                    name="dateDebut"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') }
                     }}
@@ -272,13 +293,14 @@ const Horaire = (props: any) => {
               </Col>
               <Col md={12}>
                 <AvGroup>
-                  <Label id="nbrHeurParJrLabel" for="horaire-nbrHeurParJr">
-                    <Translate contentKey="ibamApp.horaire.nbrHeurParJr">Nbr Heur Par Jr</Translate>
+                  <Label id="dateFinLabel" for="assurance-dateFin">
+                    <Translate contentKey="ibamApp.assurance.dateFin">Date Fin</Translate>
                   </Label>
                   <AvField
-                    id="horaire-nbrHeurParJr"
-                    type="text"
-                    name="nbrHeurParJr"
+                    id="assurance-dateFin"
+                    type="date"
+                    className="form-control"
+                    name="dateFin"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') }
                     }}
@@ -289,41 +311,34 @@ const Horaire = (props: any) => {
             <Row>
               <Col md={12}>
                 <AvGroup>
-                  <Label id="nbrJourParSemLabel" for="horaire-nbrJourParSem">
-                    <Translate contentKey="ibamApp.horaire.nbrJourParSem">Nbr Jour Par Sem</Translate>
+                  <Label id="agenceLabel" for="assurance-agence">
+                    <Translate contentKey="ibamApp.assurance.agence">Agence</Translate>
                   </Label>
                   <AvField
-                    id="horaire-nbrJourParSem"
+                    id="assurance-agence"
                     type="text"
-                    name="nbrJourParSem"
+                    name="agence"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') }
                     }}
                   />
                 </AvGroup>
               </Col>
-              <Col md={6}>
-                <AvGroup>
-                  <Label id="heureDebutJrLabel" for="horaire-heureDebutJr">
-                    <Translate contentKey="ibamApp.horaire.heureDebutJr">Heure Debut Jr</Translate>
-                  </Label>
-                  <AvField id="horaire-heureDebutJr" type="text" name="heureDebutJr" />
-                </AvGroup>
-              </Col>
-              <Col md={6}>
-                <AvGroup>
-                  <Label id="heureFinJrLabel" for="horaire-heureFinJr">
-                    <Translate contentKey="ibamApp.horaire.heureFinJr">Heure Fin Jr</Translate>
-                  </Label>
-                  <AvField id="horaire-heureFinJr" type="text" name="heureFinJr" />
-                </AvGroup>
-              </Col>
               <Col md={12}>
                 <AvGroup>
-                  <Label id="dureePauseLabel" for="horaire-dureePause">
-                    <Translate contentKey="ibamApp.horaire.dureePause">Duree Pause</Translate>
+                  <Label for="assurance-materiel">
+                    <Translate contentKey="ibamApp.assurance.materiel">Materiel</Translate>
                   </Label>
-                  <AvField id="horaire-dureePause" type="text" name="dureePause" />
+                  <AvInput id="assurance-materiel" type="select" className="form-control" name="materiel.id">
+                    <option value="" key="0" />
+                    {materiels
+                      ? materiels.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.libelle + ' (' + otherEntity.matricule + ')'}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
                 </AvGroup>
               </Col>
             </Row>
@@ -350,32 +365,35 @@ const Horaire = (props: any) => {
       </Modal>
 
       {selectedEntity !== null && (
-        <HoraireDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
+        <AssuranceDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
       )}
     </Fragment>
   );
 };
 // }
 
-const mapStateToProps = ({ horaire }: IRootState) => ({
-  list: horaire.entities,
-  loading: horaire.loading,
-  updateSuccess: horaire.updateSuccess
+const mapStateToProps = ({ assurance, materiel }: IRootState) => ({
+  list: assurance.entities,
+  loading: assurance.loading,
+  updateSuccess: assurance.updateSuccess,
   //   imageEntity: image.entity,
-  //   totalItems: horaire.totalItems
+  totalItems: assurance.totalItems,
+  materiels: materiel.entities
 });
 
 const mapDispatchToProps = {
   getEntities,
   createEntity,
   deleteEntity,
-  updateEntity
+  updateEntity,
+  getMateriels
+
   //   filterEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Horaire);
+export default connect(mapStateToProps, mapDispatchToProps)(Assurance);
 
 // export default Entreprise;

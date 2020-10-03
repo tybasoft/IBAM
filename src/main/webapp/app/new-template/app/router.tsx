@@ -9,9 +9,14 @@ import FullPageLayout from '../layouts/routes/fullpageRoutes';
 import ErrorLayoutRoute from '../layouts/routes/errorRoutes';
 import Entreprise from '../modules/entreprise';
 import Fonction from '../modules/fonction';
+import Horaire from '../modules/horaire';
+import Marque from '../modules/marque';
+import Assurance from '../modules/assurance';
+import CentreMaintenance from '../modules/centre-maintenance';
 import { Logout } from 'app/modules/login/logout';
 import { logout } from 'app/shared/reducers/authentication';
 import { connect } from 'react-redux';
+import { IRootState } from 'app/shared/reducers';
 
 // Main Layout
 const LazyEcommerceDashboard = lazy(() => import('../views/dashboard/ecommerceDashboard'));
@@ -198,6 +203,42 @@ class Router extends Component<any, any> {
             render={matchprops => (
               <Suspense fallback={<Spinner />}>
                 <Fonction {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/horaire"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Horaire {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/marque"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Marque {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/assurance"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Assurance {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/centre-maintenance"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <CentreMaintenance {...matchprops} />
               </Suspense>
             )}
           />

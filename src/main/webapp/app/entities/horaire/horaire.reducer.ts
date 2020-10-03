@@ -134,6 +134,8 @@ export const updateEntity: ICrudPutAction<IHoraire> = entity => async dispatch =
     type: ACTION_TYPES.UPDATE_HORAIRE,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -143,6 +145,8 @@ export const deleteEntity: ICrudDeleteAction<IHoraire> = id => async dispatch =>
     type: ACTION_TYPES.DELETE_HORAIRE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 

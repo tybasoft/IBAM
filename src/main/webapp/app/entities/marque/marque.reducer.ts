@@ -139,6 +139,8 @@ export const updateEntity: ICrudPutAction<IMarque> = entity => async dispatch =>
     type: ACTION_TYPES.UPDATE_MARQUE,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -148,6 +150,8 @@ export const deleteEntity: ICrudDeleteAction<IMarque> = id => async dispatch => 
     type: ACTION_TYPES.DELETE_MARQUE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 

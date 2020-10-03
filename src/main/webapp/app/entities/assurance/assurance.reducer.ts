@@ -140,6 +140,8 @@ export const updateEntity: ICrudPutAction<IAssurance> = entity => async dispatch
     type: ACTION_TYPES.UPDATE_ASSURANCE,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -149,6 +151,8 @@ export const deleteEntity: ICrudDeleteAction<IAssurance> = id => async dispatch 
     type: ACTION_TYPES.DELETE_ASSURANCE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 
