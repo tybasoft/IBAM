@@ -13,6 +13,8 @@ import Horaire from '../modules/horaire';
 import Marque from '../modules/marque';
 import Assurance from '../modules/assurance';
 import CentreMaintenance from '../modules/centre-maintenance';
+import Consommation from '../modules/consommation';
+import Location from '../modules/location';
 import { Logout } from 'app/modules/login/logout';
 import { logout } from 'app/shared/reducers/authentication';
 import { connect } from 'react-redux';
@@ -239,6 +241,24 @@ class Router extends Component<any, any> {
             render={matchprops => (
               <Suspense fallback={<Spinner />}>
                 <CentreMaintenance {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/consommation"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Consommation {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/location"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Location {...matchprops} />
               </Suspense>
             )}
           />

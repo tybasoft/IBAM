@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Input, ListGroup, ListGroupItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Search } from 'react-feather';
+import { Search, X } from 'react-feather';
 import { debounce } from 'lodash';
 class NavbarSearch extends Component<any, any> {
   state = {
@@ -86,6 +86,13 @@ class NavbarSearch extends Component<any, any> {
     let searchTerm = this.state.searchTerm;
     if (searchTerm !== '') this.props.search(searchTerm);
   };
+
+  handleCancel = () => {
+    this.setState({
+      searchTerm: ''
+    });
+    this.props.clear();
+  };
   handleChange = e => {
     // return debounce(e => this.props.search(e.target.value), 300);
     // else
@@ -145,8 +152,10 @@ class NavbarSearch extends Component<any, any> {
           value={searchTerm}
         />
         <div className="form-control-position">
-          <Search onClick={() => this.handleSearch()} size={16} style={{ cursor: 'pointer' }} className="mb-0" />
+          <Search onClick={() => this.handleSearch()} size={16} style={{ cursor: 'pointer' }} className="mb-0 mr-2" />
+          <X onClick={() => this.handleCancel()} size={16} style={{ cursor: 'pointer' }} className="mb-0" />
         </div>
+        {/* <div className="form-control-position"></div> */}
         {this.state.filtered ? (
           <div ref={node => (this.node = node)}>
             <ListGroup className="navbar-search">

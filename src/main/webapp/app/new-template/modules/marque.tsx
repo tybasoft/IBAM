@@ -36,8 +36,8 @@ import {
   deleteEntity,
   updateEntity,
   ACTION_TYPES,
-  apiUrl
-  //   filterEntities
+  apiUrl,
+  filterEntities
 } from '../../entities/marque/marque.reducer';
 import { Translate, translate, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -148,7 +148,7 @@ const Marque = (props: any) => {
               <CardTitle className="row" style={{ margin: 0 }}>
                 <Translate contentKey="ibamApp.marque.home.title">marques</Translate>
                 <Form className="navbar-form mt-1 ml-auto float-left" role="search">
-                  <NavbarSearch search={filter} />
+                  <NavbarSearch search={filter} clear={props.getEntities} />
                 </Form>
               </CardTitle>
               <p>
@@ -317,8 +317,8 @@ const mapDispatchToProps = {
   getEntities,
   createEntity,
   deleteEntity,
-  updateEntity
-  //   filterEntities,
+  updateEntity,
+  filterEntities
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

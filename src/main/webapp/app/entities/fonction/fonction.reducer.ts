@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_FONCTION: 'fonction/UPDATE_FONCTION',
   DELETE_FONCTION: 'fonction/DELETE_FONCTION',
   RESET: 'fonction/RESET',
-  REPPORT: 'fonction/REPPORT'
+  REPPORT: 'fonction/REPPORT',
+  FILTER_FONCTION_LIST: 'fonction/FILTER'
 };
 
 const initialState = {
@@ -89,6 +90,12 @@ export default (state: FonctionState = initialState, action): FonctionState => {
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.FILTER_FONCTION_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case REQUEST(ACTION_TYPES.REPPORT):
       return {
         ...state,
@@ -108,6 +115,11 @@ export default (state: FonctionState = initialState, action): FonctionState => {
 export const apiUrl = 'api/fonctions';
 
 // Actions
+
+export const filterEntities: ICrudGetAllAction<IFonction> = filter => ({
+  type: ACTION_TYPES.FILTER_FONCTION_LIST,
+  payload: axios.get<IFonction>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntities: ICrudGetAllAction<IFonction> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;

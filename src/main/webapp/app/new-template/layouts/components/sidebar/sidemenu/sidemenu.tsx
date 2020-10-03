@@ -384,10 +384,10 @@ class SideMenuContent extends Component<any> {
               <NavLink to="/centre-maintenance" className="item" activeClassName="active">
                 <span className="menu-item-text">Centre maintenance</span>
               </NavLink>
-              <NavLink to="/react-tables/extended" className="item" activeClassName="active">
+              <NavLink to="/consommation" className="item" activeClassName="active">
                 <span className="menu-item-text">Consommation</span>
               </NavLink>
-              <NavLink to="/react-tables/extended" className="item" activeClassName="active">
+              <NavLink to="/location" className="item" activeClassName="active">
                 <span className="menu-item-text">Location</span>
               </NavLink>
               <NavLink to="/react-tables/extended" className="item" activeClassName="active">

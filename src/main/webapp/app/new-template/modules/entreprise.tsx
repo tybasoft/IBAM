@@ -227,7 +227,7 @@ const Entreprise = (props: any) => {
               <CardTitle className="row" style={{ margin: 0 }}>
                 <Translate contentKey="ibamApp.entreprise.home.title">Entreprises</Translate>
                 <Form className="navbar-form mt-1 ml-auto float-left" role="search">
-                  <NavbarSearch search={filter} />
+                  <NavbarSearch search={filter} clear={props.getEntities} />
                 </Form>
               </CardTitle>
               <p>

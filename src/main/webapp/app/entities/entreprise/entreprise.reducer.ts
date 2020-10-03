@@ -133,7 +133,7 @@ export const getEntities: ICrudGetAllAction<IEntreprise> = (page, size, sort) =>
 
 export const filterEntities: ICrudGetAllAction<IEntreprise> = filter => ({
   type: ACTION_TYPES.FILTER_ENTREPRISE_LIST,
-  payload: axios.get<IEntreprise>(`${apiUrl}?query=${filter}&cacheBuster=${new Date().getTime()}`)
+  payload: axios.get<IEntreprise>(`${apiUrl}/search-entities/${filter}`)
 });
 
 export const getEntity: ICrudGetAction<IEntreprise> = id => {

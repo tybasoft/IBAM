@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_CENTREMAINTENANCE: 'centreMaintenance/UPDATE_CENTREMAINTENANCE',
   DELETE_CENTREMAINTENANCE: 'centreMaintenance/DELETE_CENTREMAINTENANCE',
   RESET: 'centreMaintenance/RESET',
-  REPPORT: 'centreMaintenance/REPPORT'
+  REPPORT: 'centreMaintenance/REPPORT',
+  FILTER_CENTREMAINTENANCE_LIST: 'centreMaintenance/FILTER_CENTREMAINTENANCE_LIST'
 };
 
 const initialState = {
@@ -75,6 +76,12 @@ export default (state: CentreMaintenanceState = initialState, action): CentreMai
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
+    case SUCCESS(ACTION_TYPES.FILTER_CENTREMAINTENANCE_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case SUCCESS(ACTION_TYPES.FETCH_CENTREMAINTENANCE):
       return {
         ...state,
@@ -116,6 +123,11 @@ export const getEntities: ICrudGetAllAction<ICentreMaintenance> = (page, size, s
     payload: axios.get<ICentreMaintenance>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
+
+export const filterEntities: ICrudGetAllAction<ICentreMaintenance> = filter => ({
+  type: ACTION_TYPES.FILTER_CENTREMAINTENANCE_LIST,
+  payload: axios.get<ICentreMaintenance>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntity: ICrudGetAction<ICentreMaintenance> = id => {
   const requestUrl = `${apiUrl}/${id}`;

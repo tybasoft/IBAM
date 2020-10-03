@@ -39,9 +39,8 @@ import {
   deleteEntity,
   updateEntity,
   ACTION_TYPES,
-  apiUrl
-
-  //   filterEntities
+  apiUrl,
+  filterEntities
 } from '../../entities/assurance/assurance.reducer';
 import { getEntities as getMateriels } from 'app/entities/materiel/materiel.reducer';
 
@@ -155,7 +154,7 @@ const Assurance = (props: any) => {
               <CardTitle className="row" style={{ margin: 0 }}>
                 <Translate contentKey="ibamApp.assurance.home.title">assurances</Translate>
                 <Form className="navbar-form mt-1 ml-auto float-left" role="search">
-                  <NavbarSearch search={filter} />
+                  <NavbarSearch search={filter} clear={props.getEntities} />
                 </Form>
               </CardTitle>
               <p>
@@ -386,9 +385,9 @@ const mapDispatchToProps = {
   createEntity,
   deleteEntity,
   updateEntity,
-  getMateriels
+  getMateriels,
 
-  //   filterEntities,
+  filterEntities
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

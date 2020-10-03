@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_CONSOMMATION: 'consommation/UPDATE_CONSOMMATION',
   DELETE_CONSOMMATION: 'consommation/DELETE_CONSOMMATION',
   RESET: 'consommation/RESET',
-  REPPORT: 'consomation/REPPORT'
+  REPPORT: 'consomation/REPPORT',
+  FILTER_CONSOMMATION_LIST: 'consommation/FILTER_CONSOMMATION_LIST'
 };
 
 const initialState = {
@@ -81,6 +82,12 @@ export default (state: ConsommationState = initialState, action): ConsommationSt
         loading: false,
         entity: action.payload.data
       };
+    case SUCCESS(ACTION_TYPES.FILTER_CONSOMMATION_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case SUCCESS(ACTION_TYPES.CREATE_CONSOMMATION):
     case SUCCESS(ACTION_TYPES.UPDATE_CONSOMMATION):
       return {
@@ -116,6 +123,11 @@ export const getEntities: ICrudGetAllAction<IConsommation> = (page, size, sort) 
     payload: axios.get<IConsommation>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
+
+export const filterEntities: ICrudGetAllAction<IConsommation> = filter => ({
+  type: ACTION_TYPES.FILTER_CONSOMMATION_LIST,
+  payload: axios.get<IConsommation>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntity: ICrudGetAction<IConsommation> = id => {
   const requestUrl = `${apiUrl}/${id}`;

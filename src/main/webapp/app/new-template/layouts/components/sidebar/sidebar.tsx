@@ -115,12 +115,12 @@ class Sidebar extends Component<any, any> {
   }
 }
 
-const mapStateToProps = state => ({
-  color: state.customizer.sidebarBgColor,
-  img: state.customizer.sidebarImage,
-  imgurl: state.customizer.sidebarImageUrl,
-  size: state.customizer.sidebarSize,
-  collapsed: state.customizer.sidebarCollapsed
+const mapStateToProps = ({ customizer }) => ({
+  color: customizer.sidebarBgColor,
+  img: customizer.sidebarImage,
+  imgurl: customizer.sidebarImageUrl,
+  size: customizer.sidebarSize,
+  collapsed: customizer.sidebarCollapsed
 });
 
 const mapDispatchToProps = dispatch => ({
