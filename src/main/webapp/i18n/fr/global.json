@@ -2,8 +2,20 @@
   "global": {
     "title": "IBAM",
     "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
+    "sidebar": {
+      "dashboard": "Tableau de bord",
+      "employees": "Employés",
+      "calendar": "Calendrier",
+      "projects": "Projets",
+      "modules": "Modules",
+      "settings": "Paramètrage",
+      "admintools": "Outils administratives",
+      "documentation": "Documentation"
+    },
     "menu": {
       "home": "Accueil",
+      "profile": "Mon profil",
+      "logout": "Se déconnecter",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entités",
@@ -143,7 +155,8 @@
       "download": "Télécharger",
       "genererpaie": "générer",
       "editPointage": "Editer Pointage",
-      "viewPointage": "Voir Pointage"
+      "viewPointage": "Voir Pointage",
+      "upload": "Charger"
     },
     "detail": {
       "field": "Champs",

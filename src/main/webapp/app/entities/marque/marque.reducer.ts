@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_MARQUE: 'marque/UPDATE_MARQUE',
   DELETE_MARQUE: 'marque/DELETE_MARQUE',
   RESET: 'marque/RESET',
-  REPPORT: 'marque/REPPORT'
+  REPPORT: 'marque/REPPORT',
+  FILTER_MARQUE_LIST: 'marque/FILTER'
 };
 
 const initialState = {
@@ -94,6 +95,12 @@ export default (state: MarqueState = initialState, action): MarqueState => {
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.FILTER_MARQUE_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -117,6 +124,11 @@ export const getEntities: ICrudGetAllAction<IMarque> = (page, size, sort) => {
   };
 };
 
+export const filterEntities: ICrudGetAllAction<IMarque> = filter => ({
+  type: ACTION_TYPES.FILTER_MARQUE_LIST,
+  payload: axios.get<IMarque>(`${apiUrl}/search-entities/${filter}`)
+});
+
 export const getEntity: ICrudGetAction<IMarque> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
@@ -139,6 +151,8 @@ export const updateEntity: ICrudPutAction<IMarque> = entity => async dispatch =>
     type: ACTION_TYPES.UPDATE_MARQUE,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -148,6 +162,8 @@ export const deleteEntity: ICrudDeleteAction<IMarque> = id => async dispatch => 
     type: ACTION_TYPES.DELETE_MARQUE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 

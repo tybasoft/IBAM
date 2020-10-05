@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { Storage } from 'react-jhipster';
 
-import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { setLocale } from 'app/shared/reducers/locale';
+import { REQUEST, SUCCESS, FAILURE } from '../reducers/action-type.util';
+import { setLocale } from '../reducers/locale';
 
 export const ACTION_TYPES = {
   LOGIN: 'authentication/LOGIN',
@@ -21,11 +21,11 @@ const initialState = {
   loginError: false, // Errors returned from server side
   showModalLogin: false,
   account: {} as any,
-  errorMessage: null as string, // Errors returned from server side
-  redirectMessage: null as string,
+  errorMessage: (null as unknown) as string, // Errors returned from server side
+  redirectMessage: (null as unknown) as string,
   sessionHasBeenFetched: false,
-  idToken: null as string,
-  logoutUrl: null as string
+  idToken: (null as unknown) as string,
+  logoutUrl: (null as unknown) as string
 };
 
 export type AuthenticationState = Readonly<typeof initialState>;
@@ -113,6 +113,7 @@ export const getSession = () => async (dispatch, getState) => {
 };
 
 export const login = (username, password, rememberMe = false) => async (dispatch, getState) => {
+  console.log('Logging in from action');
   const result = await dispatch({
     type: ACTION_TYPES.LOGIN,
     payload: axios.post('api/authenticate', { username, password, rememberMe })

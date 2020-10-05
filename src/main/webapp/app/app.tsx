@@ -20,6 +20,7 @@ import ErrorBoundary from 'app/shared/error/error-boundary';
 import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
 import { getUserEntities, updateEntity as updateNotification } from './entities/notification/notification.reducer';
+// import Router from "app/new-template/router";
 
 const baseHref = document
   .querySelector('base')
@@ -37,7 +38,7 @@ export const App = (props: IAppProps) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     if (props.isAuthenticated) {
       setTimeout(() => {
         props.logout();
@@ -48,6 +49,7 @@ export const App = (props: IAppProps) => {
 
   const paddingTop = '60px';
   return (
+    //     <Router />
     <Router basename={baseHref}>
       <div className="app-container" style={{ paddingTop }}>
         <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
@@ -89,7 +91,7 @@ export const App = (props: IAppProps) => {
               </ModalFooter>
             </Modal>
           </Card>
-         
+
           <Footer />
         </div>
       </div>
@@ -124,4 +126,4 @@ const mapDispatchToProps = { setLocale, getSession, getProfile, getUserEntities,
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(App));
+export default connect(mapStateToProps, mapDispatchToProps)(App);
