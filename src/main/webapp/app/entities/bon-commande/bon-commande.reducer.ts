@@ -109,6 +109,14 @@ export const getEntities: ICrudGetAllAction<IBonCommande> = (page, size, sort) =
   };
 };
 
+export const getEntitiesById: ICrudGetAction<IBonCommande> = id => {
+  const requestUrl = `${apiUrl}/${id}/lignes`;
+  return {
+    type: ACTION_TYPES.FETCH_BONCOMMANDE,
+    payload: axios.get<IBonCommande>(requestUrl)
+  };
+};
+
 export const getEntity: ICrudGetAction<IBonCommande> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {

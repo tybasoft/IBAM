@@ -458,7 +458,6 @@ const mapDispatchToProps = {
   getProjects,
   updateEntity,
   createEntity,
-  createBonCommande,
   reset
 };
 

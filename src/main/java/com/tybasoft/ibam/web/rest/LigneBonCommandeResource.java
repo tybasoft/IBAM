@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,6 +113,22 @@ public class LigneBonCommandeResource {
         log.debug("REST request to get LigneBonCommande : {}", id);
         Optional<LigneBonCommande> ligneBonCommande = ligneBonCommandeRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(ligneBonCommande);
+    }
+
+//    @GetMapping("/ligne-bon-commandes/{id}/lignes")
+//    public Collection<LigneBonCommande> getAllLigneBonCommande(@PathVariable Long id) {
+//        log.debug("ALLLLLLLLLLLLLLLLLLLLL", id);
+//        Collection<LigneBonCommande> ligneBonCommande = ligneBonCommandeRepository.findAllByBonCommande_Id(id);
+//        log.debug("LLLLLLIGNEssss", ligneBonCommande);
+//        return ligneBonCommande;
+//    }
+
+    @GetMapping("/ligne-bon-commandes/{id}/lignes")
+    public ResponseEntity<Collection<LigneBonCommande>> getAllLigneBonCommandeById(@PathVariable Long id) {
+        log.debug("REST request to get LigneBonCommande : {}", id);
+        Collection<LigneBonCommande> ligneBonCommande = ligneBonCommandeRepository.findAllByBonCommande_Id(id);
+        log.debug("Show all LigneBonCommande : {}", ligneBonCommande.size());
+        return ResponseEntity.ok().body(ligneBonCommande);
     }
 
     /**

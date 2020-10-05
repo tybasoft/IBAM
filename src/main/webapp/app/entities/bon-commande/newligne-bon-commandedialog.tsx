@@ -6,6 +6,7 @@ import {Translate, ICrudGetAction, ICrudDeleteAction, translate} from 'react-jhi
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Row, Col, Label,Table } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { useHistory } from 'react-router-dom';
 
 
 
@@ -17,6 +18,7 @@ import {getEntities as getFournisseurs} from "app/entities/fournisseur/fournisse
 import {getEntities as getMateriau} from "app/entities/materiau/materiau.reducer";
 import {getEntities as getProjects} from "app/entities/projet/projet.reducer";
 import {getEntities as getMateriels} from "app/entities/materiel/materiel.reducer";
+import {getEntitiesById as getLigneBonCommande} from "app/entities/ligne-bon-commande/ligne-bon-commande.reducer";
 import {getEntity as getOneMateriel} from "app/entities/materiel/materiel.reducer";
 import {getEntity as getOneMateriau} from "app/entities/materiau/materiau.reducer";
 import {ModalContent} from "semantic-ui-react";
@@ -39,6 +41,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
   // let [isOpen] = useState(false);
   const [modal, setModal] = useState(false);
   const [bigmodal, setBigModal] = useState(true);
+  const history = useHistory();
 
 
   const tab = [
@@ -56,7 +59,6 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
     // props.getEntity(props.match.params.id);
   }, []);
 
-  let {ligneBonCommandeList,materiels,ligneBonComs,ligneBonCom,bonCommandeEntity,projets, materiaus,depots, fournisseurs, loading, updating } = props;
 
 
 
@@ -100,6 +102,12 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
       props.reset();
     } else {
       props.getEntity(props.match.params.id);
+      // const lines = getLigneBonCommande(props.match.params.id);
+      // console.warn(lines);
+      // newLines.push(props.getLigneBonCommande(props.match.params.id));
+      props.getLigneBonCommande(props.match.params.id);
+      // setNewLines(getLigneBonCommande(props.match.params.id));
+
     }
 
     props.getDepots();
@@ -107,6 +115,9 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
     props.getMateriau();
     props.getMateriels();
     props.getProjects();
+
+    // console.warn("TESTTTST");
+    // console.warn(ligneBonCommandeList1);
   }, []);
 
   useEffect(() => {
@@ -133,13 +144,18 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
         props.createEntity(entity);
         // window.history.go("/");
         // this.history.pushState(null, 'bon-commande');
-        //   handleCloseBig();
+          handleCloseBig();
+
+        history.push("/bon-commande");
       } else {
         props.updateEntity(entity);
         // window.history.back();
         handleCloseBig();
+        history.push("/bon-commande");
+        window.location.reload(false);
+
+
       }
-      return <Redirect to='/bon-commande' />
 
     }
 
@@ -166,6 +182,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
 
 
   // const toggle = () => setModal(!modal);
+  const {ligneBonCommandeList,materiels,ligneBonComs,ligneBonCom,bonCommandeEntity,projets, materiaus ,depots, fournisseurs, loading, updating } = props;
 
   return (
     <div>
@@ -289,7 +306,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                       </tr>
                       </thead>
                       <tbody>
-                      {newLines.map((data, i) => (
+                      {ligneBonCommandeList.map((data, i) => (
                         <tr key={`entity-${i}`}>
                           {/*<td>
                             <Button tag={Link}  color="link" size="sm">
@@ -298,7 +315,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                           </td>*/}
                           <td>{data.quantite}</td>
                           <td>
-                            {data.materiel.id} {data.materiau.id}
+                            {data.materiel.libelle} {data.materiau.libelle}
                           </td>
                           <td className="text-right">
                             <div className="btn-group flex-btn-group-container">
@@ -455,6 +472,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   materiels: storeState.materiel.entities,
   ligneBonComs : storeState.bonCommande.entity.ligneBonComs,
   ligneBonCom : storeState.ligneBonCommande.entity,
+  // tab : storeState.ligneBonCommande.entities,
   // materiau: storeState.materiau.entity,
   // materiel: storeState.materiel.entity,
   fournisseurs: storeState.fournisseur.entities,
@@ -464,6 +482,9 @@ const mapStateToProps = (storeState: IRootState) => ({
   updateSuccess: storeState.bonCommande.updateSuccess,
   ligneBonCommandeList: storeState.ligneBonCommande.entities,
   totalItems: storeState.ligneBonCommande.totalItems,
+  // ligneBonCommandeList: storeState.ligneBonCommande.entities,
+  // ligneBonCommandeList1: storeState.bonCommande.entity.ligneBonComs,
+
   // materielEntity: materiel,
   // materiauEntity: storeState.materiau.entity,
 
@@ -475,6 +496,7 @@ const mapDispatchToProps = {
   getDepots,
   getFournisseurs,
   getMateriau,
+  getLigneBonCommande,
   getMateriels,
   getOneMateriel,
   getOneMateriau,
