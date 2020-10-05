@@ -4,7 +4,6 @@ import { loadingBarReducer as loadingBar } from 'react-redux-loading-bar';
 import locale, { LocaleState } from './locale';
 import authentication, { AuthenticationState } from './authentication';
 import applicationProfile, { ApplicationProfileState } from './application-profile';
-import customizer from '../../new-template/redux/reducers/customizer/';
 
 import administration, { AdministrationState } from 'app/modules/administration/administration.reducer';
 import userManagement, { UserManagementState } from 'app/modules/administration/user-management/user-management.reducer';
@@ -151,7 +150,6 @@ import situationFinanciere, {
 } from 'app/entities/situation-financiere/situation-financiere.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
-import avancement, { AvancementState } from 'app/entities/avancement/avancement.reducer';
 export interface IRootState {
   readonly authentication: AuthenticationState;
   readonly locale: LocaleState;
@@ -197,10 +195,8 @@ export interface IRootState {
   readonly fichePointage: FichePointageState;
   readonly affectationMateriels: AffectationMaterielsState;
   readonly situationFinanciere: SituationFinanciereState;
-  readonly avancement: AvancementState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
-  readonly customizer: any;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -248,8 +244,6 @@ const rootReducer = combineReducers<IRootState>({
   fichePointage,
   affectationMateriels,
   situationFinanciere,
-  avancement,
-  customizer,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });

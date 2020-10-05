@@ -31,7 +31,9 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
             </span>
           </dt>
           <dd>
-            <TextFormat value={bonCommandeEntity.datePrevLiv} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            {bonCommandeEntity.datePrevLiv ? (
+              <TextFormat value={bonCommandeEntity.datePrevLiv} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            ) : null}
           </dd>
           <dt>
             <span id="remarques">
@@ -45,7 +47,9 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
             </span>
           </dt>
           <dd>
-            <TextFormat value={bonCommandeEntity.dateCreation} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            {bonCommandeEntity.dateCreation ? (
+              <TextFormat value={bonCommandeEntity.dateCreation} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            ) : null}
           </dd>
           <dt>
             <span id="valide">
@@ -65,16 +69,18 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
             </span>
           </dt>
           <dd>
-            <TextFormat value={bonCommandeEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            {bonCommandeEntity.dateModif ? (
+              <TextFormat value={bonCommandeEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            ) : null}
           </dd>
-          <dt>
-            <Translate contentKey="ibamApp.bonCommande.depot">Depot</Translate>
-          </dt>
-          <dd>{bonCommandeEntity.depot ? bonCommandeEntity.depot.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.bonCommande.fournisseur">Fournisseur</Translate>
           </dt>
-          <dd>{bonCommandeEntity.fournisseur ? bonCommandeEntity.fournisseur.nomCommercial : ''}</dd>
+          <dd>{bonCommandeEntity.fournisseur ? bonCommandeEntity.fournisseur.id : ''}</dd>
+          <dt>
+            <Translate contentKey="ibamApp.bonCommande.projet">Projet</Translate>
+          </dt>
+          <dd>{bonCommandeEntity.projet ? bonCommandeEntity.projet.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/bon-commande" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
@@ -95,7 +101,7 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
 };
 
 const mapStateToProps = ({ bonCommande }: IRootState) => ({
-  bonCommandeEntity: bonCommande.entity
+  bonCommandeEntity: bonCommande.entity,
 });
 
 const mapDispatchToProps = { getEntity };

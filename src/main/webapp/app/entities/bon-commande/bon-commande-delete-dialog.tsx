@@ -59,7 +59,7 @@ export const BonCommandeDeleteDialog = (props: IBonCommandeDeleteDialogProps) =>
 
 const mapStateToProps = ({ bonCommande }: IRootState) => ({
   bonCommandeEntity: bonCommande.entity,
-  updateSuccess: bonCommande.updateSuccess
+  updateSuccess: bonCommande.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

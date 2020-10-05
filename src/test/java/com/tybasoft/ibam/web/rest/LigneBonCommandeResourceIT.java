@@ -2,6 +2,7 @@ package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.IbamApp;
 import com.tybasoft.ibam.domain.LigneBonCommande;
+import com.tybasoft.ibam.domain.BonCommande;
 import com.tybasoft.ibam.repository.LigneBonCommandeRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -62,6 +63,16 @@ public class LigneBonCommandeResourceIT {
             .quantite(DEFAULT_QUANTITE)
             .userModif(DEFAULT_USER_MODIF)
             .dateModif(DEFAULT_DATE_MODIF);
+        // Add required entity
+        BonCommande bonCommande;
+        if (TestUtil.findAll(em, BonCommande.class).isEmpty()) {
+            bonCommande = BonCommandeResourceIT.createEntity(em);
+            em.persist(bonCommande);
+            em.flush();
+        } else {
+            bonCommande = TestUtil.findAll(em, BonCommande.class).get(0);
+        }
+        ligneBonCommande.setBonCommande(bonCommande);
         return ligneBonCommande;
     }
     /**
@@ -75,6 +86,16 @@ public class LigneBonCommandeResourceIT {
             .quantite(UPDATED_QUANTITE)
             .userModif(UPDATED_USER_MODIF)
             .dateModif(UPDATED_DATE_MODIF);
+        // Add required entity
+        BonCommande bonCommande;
+        if (TestUtil.findAll(em, BonCommande.class).isEmpty()) {
+            bonCommande = BonCommandeResourceIT.createUpdatedEntity(em);
+            em.persist(bonCommande);
+            em.flush();
+        } else {
+            bonCommande = TestUtil.findAll(em, BonCommande.class).get(0);
+        }
+        ligneBonCommande.setBonCommande(bonCommande);
         return ligneBonCommande;
     }
 
@@ -156,7 +177,7 @@ public class LigneBonCommandeResourceIT {
             .andExpect(jsonPath("$.[*].userModif").value(hasItem(DEFAULT_USER_MODIF)))
             .andExpect(jsonPath("$.[*].dateModif").value(hasItem(DEFAULT_DATE_MODIF.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getLigneBonCommande() throws Exception {

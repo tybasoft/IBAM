@@ -1,6 +1,5 @@
 package com.tybasoft.ibam.web.rest;
 
-import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.domain.LigneBonCommande;
 import com.tybasoft.ibam.repository.LigneBonCommandeRepository;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,19 +111,6 @@ public class LigneBonCommandeResource {
         log.debug("REST request to get LigneBonCommande : {}", id);
         Optional<LigneBonCommande> ligneBonCommande = ligneBonCommandeRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(ligneBonCommande);
-    }
-
-    @GetMapping("/ligne-bon-commandes/search-entities/{keyword}")
-    public ResponseEntity<Collection<LigneBonCommande>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
-        Page<LigneBonCommande> ligneBonCommandes ;
-//        String key = keyword.toLowerCase();
-        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
-        log.debug(keyword);
-        ligneBonCommandes = ligneBonCommandeRepository.findByQuantiteIsContainingOrMateriau_LibelleIsContaining(keyword,keyword,pageable);
-        log.debug(String.valueOf(ligneBonCommandes.stream().count()));
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), ligneBonCommandes);
-
-        return ResponseEntity.ok().headers(headers).body(ligneBonCommandes.getContent());
     }
 
     /**

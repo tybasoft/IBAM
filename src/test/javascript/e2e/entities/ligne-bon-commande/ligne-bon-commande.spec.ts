@@ -49,26 +49,24 @@ describe('LigneBonCommande e2e test', () => {
     expect(await ligneBonCommandeComponentsPage.createButton.isEnabled()).to.be.true;
   });
 
-  it('should create and delete LigneBonCommandes', async () => {
-    const beforeRecordsCount = (await isVisible(ligneBonCommandeComponentsPage.noRecords))
-      ? 0
-      : await getRecordsCount(ligneBonCommandeComponentsPage.table);
-    ligneBonCommandeUpdatePage = await ligneBonCommandeComponentsPage.goToCreateLigneBonCommande();
-    await ligneBonCommandeUpdatePage.enterData();
+  /* it('should create and delete LigneBonCommandes', async () => {
+        const beforeRecordsCount = await isVisible(ligneBonCommandeComponentsPage.noRecords) ? 0 : await getRecordsCount(ligneBonCommandeComponentsPage.table);
+        ligneBonCommandeUpdatePage = await ligneBonCommandeComponentsPage.goToCreateLigneBonCommande();
+        await ligneBonCommandeUpdatePage.enterData();
 
-    expect(await ligneBonCommandeComponentsPage.createButton.isEnabled()).to.be.true;
-    await waitUntilDisplayed(ligneBonCommandeComponentsPage.table);
-    await waitUntilCount(ligneBonCommandeComponentsPage.records, beforeRecordsCount + 1);
-    expect(await ligneBonCommandeComponentsPage.records.count()).to.eq(beforeRecordsCount + 1);
+        expect(await ligneBonCommandeComponentsPage.createButton.isEnabled()).to.be.true;
+        await waitUntilDisplayed(ligneBonCommandeComponentsPage.table);
+        await waitUntilCount(ligneBonCommandeComponentsPage.records, beforeRecordsCount + 1);
+        expect(await ligneBonCommandeComponentsPage.records.count()).to.eq(beforeRecordsCount + 1);
 
-    await ligneBonCommandeComponentsPage.deleteLigneBonCommande();
-    if (beforeRecordsCount !== 0) {
-      await waitUntilCount(ligneBonCommandeComponentsPage.records, beforeRecordsCount);
-      expect(await ligneBonCommandeComponentsPage.records.count()).to.eq(beforeRecordsCount);
-    } else {
-      await waitUntilDisplayed(ligneBonCommandeComponentsPage.noRecords);
-    }
-  });
+        await ligneBonCommandeComponentsPage.deleteLigneBonCommande();
+        if(beforeRecordsCount !== 0) {
+          await waitUntilCount(ligneBonCommandeComponentsPage.records, beforeRecordsCount);
+          expect(await ligneBonCommandeComponentsPage.records.count()).to.eq(beforeRecordsCount);
+        } else {
+          await waitUntilDisplayed(ligneBonCommandeComponentsPage.noRecords);
+        }
+    }); */
 
   after(async () => {
     await navBarPage.autoSignOut();

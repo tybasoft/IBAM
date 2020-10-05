@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
@@ -114,6 +114,13 @@ export const getEntity: ICrudGetAction<IMateriel> = id => {
   return {
     type: ACTION_TYPES.FETCH_MATERIEL,
     payload: axios.get<IMateriel>(requestUrl)
+  };
+};
+export const getEntity1: (id) => { payload: Promise<void | AxiosResponse<IMateriel>>; type: string } = id => {
+  const requestUrl = `${apiUrl}/${id}`;
+  return {
+    type: ACTION_TYPES.FETCH_MATERIEL,
+    payload: axios.get<IMateriel>(requestUrl).then(data => console.warn(data.data))
   };
 };
 

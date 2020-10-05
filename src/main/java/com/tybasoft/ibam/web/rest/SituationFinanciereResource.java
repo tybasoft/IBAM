@@ -4,8 +4,10 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.tybasoft.ibam.domain.Entreprise;
 import com.tybasoft.ibam.domain.Projet;
 import com.tybasoft.ibam.domain.SituationFinanciere;
+import com.tybasoft.ibam.repository.EntrepriseRepository;
 import com.tybasoft.ibam.repository.ProjetRepository;
 import com.tybasoft.ibam.repository.SituationFinanciereRepository;
 import com.tybasoft.ibam.service.ReportService;
@@ -66,6 +68,8 @@ public class SituationFinanciereResource {
     ProjetRepository projetRepository;
     @Autowired
     SituationFinanciereRepository situationFinanciereRepository;
+    @Autowired
+    EntrepriseRepository entrepriseRepository;
     @Autowired
     ReportService reportService;
 
@@ -271,14 +275,16 @@ public class SituationFinanciereResource {
                 getId(),situationFinanciereCourante.
                 getDateFacturation());
         int size =  situationCollection.size();
-
+        Entreprise entreprise = entrepriseRepository.findById(1L).orElseThrow(
+            ()-> new BadRequestAlertException("Entreprise not found", ENTITY_NAME, "Entreprise"));
         Document document = new Document();
-        String logoPath = Paths.get("./src/main/webapp/content/images/").resolve("logo-jhipster.png").toAbsolutePath()
+        String logoPath = Paths.get("./src/main/webapp/content/images/").resolve("logo.png").toAbsolutePath()
             .normalize().toString();
         Image img = Image.getInstance(logoPath);
         PdfPTable table = new PdfPTable(4);
         PdfPTable table1 = new PdfPTable(4);
         PdfPTable table2 = new PdfPTable(4);
+
         try
         {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("HelloWorld.pdf"));
@@ -290,10 +296,11 @@ public class SituationFinanciereResource {
             chunk.setFont(titleFont);
             LocalDate date = LocalDate.now();
             Paragraph p = new Paragraph();
-            p.add("\n IBAM Enterprise                                                                                      le "+date);
-            p.add("\n ibam@tybasoft.com");
-            p.add("\n Casablanca");
-            p.add("\n 40140");
+            p.add(entreprise.getNomCommercial()+"                                                                                          le "+date);
+            p.add("\n "+entreprise.getEntiteJuridique());
+            p.add("\n "+entreprise.getEmail());
+            p.add("\n "+entreprise.getTelephone());
+            p.add("\n "+entreprise.getActivite());
             document.add(img);
             document.add(p);
             document.add(chunk);

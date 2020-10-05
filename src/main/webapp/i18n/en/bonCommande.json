@@ -18,6 +18,7 @@
         "title": "Bon Commande"
       },
       "create": "Create new line",
+      "project": "project",
       "add": "Create",
       "newline": "+ Add new line",
       "tableTitle": "Table of lines",
@@ -30,7 +31,9 @@
       "dateModif": "Date Modif",
       "ligneBonCom": "Ligne Bon Com",
       "depot": "Depot",
-      "materiau": "Materiau",
+      "materiau": "Materiau/Materiel",
+      "materiel": "Materiel",
+      "materiausAndMateriels": "Materiau/Materiel",
       "fournisseur": "Fournisseur"
     }
   }

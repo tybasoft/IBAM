@@ -119,6 +119,8 @@ public class CacheConfiguration {
             createCache(cm, com.tybasoft.ibam.domain.FichePointage.class.getName() + ".pointages");
             createCache(cm, com.tybasoft.ibam.domain.AffectationMateriels.class.getName());
             createCache(cm, com.tybasoft.ibam.domain.SituationFinanciere.class.getName());
+            createCache(cm, com.tybasoft.ibam.domain.BonCommande.class.getName() + ".materiels");
+            createCache(cm, com.tybasoft.ibam.domain.BonCommande.class.getName() + ".materiaus");
             // jhipster-needle-ehcache-add-entry
         };
     }

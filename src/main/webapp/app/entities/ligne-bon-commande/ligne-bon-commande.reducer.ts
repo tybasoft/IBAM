@@ -12,8 +12,7 @@ export const ACTION_TYPES = {
   CREATE_LIGNEBONCOMMANDE: 'ligneBonCommande/CREATE_LIGNEBONCOMMANDE',
   UPDATE_LIGNEBONCOMMANDE: 'ligneBonCommande/UPDATE_LIGNEBONCOMMANDE',
   DELETE_LIGNEBONCOMMANDE: 'ligneBonCommande/DELETE_LIGNEBONCOMMANDE',
-  RESET: 'ligneBonCommande/RESET',
-  REPPORT: 'ligneBonCommande/REPPORT'
+  RESET: 'ligneBonCommande/RESET'
 };
 
 const initialState = {
@@ -61,11 +60,6 @@ export default (state: LigneBonCommandeState = initialState, action): LigneBonCo
         updateSuccess: false,
         errorMessage: action.payload
       };
-    case REQUEST(ACTION_TYPES.REPPORT):
-      return {
-        ...state,
-        loading: true
-      };
     case SUCCESS(ACTION_TYPES.FETCH_LIGNEBONCOMMANDE_LIST):
       return {
         ...state,
@@ -98,14 +92,12 @@ export default (state: LigneBonCommandeState = initialState, action): LigneBonCo
       return {
         ...initialState
       };
-    case REQUEST('UPLOAD_FILE'):
-      return { ...state };
     default:
       return state;
   }
 };
 
-export const apiUrl = 'api/ligne-bon-commandes';
+const apiUrl = 'api/ligne-bon-commandes';
 
 // Actions
 
@@ -148,6 +140,7 @@ export const deleteEntity: ICrudDeleteAction<ILigneBonCommande> = id => async di
     type: ACTION_TYPES.DELETE_LIGNEBONCOMMANDE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
   return result;
 };
 

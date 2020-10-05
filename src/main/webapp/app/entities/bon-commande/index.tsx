@@ -7,21 +7,21 @@ import BonCommande from './bon-commande';
 import BonCommandeDetail from './bon-commande-detail';
 import BonCommandeUpdate from './bon-commande-update';
 import BonCommandeDeleteDialog from './bon-commande-delete-dialog';
-import { ACTION_TYPES, apiUrl } from './bon-commande.reducer';
-import Export from '../../shared/Repport/export';
-import Import from '../../shared/Repport/import';
+import NewLigneBonCommandeDialog from "app/entities/bon-commande/newligne-bon-commandedialog";
+import {NewBonCommandeDialog} from "app/entities/bon-commande/new-bon-commandedialog";
+
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={BonCommandeDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={BonCommandeUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/import`} component={() => <Import apiUrl={apiUrl} />} />
-
-      <ErrorBoundaryRoute exact path={`${match.url}/export`} component={() => <Export apiUrl={apiUrl} action={ACTION_TYPES.REPPORT} />} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={BonCommandeUpdate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/ligne`} component={NewLigneBonCommandeDialog} />
+      <ErrorBoundaryRoute exact path={`${match.url}/add`} component={NewBonCommandeDialog} />
+
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={BonCommandeDetail} />
       <ErrorBoundaryRoute path={match.url} component={BonCommande} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={BonCommandeDeleteDialog} />
   </>
 );
 

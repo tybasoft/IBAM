@@ -13,6 +13,11 @@ export const cleanEntity = entity => {
 
   return pick(entity, keysToKeep);
 };
+export const cleanEntityBon = (entity, ligne) => {
+  const keysToKeep = Object.keys(entity).filter(k => !(entity[k] instanceof Object) || (entity[k]['id'] !== '' && entity[k]['id'] !== -1));
+
+  return pick(entity, keysToKeep);
+};
 
 /**
  * Simply map a list of element to a list a object with the element as id.

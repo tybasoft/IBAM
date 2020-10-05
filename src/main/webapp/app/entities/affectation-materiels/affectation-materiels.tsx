@@ -23,9 +23,9 @@ export const AffectationMateriels = (props: IAffectationMaterielsProps) => {
   const getAllEntities = async keyword => {
     await delay(800); // just to wait until you write the whole word and not build glitch...
     if (keyword === null) {
-      props.getEntities(" ",paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+      props.getEntities(" ",paginationState.activePage - 1, 10, `${paginationState.sort},${paginationState.order}`);
     } else {
-      props.getEntities(keyword,paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+      props.getEntities(keyword,paginationState.activePage - 1, 10, `${paginationState.sort},${paginationState.order}`);
 
     }
   };
@@ -225,7 +225,7 @@ export const AffectationMateriels = (props: IAffectationMaterielsProps) => {
               activePage={paginationState.activePage}
               onSelect={handlePagination}
               maxButtons={5}
-              itemsPerPage={paginationState.itemsPerPage}
+              itemsPerPage={10}
               totalItems={props.totalItems}
             />
           </Row>

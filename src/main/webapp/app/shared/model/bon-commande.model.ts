@@ -1,19 +1,19 @@
 import { Moment } from 'moment';
 import { ILigneBonCommande } from 'app/shared/model/ligne-bon-commande.model';
-import { IDepot } from 'app/shared/model/depot.model';
 import { IFournisseur } from 'app/shared/model/fournisseur.model';
+import { IProjet } from 'app/shared/model/projet.model';
 
 export interface IBonCommande {
   id?: number;
-  datePrevLiv?: Moment;
+  datePrevLiv?: string;
   remarques?: string;
-  dateCreation?: Moment;
+  dateCreation?: string;
   valide?: boolean;
   userModif?: string;
-  dateModif?: Moment;
+  dateModif?: string;
   ligneBonComs?: ILigneBonCommande[];
-  depot?: IDepot;
   fournisseur?: IFournisseur;
+  projet?: IProjet;
 }
 
 export const defaultValue: Readonly<IBonCommande> = {

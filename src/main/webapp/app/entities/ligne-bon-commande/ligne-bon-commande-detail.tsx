@@ -43,16 +43,22 @@ export const LigneBonCommandeDetail = (props: ILigneBonCommandeDetailProps) => {
             </span>
           </dt>
           <dd>
-            <TextFormat value={ligneBonCommandeEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            {ligneBonCommandeEntity.dateModif ? (
+              <TextFormat value={ligneBonCommandeEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            ) : null}
           </dd>
+          <dt>
+            <Translate contentKey="ibamApp.ligneBonCommande.materiau">Materiau</Translate>
+          </dt>
+          <dd>{ligneBonCommandeEntity.materiau ? ligneBonCommandeEntity.materiau.id : ''}</dd>
+          <dt>
+            <Translate contentKey="ibamApp.ligneBonCommande.materiel">Materiel</Translate>
+          </dt>
+          <dd>{ligneBonCommandeEntity.materiel ? ligneBonCommandeEntity.materiel.id : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.ligneBonCommande.bonCommande">Bon Commande</Translate>
           </dt>
           <dd>{ligneBonCommandeEntity.bonCommande ? ligneBonCommandeEntity.bonCommande.id : ''}</dd>
-          <dt>
-            <Translate contentKey="ibamApp.ligneBonCommande.materiau">Materiau</Translate>
-          </dt>
-          <dd>{ligneBonCommandeEntity.materiau ? ligneBonCommandeEntity.materiau.libelle : ''}</dd>
         </dl>
         <Button tag={Link} to="/ligne-bon-commande" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
@@ -73,7 +79,7 @@ export const LigneBonCommandeDetail = (props: ILigneBonCommandeDetailProps) => {
 };
 
 const mapStateToProps = ({ ligneBonCommande }: IRootState) => ({
-  ligneBonCommandeEntity: ligneBonCommande.entity
+  ligneBonCommandeEntity: ligneBonCommande.entity,
 });
 
 const mapDispatchToProps = { getEntity };

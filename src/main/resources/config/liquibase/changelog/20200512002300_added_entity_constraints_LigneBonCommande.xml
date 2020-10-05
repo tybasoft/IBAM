@@ -7,18 +7,24 @@
         Added the constraints for entity LigneBonCommande.
     -->
     <changeSet id="20200512002300-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="bon_commande_id"
-                                 baseTableName="ligne_bon_commande"
-                                 constraintName="fk_ligne_bon_commande_bon_commande_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="bon_commande"/>
 
         <addForeignKeyConstraint baseColumnNames="materiau_id"
                                  baseTableName="ligne_bon_commande"
                                  constraintName="fk_ligne_bon_commande_materiau_id"
                                  referencedColumnNames="id"
                                  referencedTableName="materiau"/>
+
+        <addForeignKeyConstraint baseColumnNames="materiel_id"
+                                 baseTableName="ligne_bon_commande"
+                                 constraintName="fk_ligne_bon_commande_materiel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="materiel"/>
+
+        <addForeignKeyConstraint baseColumnNames="bon_commande_id"
+                                 baseTableName="ligne_bon_commande"
+                                 constraintName="fk_ligne_bon_commande_bon_commande_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="bon_commande"/>
 
     </changeSet>
 </databaseChangeLog>

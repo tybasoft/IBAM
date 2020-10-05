@@ -16,33 +16,50 @@ export interface ILigneBonCommandeProps extends StateProps, DispatchProps, Route
 export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
 
+
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
   const sortEntities = () => {
     getAllEntities();
-    props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
-    );
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
   };
 
   useEffect(() => {
     sortEntities();
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [props.location.search]);
+
   const sort = p => () => {
     setPaginationState({
       ...paginationState,
       order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p
+      sort: p,
     });
   };
 
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
-      activePage: currentPage
+      activePage: currentPage,
     });
 
   const { ligneBonCommandeList, match, loading, totalItems } = props;
@@ -54,16 +71,6 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
           <FontAwesomeIcon icon="plus" />
           &nbsp;
           <Translate contentKey="ibamApp.ligneBonCommande.home.createLabel">Create new Ligne Bon Commande</Translate>
-        </Link>
-        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
-        </Link>
-        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
         </Link>
       </h2>
       <div className="table-responsive">
@@ -77,17 +84,14 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
                 <th className="hand" onClick={sort('quantite')}>
                   <Translate contentKey="ibamApp.ligneBonCommande.quantite">Quantite</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.ligneBonCommande.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
+                <th>
+                  <Translate contentKey="ibamApp.ligneBonCommande.materiau">Materiau</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.ligneBonCommande.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
+                <th>
+                  <Translate contentKey="ibamApp.ligneBonCommande.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.ligneBonCommande.bonCommande">Bon Commande</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.ligneBonCommande.materiau">Materiau</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -101,20 +105,23 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
                     </Button>
                   </td>
                   <td>{ligneBonCommande.quantite}</td>
-                  <td>{ligneBonCommande.userModif}</td>
                   <td>
-                    <TextFormat type="date" value={ligneBonCommande.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
-                  <td>
-                    {ligneBonCommande.bonCommande ? (
-                      <Link to={`bon-commande/${ligneBonCommande.bonCommande.id}`}>{ligneBonCommande.bonCommande.id}</Link>
+                    {ligneBonCommande.materiau ? (
+                      <Link to={`materiau/${ligneBonCommande.materiau.id}`}>{ligneBonCommande.materiau.libelle}</Link>
                     ) : (
                       ''
                     )}
                   </td>
                   <td>
-                    {ligneBonCommande.materiau ? (
-                      <Link to={`materiau/${ligneBonCommande.materiau.id}`}>{ligneBonCommande.materiau.libelle}</Link>
+                    {ligneBonCommande.materiel ? (
+                      <Link to={`materiel/${ligneBonCommande.materiel.id}`}>{ligneBonCommande.materiel.libelle}</Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
+                  <td>
+                    {ligneBonCommande.bonCommande ? (
+                      <Link to={`bon-commande/${ligneBonCommande.bonCommande.id}`}>{ligneBonCommande.bonCommande.id}</Link>
                     ) : (
                       ''
                     )}
@@ -163,20 +170,24 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
           )
         )}
       </div>
-      <div className={ligneBonCommandeList && ligneBonCommandeList.length > 0 ? '' : 'd-none'}>
-        <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
-        </Row>
-        <Row className="justify-content-center">
-          <JhiPagination
-            activePage={paginationState.activePage}
-            onSelect={handlePagination}
-            maxButtons={5}
-            itemsPerPage={paginationState.itemsPerPage}
-            totalItems={props.totalItems}
-          />
-        </Row>
-      </div>
+      {props.totalItems ? (
+        <div className={ligneBonCommandeList && ligneBonCommandeList.length > 0 ? '' : 'd-none'}>
+          <Row className="justify-content-center">
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+          </Row>
+          <Row className="justify-content-center">
+            <JhiPagination
+              activePage={paginationState.activePage}
+              onSelect={handlePagination}
+              maxButtons={5}
+              itemsPerPage={paginationState.itemsPerPage}
+              totalItems={props.totalItems}
+            />
+          </Row>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
@@ -184,11 +195,11 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
 const mapStateToProps = ({ ligneBonCommande }: IRootState) => ({
   ligneBonCommandeList: ligneBonCommande.entities,
   loading: ligneBonCommande.loading,
-  totalItems: ligneBonCommande.totalItems
+  totalItems: ligneBonCommande.totalItems,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
