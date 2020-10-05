@@ -60,8 +60,11 @@ spring:
   mail:
     host: smtp.mailtrap.io
     port: 25
+    tls: true
+    ssl: false
     username: 3929903e2a9092
     password: b4c16ba7797b41
+
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:

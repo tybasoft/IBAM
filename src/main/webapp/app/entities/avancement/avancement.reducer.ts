@@ -118,13 +118,7 @@ const apiUrl = 'api/avancements';
 export const apiUrlEmploye = 'api/employes';
 
 // Actions
-export const sendToBackEndService: ICrudGetAction<IAvancement> = id => {
-  const requestUrl = `${apiUrl}/${id}/download`;
-  return {
-    type: ACTION_TYPES.FETCH_AVANCEMENT,
-    payload: axios.get<IAvancement>(requestUrl),
-  };
-};
+
   export const getEmployes: ICrudGetAllAction<IEmploye> = () => {
     const requestUrl = `${apiUrlEmploye}`;
     return {
@@ -163,8 +157,18 @@ export const getUsers: ICrudGetAction<IAvancement> = id => {
     payload: axios.get<IAvancement>(requestUrl),
   };
 };
+export const sendPdf= (message,dest_array,id)  => {
+  const requestUrl = `${apiUrl}/${id}/sendPdf`;
+
+  const result = ({
+    type: ACTION_TYPES.SEND_PDF,
+    payload: axios.post(requestUrl, {message,dest_array}),
+  });
+  return result;
+};
 
 export const createEntity: ICrudPutAction<IAvancement> = entity => async dispatch => {
+  
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_AVANCEMENT,
     payload: axios.post(apiUrl, cleanEntity(entity)),

@@ -12,7 +12,7 @@ import { IRootState } from 'app/shared/reducers';
 import jsPDF from "jspdf";
 import htmlToImage from 'html-to-image';
 import axios from 'axios'
-import { getEntity ,getFile,getEmployes,sendToBackEndService} from './avancement.reducer';
+import { getEntity ,getFile,getEmployes,sendPdf} from './avancement.reducer';
 import { IAvancement } from 'app/shared/model/avancement.model';
 import Select from 'react-select';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -35,14 +35,17 @@ export const AvancementDetail = (props: IAvancementDetailProps) => {
   }
   const download = () =>{
     getFile(avancementEntity.id);
+    alert("pdf telechargé dans le dossier de telechargement");
 }
 
   const sendMail = () => {
     const message = document.getElementById("mail_message").value;
     const x = document.getElementById("mail_array").childNodes[1].getElementsByTagName('input');
     const dest_mail_array = [];
-    for(let i = 0;(i < x.length-1); i++) dest_mail_array.push(x[i].defaultValue);
-    sendToBackEndService(message,dest_mail_array);
+    for(let i = 0; i < x.length; i++)
+{     dest_mail_array.push(x[i].defaultValue);}
+console.log(dest_mail_array);
+    sendPdf(message,dest_mail_array,avancementEntity.id);
   }
   const defaultMessage = "Bonjour, Ci joint le compte rendu de l'avancement du: "+avancementEntity.createdAt; 
   const emailOptions=[]
@@ -119,7 +122,7 @@ export const AvancementDetail = (props: IAvancementDetailProps) => {
           </span>
         </Button>
       </Col>
-      <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+     <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div className="modal-dialog modal-dialog-centered" role="document">
     <div className="modal-content">
       <div className="modal-header">
@@ -149,11 +152,40 @@ export const AvancementDetail = (props: IAvancementDetailProps) => {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-dismiss="modal">fermer</button>
-        <button type="button" onClick={sendMail} className="btn btn-primary">Envoyer le pdf</button>
+        <button
+         type="button"
+          onClick={sendMail} 
+          data-toggle="modal"
+           data-target="#successModal"
+          className="btn btn-primary"
+           data-dismiss="modal">Envoyer le pdf</button>
       </div>
     </div>
   </div>
 </div>
+{/* Modal 2 */}
+<div className="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div className="modal-dialog modal-dialog-centered" role="document">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="successModal">Success </h5>
+        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div className="modal-body">
+        <div className="">
+              <span className="text-success">Pdf envoyé avec success</span>
+        </div>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" data-dismiss="modal">fermer</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+  
     </Row>
   );
 };
@@ -166,7 +198,7 @@ const mapDispatchToProps = {
   getEntity ,
   getFile,
   getEmployes,
-  sendToBackEndService
+  sendPdf,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -1,7 +1,11 @@
 package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.domain.Avancement;
+import com.tybasoft.ibam.domain.PdfMailing;
 import com.tybasoft.ibam.repository.AvancementRepository;
+import com.tybasoft.ibam.service.FileStorageService;
+import com.tybasoft.ibam.service.MailService;
+import com.tybasoft.ibam.service.SendMailV2;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -9,20 +13,24 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
@@ -44,6 +52,13 @@ public class AvancementResource {
     private final Logger log = LoggerFactory.getLogger(AvancementResource.class);
 
     private static final String ENTITY_NAME = "avancement";
+
+    @Autowired
+    MailService mailService;
+
+    @Autowired
+    SendMailV2 sendMailV2;
+
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -71,6 +86,25 @@ public class AvancementResource {
         return ResponseEntity.created(new URI("/api/avancements/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+    @PostMapping("/avancements/{id}/sendPdf")
+    public void sendMail(@RequestBody PdfMailing dest_mails,@PathVariable long id) throws URISyntaxException, MessagingException {
+        PdfMailing pdfMailing = dest_mails;
+        log.debug("REST request to send mail to : {}", pdfMailing.getMessage());
+        log.debug("REST request to send mail to : {}", pdfMailing.getDest_array());
+        List<String> mails = pdfMailing.getDest_array();
+        String msg = pdfMailing.getMessage();
+
+        for(int i=0 ; i<mails.size() ;i++)
+        {
+
+            log.debug("REST request to send mail to : {}", mails.get(i));
+            mailService.sendEmail(mails.get(i),"compte rendu ",msg,true,false);
+
+        }
+
+
+
     }
 
     /**
@@ -107,23 +141,34 @@ public class AvancementResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+    private static final Logger logger= LoggerFactory.getLogger(FileUploadDownloadController.class);
+
+    private FileStorageService fileStorageService;
+
     @GetMapping("/avancements/{id}/download")
-    public boolean downloadPdf(@PathVariable long id) throws IOException {
+    public boolean downloadPdf(@PathVariable long id, HttpServletRequest request) throws IOException {
         log.debug("REST request to download PDF of avancement : {}", id);
         Avancement avancement = avancementRepository.findById(id).get();
         String title = avancement.getTitreCompteRendu();
         String content = avancement.getContenuCompteRendu();
         LocalDate date = avancement.getCreatedAt();
         String  redacteur = avancement.getEmploye().getNom();
-        String wrapper = "<div style=\"margin-top:200px\"></div><div><strong>Titre:</span>"+title+
-            "<div style=\"margin-top:40px\"></div><strong>Rédacteur:</span>"+redacteur+
-            "<div style=\"margin-top:40px\"></div><strong>Date de rédaction:</span>" +date+
+        String wrapper = "<div style=\"margin-top:200px\"></div>" +
+            "<strong>Titre:</strong>"+title+
+            "<div style=\"margin-top:40px\"></div>" +
+            "<strong>Rédacteur:</strong>"+redacteur+
+            "<div style=\"margin-top:40px\"></div>" +
+            "<strong>Date de rédaction:</strong>" +date+
             "<div style=\"margin-top:80px\"></div>"+content;
-        LocalDate today = LocalDate.now();
-        HtmlConverter.convertToPdf(wrapper, new FileOutputStream("compte_rendu_"+avancement.getId()+"_"+today+".pdf"));
 
-        System.out.println( "PDF Created!" );
+
+        LocalDate today = LocalDate.now();
+        HtmlConverter.convertToPdf(wrapper, new FileOutputStream("src/main/webapp/content/uploads/documents/compte_rendu_"+avancement.getId()+"_"+today+".pdf"));
+
+
+        System.out.println( "PDF Created!");
         return true;
+
     }
 
     /**

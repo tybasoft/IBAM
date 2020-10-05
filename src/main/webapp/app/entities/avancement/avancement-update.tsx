@@ -109,17 +109,9 @@ entity.contenuCompteRendu=content;
                 <Label id="createdAtLabel" for="avancement-createdAt">
                   <Translate contentKey="ibamApp.avancement.createdAt">Created At</Translate>
                 </Label>
-                <AvField id="avancement-createdAt"  type="date"  className="form-control" name="createdAt" />
+                <AvField id="avancement-createdAt"  type="date"  className="form-control" disabled value="2020-10-03" name="createdAt" />
               </AvGroup>
 
-              <AvGroup>
-                <Label for="avancement-employe">
-                  <span>Rédacteur</span>
-                </Label>
-                <AvInput id="avancement-employe" type="text" disabled value={userCurrentId()} className="form-control" name="employe.id">
-
-                </AvInput>
-              </AvGroup>
               <AvGroup>
                 <Label id="titreCompteRenduLabel" for="avancement-titreCompteRendu">
                   <Translate contentKey="ibamApp.avancement.titreCompteRendu">Titre Compte Rendu</Translate>
@@ -135,6 +127,14 @@ entity.contenuCompteRendu=content;
               </AvGroup>
               <TextEditor content={avancementEntity.contenuCompteRendu||''} id="draft" classes={{}} onChange={f} />
 
+              <AvGroup className="invisible">
+                <Label for="avancement-employe">
+              <span>Rédacteur</span>
+                </Label>
+                <AvInput id="avancement-employe" type="text" disabled value={userCurrentId()} className="form-control" name="employe.id">
+
+                </AvInput>
+              </AvGroup>
               <AvGroup className="invisible">
                 <Label id="contenuCompteRenduLabel" for="avancement-contenuCompteRendu">
                   <Translate contentKey="ibamApp.avancement.contenuCompteRendu">Contenu Compte Rendu</Translate>
