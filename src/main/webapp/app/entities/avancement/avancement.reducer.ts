@@ -1,3 +1,5 @@
+/*eslint-disable */
+
 import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
@@ -143,13 +145,30 @@ export const getEntity: ICrudGetAction<IAvancement> = id => {
   };
 };
 
-export const getFile: ICrudGetAction<IAvancement> = id => {
+// export const getFile: ICrudGetAction<IAvancement> = id => {
+//   const requestUrl = `${apiUrl}/${id}/download`;
+//   return {
+//     type: ACTION_TYPES.FETCH_AVANCEMENT,
+//     payload: axios.get<IAvancement>(requestUrl,{responseType: 'blob'}),
+//   };
+// };
+
+export const getFile:(id) => void = id => {
   const requestUrl = `${apiUrl}/${id}/download`;
-  return {
-    type: ACTION_TYPES.FETCH_AVANCEMENT,
-    payload: axios.get<IAvancement>(requestUrl),
-  };
+  axios({
+    url: requestUrl,
+    method: 'GET',
+    responseType: 'blob' // important
+  }).then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Compte_rendu.pdf');
+    document.body.appendChild(link);
+    link.click();
+  });
 };
+
 export const getUsers: ICrudGetAction<IAvancement> = id => {
   const requestUrl = `${apiUrl}/${id}/download`;
   return {

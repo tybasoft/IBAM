@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -31,8 +32,11 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -56,8 +60,7 @@ public class AvancementResource {
     @Autowired
     MailService mailService;
 
-    @Autowired
-    SendMailV2 sendMailV2;
+
 
 
     @Value("${jhipster.clientApp.name}")
@@ -99,12 +102,9 @@ public class AvancementResource {
         {
 
             log.debug("REST request to send mail to : {}", mails.get(i));
-            mailService.sendEmail(mails.get(i),"compte rendu ",msg,true,false);
+          //  mailService.sendEmail(mails.get(i),"compte rendu ",msg,true,false);
 
         }
-
-
-
     }
 
     /**
@@ -146,7 +146,7 @@ public class AvancementResource {
     private FileStorageService fileStorageService;
 
     @GetMapping("/avancements/{id}/download")
-    public boolean downloadPdf(@PathVariable long id, HttpServletRequest request) throws IOException {
+    public ResponseEntity  downloadPdf(@PathVariable long id, HttpServletRequest request) throws IOException {
         log.debug("REST request to download PDF of avancement : {}", id);
         Avancement avancement = avancementRepository.findById(id).get();
         String title = avancement.getTitreCompteRendu();
@@ -160,14 +160,21 @@ public class AvancementResource {
             "<div style=\"margin-top:40px\"></div>" +
             "<strong>Date de rédaction:</strong>" +date+
             "<div style=\"margin-top:80px\"></div>"+content;
-
-
         LocalDate today = LocalDate.now();
         HtmlConverter.convertToPdf(wrapper, new FileOutputStream("src/main/webapp/content/uploads/documents/compte_rendu_"+avancement.getId()+"_"+today+".pdf"));
-
-
         System.out.println( "PDF Created!");
-        return true;
+
+        Path path = Paths.get("src/main/webapp/content/uploads/documents/compte_rendu_"+avancement.getId()+"_"+today+".pdf");
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType("application/pdf"))
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+            .body(resource);
 
     }
 
