@@ -225,7 +225,7 @@ export const AffectationMateriels = (props: IAffectationMaterielsProps) => {
               activePage={paginationState.activePage}
               onSelect={handlePagination}
               maxButtons={5}
-              itemsPerPage={paginationState.itemsPerPage}
+              itemsPerPage={10}
               totalItems={props.totalItems}
             />
           </Row>

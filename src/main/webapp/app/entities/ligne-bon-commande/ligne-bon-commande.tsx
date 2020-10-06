@@ -87,6 +87,12 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
                 <th>
                   <Translate contentKey="ibamApp.ligneBonCommande.materiau">Materiau</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
+                <th>
+                  <Translate contentKey="ibamApp.ligneBonCommande.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th>
+                  <Translate contentKey="ibamApp.ligneBonCommande.bonCommande">Bon Commande</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
                 <th />
               </tr>
             </thead>
@@ -100,15 +106,22 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
                   </td>
                   <td>{ligneBonCommande.quantite}</td>
                   <td>
-                    {ligneBonCommande.bonCommande ? (
-                      <Link to={`bon-commande/${ligneBonCommande.bonCommande.id}`}>{ligneBonCommande.bonCommande.id}</Link>
+                    {ligneBonCommande.materiau ? (
+                      <Link to={`materiau/${ligneBonCommande.materiau.id}`}>{ligneBonCommande.materiau.libelle}</Link>
                     ) : (
                       ''
                     )}
                   </td>
                   <td>
-                    {ligneBonCommande.materiau ? (
-                      <Link to={`materiau/${ligneBonCommande.materiau.id}`}>{ligneBonCommande.materiau.id}</Link>
+                    {ligneBonCommande.materiel ? (
+                      <Link to={`materiel/${ligneBonCommande.materiel.id}`}>{ligneBonCommande.materiel.libelle}</Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
+                  <td>
+                    {ligneBonCommande.bonCommande ? (
+                      <Link to={`bon-commande/${ligneBonCommande.bonCommande.id}`}>{ligneBonCommande.bonCommande.id}</Link>
                     ) : (
                       ''
                     )}

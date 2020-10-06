@@ -12,8 +12,7 @@ export const ACTION_TYPES = {
   CREATE_BONCOMMANDE: 'bonCommande/CREATE_BONCOMMANDE',
   UPDATE_BONCOMMANDE: 'bonCommande/UPDATE_BONCOMMANDE',
   DELETE_BONCOMMANDE: 'bonCommande/DELETE_BONCOMMANDE',
-  RESET: 'bonCommande/RESET',
-  REPPORT: 'bonCommande/REPPORT'
+  RESET: 'bonCommande/RESET'
 };
 
 const initialState = {
@@ -33,8 +32,6 @@ export type BonCommandeState = Readonly<typeof initialState>;
 export default (state: BonCommandeState = initialState, action): BonCommandeState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_BONCOMMANDE_LIST):
-    case REQUEST('UPLOAD_FILE'):
-      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_BONCOMMANDE):
       return {
         ...state,
@@ -77,11 +74,6 @@ export default (state: BonCommandeState = initialState, action): BonCommandeStat
         entity: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.CREATE_BONCOMMANDE):
-    case REQUEST(ACTION_TYPES.REPPORT):
-      return {
-        ...state,
-        loading: true
-      };
     case SUCCESS(ACTION_TYPES.UPDATE_BONCOMMANDE):
       return {
         ...state,
@@ -105,7 +97,8 @@ export default (state: BonCommandeState = initialState, action): BonCommandeStat
   }
 };
 
-export const apiUrl = 'api/bon-commandes';
+const apiUrl = 'api/bon-commandes';
+const date = new Date(Date.now()).toLocaleString().split(',');
 
 // Actions
 
@@ -114,6 +107,14 @@ export const getEntities: ICrudGetAllAction<IBonCommande> = (page, size, sort) =
   return {
     type: ACTION_TYPES.FETCH_BONCOMMANDE_LIST,
     payload: axios.get<IBonCommande>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const getEntitiesById: ICrudGetAction<IBonCommande> = id => {
+  const requestUrl = `${apiUrl}/${id}/lignes`;
+  return {
+    type: ACTION_TYPES.FETCH_BONCOMMANDE,
+    payload: axios.get<IBonCommande>(requestUrl)
   };
 };
 
@@ -133,6 +134,30 @@ export const createEntity: ICrudPutAction<IBonCommande> = entity => async dispat
   dispatch(getEntities());
   return result;
 };
+export const getReportEntity: (id) => void = id => {
+  const requestUrl = `${apiUrl}/report/${id}`;
+  axios({
+    url: requestUrl,
+    method: 'GET',
+    responseType: 'blob' // important
+  }).then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Bon_Commande' + date + '.pdf');
+    document.body.appendChild(link);
+    link.click();
+  });
+};
+
+// export const createBonCommande: (entity, ligne) => (dispatch) => Promise<any> = (entity, ligne) => async dispatch => {
+//   const result = await dispatch({
+//     type: ACTION_TYPES.CREATE_BONCOMMANDE,
+//     payload: axios.post(apiUrl, entity,ligne),
+//   });
+//   dispatch(getEntities());
+//   return result;
+// };
 
 export const updateEntity: ICrudPutAction<IBonCommande> = entity => async dispatch => {
   const result = await dispatch({
@@ -148,6 +173,7 @@ export const deleteEntity: ICrudDeleteAction<IBonCommande> = id => async dispatc
     type: ACTION_TYPES.DELETE_BONCOMMANDE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
   return result;
 };
 

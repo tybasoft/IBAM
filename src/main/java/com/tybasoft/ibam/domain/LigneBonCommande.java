@@ -37,11 +37,15 @@ public class LigneBonCommande implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "ligneBonComs", allowSetters = true)
-    private BonCommande bonCommande;
+    private Materiau materiau;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "ligneBonCommandes", allowSetters = true)
+    private Materiel materiel;
+
+    @ManyToOne(optional = false)
     @JsonIgnoreProperties(value = "ligneBonComs", allowSetters = true)
-    private Materiau materiau;
+    private BonCommande bonCommande;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -91,19 +95,6 @@ public class LigneBonCommande implements Serializable {
         this.dateModif = dateModif;
     }
 
-    public BonCommande getBonCommande() {
-        return bonCommande;
-    }
-
-    public LigneBonCommande bonCommande(BonCommande bonCommande) {
-        this.bonCommande = bonCommande;
-        return this;
-    }
-
-    public void setBonCommande(BonCommande bonCommande) {
-        this.bonCommande = bonCommande;
-    }
-
     public Materiau getMateriau() {
         return materiau;
     }
@@ -115,6 +106,32 @@ public class LigneBonCommande implements Serializable {
 
     public void setMateriau(Materiau materiau) {
         this.materiau = materiau;
+    }
+
+    public Materiel getMateriel() {
+        return materiel;
+    }
+
+    public LigneBonCommande materiel(Materiel materiel) {
+        this.materiel = materiel;
+        return this;
+    }
+
+    public void setMateriel(Materiel materiel) {
+        this.materiel = materiel;
+    }
+
+    public BonCommande getBonCommande() {
+        return bonCommande;
+    }
+
+    public LigneBonCommande bonCommande(BonCommande bonCommande) {
+        this.bonCommande = bonCommande;
+        return this;
+    }
+
+    public void setBonCommande(BonCommande bonCommande) {
+        this.bonCommande = bonCommande;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

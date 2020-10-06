@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import { connect } from 'react-redux';
-import {Link, RouteComponentProps, Redirect} from 'react-router-dom';
+import {Link, RouteComponentProps} from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 import {Translate, ICrudGetAction, ICrudDeleteAction, translate} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Row, Col, Label,Table } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { useHistory } from 'react-router-dom';
 
 
 
@@ -18,35 +17,22 @@ import {getEntities as getFournisseurs} from "app/entities/fournisseur/fournisse
 import {getEntities as getMateriau} from "app/entities/materiau/materiau.reducer";
 import {getEntities as getProjects} from "app/entities/projet/projet.reducer";
 import {getEntities as getMateriels} from "app/entities/materiel/materiel.reducer";
-import {getEntitiesById as getLigneBonCommande} from "app/entities/ligne-bon-commande/ligne-bon-commande.reducer";
-import {getEntity as getOneMateriel} from "app/entities/materiel/materiel.reducer";
-import {getEntity as getOneMateriau} from "app/entities/materiau/materiau.reducer";
 import {ModalContent} from "semantic-ui-react";
 import LigneBonCommande from "app/entities/ligne-bon-commande/ligne-bon-commande";
 import LigneBonCommandeComponentsPage
   from "../../../../../test/javascript/e2e/entities/ligne-bon-commande/ligne-bon-commande.page-object";
-import {ILigneBonCommande} from "app/shared/model/ligne-bon-commande.model";
-import materiel from "app/entities/materiel/materiel";
-import materiau from "app/entities/materiau/materiau";
-import value from "*.json";
 
 export interface IBonCommandeDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
-export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) => {
+export const NewBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) => {
   const [depotId, setDepotId] = useState('0');
-  const [materielObj, setMaterielObj] = useState({id: "1"});
-  const [materiauObj, setMateriauObj] = useState({id: "1"});
   const [newLines, setNewLines] = useState([]);
-
   // let [isOpen] = useState(false);
   const [modal, setModal] = useState(false);
-  const [bigmodal, setBigModal] = useState(true);
-  const history = useHistory();
-
 
   const tab = [
-    { materiau: 'mat 1', quantity: 212 },
-    {  materiau: 'mat 2', quantity: 150 }];
+      { materiau: 'mat 1', quantity: 212 },
+      {  materiau: 'mat 2', quantity: 150 }];
 
   // let ligne = new LigneBonCommande();
 
@@ -59,6 +45,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
     // props.getEntity(props.match.params.id);
   }, []);
 
+  const {ligneBonCommandeList,materiels,ligneBonComs,ligneBonCom,bonCommandeEntity,projets, materiaus,depots, fournisseurs, loading, updating } = props;
 
 
 
@@ -84,34 +71,12 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
 
   };
 
-  const handleCloseBig = () => {
-    setBigModal(false);
-
-    // props.history.push('/bon-commande' + props.location.search);
-  };
-  const handleShowBig = () => {
-    // isOpen=true;
-    setBigModal(true);
-    console.warn("Clicked on handleShow : "+modal)
-
-  };
-
 
   useEffect(() => {
     if (isNew) {
-      props.reset();
+      // props.reset();
     } else {
       props.getEntity(props.match.params.id);
-      // const lines = getLigneBonCommande(props.match.params.id);
-      // console.warn(lines);
-      // newLines.push(props.getLigneBonCommande(props.match.params.id));
-      props.getLigneBonCommande(props.match.params.id);
-      // newLines.push(ligneBonCommandeList);
-      // newLines.push({materiel:{id:values.materiel} ,materiau:{id:values.materiau},quantite:values.quantity});
-      // newLines.push(ligneBonCommandeList.forEach(data =>({materiel: data.materiel, materiau: data.materiau, quantite: data.quantite})));
-
-      // setNewLines(getLigneBonCommande(props.match.params.id));
-
     }
 
     props.getDepots();
@@ -119,9 +84,6 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
     props.getMateriau();
     props.getMateriels();
     props.getProjects();
-
-    // console.warn("TESTTTST");
-    // console.warn(ligneBonCommandeList1);
   }, []);
 
   useEffect(() => {
@@ -135,30 +97,23 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
   };
 
   const saveEntity = (event, errors, values) => {
-    values.ligneBonComs=newLines;
     if (errors.length === 0) {
       const entity = {
         ...bonCommandeEntity,
-        ...values
+        ...ligneBonComs,
+        ...values // try this solution
       };
-      console.warn(values);
+      console.warn(entity);
       values.ligneBonComs = newLines;
 
       if (isNew) {
         props.createEntity(entity);
-          handleCloseBig();
-        history.push("/bon-commande");
+        handleClose();
       } else {
         props.updateEntity(entity);
-        handleCloseBig();
-        history.push("/bon-commande");
-        window.location.reload(false);
-
-
+        handleClose();
       }
-
     }
-
   };
   // const deleteMateriau = (data,number) => {
   //   console.warn("Delete Materiau : " + data + " and number :"+number);
@@ -174,32 +129,32 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
         ...ligneBonComs,
         ...values
       };
-      // if(isNew){
-      //   newLines.push(ligneBonCommandeList.forEach(data => {{data.materiel={id:values.materiel} ,data.materiau={id:values.materiau},data.quantite=values.quantity}}))
-      // }
+      // props.getEntity(entity.materiau);
 
-      // newLines.values.bind(data => {data.materiau={id:values.materiau},data.materiel={id:values.materiel},data.quantite=values.quantity});
-      // ligneBonCommandeList.values.bind(data => {data.materiau={id:values.materiau},data.materiel={id:values.materiel},data.quantite=values.quantity});
-      newLines.push({materiel:{id:values.materiel} ,materiau:{id:values.materiau},quantite:values.quantity});
-      // newLines.push(ligneBonCommandeList.values());
-      // console.warn(newLines);
+      // const {materiau} = props;
+
+      console.warn("Materiau : "+bonCommandeEntity);
+      // newLines.push({ materiau: entity.libelle, quantity: entity.quantity });
+      newLines.push(values);
+      // ligneBonComs.push();
+
+      // console.warn("new lines  :"+);
+      console.warn("ligne de bom coms :"+ligneBonComs);
       setModal(false);
-
     }
   };
 
 
   // const toggle = () => setModal(!modal);
-  const {ligneBonCommandeList,materiels,ligneBonComs,ligneBonCom,bonCommandeEntity,projets, materiaus ,depots, fournisseurs, loading, updating } = props;
 
   return (
     <div>
 
-      <Modal size="lg" style={{maxWidth: '900px', width: '100%'}}  isOpen={bigmodal} toggle={handleClose} >
+    <Modal size="lg" style={{maxWidth: '900px', width: '100%'}} isOpen toggle={handleClose} >
 
-        <ModalHeader toggle={handleClose} >
-          <Translate contentKey="ibamApp.bonCommande.home.createOrEditLabelLigne">Create or edit a BonCommande</Translate>
-        </ModalHeader>
+      <ModalHeader toggle={handleClose} >
+        <Translate contentKey="ibamApp.bonCommande.home.createOrEditLabelLigne">Create or edit a BonCommande</Translate>
+      </ModalHeader>
         <div>
           {/*<Row className="justify-content-center">
             <Col md="8">
@@ -237,12 +192,12 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                         }}
                       />
                     </AvGroup>
-                    <AvGroup>
-                      <Label id="datePrevLivLabel" for="bon-commande-datePrevLiv">
-                        <Translate contentKey="ibamApp.bonCommande.datePrevLiv">Date Prev Liv</Translate>
-                      </Label>
-                      <AvField id="bon-commande-datePrevLiv" type="date" className="form-control" name="datePrevLiv" />
-                    </AvGroup>
+                  <AvGroup>
+                    <Label id="datePrevLivLabel" for="bon-commande-datePrevLiv">
+                      <Translate contentKey="ibamApp.bonCommande.datePrevLiv">Date Prev Liv</Translate>
+                    </Label>
+                    <AvField id="bon-commande-datePrevLiv" type="date" className="form-control" name="datePrevLiv" />
+                  </AvGroup>
                     <AvGroup>
                       <Label for="bon-commande-projet">
                         <Translate contentKey="ibamApp.bonCommande.project">projet</Translate>
@@ -280,12 +235,12 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                         <Translate contentKey="ibamApp.bonCommande.valide">Valide</Translate>
                       </Label>
                     </AvGroup>
-                    <AvGroup>
-                      <Label id="remarquesLabel" for="bon-commande-remarques">
-                        <Translate contentKey="ibamApp.bonCommande.remarques">Remarques</Translate>
-                      </Label>
-                      <AvField id="bon-commande-remarques" type="text" name="remarques" />
-                    </AvGroup>
+                  <AvGroup>
+                    <Label id="remarquesLabel" for="bon-commande-remarques">
+                      <Translate contentKey="ibamApp.bonCommande.remarques">Remarques</Translate>
+                    </Label>
+                    <AvField id="bon-commande-remarques" type="text" name="remarques" />
+                  </AvGroup>
 
                     <Button
                       tag={Link}
@@ -298,7 +253,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                           <Translate contentKey="ibamApp.bonCommande.newline">add</Translate>
                         </span>
                     </Button>
-                    <Table responsive>
+                      <Table responsive>
                       <thead>
                       <tr>
                         {/* <th className="hand" >
@@ -314,15 +269,17 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                       </tr>
                       </thead>
                       <tbody>
-                      {ligneBonCommandeList.map((data, i) => (
+                      {newLines.map((data, i) => (
                         <tr key={`entity-${i}`}>
                           {/*<td>
                             <Button tag={Link}  color="link" size="sm">
                               {data.id}
                             </Button>
                           </td>*/}
-                          <td>{data.quantite}</td>
-                          <td>{data.materiau.id} {data.materiel.id}</td>
+                          <td>{data.quantity}</td>
+                          <td>
+                            {data.materiau}
+                          </td>
                           <td className="text-right">
                             <div className="btn-group flex-btn-group-container">
                               {/*<Button
@@ -362,19 +319,92 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                 </span>
                     </Button>
                     &nbsp;
-                    <Button   color="primary" id="save-entity"  type="submit"  >
+                    <Button  color="primary" id="save-entity" type="submit" >
                       <FontAwesomeIcon icon="save" />
                       &nbsp;
                       <Translate contentKey="entity.action.save">Save</Translate>
                     </Button>
                   </ModalFooter>
+
+                  <Modal isOpen={modal} toggle={handleShow}>
+                    <ModalHeader>
+                      <Translate contentKey="ibamApp.bonCommande.home.createOrEditLabelLigne">Add</Translate>
+                    </ModalHeader>
+                    <AvForm onSubmit={saveMateriau}>
+                      <ModalBody id="ibamApp.bonCommande.delete.question">
+                        {!isNew ? (
+                          <AvGroup>
+                            <Label for="bon-commande-id">
+                              <Translate contentKey="global.field.id">ID</Translate>
+                            </Label>
+                            <AvInput id="bon-commande-id" type="text" className="form-control" name="id" required readOnly />
+                          </AvGroup>
+                        ) : null}
+                        <ModalBody id="ibamApp.bonCommande.delete.question">
+
+                          <AvGroup>
+                            <Label for="bon-commande-ligneBonComs-materiau">
+                              <Translate contentKey="ibamApp.bonCommande.materiau">Materiau</Translate>
+                            </Label>
+                            <AvInput id="bon-commande-depot" type="select" className="form-control" name="ligneBonComs.materiau.id">
+                              <option value="" key="0" />
+                              {materiaus
+                                ? materiaus.map(otherEntity => (
+                                  <option value={otherEntity.id} key={otherEntity.id}>
+                                    {otherEntity.libelle}
+                                  </option>
+                                ))
+                                : null}
+                            </AvInput>
+                          </AvGroup>
+                          <AvGroup>
+                            <Label for="bon-commande-ligneBonComs-materiel">
+                              <Translate contentKey="ibamApp.bonCommande.materiel">Materiel</Translate>
+                            </Label>
+                            <AvInput id="bon-commande-ligneBonComs-materiel" type="select" className="form-control" name="ligneBonComs.materiel.id">
+                              <option value="" key="0" />
+                              {materiels
+                                ? materiels.map(otherEntity => (
+                                  <option value={otherEntity.id} key={otherEntity.id}>
+                                    {otherEntity.libelle}
+                                  </option>
+                                ))
+                                : null}
+                            </AvInput>
+                          </AvGroup>
+                          <AvGroup>
+                            <Label id="remarquesLabel" for="bon-commande-quantite">
+                              <Translate contentKey="ibamApp.bonCommande.ligneBonComs.quantity">Quantite</Translate>
+                            </Label>
+                            <AvField id="bon-commande-quantite" type="number" name="ligneBonComs.quantity" />
+                          </AvGroup>
+                        </ModalBody>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button id="cancel-save" to="/bon-commande" replace color="info" onClick={handleClose}>
+                          <FontAwesomeIcon icon="arrow-left" />
+                          &nbsp;
+                          <span className="d-none d-md-inline">
+                  <Translate contentKey="entity.action.back">Back</Translate>
+                </span>
+                        </Button>
+                        &nbsp;
+                        <Button  color="primary" id="save-entity" type="submit" >
+                          <FontAwesomeIcon icon="save" />
+                          &nbsp;
+                          <Translate contentKey="entity.action.save">Save</Translate>
+                        </Button>
+                      </ModalFooter>
+                    </AvForm>
+                  </Modal>
+
                 </AvForm>
               )}
 
             </Col>
           </Row>
         </div>
-        {/*<ModalFooter>
+      {/*<ModalFooter>
         <Button color="secondary" onClick={handleClose}>
           <FontAwesomeIcon icon="ban" />
           &nbsp;
@@ -391,72 +421,10 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
           <Translate contentKey="ibamApp.bonCommande.add">Create</Translate>
         </Button>
       </ModalFooter>*/}
-      </Modal>
+    </Modal>
 
       {/******************************** Second Modal ********************************/}
 
-      <Modal isOpen={modal} toggle={handleShow}>
-        <ModalHeader>
-          <Translate contentKey="ibamApp.bonCommande.home.createOrEditLabelLigne">Add</Translate>
-        </ModalHeader>
-        <AvForm onSubmit={saveMateriau}>
-          <ModalBody id="ibamApp.bonCommande.delete.question">
-            <ModalBody id="ibamApp.bonCommande.delete.question">
-              <AvGroup>
-                <Label for="bon-commande-depot">
-                  <Translate contentKey="ibamApp.bonCommande.materiau">Materiau</Translate>
-                </Label>
-                <AvInput id="bon-commande-depot" type="select" className="form-control" name="materiau">
-                  <option value="" key="0" />
-                  {materiaus
-                    ? materiaus.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.libelle}
-                      </option>
-                    ))
-                    : null}
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
-                <Label for="bon-commande-materiel">
-                  <Translate contentKey="ibamApp.bonCommande.materiel">Materiel</Translate>
-                </Label>
-                <AvInput id="bon-commande-materiel" type="select" className="form-control" name="materiel">
-                  <option value="" key="0"  />
-                  {materiels
-                    ? materiels.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.libelle}
-                      </option>
-                    ))
-                    : null}
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
-                <Label id="remarquesLabel" for="bon-commande-remarques">
-                  <Translate contentKey="ibamApp.bonCommande.quantity">Quantite</Translate>
-                </Label>
-                <AvField id="bon-commande-remarques" type="number" name="quantity" />
-              </AvGroup>
-            </ModalBody>
-          </ModalBody>
-          <ModalFooter>
-            <Button id="cancel-save" to="/bon-commande" replace color="info" onClick={handleClose}>
-              <FontAwesomeIcon icon="arrow-left" />
-              &nbsp;
-              <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.back">Back</Translate>
-                </span>
-            </Button>
-            &nbsp;
-            <Button  color="primary" to="/bon-commande" id="save-entity" type="submit"  >
-              <FontAwesomeIcon icon="save" />
-              &nbsp;
-              <Translate contentKey="entity.action.save">Save</Translate>
-            </Button>
-          </ModalFooter>
-        </AvForm>
-      </Modal>
 
     </div>
   );
@@ -469,9 +437,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   materiels: storeState.materiel.entities,
   ligneBonComs : storeState.bonCommande.entity.ligneBonComs,
   ligneBonCom : storeState.ligneBonCommande.entity,
-  // tab : storeState.ligneBonCommande.entities,
-  // materiau: storeState.materiau.entity,
-  // materiel: storeState.materiel.entity,
+  materiau: storeState.materiau.entity,
+  materiel: storeState.materiel.entity,
   fournisseurs: storeState.fournisseur.entities,
   bonCommandeEntity: storeState.bonCommande.entity,
   loading: storeState.bonCommande.loading,
@@ -479,12 +446,6 @@ const mapStateToProps = (storeState: IRootState) => ({
   updateSuccess: storeState.bonCommande.updateSuccess,
   ligneBonCommandeList: storeState.ligneBonCommande.entities,
   totalItems: storeState.ligneBonCommande.totalItems,
-  // ligneBonCommandeList: storeState.ligneBonCommande.entities,
-  // ligneBonCommandeList1: storeState.bonCommande.entity.ligneBonComs,
-
-  // materielEntity: materiel,
-  // materiauEntity: storeState.materiau.entity,
-
 });
 
 const mapDispatchToProps = {
@@ -493,10 +454,7 @@ const mapDispatchToProps = {
   getDepots,
   getFournisseurs,
   getMateriau,
-  getLigneBonCommande,
   getMateriels,
-  getOneMateriel,
-  getOneMateriau,
   getProjects,
   updateEntity,
   createEntity,
@@ -506,4 +464,4 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewLigneBonCommandeDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(NewBonCommandeDialog);

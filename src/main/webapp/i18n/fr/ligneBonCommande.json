@@ -19,8 +19,9 @@
       "quantite": "Quantite",
       "userModif": "User Modif",
       "dateModif": "Date Modif",
-      "bonCommande": "Bon Commande",
-      "materiau": "Materiau"
+      "materiau": "Materiau",
+      "materiel": "Materiel",
+      "bonCommande": "Bon Commande"
     }
   }
 }

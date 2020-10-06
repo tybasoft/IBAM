@@ -10,8 +10,9 @@ export default class LigneBonCommandeUpdatePage {
   quantiteInput: ElementFinder = element(by.css('input#ligne-bon-commande-quantite'));
   userModifInput: ElementFinder = element(by.css('input#ligne-bon-commande-userModif'));
   dateModifInput: ElementFinder = element(by.css('input#ligne-bon-commande-dateModif'));
-  bonCommandeSelect: ElementFinder = element(by.css('select#ligne-bon-commande-bonCommande'));
   materiauSelect: ElementFinder = element(by.css('select#ligne-bon-commande-materiau'));
+  materielSelect: ElementFinder = element(by.css('select#ligne-bon-commande-materiel'));
+  bonCommandeSelect: ElementFinder = element(by.css('select#ligne-bon-commande-bonCommande'));
 
   getPageTitle() {
     return this.pageTitle;
@@ -41,25 +42,6 @@ export default class LigneBonCommandeUpdatePage {
     return this.dateModifInput.getAttribute('value');
   }
 
-  async bonCommandeSelectLastOption() {
-    await this.bonCommandeSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
-  }
-
-  async bonCommandeSelectOption(option) {
-    await this.bonCommandeSelect.sendKeys(option);
-  }
-
-  getBonCommandeSelect() {
-    return this.bonCommandeSelect;
-  }
-
-  async getBonCommandeSelectedOption() {
-    return this.bonCommandeSelect.element(by.css('option:checked')).getText();
-  }
-
   async materiauSelectLastOption() {
     await this.materiauSelect
       .all(by.tagName('option'))
@@ -77,6 +59,44 @@ export default class LigneBonCommandeUpdatePage {
 
   async getMateriauSelectedOption() {
     return this.materiauSelect.element(by.css('option:checked')).getText();
+  }
+
+  async materielSelectLastOption() {
+    await this.materielSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
+  }
+
+  async materielSelectOption(option) {
+    await this.materielSelect.sendKeys(option);
+  }
+
+  getMaterielSelect() {
+    return this.materielSelect;
+  }
+
+  async getMaterielSelectedOption() {
+    return this.materielSelect.element(by.css('option:checked')).getText();
+  }
+
+  async bonCommandeSelectLastOption() {
+    await this.bonCommandeSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
+  }
+
+  async bonCommandeSelectOption(option) {
+    await this.bonCommandeSelect.sendKeys(option);
+  }
+
+  getBonCommandeSelect() {
+    return this.bonCommandeSelect;
+  }
+
+  async getBonCommandeSelectedOption() {
+    return this.bonCommandeSelect.element(by.css('option:checked')).getText();
   }
 
   async save() {
@@ -101,8 +121,9 @@ export default class LigneBonCommandeUpdatePage {
     await waitUntilDisplayed(this.saveButton);
     await this.setDateModifInput('01-01-2001');
     expect(await this.getDateModifInput()).to.eq('2001-01-01');
-    await this.bonCommandeSelectLastOption();
     await this.materiauSelectLastOption();
+    await this.materielSelectLastOption();
+    await this.bonCommandeSelectLastOption();
     await this.save();
     await waitUntilHidden(this.saveButton);
     expect(await isVisible(this.saveButton)).to.be.false;

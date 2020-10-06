@@ -1,4 +1,7 @@
 import { element, by, ElementFinder } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class BonCommandeUpdatePage {
   pageTitle: ElementFinder = element(by.id('ibamApp.bonCommande.home.createOrEditLabel'));
@@ -10,8 +13,8 @@ export default class BonCommandeUpdatePage {
   valideInput: ElementFinder = element(by.css('input#bon-commande-valide'));
   userModifInput: ElementFinder = element(by.css('input#bon-commande-userModif'));
   dateModifInput: ElementFinder = element(by.css('input#bon-commande-dateModif'));
-  depotSelect: ElementFinder = element(by.css('select#bon-commande-depot'));
   fournisseurSelect: ElementFinder = element(by.css('select#bon-commande-fournisseur'));
+  projetSelect: ElementFinder = element(by.css('select#bon-commande-projet'));
 
   getPageTitle() {
     return this.pageTitle;
@@ -60,25 +63,6 @@ export default class BonCommandeUpdatePage {
     return this.dateModifInput.getAttribute('value');
   }
 
-  async depotSelectLastOption() {
-    await this.depotSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
-  }
-
-  async depotSelectOption(option) {
-    await this.depotSelect.sendKeys(option);
-  }
-
-  getDepotSelect() {
-    return this.depotSelect;
-  }
-
-  async getDepotSelectedOption() {
-    return this.depotSelect.element(by.css('option:checked')).getText();
-  }
-
   async fournisseurSelectLastOption() {
     await this.fournisseurSelect
       .all(by.tagName('option'))
@@ -98,6 +82,25 @@ export default class BonCommandeUpdatePage {
     return this.fournisseurSelect.element(by.css('option:checked')).getText();
   }
 
+  async projetSelectLastOption() {
+    await this.projetSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
+  }
+
+  async projetSelectOption(option) {
+    await this.projetSelect.sendKeys(option);
+  }
+
+  getProjetSelect() {
+    return this.projetSelect;
+  }
+
+  async getProjetSelectedOption() {
+    return this.projetSelect.element(by.css('option:checked')).getText();
+  }
+
   async save() {
     await this.saveButton.click();
   }
@@ -108,5 +111,37 @@ export default class BonCommandeUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDatePrevLivInput('01-01-2001');
+    expect(await this.getDatePrevLivInput()).to.eq('2001-01-01');
+    await waitUntilDisplayed(this.saveButton);
+    await this.setRemarquesInput('remarques');
+    expect(await this.getRemarquesInput()).to.match(/remarques/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDateCreationInput('01-01-2001');
+    expect(await this.getDateCreationInput()).to.eq('2001-01-01');
+    await waitUntilDisplayed(this.saveButton);
+    const selectedValide = await this.getValideInput().isSelected();
+    if (selectedValide) {
+      await this.getValideInput().click();
+      expect(await this.getValideInput().isSelected()).to.be.false;
+    } else {
+      await this.getValideInput().click();
+      expect(await this.getValideInput().isSelected()).to.be.true;
+    }
+    await waitUntilDisplayed(this.saveButton);
+    await this.setUserModifInput('userModif');
+    expect(await this.getUserModifInput()).to.match(/userModif/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDateModifInput('01-01-2001');
+    expect(await this.getDateModifInput()).to.eq('2001-01-01');
+    await this.fournisseurSelectLastOption();
+    await this.projetSelectLastOption();
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

@@ -1,6 +1,5 @@
 package com.tybasoft.ibam.web.rest;
 
-import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.domain.LigneBonCommande;
 import com.tybasoft.ibam.repository.LigneBonCommandeRepository;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
@@ -24,6 +23,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,17 +115,20 @@ public class LigneBonCommandeResource {
         return ResponseUtil.wrapOrNotFound(ligneBonCommande);
     }
 
-    @GetMapping("/ligne-bon-commandes/search-entities/{keyword}")
-    public ResponseEntity<Collection<LigneBonCommande>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
-        Page<LigneBonCommande> ligneBonCommandes ;
-//        String key = keyword.toLowerCase();
-        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
-        log.debug(keyword);
-        ligneBonCommandes = ligneBonCommandeRepository.findByQuantiteIsContainingOrMateriau_LibelleIsContaining(keyword,keyword,pageable);
-        log.debug(String.valueOf(ligneBonCommandes.stream().count()));
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), ligneBonCommandes);
+//    @GetMapping("/ligne-bon-commandes/{id}/lignes")
+//    public Collection<LigneBonCommande> getAllLigneBonCommande(@PathVariable Long id) {
+//        log.debug("ALLLLLLLLLLLLLLLLLLLLL", id);
+//        Collection<LigneBonCommande> ligneBonCommande = ligneBonCommandeRepository.findAllByBonCommande_Id(id);
+//        log.debug("LLLLLLIGNEssss", ligneBonCommande);
+//        return ligneBonCommande;
+//    }
 
-        return ResponseEntity.ok().headers(headers).body(ligneBonCommandes.getContent());
+    @GetMapping("/ligne-bon-commandes/{id}/lignes")
+    public ResponseEntity<Collection<LigneBonCommande>> getAllLigneBonCommandeById(@PathVariable Long id) {
+        log.debug("REST request to get LigneBonCommande : {}", id);
+        Collection<LigneBonCommande> ligneBonCommande = ligneBonCommandeRepository.findAllByBonCommande_Id(id);
+        log.debug("Show all LigneBonCommande : {}", ligneBonCommande.size());
+        return ResponseEntity.ok().body(ligneBonCommande);
     }
 
     /**

@@ -48,13 +48,17 @@ export const LigneBonCommandeDetail = (props: ILigneBonCommandeDetailProps) => {
             ) : null}
           </dd>
           <dt>
-            <Translate contentKey="ibamApp.ligneBonCommande.bonCommande">Bon Commande</Translate>
-          </dt>
-          <dd>{ligneBonCommandeEntity.bonCommande ? ligneBonCommandeEntity.bonCommande.id : ''}</dd>
-          <dt>
             <Translate contentKey="ibamApp.ligneBonCommande.materiau">Materiau</Translate>
           </dt>
           <dd>{ligneBonCommandeEntity.materiau ? ligneBonCommandeEntity.materiau.id : ''}</dd>
+          <dt>
+            <Translate contentKey="ibamApp.ligneBonCommande.materiel">Materiel</Translate>
+          </dt>
+          <dd>{ligneBonCommandeEntity.materiel ? ligneBonCommandeEntity.materiel.id : ''}</dd>
+          <dt>
+            <Translate contentKey="ibamApp.ligneBonCommande.bonCommande">Bon Commande</Translate>
+          </dt>
+          <dd>{ligneBonCommandeEntity.bonCommande ? ligneBonCommandeEntity.bonCommande.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/ligne-bon-commande" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

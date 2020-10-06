@@ -17,10 +17,11 @@
         "title": "Bon Commande"
       },
       "create": "Créer une nouvelle ligne",
+      "projet": "projet",
       "add": "Ajouter",
       "newline": "+ Ajouter nouveau ligne",
       "tableTitle": "Tableau des lignes",
-      "datePrevLiv": "Date Prev Liv",
+      "datePrevLiv": "Date de livraison prévue",
       "remarques": "Remarques",
       "quantity": "Quantity",
       "dateCreation": "Date Creation",
@@ -30,6 +31,8 @@
       "ligneBonCom": "Ligne Bon Com",
       "depot": "Depot",
       "materiau": "Materiau",
+      "materiel": "Materiel",
+      "materiausAndMateriels": "Materiau/Materiel",
       "fournisseur": "Fournisseur"
     }
   }
