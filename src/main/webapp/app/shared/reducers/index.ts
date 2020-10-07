@@ -5,6 +5,7 @@ import locale, { LocaleState } from './locale';
 import authentication, { AuthenticationState } from './authentication';
 import applicationProfile, { ApplicationProfileState } from './application-profile';
 import customizer from '../../new-template/redux/reducers/customizer/';
+import calender from '../../new-template/redux/reducers/calenderReducer';
 
 import administration, { AdministrationState } from 'app/modules/administration/administration.reducer';
 import userManagement, { UserManagementState } from 'app/modules/administration/user-management/user-management.reducer';
@@ -201,6 +202,7 @@ export interface IRootState {
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly customizer: any;
+  readonly calender: any;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -250,6 +252,7 @@ const rootReducer = combineReducers<IRootState>({
   situationFinanciere,
   avancement,
   customizer,
+  calender,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar
 });
