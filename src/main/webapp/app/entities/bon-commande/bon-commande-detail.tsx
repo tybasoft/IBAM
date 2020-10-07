@@ -95,9 +95,11 @@ export const BonCommandeDetail = (props: IBonCommandeDetailProps) => {
               {ligneBonCommandeList.map((data, i) => (
                 <tr key={`entity-${i}`}>
                   <td>
-                    <Button tag={Link}  color="link" size="sm">
-                      {data.id}
-                    </Button>
+                    {data.id ? (
+                      <Link to={`ligne-bon-commande/${data.id}`}>{data.id}</Link>
+                    ) : (
+                      ''
+                    )}
                   </td>
                   <td>{data.quantite}</td>
                   <td>{data.materiau.libelle} {data.materiel.libelle}</td>

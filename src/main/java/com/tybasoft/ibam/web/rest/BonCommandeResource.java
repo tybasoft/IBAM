@@ -39,8 +39,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -183,6 +185,8 @@ public class BonCommandeResource {
         PdfPTable table = new PdfPTable(4);
         PdfPTable table1 = new PdfPTable(5);
         PdfPTable table2 = new PdfPTable(4);
+        Date dateDownload = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
         try
         {
@@ -191,11 +195,11 @@ public class BonCommandeResource {
             document.addTitle("My first PDF");
             Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD,20,BaseColor.BLACK);
-            Chunk chunk = new Chunk("\n                               Situation Financière");
+            Chunk chunk = new Chunk("\n                               Bon de Commande");
             chunk.setFont(titleFont);
             LocalDate date = LocalDate.now();
             Paragraph p = new Paragraph();
-            p.add(entreprise.getNomCommercial()+"                                                                                          le "+date);
+            p.add(entreprise.getNomCommercial()+"                                                                                                le "+formatter.format(dateDownload));
             p.add("\n "+entreprise.getEntiteJuridique());
             p.add("\n "+entreprise.getEmail());
             p.add("\n "+entreprise.getTelephone());
@@ -214,7 +218,7 @@ public class BonCommandeResource {
             });
             table1.addCell(bonCommande.getDatePrevLiv().toString());
             table1.addCell(bonCommande.getDateCreation().toString());
-            table1.addCell(bonCommande.getProjet().getDateDebut().toString());
+            table1.addCell(bonCommande.getProjet().getLibelle());
             table1.addCell(bonCommande.getFournisseur().getEmail());
             table1.addCell(bonCommande.getRemarques());
             Chunk chunk2 = new Chunk("\n       ");

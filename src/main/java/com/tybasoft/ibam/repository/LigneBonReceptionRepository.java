@@ -15,5 +15,5 @@ import java.util.List;
 @Repository
 public interface LigneBonReceptionRepository extends JpaRepository<LigneBonReception, Long> {
 
-    Collection<LigneBonReception> findAllByBonReception_Id(Long id);
+    List<LigneBonReception> findAllByBonReception_Id(Long id);
 }

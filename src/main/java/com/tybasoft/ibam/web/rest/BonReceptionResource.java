@@ -1,11 +1,15 @@
 package com.tybasoft.ibam.web.rest;
 
-import com.tybasoft.ibam.domain.BonCommande;
-import com.tybasoft.ibam.domain.BonReception;
-import com.tybasoft.ibam.domain.LigneBonCommande;
-import com.tybasoft.ibam.domain.LigneBonReception;
+import com.itextpdf.text.*;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.tybasoft.ibam.domain.*;
 import com.tybasoft.ibam.repository.BonReceptionRepository;
+import com.tybasoft.ibam.repository.EntrepriseRepository;
 import com.tybasoft.ibam.repository.LigneBonReceptionRepository;
+import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -15,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -24,12 +29,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.BonReception}.
@@ -48,6 +62,12 @@ public class BonReceptionResource {
 
     @Autowired
     LigneBonReceptionRepository ligneBonReceptionRepository;
+
+    @Autowired
+    ReportService reportService;
+
+    @Autowired
+    EntrepriseRepository entrepriseRepository;
 
     private final BonReceptionRepository bonReceptionRepository;
 
@@ -154,6 +174,124 @@ public class BonReceptionResource {
         log.debug("REST request to delete BonReception : {}", id);
         bonReceptionRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/bon-receptions/report/{id}")
+    @ResponseBody
+    public Resource getFile(HttpServletRequest request , @PathVariable Long id) throws IOException, URISyntaxException, BadElementException {
+        log.debug("DOWNLOAD FILE TEST : {}",id);
+        BonReception bonReception = bonReceptionRepository
+            .findById(id).orElseThrow(
+                ()-> new BadRequestAlertException("Bon de Reception not found", ENTITY_NAME, "Bon de Reception"));
+
+
+        List<LigneBonReception> ligneBonCommandesList = ligneBonReceptionRepository.findAllByBonReception_Id(id);
+        int size =  ligneBonCommandesList.size();
+
+        Entreprise entreprise = entrepriseRepository.findById(1L).orElseThrow(
+            ()-> new BadRequestAlertException("Entreprise not found", ENTITY_NAME, "Entreprise"));
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        String logoPath = Paths.get("./src/main/webapp/content/images/").resolve("logo.png").toAbsolutePath()
+            .normalize().toString();
+        com.itextpdf.text.Image img = Image.getInstance(logoPath);
+        PdfPTable table = new PdfPTable(5);
+        PdfPTable table1 = new PdfPTable(5);
+        PdfPTable table2 = new PdfPTable(5);
+        Date dateDownload = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        try
+        {
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("HelloWorld.pdf"));
+            document.open();
+//            document.addTitle("My first PDF");
+            Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD,20,BaseColor.BLACK);
+            Chunk chunk = new Chunk("\n                               Bon de Reception");
+            chunk.setFont(titleFont);
+            LocalDate date = LocalDate.now();
+            Paragraph p = new Paragraph();
+            p.add(entreprise.getNomCommercial()+"                                                                                                le "+formatter.format(dateDownload));
+            p.add("\n "+entreprise.getEntiteJuridique());
+            p.add("\n "+entreprise.getEmail());
+            p.add("\n "+entreprise.getTelephone());
+            p.add("\n "+entreprise.getActivite());
+            document.add(img);
+            document.add(p);
+            document.add(chunk);
+            Chunk chunk1 = new Chunk("\n        ");
+            document.add(chunk1);
+            Stream.of("Livreur", "Date de Livraison","Projet" , "Fournisseur" ,"Remarque" ).forEach(columnTitle -> {
+                PdfPCell header1 = new PdfPCell();
+                header1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                header1.setBorderWidth(2);
+                header1.setPhrase(new Phrase(columnTitle));
+                table1.addCell(header1);
+            });
+            table1.addCell(bonReception.getLivreur());
+            table1.addCell(bonReception.getDateLivraison().toString());
+            table1.addCell(bonReception.getProjet().getLibelle());
+            table1.addCell(bonReception.getFournisseur().getEmail());
+            table1.addCell(bonReception.getRemarques());
+            Chunk chunk2 = new Chunk("\n       ");
+            document.add(table1);
+            document.add(chunk2);
+            Stream.of("Les lignes de Bon de reception","Materiau", "Materiel","Quantite","Prix Ht").forEach(columnTitle -> {
+                PdfPCell header = new PdfPCell();
+                header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                header.setBorderWidth(2);
+                header.setPhrase(new Phrase(columnTitle));
+                table.addCell(header);
+            });
+            long sumPrix = 0;
+            for(int i =0 ; i<size ; i++){
+                table.addCell(ligneBonCommandesList.get(i).getId().toString());
+                table.addCell(ligneBonCommandesList.get(i).getMateriau().getLibelle());
+                table.addCell(ligneBonCommandesList.get(i).getMateriel().getLibelle());
+                table.addCell(ligneBonCommandesList.get(i).getQuantite());
+                table.addCell(ligneBonCommandesList.get(i).getPrixHt());
+                sumPrix = sumPrix + Long.parseLong(ligneBonCommandesList.get(i).getPrixHt());
+
+
+            }
+//            table.addCell(ligneBonCommandesList.getId().toString());
+//            table.addCell(ligneBonCommandesList.getDateFacturation().toString());
+//            table.addCell(ligneBonCommandesList.getMontantFacture());
+//            table.addCell(ligneBonCommandesList.getMontantEnCours());
+            table2.addCell("La Somme");
+            table2.addCell("");
+            table2.addCell("");
+            table2.addCell("");
+            table2.addCell(Long.toString(sumPrix));
+            System.out.println(sumPrix);
+            document.add(table);
+            Chunk chunk3 = new Chunk("\n       ");
+            document.add(chunk3);
+            document.add(table2);
+            Chunk chunk4 = new Chunk("\n       ");
+            document.add(chunk4);
+//            table2.addCell("Le Montant Restant");
+//            table2.addCell("");
+//            table2.addCell("");
+//            table2.addCell(situationFinanciereCourante.getMontantEnCours());
+//            document.add(table2);
+
+            document.close();
+            writer.close();
+
+            log.info("DONE CREATING FILE");
+
+        } catch (DocumentException e)
+        {
+            e.printStackTrace();
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        Resource resource = reportService.downloadReport(request,"HelloWorld.pdf");
+
+        return resource;
     }
 
 

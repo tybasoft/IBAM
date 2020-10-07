@@ -127,9 +127,9 @@ public class LigneBonReceptionResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
     @GetMapping("/ligne-bon-receptions/{id}/lignes")
-    public ResponseEntity<Collection<LigneBonReception>> getAllLigneBonReceptionById(@PathVariable Long id) {
+    public ResponseEntity<List<LigneBonReception>> getAllLigneBonReceptionById(@PathVariable Long id) {
         log.debug("REST request to get LigneBonReception : {}", id);
-        Collection<LigneBonReception> ligneBonReceptions = ligneBonReceptionRepository.findAllByBonReception_Id(id);
+        List<LigneBonReception> ligneBonReceptions = ligneBonReceptionRepository.findAllByBonReception_Id(id);
         log.debug("Show all LigneBonCommande : {}", ligneBonReceptions.size());
         return ResponseEntity.ok().body(ligneBonReceptions);
     }

@@ -66,7 +66,7 @@ public class IbamApp {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(IbamApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
-        Environment env = app.run(args).getEnvironment();
+        Environment env = app.  run(args).getEnvironment();
         logApplicationStartup(env);
     }
 

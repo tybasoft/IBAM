@@ -1,23 +1,29 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col } from 'reactstrap';
+import { Button, Row, Col,Table } from 'reactstrap';
 import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntity } from './bon-reception.reducer';
+import { getEntity,getReportEntity } from './bon-reception.reducer';
 import { IBonReception } from 'app/shared/model/bon-reception.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import {getEntitiesById as getLigneBonReception} from "app/entities/ligne-bon-reception/ligne-bon-reception.reducer";
 
 export interface IBonReceptionDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
   useEffect(() => {
     props.getEntity(props.match.params.id);
+    props.getLigneBonReception(props.match.params.id);
   }, []);
 
-  const { bonReceptionEntity } = props;
+  const { ligneBonReceptionList,bonReceptionEntity } = props;
+  const jsPdfGenerator = ()=> {
+
+    props.getReportEntity(bonReceptionEntity.id);
+  }
   return (
     <Row>
       <Col md="8">
@@ -64,7 +70,51 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
             <Translate contentKey="ibamApp.bonReception.projet">Projet</Translate>
           </dt>
           <dd>{bonReceptionEntity.projet ? bonReceptionEntity.projet.libelle : ''}</dd>
+          <Table responsive>
+            <thead>
+            <tr>
+              <th className="hand" >
+                <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
+              </th>
+              <th className="hand">
+                <Translate contentKey="ibamApp.ligneBonCommande.quantite">Quantite</Translate> <FontAwesomeIcon icon="sort" />
+              </th>
+              <th className="hand">
+                <Translate contentKey="ibamApp.ligneBonReception.prixHt">Prix HT</Translate> <FontAwesomeIcon icon="sort" />
+              </th>
+              <th>
+                <Translate contentKey="ibamApp.bonCommande.materiausAndMateriels">Materiaus/Materiels</Translate> <FontAwesomeIcon icon="sort" />
+              </th>
+              <th />
+            </tr>
+            </thead>
+            <tbody>
+            {ligneBonReceptionList.map((data, i) => (
+              <tr key={`entity-${i}`}>
+                <td>
+                  {data.id ? (
+                    <Link to={`ligne-bon-reception/${data.id}`}>{data.id}</Link>
+                  ) : (
+                    ''
+                  )}
+                </td>
+                <td>{data.quantite}</td>
+                <td>{data.prixHt}</td>
+                <td>{data.materiau.libelle} {data.materiel.libelle}</td>
+                <td className="text-right">
+                </td>
+              </tr>
+            ))}
+            </tbody>
+          </Table>
+
         </dl>
+
+        <dd>
+          <div>
+            <Button style={{ height: 60,weight:100, marginTop: 10 }} onClick={jsPdfGenerator} color="success" >Télécharger</Button>
+          </div>
+        </dd>
         <Button tag={Link} to="/bon-reception" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
@@ -83,11 +133,12 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
   );
 };
 
-const mapStateToProps = ({ bonReception }: IRootState) => ({
-  bonReceptionEntity: bonReception.entity,
+const mapStateToProps = (storeState,{ bonReception }: IRootState) => ({
+  bonReceptionEntity: storeState.bonReception.entity,
+  ligneBonReceptionList : storeState.ligneBonReception.entities
 });
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getEntity,getReportEntity,getLigneBonReception };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

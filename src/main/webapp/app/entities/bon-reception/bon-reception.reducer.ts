@@ -99,6 +99,7 @@ export default (state: BonReceptionState = initialState, action): BonReceptionSt
 };
 
 const apiUrl = 'api/bon-receptions';
+const date = new Date(Date.now()).toLocaleString().split(',');
 
 // Actions
 
@@ -133,6 +134,22 @@ export const createEntity: ICrudPutAction<IBonReception> = entity => async dispa
   });
   dispatch(getEntities());
   return result;
+};
+
+export const getReportEntity: (id) => void = id => {
+  const requestUrl = `${apiUrl}/report/${id}`;
+  axios({
+    url: requestUrl,
+    method: 'GET',
+    responseType: 'blob' // important
+  }).then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Bon_Reception' + date + '.pdf');
+    document.body.appendChild(link);
+    link.click();
+  });
 };
 
 export const updateEntity: ICrudPutAction<IBonReception> = entity => async dispatch => {
