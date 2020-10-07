@@ -17,7 +17,8 @@
         "title": "Bon Commande"
       },
       "create": "Créer une nouvelle ligne",
-      "projet": "projet",
+      "projet": "Projet",
+      "project": "Projet",
       "add": "Ajouter",
       "newline": "+ Ajouter nouveau ligne",
       "tableTitle": "Tableau des lignes",

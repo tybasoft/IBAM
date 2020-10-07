@@ -16,33 +16,50 @@ export interface ILigneBonReceptionProps extends StateProps, DispatchProps, Rout
 export const LigneBonReception = (props: ILigneBonReceptionProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
 
+
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
   const sortEntities = () => {
     getAllEntities();
-    props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
-    );
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
   };
 
   useEffect(() => {
     sortEntities();
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [props.location.search]);
+
   const sort = p => () => {
     setPaginationState({
       ...paginationState,
       order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p
+      sort: p,
     });
   };
 
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
-      activePage: currentPage
+      activePage: currentPage,
     });
 
   const { ligneBonReceptionList, match, loading, totalItems } = props;
@@ -50,21 +67,11 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
     <div>
       <h2 id="ligne-bon-reception-heading">
         <Translate contentKey="ibamApp.ligneBonReception.home.title">Ligne Bon Receptions</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
+        {/* <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
           <Translate contentKey="ibamApp.ligneBonReception.home.createLabel">Create new Ligne Bon Reception</Translate>
-        </Link>
-        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
-        </Link>
-        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
-        </Link>
+        </Link>*/}
       </h2>
       <div className="table-responsive">
         {ligneBonReceptionList && ligneBonReceptionList.length > 0 ? (
@@ -80,17 +87,14 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
                 <th className="hand" onClick={sort('prixHt')}>
                   <Translate contentKey="ibamApp.ligneBonReception.prixHt">Prix Ht</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.ligneBonReception.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.ligneBonReception.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.ligneBonReception.bonReception">Bon Reception</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.ligneBonReception.materiau">Materiau</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th>
+                  <Translate contentKey="ibamApp.ligneBonReception.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -105,10 +109,6 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
                   </td>
                   <td>{ligneBonReception.quantite}</td>
                   <td>{ligneBonReception.prixHt}</td>
-                  <td>{ligneBonReception.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={ligneBonReception.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
                   <td>
                     {ligneBonReception.bonReception ? (
                       <Link to={`bon-reception/${ligneBonReception.bonReception.id}`}>{ligneBonReception.bonReception.id}</Link>
@@ -123,6 +123,13 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
                       ''
                     )}
                   </td>
+                  <td>
+                    {ligneBonReception.materiel ? (
+                      <Link to={`materiel/${ligneBonReception.materiel.id}`}>{ligneBonReception.materiel.libelle}</Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${ligneBonReception.id}`} color="info" size="sm">
@@ -131,7 +138,7 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
                           <Translate contentKey="entity.action.view">View</Translate>
                         </span>
                       </Button>
-                      <Button
+                      {/*<Button
                         tag={Link}
                         to={`${match.url}/${ligneBonReception.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="primary"
@@ -141,7 +148,7 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.edit">Edit</Translate>
                         </span>
-                      </Button>
+                      </Button>*/}
                       <Button
                         tag={Link}
                         to={`${match.url}/${ligneBonReception.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
@@ -167,20 +174,24 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
           )
         )}
       </div>
-      <div className={ligneBonReceptionList && ligneBonReceptionList.length > 0 ? '' : 'd-none'}>
-        <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
-        </Row>
-        <Row className="justify-content-center">
-          <JhiPagination
-            activePage={paginationState.activePage}
-            onSelect={handlePagination}
-            maxButtons={5}
-            itemsPerPage={paginationState.itemsPerPage}
-            totalItems={props.totalItems}
-          />
-        </Row>
-      </div>
+      {props.totalItems ? (
+        <div className={ligneBonReceptionList && ligneBonReceptionList.length > 0 ? '' : 'd-none'}>
+          <Row className="justify-content-center">
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+          </Row>
+          <Row className="justify-content-center">
+            <JhiPagination
+              activePage={paginationState.activePage}
+              onSelect={handlePagination}
+              maxButtons={5}
+              itemsPerPage={paginationState.itemsPerPage}
+              totalItems={props.totalItems}
+            />
+          </Row>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
@@ -188,11 +199,11 @@ export const LigneBonReception = (props: ILigneBonReceptionProps) => {
 const mapStateToProps = ({ ligneBonReception }: IRootState) => ({
   ligneBonReceptionList: ligneBonReception.entities,
   loading: ligneBonReception.loading,
-  totalItems: ligneBonReception.totalItems
+  totalItems: ligneBonReception.totalItems,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

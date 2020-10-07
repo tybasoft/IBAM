@@ -67,11 +67,11 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
     <div>
       <h2 id="ligne-bon-commande-heading">
         <Translate contentKey="ibamApp.ligneBonCommande.home.title">Ligne Bon Commandes</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
+        {/*<Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
           <Translate contentKey="ibamApp.ligneBonCommande.home.createLabel">Create new Ligne Bon Commande</Translate>
-        </Link>
+        </Link>*/}
       </h2>
       <div className="table-responsive">
         {ligneBonCommandeList && ligneBonCommandeList.length > 0 ? (
@@ -134,7 +134,7 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
                           <Translate contentKey="entity.action.view">View</Translate>
                         </span>
                       </Button>
-                      <Button
+                      {/*<Button
                         tag={Link}
                         to={`${match.url}/${ligneBonCommande.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="primary"
@@ -144,7 +144,7 @@ export const LigneBonCommande = (props: ILigneBonCommandeProps) => {
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.edit">Edit</Translate>
                         </span>
-                      </Button>
+                      </Button>*/}
                       <Button
                         tag={Link}
                         to={`${match.url}/${ligneBonCommande.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}

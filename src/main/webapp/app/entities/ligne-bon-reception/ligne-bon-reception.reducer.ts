@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { ILigneBonReception, defaultValue } from 'app/shared/model/ligne-bon-reception.model';
+import { ILigneBonCommande } from 'app/shared/model/ligne-bon-commande.model';
 
 export const ACTION_TYPES = {
   FETCH_LIGNEBONRECEPTION_LIST: 'ligneBonReception/FETCH_LIGNEBONRECEPTION_LIST',
@@ -12,8 +13,7 @@ export const ACTION_TYPES = {
   CREATE_LIGNEBONRECEPTION: 'ligneBonReception/CREATE_LIGNEBONRECEPTION',
   UPDATE_LIGNEBONRECEPTION: 'ligneBonReception/UPDATE_LIGNEBONRECEPTION',
   DELETE_LIGNEBONRECEPTION: 'ligneBonReception/DELETE_LIGNEBONRECEPTION',
-  RESET: 'ligneBonReception/RESET',
-  REPPORT: 'ligneBonReception/REPPORT'
+  RESET: 'ligneBonReception/RESET'
 };
 
 const initialState = {
@@ -89,23 +89,16 @@ export default (state: LigneBonReceptionState = initialState, action): LigneBonR
         updateSuccess: true,
         entity: {}
       };
-    case REQUEST(ACTION_TYPES.REPPORT):
-      return {
-        ...state,
-        loading: true
-      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
-    case REQUEST('UPLOAD_FILE'):
-      return { ...state };
     default:
       return state;
   }
 };
 
-export const apiUrl = 'api/ligne-bon-receptions';
+const apiUrl = 'api/ligne-bon-receptions';
 
 // Actions
 
@@ -114,6 +107,14 @@ export const getEntities: ICrudGetAllAction<ILigneBonReception> = (page, size, s
   return {
     type: ACTION_TYPES.FETCH_LIGNEBONRECEPTION_LIST,
     payload: axios.get<ILigneBonReception>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const getEntitiesById: ICrudGetAction<ILigneBonReception> = id => {
+  const requestUrl = `${apiUrl}/${id}/lignes`;
+  return {
+    type: ACTION_TYPES.FETCH_LIGNEBONRECEPTION_LIST,
+    payload: axios.get<ILigneBonReception>(requestUrl)
   };
 };
 
@@ -148,6 +149,7 @@ export const deleteEntity: ICrudDeleteAction<ILigneBonReception> = id => async d
     type: ACTION_TYPES.DELETE_LIGNEBONRECEPTION,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
   return result;
 };
 

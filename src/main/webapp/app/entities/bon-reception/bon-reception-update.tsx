@@ -7,57 +7,26 @@ import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { IDepot } from 'app/shared/model/depot.model';
-import { getEntities as getDepots } from 'app/entities/depot/depot.reducer';
 import { IFournisseur } from 'app/shared/model/fournisseur.model';
 import { getEntities as getFournisseurs } from 'app/entities/fournisseur/fournisseur.reducer';
 import { IImage } from 'app/shared/model/image.model';
-import {
-  createEntity as createImageEntity,
-  getEntity as getImageEntity,
-  reset as resetImage,
-  deleteEntity as deleteImageEntity,
-  uploadImage,
-  deleteImageFile
-} from 'app/entities/image/image.reducer';
+import { getEntities as getImages } from 'app/entities/image/image.reducer';
+import { IProjet } from 'app/shared/model/projet.model';
+import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './bon-reception.reducer';
 import { IBonReception } from 'app/shared/model/bon-reception.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
-import _debounce from 'lodash.debounce';
 
 export interface IBonReceptionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
-  const [errorMessage, seterrorMessage] = useState('');
-  const [imageID, setimageID] = useState(null);
-  const [imageDeleted, setimageDeleted] = useState(false);
-  const [imageFile, setimageFile] = useState(null);
+  const [fournisseurId, setFournisseurId] = useState('0');
+  const [imageId, setImageId] = useState('0');
+  const [projetId, setProjetId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { bonReceptionEntity, depots, fournisseurs, loading, updating, imageEntity } = props;
-
-  const validate = _debounce((value, ctx, input, cb) => {
-    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-
-    if (value && allowedExtensions.exec(value) == null) {
-      cb(false);
-      seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (value && imageFile.size / Math.pow(1024, 2) > 10) {
-      cb(false);
-      seterrorMessage(translate('entity.validation.imageFileSize'));
-    } else {
-      cb(true);
-    }
-  }, 300);
-
-  useEffect(() => {
-    if (imageID !== null) {
-      setTimeout(() => {
-        props.deleteImageEntity(imageID);
-      }, 1000);
-    }
-  }, [imageID]);
+  const { bonReceptionEntity, fournisseurs, images, projets, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/bon-reception' + props.location.search);
@@ -67,12 +36,12 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
     if (isNew) {
       props.reset();
     } else {
-      props.resetImage();
       props.getEntity(props.match.params.id);
     }
 
-    props.getDepots();
     props.getFournisseurs();
+    props.getImages();
+    props.getProjets();
   }, []);
 
   useEffect(() => {
@@ -81,81 +50,17 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
     }
   }, [props.updateSuccess]);
 
-  useEffect(() => {
-    if (bonReceptionEntity.id !== undefined) {
-      if (bonReceptionEntity.id.toString() === props.match.params.id && bonReceptionEntity.image !== null) {
-        props.getImageEntity(bonReceptionEntity.image.id);
-      }
-    }
-  }, [bonReceptionEntity]);
-
-  const uploadNewImage = values => {
-    const storageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name);
-    const image = {
-      titre: values.dateLivraison,
-      path: storageName
-    };
-    const imageData = new FormData();
-    imageData.append('file', imageFile);
-    imageData.append('storageName', storageName);
-
-    props.uploadImage(imageData);
-    return image;
-  };
-
   const saveEntity = (event, errors, values) => {
-    let imageStorageName;
-    let image;
-    let entity;
-    const imageData = new FormData();
     if (errors.length === 0) {
-      entity = {
+      const entity = {
         ...bonReceptionEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
-        if (imageFile) {
-          image = uploadNewImage(values);
-          entity.image = image;
-        }
         props.createEntity(entity);
       } else {
-        if (bonReceptionEntity.image == null) {
-          if (imageFile) {
-            image = uploadNewImage(values);
-            entity.image = image;
-          }
-          props.updateEntity(entity);
-        } else if (imageDeleted) {
-          entity.image = null;
-
-          if (imageFile) {
-            image = uploadNewImage(values);
-            entity.image = image;
-          }
-          props.deleteImageFile(bonReceptionEntity.image.path.substr(24));
-          setimageID(bonReceptionEntity.image.id);
-          props.updateEntity(entity);
-        } else {
-          image = {
-            id: bonReceptionEntity.image.id,
-            titre: values.dateLivraison,
-            path: bonReceptionEntity.image.path.substr(27)
-          };
-          entity.image = image;
-
-          if (imageFile) {
-            (imageStorageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name)), (image.path = imageStorageName);
-            entity.image = image;
-            imageData.append('file', imageFile);
-            imageData.append('storageName', imageStorageName);
-
-            props.deleteImageFile(bonReceptionEntity.image.path.substr(24));
-            props.uploadImage(imageData);
-          }
-          props.updateEntity(entity);
-        }
+        props.updateEntity(entity);
       }
     }
   };
@@ -205,7 +110,7 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                   className="form-control"
                   name="dateLivraison"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') }
+                    required: { value: true, errorMessage: translate('entity.validation.required') },
                   }}
                 />
               </AvGroup>
@@ -222,21 +127,6 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                 <AvField id="bon-reception-dateModif" type="date" className="form-control" name="dateModif" />
               </AvGroup>
               <AvGroup>
-                <Label for="bon-reception-depot">
-                  <Translate contentKey="ibamApp.bonReception.depot">Depot</Translate>
-                </Label>
-                <AvInput id="bon-reception-depot" type="select" className="form-control" name="depot.id">
-                  <option value="" key="0" />
-                  {depots
-                    ? depots.map(otherEntity => (
-                        <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.libelle}
-                        </option>
-                      ))
-                    : null}
-                </AvInput>
-              </AvGroup>
-              <AvGroup>
                 <Label for="bon-reception-fournisseur">
                   <Translate contentKey="ibamApp.bonReception.fournisseur">Fournisseur</Translate>
                 </Label>
@@ -245,56 +135,50 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                   {fournisseurs
                     ? fournisseurs.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.nomCommercial}
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}
                 </AvInput>
               </AvGroup>
               <AvGroup>
-                <Label>
+                <Label for="bon-reception-image">
                   <Translate contentKey="ibamApp.bonReception.image">Image</Translate>
                 </Label>
-                {!isNew ? (
-                  <div>
-                    <dd>
-                      {!imageDeleted && bonReceptionEntity.image !== null && imageEntity.path !== undefined ? (
-                        <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '300px', border: 'solid 1px' }} />
-                      ) : null}
-                    </dd>
-                    <dd>
-                      <Button
-                        color="danger"
-                        size="sm"
-                        onClick={() => setimageDeleted(true)}
-                        disabled={imageDeleted || bonReceptionEntity.image == null}
-                      >
-                        <FontAwesomeIcon icon="trash" />{' '}
-                        <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
-                      </Button>
-                    </dd>
-                  </div>
-                ) : null}
+                <AvInput id="bon-reception-image" type="select" className="form-control" name="image.id">
+                  <option value="" key="0" />
+                  {images
+                    ? images.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.id}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
+              </AvGroup>
+              <AvGroup>
+                <Label for="bon-reception-projet">
+                  <Translate contentKey="ibamApp.bonReception.projet">Projet</Translate>
+                </Label>
                 <AvInput
-                  id="bon-reception-image"
-                  type="file"
-                  name="imageFile"
-                  accept=".png, .jpg, .jpeg"
-                  validate={{ async: validate }}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setimageFile(event.target.files[0])}
-                  style={{ opacity: '0', position: 'absolute', height: '0px' }}
-                />
-                <div className="form-group" style={{ marginBottom: '-10px' }}>
-                  <Label for="bon-reception-image" className="btn btn-secondary">
-                    {translate('entity.inputImageFile')}
-                  </Label>
-                  <Label className="p-2">
-                    {imageFile !== null && imageFile !== undefined ? imageFile.name : translate('entity.noFileChoosed')}
-                  </Label>
-                </div>
-                <AvFeedback>{errorMessage}</AvFeedback>
+                  id="bon-reception-projet"
+                  type="select"
+                  className="form-control"
+                  name="projet.id"
+                  value={isNew ? projets[0] && projets[0].id : bonReceptionEntity.projet?.id}
+                  required
+                >
+                  {projets
+                    ? projets.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.id}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
+                <AvFeedback>
+                  <Translate contentKey="entity.validation.required">This field is required.</Translate>
+                </AvFeedback>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/bon-reception" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
@@ -318,30 +202,23 @@ export const BonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
-  depots: storeState.depot.entities,
   fournisseurs: storeState.fournisseur.entities,
+  images: storeState.image.entities,
+  projets: storeState.projet.entities,
   bonReceptionEntity: storeState.bonReception.entity,
   loading: storeState.bonReception.loading,
   updating: storeState.bonReception.updating,
   updateSuccess: storeState.bonReception.updateSuccess,
-  imageEntity: storeState.image.entity,
-  errorUpload: storeState.image.errorUpload,
-  uploadSuccess: storeState.image.uploadSuccess
 });
 
 const mapDispatchToProps = {
-  getDepots,
   getFournisseurs,
+  getImages,
+  getProjets,
   getEntity,
   updateEntity,
   createEntity,
   reset,
-  createImageEntity,
-  uploadImage,
-  getImageEntity,
-  resetImage,
-  deleteImageFile,
-  deleteImageEntity
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

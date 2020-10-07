@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IBonReception, defaultValue } from 'app/shared/model/bon-reception.model';
+import { IBonCommande } from 'app/shared/model/bon-commande.model';
 
 export const ACTION_TYPES = {
   FETCH_BONRECEPTION_LIST: 'bonReception/FETCH_BONRECEPTION_LIST',
@@ -12,8 +13,7 @@ export const ACTION_TYPES = {
   CREATE_BONRECEPTION: 'bonReception/CREATE_BONRECEPTION',
   UPDATE_BONRECEPTION: 'bonReception/UPDATE_BONRECEPTION',
   DELETE_BONRECEPTION: 'bonReception/DELETE_BONRECEPTION',
-  RESET: 'bonReception/RESET',
-  REPPORT: 'bonReception/REPPORT'
+  RESET: 'bonReception/RESET'
 };
 
 const initialState = {
@@ -33,8 +33,6 @@ export type BonReceptionState = Readonly<typeof initialState>;
 export default (state: BonReceptionState = initialState, action): BonReceptionState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_BONRECEPTION_LIST):
-    case REQUEST('UPLOAD_FILE'):
-      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_BONRECEPTION):
       return {
         ...state,
@@ -62,11 +60,6 @@ export default (state: BonReceptionState = initialState, action): BonReceptionSt
         updating: false,
         updateSuccess: false,
         errorMessage: action.payload
-      };
-    case REQUEST(ACTION_TYPES.REPPORT):
-      return {
-        ...state,
-        loading: true
       };
     case SUCCESS(ACTION_TYPES.FETCH_BONRECEPTION_LIST):
       return {
@@ -105,7 +98,7 @@ export default (state: BonReceptionState = initialState, action): BonReceptionSt
   }
 };
 
-export const apiUrl = 'api/bon-receptions';
+const apiUrl = 'api/bon-receptions';
 
 // Actions
 
@@ -114,6 +107,14 @@ export const getEntities: ICrudGetAllAction<IBonReception> = (page, size, sort) 
   return {
     type: ACTION_TYPES.FETCH_BONRECEPTION_LIST,
     payload: axios.get<IBonReception>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const getEntitiesById: ICrudGetAction<IBonReception> = id => {
+  const requestUrl = `${apiUrl}/${id}/lignes`;
+  return {
+    type: ACTION_TYPES.FETCH_BONRECEPTION,
+    payload: axios.get<IBonReception>(requestUrl)
   };
 };
 
@@ -148,6 +149,7 @@ export const deleteEntity: ICrudDeleteAction<IBonReception> = id => async dispat
     type: ACTION_TYPES.DELETE_BONRECEPTION,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
   return result;
 };
 

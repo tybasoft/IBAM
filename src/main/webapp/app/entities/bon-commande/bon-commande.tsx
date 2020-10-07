@@ -63,10 +63,7 @@ export const BonCommande = (props: IBonCommandeProps) => {
     });
 
   const { bonCommandeList, match, loading, totalItems } = props;
-  const jsPdfGenerator = ()=> {
 
-    props.getReportEntity(situationFinanciereEntity.id);
-  }
   return (
     <div>
       <h2 id="bon-commande-heading">

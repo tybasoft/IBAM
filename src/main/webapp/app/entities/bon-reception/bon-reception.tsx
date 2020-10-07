@@ -16,33 +16,50 @@ export interface IBonReceptionProps extends StateProps, DispatchProps, RouteComp
 export const BonReception = (props: IBonReceptionProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
 
+
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
   };
 
   const sortEntities = () => {
     getAllEntities();
-    props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
-    );
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
   };
 
   useEffect(() => {
     sortEntities();
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [props.location.search]);
+
   const sort = p => () => {
     setPaginationState({
       ...paginationState,
       order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p
+      sort: p,
     });
   };
 
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
-      activePage: currentPage
+      activePage: currentPage,
     });
 
   const { bonReceptionList, match, loading, totalItems } = props;
@@ -50,21 +67,10 @@ export const BonReception = (props: IBonReceptionProps) => {
     <div>
       <h2 id="bon-reception-heading">
         <Translate contentKey="ibamApp.bonReception.home.title">Bon Receptions</Translate>
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
+        <Link to={`${match.url}/ligne`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
           <FontAwesomeIcon icon="plus" />
           &nbsp;
           <Translate contentKey="ibamApp.bonReception.home.createLabel">Create new Bon Reception</Translate>
-        </Link>
-
-        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
-        </Link>
-        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
         </Link>
       </h2>
       <div className="table-responsive">
@@ -84,20 +90,14 @@ export const BonReception = (props: IBonReceptionProps) => {
                 <th className="hand" onClick={sort('dateLivraison')}>
                   <Translate contentKey="ibamApp.bonReception.dateLivraison">Date Livraison</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
-                  <Translate contentKey="ibamApp.bonReception.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('dateModif')}>
-                  <Translate contentKey="ibamApp.bonReception.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="ibamApp.bonReception.depot">Depot</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th>
                   <Translate contentKey="ibamApp.bonReception.fournisseur">Fournisseur</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.bonReception.image">Image</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th>
+                  <Translate contentKey="ibamApp.bonReception.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -113,21 +113,19 @@ export const BonReception = (props: IBonReceptionProps) => {
                   <td>{bonReception.livreur}</td>
                   <td>{bonReception.remarques}</td>
                   <td>
-                    <TextFormat type="date" value={bonReception.dateLivraison} format={APP_LOCAL_DATE_FORMAT} />
+                    {bonReception.dateLivraison ? (
+                      <TextFormat type="date" value={bonReception.dateLivraison} format="DD-MM-YYYY" />
+                    ) : null}
                   </td>
-                  <td>{bonReception.userModif}</td>
-                  <td>
-                    <TextFormat type="date" value={bonReception.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
-                  <td>{bonReception.depot ? <Link to={`depot/${bonReception.depot.id}`}>{bonReception.depot.libelle}</Link> : ''}</td>
                   <td>
                     {bonReception.fournisseur ? (
-                      <Link to={`fournisseur/${bonReception.fournisseur.id}`}>{bonReception.fournisseur.nomCommercial}</Link>
+                      <Link to={`fournisseur/${bonReception.fournisseur.id}`}>{bonReception.fournisseur.email}</Link>
                     ) : (
                       ''
                     )}
                   </td>
                   <td>{bonReception.image ? <Link to={`image/${bonReception.image.id}`}>{bonReception.image.id}</Link> : ''}</td>
+                  <td>{bonReception.projet ? <Link to={`projet/${bonReception.projet.id}`}>{bonReception.projet.libelle}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${bonReception.id}`} color="info" size="sm">
@@ -172,20 +170,24 @@ export const BonReception = (props: IBonReceptionProps) => {
           )
         )}
       </div>
-      <div className={bonReceptionList && bonReceptionList.length > 0 ? '' : 'd-none'}>
-        <Row className="justify-content-center">
-          <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
-        </Row>
-        <Row className="justify-content-center">
-          <JhiPagination
-            activePage={paginationState.activePage}
-            onSelect={handlePagination}
-            maxButtons={5}
-            itemsPerPage={paginationState.itemsPerPage}
-            totalItems={props.totalItems}
-          />
-        </Row>
-      </div>
+      {props.totalItems ? (
+        <div className={bonReceptionList && bonReceptionList.length > 0 ? '' : 'd-none'}>
+          <Row className="justify-content-center">
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+          </Row>
+          <Row className="justify-content-center">
+            <JhiPagination
+              activePage={paginationState.activePage}
+              onSelect={handlePagination}
+              maxButtons={5}
+              itemsPerPage={paginationState.itemsPerPage}
+              totalItems={props.totalItems}
+            />
+          </Row>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
@@ -193,11 +195,11 @@ export const BonReception = (props: IBonReceptionProps) => {
 const mapStateToProps = ({ bonReception }: IRootState) => ({
   bonReceptionList: bonReception.entities,
   loading: bonReception.loading,
-  totalItems: bonReception.totalItems
+  totalItems: bonReception.totalItems,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

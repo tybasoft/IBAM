@@ -51,13 +51,6 @@ public class Depot implements Serializable {
     @Column(name = "date_modif")
     private LocalDate dateModif;
 
-//    @OneToMany(mappedBy = "depot")
-//    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-//    private Set<BonCommande> bonCommandes = new HashSet<>();
-
-    @OneToMany(mappedBy = "depot")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<BonReception> bonReceptions = new HashSet<>();
 
     @OneToMany(mappedBy = "depot")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -185,45 +178,6 @@ public class Depot implements Serializable {
 
     public void setDateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
-    }
-
-//    public Set<BonCommande> getBonCommandes() {
-//        return bonCommandes;
-//    }
-
-//    public Depot bonCommandes(Set<BonCommande> bonCommandes) {
-//        this.bonCommandes = bonCommandes;
-//        return this;
-//    }
-
-
-//    public void setBonCommandes(Set<BonCommande> bonCommandes) {
-//        this.bonCommandes = bonCommandes;
-//    }
-
-    public Set<BonReception> getBonReceptions() {
-        return bonReceptions;
-    }
-
-    public Depot bonReceptions(Set<BonReception> bonReceptions) {
-        this.bonReceptions = bonReceptions;
-        return this;
-    }
-
-    public Depot addBonReception(BonReception bonReception) {
-        this.bonReceptions.add(bonReception);
-        bonReception.setDepot(this);
-        return this;
-    }
-
-    public Depot removeBonReception(BonReception bonReception) {
-        this.bonReceptions.remove(bonReception);
-        bonReception.setDepot(null);
-        return this;
-    }
-
-    public void setBonReceptions(Set<BonReception> bonReceptions) {
-        this.bonReceptions = bonReceptions;
     }
 
     public Set<Projet> getProjets() {

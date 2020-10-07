@@ -18,7 +18,8 @@
         "title": "Bon Commande"
       },
       "create": "Create new line",
-      "projet": "project",
+      "projet": "Projet",
+      "project": "Projet",
       "add": "Create",
       "newline": "+ Add new line",
       "tableTitle": "Table of lines",

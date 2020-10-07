@@ -11,6 +11,8 @@ import { IBonReception } from 'app/shared/model/bon-reception.model';
 import { getEntities as getBonReceptions } from 'app/entities/bon-reception/bon-reception.reducer';
 import { IMateriau } from 'app/shared/model/materiau.model';
 import { getEntities as getMateriaus } from 'app/entities/materiau/materiau.reducer';
+import { IMateriel } from 'app/shared/model/materiel.model';
+import { getEntities as getMateriels } from 'app/entities/materiel/materiel.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './ligne-bon-reception.reducer';
 import { ILigneBonReception } from 'app/shared/model/ligne-bon-reception.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -21,9 +23,10 @@ export interface ILigneBonReceptionUpdateProps extends StateProps, DispatchProps
 export const LigneBonReceptionUpdate = (props: ILigneBonReceptionUpdateProps) => {
   const [bonReceptionId, setBonReceptionId] = useState('0');
   const [materiauId, setMateriauId] = useState('0');
+  const [materielId, setMaterielId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { ligneBonReceptionEntity, bonReceptions, materiaus, loading, updating } = props;
+  const { ligneBonReceptionEntity, bonReceptions, materiaus, materiels, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/ligne-bon-reception' + props.location.search);
@@ -38,6 +41,7 @@ export const LigneBonReceptionUpdate = (props: ILigneBonReceptionUpdateProps) =>
 
     props.getBonReceptions();
     props.getMateriaus();
+    props.getMateriels();
   }, []);
 
   useEffect(() => {
@@ -50,7 +54,7 @@ export const LigneBonReceptionUpdate = (props: ILigneBonReceptionUpdateProps) =>
     if (errors.length === 0) {
       const entity = {
         ...ligneBonReceptionEntity,
-        ...values
+        ...values,
       };
 
       if (isNew) {
@@ -93,7 +97,7 @@ export const LigneBonReceptionUpdate = (props: ILigneBonReceptionUpdateProps) =>
                   type="text"
                   name="quantite"
                   validate={{
-                    required: { value: true, errorMessage: translate('entity.validation.required') }
+                    required: { value: true, errorMessage: translate('entity.validation.required') },
                   }}
                 />
               </AvGroup>
@@ -139,7 +143,22 @@ export const LigneBonReceptionUpdate = (props: ILigneBonReceptionUpdateProps) =>
                   {materiaus
                     ? materiaus.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                           {otherEntity.libelle+"("+otherEntity.reference+")"}
+                          {otherEntity.id}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
+              </AvGroup>
+              <AvGroup>
+                <Label for="ligne-bon-reception-materiel">
+                  <Translate contentKey="ibamApp.ligneBonReception.materiel">Materiel</Translate>
+                </Label>
+                <AvInput id="ligne-bon-reception-materiel" type="select" className="form-control" name="materiel.id">
+                  <option value="" key="0" />
+                  {materiels
+                    ? materiels.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.id}
                         </option>
                       ))
                     : null}
@@ -169,19 +188,21 @@ export const LigneBonReceptionUpdate = (props: ILigneBonReceptionUpdateProps) =>
 const mapStateToProps = (storeState: IRootState) => ({
   bonReceptions: storeState.bonReception.entities,
   materiaus: storeState.materiau.entities,
+  materiels: storeState.materiel.entities,
   ligneBonReceptionEntity: storeState.ligneBonReception.entity,
   loading: storeState.ligneBonReception.loading,
   updating: storeState.ligneBonReception.updating,
-  updateSuccess: storeState.ligneBonReception.updateSuccess
+  updateSuccess: storeState.ligneBonReception.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getBonReceptions,
   getMateriaus,
+  getMateriels,
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

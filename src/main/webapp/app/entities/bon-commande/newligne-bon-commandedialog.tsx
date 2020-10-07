@@ -114,7 +114,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
 
     }
 
-    props.getDepots();
+    // props.getDepots();
     props.getFournisseurs();
     props.getMateriau();
     props.getMateriels();
@@ -135,7 +135,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
   };
 
   const saveEntity = (event, errors, values) => {
-    values.ligneBonComs=newLines;
+    // values.ligneBonComs=newLines;
     if (errors.length === 0) {
       const entity = {
         ...bonCommandeEntity,
@@ -198,7 +198,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
       <Modal size="lg" style={{maxWidth: '900px', width: '100%'}}  isOpen={bigmodal} toggle={handleClose} >
 
         <ModalHeader toggle={handleClose} >
-          <Translate contentKey="ibamApp.bonCommande.home.createOrEditLabelLigne">Create or edit a BonCommande</Translate>
+          <Translate contentKey="ibamApp.bonReception.home.createOrEditLabelLigne">Create or edit a BonCommande</Translate>
         </ModalHeader>
         <div>
           {/*<Row className="justify-content-center">

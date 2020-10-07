@@ -59,7 +59,7 @@ export const LigneBonReceptionDeleteDialog = (props: ILigneBonReceptionDeleteDia
 
 const mapStateToProps = ({ ligneBonReception }: IRootState) => ({
   ligneBonReceptionEntity: ligneBonReception.entity,
-  updateSuccess: ligneBonReception.updateSuccess
+  updateSuccess: ligneBonReception.updateSuccess,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };

@@ -31,30 +31,15 @@ export const LigneBonCommandeDetail = (props: ILigneBonCommandeDetailProps) => {
             </span>
           </dt>
           <dd>{ligneBonCommandeEntity.quantite}</dd>
-          <dt>
-            <span id="userModif">
-              <Translate contentKey="ibamApp.ligneBonCommande.userModif">User Modif</Translate>
-            </span>
-          </dt>
-          <dd>{ligneBonCommandeEntity.userModif}</dd>
-          <dt>
-            <span id="dateModif">
-              <Translate contentKey="ibamApp.ligneBonCommande.dateModif">Date Modif</Translate>
-            </span>
-          </dt>
-          <dd>
-            {ligneBonCommandeEntity.dateModif ? (
-              <TextFormat value={ligneBonCommandeEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-            ) : null}
-          </dd>
+
           <dt>
             <Translate contentKey="ibamApp.ligneBonCommande.materiau">Materiau</Translate>
           </dt>
-          <dd>{ligneBonCommandeEntity.materiau ? ligneBonCommandeEntity.materiau.id : ''}</dd>
+          <dd>{ligneBonCommandeEntity.materiau ? ligneBonCommandeEntity.materiau.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.ligneBonCommande.materiel">Materiel</Translate>
           </dt>
-          <dd>{ligneBonCommandeEntity.materiel ? ligneBonCommandeEntity.materiel.id : ''}</dd>
+          <dd>{ligneBonCommandeEntity.materiel ? ligneBonCommandeEntity.materiel.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.ligneBonCommande.bonCommande">Bon Commande</Translate>
           </dt>

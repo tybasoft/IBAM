@@ -2,17 +2,11 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
     <!--
         Added the constraints for entity BonReception.
     -->
     <changeSet id="20200512002600-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="depot_id"
-                                 baseTableName="bon_reception"
-                                 constraintName="fk_bon_reception_depot_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="depot"/>
 
         <addForeignKeyConstraint baseColumnNames="fournisseur_id"
                                  baseTableName="bon_reception"
@@ -25,6 +19,12 @@
                                  constraintName="fk_bon_reception_image_id"
                                  referencedColumnNames="id"
                                  referencedTableName="image"/>
+
+        <addForeignKeyConstraint baseColumnNames="projet_id"
+                                 baseTableName="bon_reception"
+                                 constraintName="fk_bon_reception_projet_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="projet"/>
 
     </changeSet>
 </databaseChangeLog>
