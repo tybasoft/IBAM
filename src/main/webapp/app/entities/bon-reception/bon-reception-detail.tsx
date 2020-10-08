@@ -100,7 +100,7 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
                 </td>
                 <td>{data.quantite}</td>
                 <td>{data.prixHt}</td>
-                <td>{data.materiau.libelle} {data.materiel.libelle}</td>
+                <td>{data.materiau ? data.materiau.libelle : ''} {data.materiel ? data.materiel.libelle : ''}</td>
                 <td className="text-right">
                 </td>
               </tr>

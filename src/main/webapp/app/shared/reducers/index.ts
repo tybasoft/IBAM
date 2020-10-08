@@ -14,10 +14,12 @@ import activate, { ActivateState } from 'app/modules/account/activate/activate.r
 import password, { PasswordState } from 'app/modules/account/password/password.reducer';
 import settings, { SettingsState } from 'app/modules/account/settings/settings.reducer';
 import passwordReset, { PasswordResetState } from 'app/modules/account/password-reset/password-reset.reducer';
+
 // prettier-ignore
 import materiau, {
   MateriauState
 } from 'app/entities/materiau/materiau.reducer';
+import currency, { CurrenciesState } from 'app/entities/bon-reception/currency.reducer';
 // prettier-ignore
 import tva, {
   TvaState
@@ -153,6 +155,7 @@ import situationFinanciere, {
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 import avancement, { AvancementState } from 'app/entities/avancement/avancement.reducer';
+import { BonReception } from 'app/entities/bon-reception/bon-reception';
 export interface IRootState {
   readonly authentication: AuthenticationState;
   readonly locale: LocaleState;
@@ -198,6 +201,7 @@ export interface IRootState {
   readonly fichePointage: FichePointageState;
   readonly affectationMateriels: AffectationMaterielsState;
   readonly situationFinanciere: SituationFinanciereState;
+  readonly currency: CurrenciesState;
   readonly avancement: AvancementState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
@@ -206,6 +210,7 @@ export interface IRootState {
 }
 
 const rootReducer = combineReducers<IRootState>({
+  currency,
   authentication,
   locale,
   applicationProfile,

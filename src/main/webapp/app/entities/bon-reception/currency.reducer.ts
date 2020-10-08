@@ -20,19 +20,18 @@ export const ACTION_TYPES = {
 const initialState = {
   loading: false,
   errorMessage: null,
-  entities: [] as ReadonlyArray<IBonReception>,
-  currenciesList: [] as ReadonlyArray<ICurrency>,
+  entities: [] as ReadonlyArray<ICurrency>,
   entity: defaultValue,
   updating: false,
   totalItems: 0,
   updateSuccess: false
 };
 
-export type BonReceptionState = Readonly<typeof initialState>;
+export type CurrenciesState = Readonly<typeof initialState>;
 
 // Reducer
 
-export default (state: BonReceptionState = initialState, action): BonReceptionState => {
+export default (state: CurrenciesState = initialState, action): CurrenciesState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_BONRECEPTION_LIST):
     case REQUEST(ACTION_TYPES.FETCH_BONRECEPTION):
@@ -105,79 +104,12 @@ const date = new Date(Date.now()).toLocaleString().split(',');
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IBonReception> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  return {
-    type: ACTION_TYPES.FETCH_BONRECEPTION_LIST,
-    payload: axios.get<IBonReception>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
-  };
-};
-
-export const getCurrencies: ICrudGetAllAction<IBonReception> = (page, size, sort) => {
+export const getEntities: ICrudGetAllAction<ICurrency> = (page, size, sort) => {
   const requestUrl = `${apiUrl}/currencies`;
   return {
     type: ACTION_TYPES.FETCH_BONRECEPTION_LIST,
-    payload: axios.get<IBonReception>(`${requestUrl}`)
+    payload: axios.get<ICurrency>(`${requestUrl}`)
   };
-};
-
-export const getEntitiesById: ICrudGetAction<IBonReception> = id => {
-  const requestUrl = `${apiUrl}/${id}/lignes`;
-  return {
-    type: ACTION_TYPES.FETCH_BONRECEPTION,
-    payload: axios.get<IBonReception>(requestUrl)
-  };
-};
-
-export const getEntity: ICrudGetAction<IBonReception> = id => {
-  const requestUrl = `${apiUrl}/${id}`;
-  return {
-    type: ACTION_TYPES.FETCH_BONRECEPTION,
-    payload: axios.get<IBonReception>(requestUrl)
-  };
-};
-
-export const createEntity: ICrudPutAction<IBonReception> = entity => async dispatch => {
-  const result = await dispatch({
-    type: ACTION_TYPES.CREATE_BONRECEPTION,
-    payload: axios.post(apiUrl, cleanEntity(entity))
-  });
-  dispatch(getEntities());
-  return result;
-};
-
-export const getReportEntity: (id) => void = id => {
-  const requestUrl = `${apiUrl}/report/${id}`;
-  axios({
-    url: requestUrl,
-    method: 'GET',
-    responseType: 'blob' // important
-  }).then(response => {
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'Bon_Reception' + date + '.pdf');
-    document.body.appendChild(link);
-    link.click();
-  });
-};
-
-export const updateEntity: ICrudPutAction<IBonReception> = entity => async dispatch => {
-  const result = await dispatch({
-    type: ACTION_TYPES.UPDATE_BONRECEPTION,
-    payload: axios.put(apiUrl, cleanEntity(entity))
-  });
-  return result;
-};
-
-export const deleteEntity: ICrudDeleteAction<IBonReception> = id => async dispatch => {
-  const requestUrl = `${apiUrl}/${id}`;
-  const result = await dispatch({
-    type: ACTION_TYPES.DELETE_BONRECEPTION,
-    payload: axios.delete(requestUrl)
-  });
-  dispatch(getEntities());
-  return result;
 };
 
 export const reset = () => ({

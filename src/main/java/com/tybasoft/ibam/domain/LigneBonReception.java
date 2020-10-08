@@ -32,6 +32,12 @@ public class LigneBonReception implements Serializable {
     @Column(name = "prix_ht")
     private String prixHt;
 
+    @Column(name = "currency")
+    private String currency;
+
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "user_modif")
     private String userModif;
 
@@ -53,6 +59,22 @@ public class LigneBonReception implements Serializable {
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public void setId(Long id) {

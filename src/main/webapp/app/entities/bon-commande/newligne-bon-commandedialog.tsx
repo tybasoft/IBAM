@@ -314,7 +314,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                       </tr>
                       </thead>
                       <tbody>
-                      {ligneBonCommandeList.map((data, i) => (
+                      {newLines.map((data, i) => (
                         <tr key={`entity-${i}`}>
                           {/*<td>
                             <Button tag={Link}  color="link" size="sm">

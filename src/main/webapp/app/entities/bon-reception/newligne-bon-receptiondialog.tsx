@@ -22,6 +22,12 @@ import {getEntity as getOneMateriel} from "app/entities/materiel/materiel.reduce
 import {getEntity as getOneMateriau} from "app/entities/materiau/materiau.reducer";
 import { useHistory } from 'react-router-dom';
 
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+
 import {
   createEntity as createImageEntity,
   getEntity as getImageEntity,
@@ -31,11 +37,13 @@ import {
   deleteImageFile
 } from 'app/entities/image/image.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './bon-reception.reducer';
+import { getEntities as getCurrencies } from './currency.reducer';
 import { IBonReception } from 'app/shared/model/bon-reception.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import _debounce from 'lodash.debounce';
 import projet from "app/entities/projet/projet";
+import {ICurrency} from "app/shared/model/currency";
 
 export interface IBonReceptionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -49,10 +57,11 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
   const [materielObj, setMaterielObj] = useState({id: "1"});
   const [materiauObj, setMateriauObj] = useState({id: "1"});
   const [newLines, setNewLines] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
   const history = useHistory();
 
-  const { ligneBonReceptionList,projets,materiels ,materiaus ,bonReceptionEntity, depots, fournisseurs, loading, updating, imageEntity } = props;
+  const {currenciesList, ligneBonReceptionList,projets,materiels ,materiaus ,bonReceptionEntity, depots, fournisseurs, loading, updating, imageEntity } = props;
 
   const validate = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
@@ -111,7 +120,7 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
       props.resetImage();
       props.getEntity(props.match.params.id);
       props.getLigneBonReception(props.match.params.id);
-      console.warn(ligneBonReceptionList);
+      // console.warn(ligneBonReceptionList);
 
     }
 
@@ -122,6 +131,8 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
     props.getMateriau();
     props.getMateriels();
     props.getProjects();
+    props.getCurrencies();
+    console.warn(currenciesList);
   }, []);
 
   useEffect(() => {
@@ -214,7 +225,28 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
       }
     }
   };
+  const [typeLigne, setTypeLigne] = React.useState('materiel');
+  const [disableMateriel, setDisableMateriel] = useState();
+  const [disableMateriau, setDisableMateriau] = useState();
 
+
+
+  const handleChange = (event) => {
+    setTypeLigne(event.target.value);
+    // if(typeLigne ==='materiel'){
+    //   setDisableMateriel(false);
+    //   setDisableMateriau(true);
+    // }
+    // if(typeLigne==='materiau'){
+    //   setDisableMateriel(false);
+    //   setDisableMateriau(false);
+    // }
+    // if(typeLigne==='both'){
+    //   setDisableMateriel(true);
+    //   setDisableMateriau(false);
+
+    // }
+  };
   const saveMateriau = (event, errors, values) => {
     console.warn("Add to table Materiau");
     if (errors.length === 0) {
@@ -223,12 +255,16 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
         // ...ligneBonComs,
         ...values
       };
-      newLines.push({materiel:{id:values.materiel} ,materiau:{id:values.materiau},quantite:values.quantity,prixHt:values.prixHt});
+      newLines.push({materiel:{id:values.materiel} ,
+        materiau:{id:values.materiau},quantite:values.quantity,
+        prixHt:values.prixHt , currency :values.currency , type:typeLigne});
+      // newLines.push({materiel: {id: "3"}, materiau:null, quantite: "1", prixHt: "120", currency: "CDF", type: "materiel"});
       console.warn(newLines);
       setModal(false);
 
     }
   };
+
 
   return (
     <div>
@@ -393,12 +429,12 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                       </tr>
                       </thead>
                       <tbody>
-                      {ligneBonReceptionList.map((data, i) => (
+                      {newLines.map((data, i) => (
                         <tr key={`entity-${i}`}>
 
-                           <td>{data.quantite}</td>
+                          <td>{data.quantite}</td>
                           <td>{data.prixHt}</td>
-                          <td>{data.materiau.id} {data.materiel.id}</td>
+                          <td>{data.materiau.id ? data.materiau.id : ''} {data.materiel.id ? data.materiel.id : ''}</td>
                           <td className="text-right">
                             <div className="btn-group flex-btn-group-container">
 
@@ -471,11 +507,20 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
         <AvForm onSubmit={saveMateriau}>
           <ModalBody id="ibamApp.bonCommande.delete.question">
             <ModalBody id="ibamApp.bonCommande.delete.question">
-              <AvGroup>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Type</FormLabel>
+                <RadioGroup aria-label="type" name="type" value={typeLigne} onChange={handleChange}>
+                  <FormControlLabel value="materiel" control={<Radio />} label="Materiel" />
+                  <FormControlLabel value="materiau" control={<Radio />} label="Materiau" />
+                  <FormControlLabel value="both" control={<Radio />} label="Les deux" />
+                </RadioGroup>
+              </FormControl>
+              {typeLigne==='materiau' || typeLigne==='both' ? (
+                  <AvGroup>
                 <Label for="bon-commande-depot">
                   <Translate contentKey="ibamApp.bonCommande.materiau">Materiau</Translate>
                 </Label>
-                <AvInput id="bon-commande-depot" type="select" className="form-control" name="materiau">
+                <AvInput id="bon-commande-depot" type="select" className="form-control" name="materiau"  disabled={disableMateriau}>
                   <option value="" key="0" />
                   {materiaus
                     ? materiaus.map(otherEntity => (
@@ -486,16 +531,34 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                     : null}
                 </AvInput>
               </AvGroup>
+              ) : null}
+              {typeLigne==='materiel' || typeLigne==='both' ? (
               <AvGroup>
-                <Label for="bon-commande-materiel">
+                <Label for="bon-commande-materiel" >
                   <Translate contentKey="ibamApp.bonCommande.materiel">Materiel</Translate>
                 </Label>
-                <AvInput id="bon-commande-materiel" type="select" className="form-control" name="materiel">
+                <AvInput id="bon-commande-materiel" type="select" className="form-control" name="materiel" >
                   <option value="" key="0"  />
                   {materiels
                     ? materiels.map(otherEntity => (
                       <option value={otherEntity.id} key={otherEntity.id}>
                         {otherEntity.libelle}
+                      </option>
+                    ))
+                    : null}
+                </AvInput>
+              </AvGroup>
+              ) : null}
+              <AvGroup>
+                <Label for="bon-commande-currency">
+                  <Translate contentKey="ibamApp.bonReception.currency">Currency</Translate>
+                </Label>
+                <AvInput id="bon-commande-materiel" type="select" className="form-control" name="currency">
+                  <option value="" key="0"  />
+                  {currenciesList
+                    ? currenciesList.map(otherEntity => (
+                      <option value={otherEntity.currencyCode} key={otherEntity.numericCode}>
+                        {otherEntity.currencyCode}
                       </option>
                     ))
                     : null}
@@ -546,15 +609,17 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
   updateSuccess: storeState.bonReception.updateSuccess,
   imageEntity: storeState.image.entity,
   images: storeState.image.entities,
-
+    currencyList : storeState.bonReception.currenciesList,
   errorUpload: storeState.image.errorUpload,
   uploadSuccess: storeState.image.uploadSuccess,
   projets: storeState.projet.entities,
   materiaus: storeState.materiau.entities,
   materiels: storeState.materiel.entities,
+    currenciesList : storeState.currency.entities,
   // tab : storeState.ligneBonCommande.entities,
   // materiau: storeState.materiau.entity,
   // materiel: storeState.materiel.entity,
+  //   currency: icurrency,
   ligneBonReceptionList: storeState.ligneBonReception.entities,
   totalItems: storeState.ligneBonReception.totalItems,
 });
@@ -569,6 +634,7 @@ const mapDispatchToProps = {
   updateEntity,
   createEntity,
   reset,
+  getCurrencies,
   createImageEntity,
   uploadImage,
   getImageEntity,

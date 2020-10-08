@@ -12,6 +12,8 @@ export interface ILigneBonReception {
   bonReception?: IBonReception;
   materiau?: IMateriau;
   materiel?: IMateriel;
+  currency?: string;
+  type?: string;
 }
 
 export const defaultValue: Readonly<ILigneBonReception> = {};

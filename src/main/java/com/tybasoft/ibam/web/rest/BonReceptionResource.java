@@ -24,11 +24,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.money.CurrencyUnit;
+import javax.money.Monetary;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.FileNotFoundException;
@@ -39,10 +42,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -105,12 +106,23 @@ public class BonReceptionResource {
         BonReception result = bonReceptionRepository.save(bonReception);
         log.info("My Command lines");
         List<LigneBonReception> ligneBonReceptionList = bonReception.getLigneBonRecs();
-        log.info(ligneBonReceptionList.toString());
-
+//        log.info(ligneBonReceptionList.toString());
         for(int i=0 ; i<ligneBonReceptionList.size() ;i++){
-            LigneBonReception ligneBonReception = ligneBonReceptionList.get(i);
+            System.out.println(ligneBonReceptionList.get(i).getType());
+            LigneBonReception ligneBonReception = new LigneBonReception();
+            if(ligneBonReceptionList.get(i).getType().equals("materiel")){
+                ligneBonReception.setMateriel(ligneBonReceptionList.get(i).getMateriel()); }
+            if(ligneBonReceptionList.get(i).getType().equals("materiau")){
+                ligneBonReception.setMateriau(ligneBonReceptionList.get(i).getMateriau()); }
+            if(ligneBonReceptionList.get(i).getType().equals("both")){
+                ligneBonReception.setMateriau(ligneBonReceptionList.get(i).getMateriau());
+                ligneBonReception.setMateriel(ligneBonReceptionList.get(i).getMateriel());}
+            ligneBonReception.setPrixHt(ligneBonReceptionList.get(i).getPrixHt());
+            ligneBonReception.setQuantite(ligneBonReceptionList.get(i).getQuantite());
+            ligneBonReception.setCurrency(ligneBonReceptionList.get(i).getCurrency());
+//            ligneBonReception.setMateriau(ligneBonReceptionList.get(i).getMateriau());
             ligneBonReception.setBonReception(result);
-            ligneBonReceptionRepository.save(ligneBonReceptionList.get(i));
+            ligneBonReceptionRepository.save(ligneBonReception);
         }
         return ResponseEntity.ok().body(result);
     }
@@ -258,7 +270,7 @@ public class BonReceptionResource {
 //            table.addCell(ligneBonCommandesList.getDateFacturation().toString());
 //            table.addCell(ligneBonCommandesList.getMontantFacture());
 //            table.addCell(ligneBonCommandesList.getMontantEnCours());
-            table2.addCell("La Somme");
+            table2.addCell("La Somme Totale");
             table2.addCell("");
             table2.addCell("");
             table2.addCell("");
@@ -288,11 +300,26 @@ public class BonReceptionResource {
         {
             e.printStackTrace();
         }
+//        CurrencyUnit usd = Monetary.getCurrencies();
+        log.info("Money");
+        log.info(Monetary.getCurrencies().toString());
+        log.info(Monetary.getCurrencyProviderNames().toString());
 
         Resource resource = reportService.downloadReport(request,"HelloWorld.pdf");
 
         return resource;
     }
+
+    @GetMapping("/bon-receptions/currencies")
+    public Collection<CurrencyUnit> getCurrencies() {
+        log.debug("GET ALL CURRENCIES ");
+        Collection<CurrencyUnit> currencyUnits =Monetary.getCurrencies();
+        return currencyUnits;
+    }
+
+
+
+
 
 
 }
