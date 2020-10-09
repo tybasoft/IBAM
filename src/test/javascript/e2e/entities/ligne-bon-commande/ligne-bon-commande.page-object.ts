@@ -1,6 +1,7 @@
 import { element, by, ElementFinder, ElementArrayFinder } from 'protractor';
 
 import { waitUntilAnyDisplayed, waitUntilDisplayed, click, waitUntilHidden, isVisible } from '../../util/utils';
+import chai from 'chai';
 
 import NavBarPage from './../../page-objects/navbar-page';
 

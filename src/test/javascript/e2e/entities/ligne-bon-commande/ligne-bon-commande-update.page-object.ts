@@ -1,5 +1,6 @@
 import { element, by, ElementFinder } from 'protractor';
 import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+import chai from 'chai';
 
 const expect = chai.expect;
 
