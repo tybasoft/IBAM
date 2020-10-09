@@ -1,16 +1,16 @@
 package com.tybasoft.ibam.web.rest;
 
 import com.itextpdf.text.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.tybasoft.ibam.domain.BonCommande;
-import com.tybasoft.ibam.domain.Entreprise;
-import com.tybasoft.ibam.domain.LigneBonCommande;
-import com.tybasoft.ibam.domain.SituationFinanciere;
+import com.tybasoft.ibam.domain.*;
 import com.tybasoft.ibam.repository.BonCommandeRepository;
 import com.tybasoft.ibam.repository.EntrepriseRepository;
 import com.tybasoft.ibam.repository.LigneBonCommandeRepository;
+import com.tybasoft.ibam.service.FileStorageService;
 import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
@@ -65,6 +65,7 @@ public class BonCommandeResource {
     @Autowired
     ReportService reportService;
 
+
     @Autowired
     EntrepriseRepository entrepriseRepository;
 
@@ -96,9 +97,20 @@ public class BonCommandeResource {
         log.info("My Command lines");
         List<LigneBonCommande> ligneBonCommandes = bonCommande.getLigneBonComs();
         for(int i=0 ; i<ligneBonCommandes.size() ;i++){
-            LigneBonCommande ligneBonCommande = ligneBonCommandes.get(i);
+            System.out.println(ligneBonCommandes.get(i).getType());
+            LigneBonCommande ligneBonCommande = new LigneBonCommande();
+            if(ligneBonCommandes.get(i).getType().equals("materiel")){
+                ligneBonCommande.setMateriel(ligneBonCommandes.get(i).getMateriel()); }
+            if(ligneBonCommandes.get(i).getType().equals("materiau")){
+                ligneBonCommande.setMateriau(ligneBonCommandes.get(i).getMateriau()); }
+            if(ligneBonCommandes.get(i).getType().equals("both")){
+                ligneBonCommande.setMateriau(ligneBonCommandes.get(i).getMateriau());
+                ligneBonCommande.setMateriel(ligneBonCommandes.get(i).getMateriel());}
+            ligneBonCommande.setQuantite(ligneBonCommandes.get(i).getQuantite());
+            ligneBonCommande.setType(ligneBonCommandes.get(i).getType());
+//            ligneBonReception.setMateriau(ligneBonReceptionList.get(i).getMateriau());
             ligneBonCommande.setBonCommande(result);
-            ligneBonCommandeRepository.save(ligneBonCommandes.get(i));
+            ligneBonCommandeRepository.save(ligneBonCommande);
         }
         return ResponseEntity.ok().body(result);
     }
@@ -160,6 +172,8 @@ public class BonCommandeResource {
     @DeleteMapping("/bon-commandes/{id}")
     public ResponseEntity<Void> deleteBonCommande(@PathVariable Long id) {
         log.debug("REST request to delete BonCommande : {}", id);
+        List<LigneBonCommande> ligneBonCommandes = ligneBonCommandeRepository.findAllByBonCommande_Id(id);
+        ligneBonCommandeRepository.deleteAll(ligneBonCommandes);
         bonCommandeRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
@@ -234,8 +248,20 @@ public class BonCommandeResource {
             for(int i =0 ; i<size ; i++){
                 table.addCell(ligneBonCommandesList.get(i).getId().toString());
                 table.addCell(ligneBonCommandesList.get(i).getQuantite());
-                table.addCell(ligneBonCommandesList.get(i).getMateriau().getLibelle());
-                table.addCell(ligneBonCommandesList.get(i).getMateriel().getLibelle());
+                if(ligneBonCommandesList.get(i).getType().equals("materiel")){
+                    table.addCell(ligneBonCommandesList.get(i).getMateriau().getLibelle());
+                    table.addCell("---------");
+
+                }
+                if(ligneBonCommandesList.get(i).getType().equals("materiau")){
+                    table.addCell("---------");
+                    table.addCell(ligneBonCommandesList.get(i).getMateriel().getLibelle());
+                }
+                if(ligneBonCommandesList.get(i).getType().equals("both")){
+                    table.addCell(ligneBonCommandesList.get(i).getMateriau().getLibelle());
+                    table.addCell(ligneBonCommandesList.get(i).getMateriel().getLibelle());
+
+                }
             }
 //            table.addCell(ligneBonCommandesList.getId().toString());
 //            table.addCell(ligneBonCommandesList.getDateFacturation().toString());

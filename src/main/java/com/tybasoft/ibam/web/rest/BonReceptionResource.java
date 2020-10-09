@@ -8,7 +8,10 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.tybasoft.ibam.domain.*;
 import com.tybasoft.ibam.repository.BonReceptionRepository;
 import com.tybasoft.ibam.repository.EntrepriseRepository;
+import com.tybasoft.ibam.repository.ImageRepository;
 import com.tybasoft.ibam.repository.LigneBonReceptionRepository;
+import com.tybasoft.ibam.service.FileStorageService;
+import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
@@ -24,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
@@ -63,9 +67,16 @@ public class BonReceptionResource {
 
     @Autowired
     LigneBonReceptionRepository ligneBonReceptionRepository;
+    @Autowired
+    ImageRepository imageRepository;
+
+    @Autowired
+    FileStorageService fileStorageService;
 
     @Autowired
     ReportService reportService;
+    @Autowired
+    ImageService imageService;
 
     @Autowired
     EntrepriseRepository entrepriseRepository;
@@ -101,9 +112,11 @@ public class BonReceptionResource {
         if (bonReception.getId() != null) {
             throw new BadRequestAlertException("A new bonReception cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        System.out.println("Ligne Bon de reception");
-        System.out.println(bonReception);
+        com.tybasoft.ibam.domain.Image resultImage= imageService.createImageEntity(bonReception.getImage());
+
+//        com.tybasoft.ibam.domain.Image image = imageRepository.save(bonReception.getImage());
         BonReception result = bonReceptionRepository.save(bonReception);
+        result.setImage(resultImage);
         log.info("My Command lines");
         List<LigneBonReception> ligneBonReceptionList = bonReception.getLigneBonRecs();
 //        log.info(ligneBonReceptionList.toString());
@@ -120,6 +133,7 @@ public class BonReceptionResource {
             ligneBonReception.setPrixHt(ligneBonReceptionList.get(i).getPrixHt());
             ligneBonReception.setQuantite(ligneBonReceptionList.get(i).getQuantite());
             ligneBonReception.setCurrency(ligneBonReceptionList.get(i).getCurrency());
+            ligneBonReception.setType(ligneBonReceptionList.get(i).getType());
 //            ligneBonReception.setMateriau(ligneBonReceptionList.get(i).getMateriau());
             ligneBonReception.setBonReception(result);
             ligneBonReceptionRepository.save(ligneBonReception);
@@ -175,6 +189,14 @@ public class BonReceptionResource {
         return ResponseUtil.wrapOrNotFound(bonReception);
     }
 
+    @GetMapping("/bon-receptions/image/{id}")
+    public Resource getImage(@PathVariable Long id){
+        BonReception bonReception = bonReceptionRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Resource resource = fileStorageService.loadFileAsResource(bonReception.getImage().getPath());
+        log.debug("Image : {}", resource);
+        return resource;
+    }
+
     /**
      * {@code DELETE  /bon-receptions/:id} : delete the "id" bonReception.
      *
@@ -184,6 +206,8 @@ public class BonReceptionResource {
     @DeleteMapping("/bon-receptions/{id}")
     public ResponseEntity<Void> deleteBonReception(@PathVariable Long id) {
         log.debug("REST request to delete BonReception : {}", id);
+        List<LigneBonReception> ligneBonReceptionList = ligneBonReceptionRepository.findAllByBonReception_Id(id);
+        ligneBonReceptionRepository.deleteAll(ligneBonReceptionList);
         bonReceptionRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
@@ -258,8 +282,19 @@ public class BonReceptionResource {
             long sumPrix = 0;
             for(int i =0 ; i<size ; i++){
                 table.addCell(ligneBonCommandesList.get(i).getId().toString());
-                table.addCell(ligneBonCommandesList.get(i).getMateriau().getLibelle());
-                table.addCell(ligneBonCommandesList.get(i).getMateriel().getLibelle());
+                System.out.println(ligneBonCommandesList.get(i).getType());
+                if(ligneBonCommandesList.get(i).getType().equals("materiau")){
+                    table.addCell(ligneBonCommandesList.get(i).getMateriau().getLibelle());
+                    table.addCell("--------");
+                }
+                if(ligneBonCommandesList.get(i).getType().equals("materiel")){
+                    table.addCell("---------");
+                    table.addCell(ligneBonCommandesList.get(i).getMateriel().getLibelle());
+                }
+                if(ligneBonCommandesList.get(i).getType().equals("both")){
+                    table.addCell(ligneBonCommandesList.get(i).getMateriau().getLibelle());
+                    table.addCell(ligneBonCommandesList.get(i).getMateriel().getLibelle());
+                }
                 table.addCell(ligneBonCommandesList.get(i).getQuantite());
                 table.addCell(ligneBonCommandesList.get(i).getPrixHt());
                 sumPrix = sumPrix + Long.parseLong(ligneBonCommandesList.get(i).getPrixHt());

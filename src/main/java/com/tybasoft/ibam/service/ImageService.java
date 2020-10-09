@@ -4,12 +4,15 @@ import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.ImageRepository;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class ImageService {
     private final ImageRepository imageRepository;
+    @Autowired
+    FileStorageService fileStorageService;
 
     public ImageService(ImageRepository imageRepository) {
         this.imageRepository = imageRepository;
@@ -36,6 +39,7 @@ public class ImageService {
         if (image.getId() != null) {
             newimage.setId(image.getId());
         }
+//        fileStorageService.storeFile(newimage,imagePath,"image");
 
         return imageRepository.save(newimage);
     }

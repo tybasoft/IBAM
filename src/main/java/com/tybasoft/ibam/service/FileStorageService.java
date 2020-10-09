@@ -33,25 +33,51 @@ public class FileStorageService {
         }
     }
 
+//    public String storeFile(MultipartFile file, String fileName, String fileType) {
+//        Path targetLocation;
+//        String newfileName = null;
+//        try {
+//            // Check if the file's name contains invalid characters
+//            if (fileName.contains("..")) {
+//                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+//            }
+//
+//            if (fileType.equals("image")) {
+//                newfileName = "img" + fileName;
+//                targetLocation = this.imagesStorageLocation.resolve(newfileName);
+//            }
+//            if (fileType.equals("document")) {
+//                newfileName = "doc" + fileName;
+//                targetLocation = this.documentsStorageLocation.resolve(newfileName);
+//            } else {
+//                newfileName = fileName;
+//                targetLocation = this.ImportsStorageLocation.resolve(newfileName);
+//            }
+//
+//            // Copy file to the target location (Replacing existing file with the same name)
+//            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+//
+//            return newfileName;
+//        } catch (IOException ex) {
+//            throw new FileStorageException("Could not store file " + newfileName + ". Please try again!", ex);
+//        }
+//    }
+
     public String storeFile(MultipartFile file, String fileName, String fileType) {
         Path targetLocation;
-        String newfileName = null;
+        String newfileName= null;
         try {
             // Check if the file's name contains invalid characters
-            if (fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+            if(fileName.contains("..")) {
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + newfileName);
             }
 
-            if (fileType.equals("image")) {
-                newfileName = "img" + fileName;
+            if (fileType.equals("image")){
+                newfileName= "img"+fileName;
                 targetLocation = this.imagesStorageLocation.resolve(newfileName);
-            }
-            if (fileType.equals("document")) {
-                newfileName = "doc" + fileName;
+            }else {
+                newfileName= "doc"+fileName;
                 targetLocation = this.documentsStorageLocation.resolve(newfileName);
-            } else {
-                newfileName = fileName;
-                targetLocation = this.ImportsStorageLocation.resolve(newfileName);
             }
 
             // Copy file to the target location (Replacing existing file with the same name)
@@ -81,10 +107,11 @@ public class FileStorageService {
         String filePath;
         if (fileType.equals("image")) {
             filePath = this.imagesStorageLocation.resolve(fileName).normalize().toString();
+            System.out.println(filePath);
         }
-        if (fileType.equals("document")) {
+        else if (fileType.equals("document")) {
             filePath = this.documentsStorageLocation.resolve(fileName).normalize().toString();
-        } else {
+        } else{
             filePath = this.ImportsStorageLocation.resolve(fileName).normalize().toString();
         }
 

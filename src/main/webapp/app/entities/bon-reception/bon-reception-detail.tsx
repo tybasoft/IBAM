@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity,getReportEntity } from './bon-reception.reducer';
+import { getEntity as getImage, reset as resetImage } from 'app/entities/image/image.reducer';
 import { IBonReception } from 'app/shared/model/bon-reception.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import {getEntitiesById as getLigneBonReception} from "app/entities/ligne-bon-reception/ligne-bon-reception.reducer";
@@ -14,19 +15,34 @@ import {getEntitiesById as getLigneBonReception} from "app/entities/ligne-bon-re
 export interface IBonReceptionDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
+
+  const { ligneBonReceptionList,bonReceptionEntity ,imageEntity} = props;
+
   useEffect(() => {
+    // props.resetImage();
+
+    // props.getImageEntity(props.match.params.id);
     props.getEntity(props.match.params.id);
     props.getLigneBonReception(props.match.params.id);
-  }, []);
+    // console.warn(props.getImageEntity(props.match.params.id));
 
-  const { ligneBonReceptionList,bonReceptionEntity } = props;
+  }, []);
+  useEffect(() => {
+    if (bonReceptionEntity.id !== undefined) {
+      if (bonReceptionEntity.id.toString() === props.match.params.id && bonReceptionEntity.image !== null) {
+        props.getImage(bonReceptionEntity.image.id);
+      }
+    }
+  }, [bonReceptionEntity]);
+
+
   const jsPdfGenerator = ()=> {
 
     props.getReportEntity(bonReceptionEntity.id);
   }
   return (
     <Row>
-      <Col md="8">
+      <Col md="6">
         <h2>
           <Translate contentKey="ibamApp.bonReception.detail.title">BonReception</Translate> [<b>{bonReceptionEntity.id}</b>]
         </h2>
@@ -65,7 +81,9 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.bonReception.image">Image</Translate>
           </dt>
-          <dd>{bonReceptionEntity.image ? bonReceptionEntity.image.id : ''}</dd>
+          <dd>
+            {bonReceptionEntity.image ? bonReceptionEntity.image.id : ''}
+          </dd>
           <dt>
             <Translate contentKey="ibamApp.bonReception.projet">Projet</Translate>
           </dt>
@@ -129,16 +147,22 @@ export const BonReceptionDetail = (props: IBonReceptionDetailProps) => {
           </span>
         </Button>
       </Col>
+      <Col md="6">
+        {bonReceptionEntity.image !== null ? (
+          <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '80%', border: 'solid 1px' }} />
+        ) : null}
+      </Col>
     </Row>
   );
 };
 
 const mapStateToProps = (storeState,{ bonReception }: IRootState) => ({
   bonReceptionEntity: storeState.bonReception.entity,
-  ligneBonReceptionList : storeState.ligneBonReception.entities
+  ligneBonReceptionList : storeState.ligneBonReception.entities,
+  imageEntity: storeState.image.entity,
 });
 
-const mapDispatchToProps = { getEntity,getReportEntity,getLigneBonReception };
+const mapDispatchToProps = { getEntity,getReportEntity,getLigneBonReception,getImage, resetImage };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

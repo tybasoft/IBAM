@@ -29,6 +29,11 @@ import {ILigneBonCommande} from "app/shared/model/ligne-bon-commande.model";
 import materiel from "app/entities/materiel/materiel";
 import materiau from "app/entities/materiau/materiau";
 import value from "*.json";
+import FormLabel from "@material-ui/core/FormLabel";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
+import FormControl from "@material-ui/core/FormControl";
 
 export interface IBonCommandeDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -135,14 +140,14 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
   };
 
   const saveEntity = (event, errors, values) => {
-    // values.ligneBonComs=newLines;
+    values.ligneBonComs=newLines;
     if (errors.length === 0) {
       const entity = {
         ...bonCommandeEntity,
         ...values
       };
       console.warn(values);
-      values.ligneBonComs = newLines;
+      // values.ligneBonComs = newLines;
 
       if (isNew) {
         props.createEntity(entity);
@@ -160,6 +165,9 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
     }
 
   };
+  const [typeLigne, setTypeLigne] = React.useState('materiel');
+  const [disableMateriel, setDisableMateriel] = useState();
+  const [disableMateriau, setDisableMateriau] = useState();
   // const deleteMateriau = (data,number) => {
   //   console.warn("Delete Materiau : " + data + " and number :"+number);
   //   // newLines.splice(data);
@@ -180,12 +188,28 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
 
       // newLines.values.bind(data => {data.materiau={id:values.materiau},data.materiel={id:values.materiel},data.quantite=values.quantity});
       // ligneBonCommandeList.values.bind(data => {data.materiau={id:values.materiau},data.materiel={id:values.materiel},data.quantite=values.quantity});
-      newLines.push({materiel:{id:values.materiel} ,materiau:{id:values.materiau},quantite:values.quantity});
+      newLines.push({materiel:{id:values.materiel} ,materiau:{id:values.materiau},quantite:values.quantity,type:typeLigne});
       // newLines.push(ligneBonCommandeList.values());
       // console.warn(newLines);
       setModal(false);
 
     }
+  };
+  const handleChange = (event) => {
+    setTypeLigne(event.target.value);
+    // if(typeLigne ==='materiel'){
+    //   setDisableMateriel(false);
+    //   setDisableMateriau(true);
+    // }
+    // if(typeLigne==='materiau'){
+    //   setDisableMateriel(false);
+    //   setDisableMateriau(false);
+    // }
+    // if(typeLigne==='both'){
+    //   setDisableMateriel(true);
+    //   setDisableMateriau(false);
+
+    // }
   };
 
 
@@ -322,7 +346,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                             </Button>
                           </td>*/}
                           <td>{data.quantite}</td>
-                          <td>{data.materiau.id} {data.materiel.id}</td>
+                          <td>{data.materiau.id ? data.materiau.id : ''} {data.materiel.id ? data.materiel.id : ''}</td>
                           <td className="text-right">
                             <div className="btn-group flex-btn-group-container">
                               {/*<Button
@@ -402,7 +426,16 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
         <AvForm onSubmit={saveMateriau}>
           <ModalBody id="ibamApp.bonCommande.delete.question">
             <ModalBody id="ibamApp.bonCommande.delete.question">
-              <AvGroup>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Type</FormLabel>
+                <RadioGroup aria-label="type" name="type" value={typeLigne} onChange={handleChange}>
+                  <FormControlLabel value="materiel" control={<Radio />} label="Materiel" />
+                  <FormControlLabel value="materiau" control={<Radio />} label="Materiau" />
+                  <FormControlLabel value="both" control={<Radio />} label="Les deux" />
+                </RadioGroup>
+              </FormControl>
+              {typeLigne==='materiau' || typeLigne==='both' ? (
+                  <AvGroup>
                 <Label for="bon-commande-depot">
                   <Translate contentKey="ibamApp.bonCommande.materiau">Materiau</Translate>
                 </Label>
@@ -417,7 +450,9 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                     : null}
                 </AvInput>
               </AvGroup>
-              <AvGroup>
+              ) : null}
+              {typeLigne==='materiel' || typeLigne==='both' ? (
+                  <AvGroup>
                 <Label for="bon-commande-materiel">
                   <Translate contentKey="ibamApp.bonCommande.materiel">Materiel</Translate>
                 </Label>
@@ -432,6 +467,8 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                     : null}
                 </AvInput>
               </AvGroup>
+              ) : null}
+
               <AvGroup>
                 <Label id="remarquesLabel" for="bon-commande-remarques">
                   <Translate contentKey="ibamApp.bonCommande.quantity">Quantite</Translate>

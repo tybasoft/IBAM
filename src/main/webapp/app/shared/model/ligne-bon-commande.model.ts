@@ -11,6 +11,7 @@ export interface ILigneBonCommande {
   materiau?: IMateriau;
   materiel?: IMateriel;
   bonCommande?: IBonCommande;
+  type?: string;
 }
 
 export const defaultValue: Readonly<ILigneBonCommande> = {};

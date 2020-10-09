@@ -34,6 +34,9 @@ public class LigneBonCommande implements Serializable {
 
     @Column(name = "date_modif")
     private LocalDate dateModif;
+    @Column(name = "type")
+    private String type;
+
 
     @ManyToOne
     @JsonIgnoreProperties(value = "ligneBonComs", allowSetters = true)
@@ -134,6 +137,14 @@ public class LigneBonCommande implements Serializable {
         this.bonCommande = bonCommande;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     @Override
     public boolean equals(Object o) {

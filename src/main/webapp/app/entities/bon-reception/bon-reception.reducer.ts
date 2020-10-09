@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
@@ -7,6 +7,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 import { IBonReception, defaultValue } from 'app/shared/model/bon-reception.model';
 import { IBonCommande } from 'app/shared/model/bon-commande.model';
 import { ICurrency } from 'app/shared/model/currency';
+import { url } from 'inspector';
 
 export const ACTION_TYPES = {
   FETCH_BONRECEPTION_LIST: 'bonReception/FETCH_BONRECEPTION_LIST',
@@ -136,6 +137,39 @@ export const getEntity: ICrudGetAction<IBonReception> = id => {
     payload: axios.get<IBonReception>(requestUrl)
   };
 };
+
+// export const getImageEntity: ICrudGetAction<IBonReception> =id  => {
+//   const requestUrl = `/api/images/${id}`;
+//   return {
+//     type: ACTION_TYPES.FETCH_BONRECEPTION,
+//     payload: axios.get<IBonReception>(requestUrl)
+//   };
+// };
+// export const getImageEntity: ICrudPutAction<IBonReception> = id => async dispatch => {
+//   const requestUrl = `${apiUrl}/image/${id}`;
+//   const result = await dispatch({
+//     type: ACTION_TYPES.FETCH_BONRECEPTION,
+//     payload: axios.get(requestUrl)
+//   });
+//   return result;
+// };
+// export const getImageEntity: ICrudPutAction<IBonReception> = id => async dispatch => {
+//   const requestUrl = `${apiUrl}/image/${id}`;
+//   let imageurl='';
+//   axios({
+//     url: requestUrl,
+//     method: 'GET',
+//     responseType: 'blob' // important
+//   }).then(response => {
+//     const url = window.URL.createObjectURL(new Blob([response.data])); // const link = document.createElement('a'); // link.href = url; // link.setAttribute('download', 'Bon_Reception' + date + '.pdf'); // document.body.appendChild(link); // link.click();
+//     const link = document.createElement('a');
+//     link.href = url;
+//     link.setAttribute('download', 'image.jpg');
+//     document.body.appendChild(link);
+//     link.click();
+//   });
+//
+// };
 
 export const createEntity: ICrudPutAction<IBonReception> = entity => async dispatch => {
   const result = await dispatch({
