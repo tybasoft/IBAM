@@ -1,0 +1,26 @@
+{
+  "ibamApp": {
+    "planification": {
+      "home": {
+        "title": "Planifications",
+        "createLabel": "Créer un nouveau Planification",
+        "createOrEditLabel": "Créer ou éditer un Planification",
+        "notFound": "Aucun Planification trouvé"
+      },
+      "created": "Un nouveau Planification a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Planification avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Planification avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Planification {{ id }} ?"
+      },
+      "detail": {
+        "title": "Planification"
+      },
+      "nom_tache": "Nom Tache",
+      "description_tache": "Description Tache",
+      "date_debut": "Date Debut",
+      "date_fin": "Date Fin",
+      "employe": "Employe"
+    }
+  }
+}

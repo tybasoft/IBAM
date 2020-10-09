@@ -152,6 +152,10 @@ import affectationMateriels, {
 import situationFinanciere, {
   SituationFinanciereState
 } from 'app/entities/situation-financiere/situation-financiere.reducer';
+// prettier-ignore
+import planification, {
+  PlanificationState
+} from 'app/entities/planification/planification.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 import avancement, { AvancementState } from 'app/entities/avancement/avancement.reducer';
@@ -203,6 +207,7 @@ export interface IRootState {
   readonly situationFinanciere: SituationFinanciereState;
   readonly currency: CurrenciesState;
   readonly avancement: AvancementState;
+  readonly planification: PlanificationState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly customizer: any;
@@ -258,8 +263,9 @@ const rootReducer = combineReducers<IRootState>({
   avancement,
   customizer,
   calender,
+  planification,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
-  loadingBar
+  loadingBar,
 });
 
 export default rootReducer;

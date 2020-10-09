@@ -53,6 +53,7 @@
         "fichePointage": "Fiche Pointage",
         "affectationMateriels": "Affectation Materiels",
         "situationFinanciere": "Situation Financiere",
+        "planification": "Planification",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 // import external modules
 import React, { Fragment, Component } from 'react';
 import { Row, Col, Modal, ModalBody, ModalFooter, Button, Input, Card, CardBody } from 'reactstrap';
@@ -7,20 +8,40 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import DateTimePicker from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
+import { IEmploye } from 'app/shared/model/employe.model';
+import { getEntities as getEmployes } from 'app/entities/employe/employe.reducer';
+import { getEntity, updateEntity, createEntity, reset } from '../../../entities/planification/planification.reducer';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
+import { IPlanification } from 'app/shared/model/planification.model';
+import { mapIdList } from 'app/shared/util/entity-utils';
 
 import { handleAddEvent } from '../../redux/actions/calenderAction/calenderAction';
 
 ReactBigCalender.momentLocalizer(moment);
 const allViews = Object.keys(ReactBigCalender.Views).map(k => ReactBigCalender.Views[k]);
-
+interface IState {
+  playOrPause?: string;
+}
 class Calender extends Component<any, any> {
-  state = {
-    modal: false,
-    start: new Date(),
-    end: new Date(),
-    eventTitle: 'Enter Your Title',
-    events: []
-  };
+  
+constructor(props) {
+super(props)
+const { planificationEntity, employes, loading, updating } = props;
+
+this.state = {
+  modal: false,
+  debut: null,
+  fin: null,
+  nom: "ma tache",
+  description: "description de tache",
+  start: new Date(),
+  end: new Date(),
+  eventTitle: 'Enter Your Title',
+  events: [],
+  isNew: !props.match.params || !props.match.params.id
+};
+}
+
 
   toggleModal = () => {
     this.setState((prevState: any) => ({
@@ -38,16 +59,34 @@ class Calender extends Component<any, any> {
     this.setState(prevState => ({
       start: date._d
     }));
+     this.state.debut = convertDateTimeToServer(document.getElementById("date_debut").value);
   };
 
   handleEndDateTimeChange = date => {
     this.setState(prevState => ({
       end: date._d
     }));
+     this.state.fin = convertDateTimeToServer(document.getElementById("date_fin").value);
+
   };
 
   handleSubmit = () => {
     const { handleAddEvent } = this.props;
+   //const debut = convertDateTimeToServer(document.getElementById("date_debut"));
+    //const fin = convertDateTimeToServer(document.getElementById("date_fin"));
+    this.state.nom = document.getElementById("nom_tache").value;
+    this.state.description = document.getElementById("description_tache").value;
+    console.log(this.state.start)
+     const entity: IPlanification= {
+      date_debut:this.state.debut,
+      date_fin:this.state.fin,
+      nom_tache:this.state.nom,
+      description_tache:this.state.description,
+      employes:null
+
+    };
+    createEntity(entity);
+    console.log("message from submit handler");
 
     this.setState(
       prevState => {
@@ -92,19 +131,34 @@ class Calender extends Component<any, any> {
     return (
       <Fragment>
         <Modal isOpen={modal} toggle={this.toggleModal}>
+        <form className="form-group">
+
           <ModalBody>
-            <label>Event Title</label>
-            <Input value={eventTitle} onChange={this.handleChange} />
-            <Fragment>
-              <div>
-                <label>Start Date</label>
-                <DateTimePicker onChange={this.handleStartDateTimeChange} defaultValue={calender.startDate} value={start} />
+
+
+            <label>Nom de la tache</label>
+            <Input value={eventTitle} id="nom_tache" onChange={this.handleChange} />
+
+            <div>
+                <label>Description tache</label>
+                <textarea className="form-control" id="description_tache" ></textarea>
               </div>
               <div>
-                <label>End Date</label>
-                <DateTimePicker onChange={this.handleEndDateTimeChange} defaultValue={calender.startDate} value={end} />
+                <label>Date debut</label>
+                <input className="form-control" id="date_debut" type="datetime-local" onChange={this.handleStartDateTimeChange} defaultValue={calender.startDate} value={start} />
               </div>
-            </Fragment>
+              <div>
+                <label>Date de fin</label>
+                <input className="form-control" id="date_fin" type="datetime-local" onChange={this.handleEndDateTimeChange} defaultValue={calender.startDate} value={end} />
+              </div>
+              <div>
+                <label>Employes concerné</label>
+                <select className="form-control" id="employes"  onChange={this.handleEndDateTimeChange} defaultValue={calender.startDate} value={end} >
+                <option>1</option>
+                <option>1</option>
+                <option>1</option>
+                </select>
+              </div>
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleModal}>
@@ -114,6 +168,8 @@ class Calender extends Component<any, any> {
               Submit
             </Button>
           </ModalFooter>
+          </form>
+
         </Modal>
         <Row>
           <Col xs="12">
@@ -154,5 +210,10 @@ class Calender extends Component<any, any> {
 const mapStateToProps = state => ({
   calender: state.calender
 });
+const mapDispatchToProps = {
+  getEmployes,
+  getEntity,
+  updateEntity,
+};
 
 export default connect(mapStateToProps, { handleAddEvent })(Calender);
