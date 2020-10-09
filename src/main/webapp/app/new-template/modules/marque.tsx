@@ -158,7 +158,7 @@ const Marque = (props: any) => {
 
               <div className="form-group mb-3 form-group-compose text-center">
                 <Button type="button" onClick={() => setModalOpen(true)} className="btn float-left btn-raised btn-danger  my-2 shadow-z-2">
-                  <Icon.Plus size={18} className="mr-1" /> <Translate contentKey="ibamApp.marque.home.createLabel">marque</Translate>
+                  <Icon.Plus size={18} className="mr-1" /> <Translate contentKey="entity.action.create">marque</Translate>
                 </Button>
                 <Button
                   onClick={() => setImportExportOpen('EXP')}
@@ -200,7 +200,7 @@ const Marque = (props: any) => {
                   <tbody>
                     {list.map((element, i) => (
                       <tr key={`entity-${i}`}>
-                        <td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           {/* <Button tag={Link} to={`${match.url}/${entreprise.id}`} color="link" size="sm"> */}
                           {element.id}
                           {/* </Button> */}
@@ -208,7 +208,9 @@ const Marque = (props: any) => {
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           {element.libelle}
                         </td>
-                        <td>{element.description}</td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
+                          {element.description}
+                        </td>
                         <td>
                           <Icon.Edit onClick={() => editEntity(element)} size={18} className="mr-2" />
                           <Icon.Trash2 onClick={() => confirmDelete(element.id)} size={18} color="#FF586B" />

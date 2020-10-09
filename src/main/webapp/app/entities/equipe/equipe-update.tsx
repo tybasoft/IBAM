@@ -9,7 +9,6 @@ import { IRootState } from 'app/shared/reducers';
 
 import { IEmploye } from 'app/shared/model/employe.model';
 import { getEntities as getEmployes } from 'app/entities/employe/employe.reducer';
-import { IProjet } from 'app/shared/model/projet.model';
 import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './equipe.reducer';
 import { IEquipe } from 'app/shared/model/equipe.model';
@@ -134,7 +133,7 @@ export const EquipeUpdate = (props: IEquipeUpdateProps) => {
                   {employes
                     ? employes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.prenom+" " +otherEntity.nom+" ("+otherEntity.matricule+")"}
+                          {otherEntity.prenom + ' ' + otherEntity.nom + ' (' + otherEntity.matricule + ')'}
                         </option>
                       ))
                     : null}

@@ -1,4 +1,5 @@
 import React, { Component, Fragment, useEffect, useState } from 'react';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 import {
   Card,
@@ -39,14 +40,14 @@ import {
   ACTION_TYPES,
   apiUrl,
   filterEntities
-} from '../../entities/fonction/fonction.reducer';
-import { Translate, translate, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
+} from '../../entities/transfert-materiel/transfert-materiel.reducer';
+import { Translate, translate, TextFormat, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavbarSearch from '../components/search/Search';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import FonctionDetails from './fonction-details';
+import TransfertMaterielDetails from './transfert-materiel-details';
 
-const Fonction = (props: any) => {
+const TransfertMateriel = (props: any) => {
   console.log(props);
 
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
@@ -89,7 +90,7 @@ const Fonction = (props: any) => {
     setModalOpen(false);
   };
 
-  const { list, totalItems } = props;
+  const { list, totalItems, materiels, projets } = props;
 
   const openDetails = (id: number) => {
     setSelectedEntity(id);
@@ -147,14 +148,14 @@ const Fonction = (props: any) => {
           <Card>
             <CardBody>
               <CardTitle className="row" style={{ margin: 0 }}>
-                <Translate contentKey="ibamApp.fonction.home.title">Fonctions</Translate>
+                <Translate contentKey="ibamApp.transfertMateriel.home.title">Fonctions</Translate>
                 <Form className="navbar-form mt-1 ml-auto float-left" role="search">
                   <NavbarSearch search={filter} clear={props.getEntities} />
                 </Form>
               </CardTitle>
               <p>
                 {' '}
-                <Translate contentKey="ibamApp.fonction.home.description">fonction</Translate>
+                <Translate contentKey="ibamApp.transfertMateriel.home.description">fonction</Translate>
               </p>
 
               <div className="form-group mb-3 form-group-compose text-center">
@@ -186,15 +187,30 @@ const Fonction = (props: any) => {
                       <th className="hand" onClick={sort('id')}>
                         <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th className="hand" onClick={sort('libelle')}>
-                        <Translate contentKey="ibamApp.fonction.libelle">Libelle</Translate> <FontAwesomeIcon icon="sort" />
+                      <th className="hand" onClick={sort('reference')}>
+                        <Translate contentKey="ibamApp.transfertMateriel.reference">Reference</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th className="hand" onClick={sort('description')}>
-                        <Translate contentKey="ibamApp.fonction.description">Description</Translate> <FontAwesomeIcon icon="sort" />
+                      <th className="hand" onClick={sort('dateTransfert')}>
+                        <Translate contentKey="ibamApp.transfertMateriel.dateTransfert">Date Transfert</Translate>{' '}
+                        <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th className="hand" onClick={sort('competences')}>
-                        <Translate contentKey="ibamApp.fonction.competences">Competences</Translate> <FontAwesomeIcon icon="sort" />
+                      <th className="hand" onClick={sort('commentaire')}>
+                        <Translate contentKey="ibamApp.transfertMateriel.commentaire">Commentaire</Translate>{' '}
+                        <FontAwesomeIcon icon="sort" />
                       </th>
+                      {/* <th className="hand" onClick={sort('userModif')}>
+                  <Translate contentKey="ibamApp.transfertMateriel.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('dateModif')}>
+                  <Translate contentKey="ibamApp.transfertMateriel.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th> */}
+                      <th>
+                        <Translate contentKey="ibamApp.transfertMateriel.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
+                      </th>
+                      {/* <th>
+                  <Translate contentKey="ibamApp.transfertMateriel.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
+                </th> */}
+                      <th />
                       <th>
                         Actions
                         {/* <Translate contentKey="ibamApp.entreprise.capital">Capital</Translate> */}
@@ -210,13 +226,20 @@ const Fonction = (props: any) => {
                           {/* </Button> */}
                         </td>
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.libelle}
+                          {element.reference}
                         </td>
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.description}
+                          <TextFormat type="date" value={element.dateTransfert} format={APP_LOCAL_DATE_FORMAT} />
                         </td>
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.competences}
+                          {element.commentaire}
+                        </td>
+                        {/* <td>{transfertMateriel.userModif}</td>
+                  <td>
+                    <TextFormat type="date" value={transfertMateriel.dateModif} format={APP_LOCAL_DATE_FORMAT} />
+                  </td> */}
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
+                          {element.materiel ? element.materiel.libelle : ''}
                         </td>
                         <td>
                           <Icon.Edit onClick={() => editEntity(element)} size={18} className="mr-2" />
@@ -254,44 +277,86 @@ const Fonction = (props: any) => {
       </Row>
       <Modal isOpen={modalOpen} toggle={() => handleClose()} size="md">
         <ModalHeader toggle={() => handleClose()}>
-          <Translate contentKey="ibamApp.fonction.home.createLabel">Entreprises</Translate>
+          <Translate contentKey="ibamApp.transfertMateriel.home.createLabel">Entreprises</Translate>
         </ModalHeader>
         {/* <AddTodo /> */}
         <AvForm model={entityModel} onSubmit={saveEntity}>
           <ModalBody>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="libelleLabel" for="fonction-libelle">
-                    <Translate contentKey="ibamApp.fonction.libelle">Libelle</Translate>
+                <AvGroup>
+                  <Label id="referenceLabel" for="transfert-materiel-reference">
+                    <Translate contentKey="ibamApp.transfertMateriel.reference">Reference</Translate>
                   </Label>
                   <AvField
-                    id="fonction-libelle"
+                    id="transfert-materiel-reference"
                     type="text"
-                    name="libelle"
+                    name="reference"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') }
                     }}
                   />
-                </FormGroup>
+                </AvGroup>
               </Col>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="descriptionLabel" for="fonction-description">
-                    <Translate contentKey="ibamApp.fonction.description">Description</Translate>
+                <AvGroup>
+                  <Label id="dateTransfertLabel" for="transfert-materiel-dateTransfert">
+                    <Translate contentKey="ibamApp.transfertMateriel.dateTransfert">Date Transfert</Translate>
                   </Label>
-                  <AvField id="fonction-description" type="text" name="description" />
-                </FormGroup>
+                  <AvField
+                    id="transfert-materiel-dateTransfert"
+                    type="date"
+                    className="form-control"
+                    name="dateTransfert"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
               </Col>
             </Row>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="competencesLabel" for="fonction-competences">
-                    <Translate contentKey="ibamApp.fonction.competences">Competences</Translate>
+                <AvGroup>
+                  <Label id="commentaireLabel" for="transfert-materiel-commentaire">
+                    <Translate contentKey="ibamApp.transfertMateriel.commentaire">Commentaire</Translate>
                   </Label>
-                  <AvField id="fonction-competences" type="text" name="competences" />
-                </FormGroup>
+                  <AvField id="transfert-materiel-commentaire" type="text" name="commentaire" />
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label for="transfert-materiel-materiel">
+                    <Translate contentKey="ibamApp.transfertMateriel.materiel">Materiel</Translate>
+                  </Label>
+                  <AvInput id="transfert-materiel-materiel" type="select" className="form-control" name="materiel.id">
+                    <option value="" key="0" />
+                    {materiels
+                      ? materiels.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.libelle + ' (' + otherEntity.matricule + ')'}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label for="transfert-materiel-projet">
+                    <Translate contentKey="ibamApp.transfertMateriel.projet">Projet</Translate>
+                  </Label>
+                  <AvInput id="transfert-materiel-projet" type="select" className="form-control" name="projet.id">
+                    <option value="" key="0" />
+                    {projets
+                      ? projets.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.libelle + ' (' + otherEntity.reference + ')'}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
               </Col>
             </Row>
           </ModalBody>
@@ -317,19 +382,21 @@ const Fonction = (props: any) => {
       </Modal>
 
       {selectedEntity !== null && (
-        <FonctionDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
+        <TransfertMaterielDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
       )}
     </Fragment>
   );
 };
 // }
 
-const mapStateToProps = ({ fonction }: IRootState) => ({
-  list: fonction.entities,
-  loading: fonction.loading,
-  updateSuccess: fonction.updateSuccess,
+const mapStateToProps = ({ transfertMateriel, materiel, projet }: IRootState) => ({
+  list: transfertMateriel.entities,
+  loading: transfertMateriel.loading,
+  updateSuccess: transfertMateriel.updateSuccess,
   //   imageEntity: image.entity,
-  totalItems: fonction.totalItems
+  totalItems: transfertMateriel.totalItems,
+  materiels: materiel.entities,
+  projets: projet.entities
 });
 
 const mapDispatchToProps = {
@@ -343,6 +410,6 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Fonction);
+export default connect(mapStateToProps, mapDispatchToProps)(TransfertMateriel);
 
 // export default Entreprise;

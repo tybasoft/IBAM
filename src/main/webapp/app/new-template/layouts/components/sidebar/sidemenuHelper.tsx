@@ -99,7 +99,7 @@ class SideMenuHelper extends PureComponent<any, any> {
 
   render() {
     const Nodes = Children.map(this.props.children, (child: any, index) => {
-      if (Boolean(child.type === SideMenuHelper.MenuSingleItem)) {
+      if (child && Boolean(child.type === SideMenuHelper.MenuSingleItem)) {
         return cloneElement(child, {
           closeOther: this.closeOther,
           handleClick: this.handleClick,
@@ -108,7 +108,7 @@ class SideMenuHelper extends PureComponent<any, any> {
           ...child.props
         });
       }
-      if (Boolean(child.type === SideMenuHelper.MenuMultiItems)) {
+      if (child && Boolean(child.type === SideMenuHelper.MenuMultiItems)) {
         return cloneElement(child, {
           toggle: this.toggle,
           handleClick: this.handleClick,

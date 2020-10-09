@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_VISITETECHNIQUE: 'visiteTechnique/UPDATE_VISITETECHNIQUE',
   DELETE_VISITETECHNIQUE: 'visiteTechnique/DELETE_VISITETECHNIQUE',
   RESET: 'visiteTechnique/RESET',
-  REPPORT: 'visiteTechnique/REPPORT'
+  REPPORT: 'visiteTechnique/REPPORT',
+  FILTER_VISITE_TECHNIQUE_LIST: 'visiteTechnique/filter'
 };
 
 const initialState = {
@@ -94,6 +95,12 @@ export default (state: VisiteTechniqueState = initialState, action): VisiteTechn
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.FILTER_VISITE_TECHNIQUE_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -116,6 +123,11 @@ export const getEntities: ICrudGetAllAction<IVisiteTechnique> = (page, size, sor
     payload: axios.get<IVisiteTechnique>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
+
+export const filterEntities: ICrudGetAllAction<IVisiteTechnique> = filter => ({
+  type: ACTION_TYPES.FILTER_VISITE_TECHNIQUE_LIST,
+  payload: axios.get<IVisiteTechnique>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntity: ICrudGetAction<IVisiteTechnique> = id => {
   const requestUrl = `${apiUrl}/${id}`;

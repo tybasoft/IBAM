@@ -1,4 +1,5 @@
 import React, { Component, Fragment, useEffect, useState } from 'react';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 import {
   Card,
@@ -20,7 +21,8 @@ import Export from '../../shared/Repport/export';
 import Import from '../../shared/Repport/import';
 
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-
+import { getEntities as getEmployes } from 'app/entities/employe/employe.reducer';
+import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
 import * as Icon from 'react-feather';
 
 //Prism
@@ -39,14 +41,14 @@ import {
   ACTION_TYPES,
   apiUrl,
   filterEntities
-} from '../../entities/fonction/fonction.reducer';
-import { Translate, translate, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
+} from '../../entities/equipe/equipe.reducer';
+import { Translate, translate, TextFormat, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavbarSearch from '../components/search/Search';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import FonctionDetails from './fonction-details';
+import EquipeDetails from './equipe-details';
 
-const Fonction = (props: any) => {
+const Equipe = (props: any) => {
   console.log(props);
 
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
@@ -70,6 +72,8 @@ const Fonction = (props: any) => {
 
   useEffect(() => {
     sortEntities();
+    props.getEmployes();
+    props.getProjets();
   }, []);
 
   const handlePagination = currentPage =>
@@ -89,7 +93,7 @@ const Fonction = (props: any) => {
     setModalOpen(false);
   };
 
-  const { list, totalItems } = props;
+  const { list, totalItems, materiels, projets, employes } = props;
 
   const openDetails = (id: number) => {
     setSelectedEntity(id);
@@ -147,14 +151,14 @@ const Fonction = (props: any) => {
           <Card>
             <CardBody>
               <CardTitle className="row" style={{ margin: 0 }}>
-                <Translate contentKey="ibamApp.fonction.home.title">Fonctions</Translate>
+                <Translate contentKey="ibamApp.equipe.home.title">Fonctions</Translate>
                 <Form className="navbar-form mt-1 ml-auto float-left" role="search">
                   <NavbarSearch search={filter} clear={props.getEntities} />
                 </Form>
               </CardTitle>
               <p>
                 {' '}
-                <Translate contentKey="ibamApp.fonction.home.description">fonction</Translate>
+                <Translate contentKey="ibamApp.equipe.home.description">fonction</Translate>
               </p>
 
               <div className="form-group mb-3 form-group-compose text-center">
@@ -187,14 +191,23 @@ const Fonction = (props: any) => {
                         <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
                       <th className="hand" onClick={sort('libelle')}>
-                        <Translate contentKey="ibamApp.fonction.libelle">Libelle</Translate> <FontAwesomeIcon icon="sort" />
+                        <Translate contentKey="ibamApp.equipe.libelle">Libelle</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th className="hand" onClick={sort('description')}>
-                        <Translate contentKey="ibamApp.fonction.description">Description</Translate> <FontAwesomeIcon icon="sort" />
+                      {/*
+                <th className="hand" onClick={sort('userModif')}>
+                  <Translate contentKey="ibamApp.equipe.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('dateModif')}>
+                  <Translate contentKey="ibamApp.equipe.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                */}
+                      <th>
+                        <Translate contentKey="ibamApp.equipe.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th className="hand" onClick={sort('competences')}>
-                        <Translate contentKey="ibamApp.fonction.competences">Competences</Translate> <FontAwesomeIcon icon="sort" />
+                      <th>
+                        <Translate contentKey="ibamApp.equipe.equipe">Equipe</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
+                      <th />
                       <th>
                         Actions
                         {/* <Translate contentKey="ibamApp.entreprise.capital">Capital</Translate> */}
@@ -212,11 +225,17 @@ const Fonction = (props: any) => {
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           {element.libelle}
                         </td>
+                        {/*
+                  <td>{equipe.userModif}</td>
+                  <td>
+                    <TextFormat type="date" value={equipe.dateModif} format={APP_LOCAL_DATE_FORMAT} />
+                  </td>
+                  */}
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.description}
+                          {element.projet ? element.projet.libelle : ''}
                         </td>
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.competences}
+                          {element.equipe ? element.equipe.nom + ' ' + element.equipe.prenom : ''}
                         </td>
                         <td>
                           <Icon.Edit onClick={() => editEntity(element)} size={18} className="mr-2" />
@@ -254,44 +273,96 @@ const Fonction = (props: any) => {
       </Row>
       <Modal isOpen={modalOpen} toggle={() => handleClose()} size="md">
         <ModalHeader toggle={() => handleClose()}>
-          <Translate contentKey="ibamApp.fonction.home.createLabel">Entreprises</Translate>
+          <Translate contentKey="ibamApp.transfertMateriel.home.createLabel">Entreprises</Translate>
         </ModalHeader>
         {/* <AddTodo /> */}
         <AvForm model={entityModel} onSubmit={saveEntity}>
           <ModalBody>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="libelleLabel" for="fonction-libelle">
-                    <Translate contentKey="ibamApp.fonction.libelle">Libelle</Translate>
+                <AvGroup>
+                  <Label id="libelleLabel" for="equipe-libelle">
+                    <Translate contentKey="ibamApp.equipe.libelle">Libelle</Translate>
                   </Label>
                   <AvField
-                    id="fonction-libelle"
+                    id="equipe-libelle"
                     type="text"
                     name="libelle"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') }
                     }}
                   />
-                </FormGroup>
+                </AvGroup>
               </Col>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="descriptionLabel" for="fonction-description">
-                    <Translate contentKey="ibamApp.fonction.description">Description</Translate>
+                <AvGroup>
+                  <Label for="equipe-projet">
+                    <Translate contentKey="ibamApp.equipe.projet">Projet</Translate>
                   </Label>
-                  <AvField id="fonction-description" type="text" name="description" />
-                </FormGroup>
+                  <AvInput id="equipe-projet" type="select" className="form-control" name="projet.id">
+                    <option value="" key="0" />
+                    {projets
+                      ? projets.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.libelle}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
               </Col>
             </Row>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="competencesLabel" for="fonction-competences">
-                    <Translate contentKey="ibamApp.fonction.competences">Competences</Translate>
+                <AvGroup>
+                  <Label for="equipe-equipe">
+                    <Translate contentKey="ibamApp.equipe.equipe">Equipe</Translate>
                   </Label>
-                  <AvField id="fonction-competences" type="text" name="competences" />
-                </FormGroup>
+                  <AvInput id="equipe-equipe" type="select" className="form-control" name="equipe.id">
+                    <option value="" key="0" />
+                    {employes
+                      ? employes.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.prenom + ' ' + otherEntity.nom + ' (' + otherEntity.matricule + ')'}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label for="transfert-materiel-materiel">
+                    <Translate contentKey="ibamApp.transfertMateriel.materiel">Materiel</Translate>
+                  </Label>
+                  <AvInput id="transfert-materiel-materiel" type="select" className="form-control" name="materiel.id">
+                    <option value="" key="0" />
+                    {materiels
+                      ? materiels.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.libelle + ' (' + otherEntity.matricule + ')'}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label for="transfert-materiel-projet">
+                    <Translate contentKey="ibamApp.transfertMateriel.projet">Projet</Translate>
+                  </Label>
+                  <AvInput id="transfert-materiel-projet" type="select" className="form-control" name="projet.id">
+                    <option value="" key="0" />
+                    {projets
+                      ? projets.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.libelle + ' (' + otherEntity.reference + ')'}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
               </Col>
             </Row>
           </ModalBody>
@@ -317,19 +388,21 @@ const Fonction = (props: any) => {
       </Modal>
 
       {selectedEntity !== null && (
-        <FonctionDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
+        <EquipeDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
       )}
     </Fragment>
   );
 };
 // }
 
-const mapStateToProps = ({ fonction }: IRootState) => ({
-  list: fonction.entities,
-  loading: fonction.loading,
-  updateSuccess: fonction.updateSuccess,
+const mapStateToProps = ({ equipe, materiel, projet }: IRootState) => ({
+  list: equipe.entities,
+  loading: equipe.loading,
+  updateSuccess: equipe.updateSuccess,
   //   imageEntity: image.entity,
-  totalItems: fonction.totalItems
+  totalItems: equipe.totalItems,
+  materiels: materiel.entities,
+  projets: projet.entities
 });
 
 const mapDispatchToProps = {
@@ -337,12 +410,15 @@ const mapDispatchToProps = {
   createEntity,
   deleteEntity,
   updateEntity,
-  filterEntities
+  filterEntities,
+
+  getEmployes,
+  getProjets
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Fonction);
+export default connect(mapStateToProps, mapDispatchToProps)(Equipe);
 
 // export default Entreprise;

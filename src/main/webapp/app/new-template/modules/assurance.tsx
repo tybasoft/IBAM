@@ -164,7 +164,7 @@ const Assurance = (props: any) => {
 
               <div className="form-group mb-3 form-group-compose text-center">
                 <Button type="button" onClick={() => setModalOpen(true)} className="btn float-left btn-raised btn-danger  my-2 shadow-z-2">
-                  <Icon.Plus size={18} className="mr-1" /> <Translate contentKey="ibamApp.assurance.home.createLabel">assurance</Translate>
+                  <Icon.Plus size={18} className="mr-1" /> <Translate contentKey="entity.action.create">assurance</Translate>
                 </Button>
                 <Button
                   onClick={() => setImportExportOpen('EXP')}
@@ -218,18 +218,20 @@ const Assurance = (props: any) => {
                           {/* </Button> */}
                         </td>
 
-                        <td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           <TextFormat type="date" value={element.dateDebut} format={APP_LOCAL_DATE_FORMAT} />
                         </td>
-                        <td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           <TextFormat type="date" value={element.dateFin} format={APP_LOCAL_DATE_FORMAT} />
                         </td>
-                        <td>{element.agence}</td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
+                          {element.agence}
+                        </td>
                         {/* <td>{assurance.userModif}</td>
                   <td>
                     <TextFormat type="date" value={assurance.dateModif} format={APP_LOCAL_DATE_FORMAT} />
                   </td> */}
-                        <td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           {element.materiel ? <Link to={`materiel/${element.materiel.libelle}`}>{element.materiel.libelle}</Link> : ''}
                         </td>
                         <td>

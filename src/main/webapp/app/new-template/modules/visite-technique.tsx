@@ -1,4 +1,5 @@
 import React, { Component, Fragment, useEffect, useState } from 'react';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 import {
   Card,
@@ -30,6 +31,7 @@ import 'prismjs/themes/prism-okaidia.css'; //Include CSS
 import { PrismCode } from 'react-prism'; //Prism Component
 import { IRootState } from 'app/shared/reducers';
 import { connect } from 'react-redux';
+import { getEntities as getMateriels } from 'app/entities/materiel/materiel.reducer';
 
 import {
   getEntities,
@@ -39,14 +41,14 @@ import {
   ACTION_TYPES,
   apiUrl,
   filterEntities
-} from '../../entities/fonction/fonction.reducer';
-import { Translate, translate, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
+} from '../../entities/visite-technique/visite-technique.reducer';
+import { Translate, translate, TextFormat, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavbarSearch from '../components/search/Search';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import FonctionDetails from './fonction-details';
+import VisiteTechniqueDetails from './visite-technique-details';
 
-const Fonction = (props: any) => {
+const VisiteTechnique = (props: any) => {
   console.log(props);
 
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
@@ -89,7 +91,7 @@ const Fonction = (props: any) => {
     setModalOpen(false);
   };
 
-  const { list, totalItems } = props;
+  const { list, totalItems, materiels } = props;
 
   const openDetails = (id: number) => {
     setSelectedEntity(id);
@@ -147,14 +149,14 @@ const Fonction = (props: any) => {
           <Card>
             <CardBody>
               <CardTitle className="row" style={{ margin: 0 }}>
-                <Translate contentKey="ibamApp.fonction.home.title">Fonctions</Translate>
+                <Translate contentKey="ibamApp.visite-technique.home.title">Fonctions</Translate>
                 <Form className="navbar-form mt-1 ml-auto float-left" role="search">
                   <NavbarSearch search={filter} clear={props.getEntities} />
                 </Form>
               </CardTitle>
               <p>
                 {' '}
-                <Translate contentKey="ibamApp.fonction.home.description">fonction</Translate>
+                <Translate contentKey="ibamApp.visite-technique.home.description">fonction</Translate>
               </p>
 
               <div className="form-group mb-3 form-group-compose text-center">
@@ -186,38 +188,50 @@ const Fonction = (props: any) => {
                       <th className="hand" onClick={sort('id')}>
                         <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th className="hand" onClick={sort('libelle')}>
-                        <Translate contentKey="ibamApp.fonction.libelle">Libelle</Translate> <FontAwesomeIcon icon="sort" />
+                      <th className="hand" onClick={sort('reference')}>
+                        <Translate contentKey="ibamApp.visiteTechnique.reference">Reference</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th className="hand" onClick={sort('description')}>
-                        <Translate contentKey="ibamApp.fonction.description">Description</Translate> <FontAwesomeIcon icon="sort" />
+                      <th className="hand" onClick={sort('dateVisite')}>
+                        <Translate contentKey="ibamApp.visiteTechnique.dateVisite">Date Visite</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th className="hand" onClick={sort('competences')}>
-                        <Translate contentKey="ibamApp.fonction.competences">Competences</Translate> <FontAwesomeIcon icon="sort" />
+                      <th className="hand" onClick={sort('remarque')}>
+                        <Translate contentKey="ibamApp.visiteTechnique.remarque">Remarque</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
+                      {/* <th className="hand" onClick={sort('userModif')}>
+                  <Translate contentKey="ibamApp.visiteTechnique.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('dateModif')}>
+                  <Translate contentKey="ibamApp.visiteTechnique.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th> */}
                       <th>
-                        Actions
-                        {/* <Translate contentKey="ibamApp.entreprise.capital">Capital</Translate> */}
+                        <Translate contentKey="ibamApp.visiteTechnique.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
+                      <th />
                     </tr>
                   </thead>
                   <tbody>
                     {list.map((element, i) => (
                       <tr key={`entity-${i}`}>
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {/* <Button tag={Link} to={`${match.url}/${entreprise.id}`} color="link" size="sm"> */}
                           {element.id}
-                          {/* </Button> */}
                         </td>
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.libelle}
+                          {element.reference}
                         </td>
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.description}
+                          <TextFormat type="date" value={element.dateVisite} format={APP_LOCAL_DATE_FORMAT} />
                         </td>
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.competences}
+                          {element.remarque}
                         </td>
+                        {/* <td>{visiteTechnique.userModif}</td>
+                  <td>
+                    <TextFormat type="date" value={visiteTechnique.dateModif} format={APP_LOCAL_DATE_FORMAT} />
+                  </td> */}
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
+                          {element.materiel ? <p>{element.materiel.libelle}</p> : ''}
+                        </td>
+
                         <td>
                           <Icon.Edit onClick={() => editEntity(element)} size={18} className="mr-2" />
                           <Icon.Trash2 onClick={() => confirmDelete(element.id)} size={18} color="#FF586B" />
@@ -254,44 +268,69 @@ const Fonction = (props: any) => {
       </Row>
       <Modal isOpen={modalOpen} toggle={() => handleClose()} size="md">
         <ModalHeader toggle={() => handleClose()}>
-          <Translate contentKey="ibamApp.fonction.home.createLabel">Entreprises</Translate>
+          <Translate contentKey="ibamApp.location.home.createLabel">Entreprises</Translate>
         </ModalHeader>
         {/* <AddTodo /> */}
         <AvForm model={entityModel} onSubmit={saveEntity}>
           <ModalBody>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="libelleLabel" for="fonction-libelle">
-                    <Translate contentKey="ibamApp.fonction.libelle">Libelle</Translate>
+                <AvGroup>
+                  <Label id="referenceLabel" for="visite-technique-reference">
+                    <Translate contentKey="ibamApp.visiteTechnique.reference">Reference</Translate>
                   </Label>
                   <AvField
-                    id="fonction-libelle"
+                    id="visite-technique-reference"
                     type="text"
-                    name="libelle"
+                    name="reference"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') }
                     }}
                   />
-                </FormGroup>
+                </AvGroup>
               </Col>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="descriptionLabel" for="fonction-description">
-                    <Translate contentKey="ibamApp.fonction.description">Description</Translate>
+                <AvGroup>
+                  <Label id="dateVisiteLabel" for="visite-technique-dateVisite">
+                    <Translate contentKey="ibamApp.visiteTechnique.dateVisite">Date Visite</Translate>
                   </Label>
-                  <AvField id="fonction-description" type="text" name="description" />
-                </FormGroup>
+                  <AvField
+                    id="visite-technique-dateVisite"
+                    type="date"
+                    className="form-control"
+                    name="dateVisite"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
               </Col>
             </Row>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="competencesLabel" for="fonction-competences">
-                    <Translate contentKey="ibamApp.fonction.competences">Competences</Translate>
+                <AvGroup>
+                  <Label id="remarqueLabel" for="visite-technique-remarque">
+                    <Translate contentKey="ibamApp.visiteTechnique.remarque">Remarque</Translate>
                   </Label>
-                  <AvField id="fonction-competences" type="text" name="competences" />
-                </FormGroup>
+                  <AvField id="visite-technique-remarque" type="text" name="remarque" />
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label for="visite-technique-materiel">
+                    <Translate contentKey="ibamApp.visiteTechnique.materiel">Materiel</Translate>
+                  </Label>
+                  <AvInput id="visite-technique-materiel" type="select" className="form-control" name="materiel.id">
+                    <option value="" key="0" />
+                    {materiels
+                      ? materiels.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.libelle + ' (' + otherEntity.matricule + ')'}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
               </Col>
             </Row>
           </ModalBody>
@@ -317,19 +356,20 @@ const Fonction = (props: any) => {
       </Modal>
 
       {selectedEntity !== null && (
-        <FonctionDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
+        <VisiteTechniqueDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
       )}
     </Fragment>
   );
 };
 // }
 
-const mapStateToProps = ({ fonction }: IRootState) => ({
-  list: fonction.entities,
-  loading: fonction.loading,
-  updateSuccess: fonction.updateSuccess,
+const mapStateToProps = ({ visiteTechnique, materiel }: IRootState) => ({
+  list: visiteTechnique.entities,
+  loading: visiteTechnique.loading,
+  updateSuccess: visiteTechnique.updateSuccess,
   //   imageEntity: image.entity,
-  totalItems: fonction.totalItems
+  totalItems: visiteTechnique.totalItems,
+  materiels: materiel.entities
 });
 
 const mapDispatchToProps = {
@@ -343,6 +383,6 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Fonction);
+export default connect(mapStateToProps, mapDispatchToProps)(VisiteTechnique);
 
 // export default Entreprise;

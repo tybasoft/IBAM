@@ -28,8 +28,12 @@ import { Translate, translate } from 'react-jhipster';
 import '../../../../assets/scss/components/sidebar/sidemenu/sidemenu.scss';
 // import internal(own) modules
 import SideMenu from '../sidemenuHelper';
+import { IRootState } from 'app/shared/reducers';
+import { connect } from 'react-redux';
+import { hasAnyAuthority } from 'app/shared/auth/private-route';
+import { AUTHORITIES } from 'app/config/constants';
 
-class SideMenuContent extends Component<any> {
+class SideMenuContent extends Component<any, any> {
   render() {
     return (
       <SideMenu className="sidebar-content" toggleSidebarMenu={this.props.toggleSidebarMenu}>
@@ -390,18 +394,18 @@ class SideMenuContent extends Component<any> {
               <NavLink to="/location" className="item" activeClassName="active">
                 <span className="menu-item-text">Location</span>
               </NavLink>
-              <NavLink to="/react-tables/extended" className="item" activeClassName="active">
+              <NavLink to="/visite-technique" className="item" activeClassName="active">
                 <span className="menu-item-text">Visite technique</span>
               </NavLink>
-              <NavLink to="/react-tables/extended" className="item" activeClassName="active">
+              <NavLink to="/transfert-materiel" className="item" activeClassName="active">
                 <span className="menu-item-text">Transfert materiel</span>
               </NavLink>
             </SideMenu.MenuMultiItems>
             <SideMenu.MenuMultiItems name="Employé" ArrowRight={<ChevronRight size={16} />} collapsedSidebar={this.props.collapsedSidebar}>
-              <NavLink to="/react-tables/regular" className="item" activeClassName="active">
+              <NavLink to="/equipe" className="item" activeClassName="active">
                 <span className="menu-item-text">Équipe</span>
               </NavLink>
-              <NavLink to="/react-tables/extended" className="item" activeClassName="active">
+              <NavLink to="/fiche-pointage" className="item" activeClassName="active">
                 <span className="menu-item-text">Fiche pointage</span>
               </NavLink>
               <NavLink to="/react-tables/extended" className="item" activeClassName="active">
@@ -423,59 +427,46 @@ class SideMenuContent extends Component<any> {
             </SideMenu.MenuSingleItem>
           </SideMenu>
         </SideMenu.MenuMultiItems>
-        {/* <SideMenu.MenuMultiItems
-          name="Charts"
-          Icon={<BarChart2 size={18} />}
-          ArrowRight={<ChevronRight size={16} />}
-          collapsedSidebar={this.props.collapsedSidebar}
-        >
-          <NavLink to="/charts/chartjs" className="item" activeClassName="active">
-            <span className="menu-item-text">ChartJS</span>
-          </NavLink>
-          <NavLink to="/charts/chartist" className="item" activeClassName="active">
-            <span className="menu-item-text">ChartistJS</span>
-          </NavLink>
-        </SideMenu.MenuMultiItems> */}
-        {/* <SideMenu.MenuSingleItem>
-          <NavLink to="/google-maps" activeClassName="active">
-            <i className="menu-icon">
-              <Map size={18} />
-            </i>
-            <span className="menu-item-text">Google Map</span>
-          </NavLink>
-        </SideMenu.MenuSingleItem> */}
-        {/* <SideMenu.MenuMultiItems
-          name="Menu Levels 1"
-          Icon={<Sliders size={18} />}
-          ArrowRight={<ChevronRight size={16} />}
-          collapsedSidebar={this.props.collapsedSidebar}
-        >
-          <SideMenu toggleSidebarMenu={this.props.toggleSidebarMenu}>
-            <SideMenu.MenuMultiItems
-              name="Menu Levels 2"
-              ArrowRight={<ChevronRight size={16} />}
-              collapsedSidebar={this.props.collapsedSidebar}
-            >
-              <NavLink to="/components/bootstrap/lists" className="item" activeClassName="active">
-                <span className="menu-item-text">Menu Levels 3.1</span>
-              </NavLink>
-              <NavLink to="/components/bootstrap/lists" className="item" activeClassName="active">
-                <span className="menu-item-text">Menu Levels 3.2</span>
-              </NavLink>
-            </SideMenu.MenuMultiItems>
-          </SideMenu>
-        </SideMenu.MenuMultiItems> */}
 
-        <SideMenu.MenuSingleItem>
-          <NavLink to="/pages/change-log" activeClassName="active">
-            <i className="menu-icon">
-              <Sliders size={18} />
-            </i>
-            <span className="menu-item-text">
-              <Translate contentKey="global.sidebar.admintools">Outils administratifs</Translate>
-            </span>
-          </NavLink>
-        </SideMenu.MenuSingleItem>
+        {this.props.isAdmin && (
+          <SideMenu.MenuMultiItems
+            name={translate('global.menu.admin.main')}
+            Icon={<Sliders size={18} />}
+            ArrowRight={<ChevronRight size={16} />}
+            collapsedSidebar={this.props.collapsedSidebar}
+          >
+            <NavLink to="/admin/user-management" activeClassName="active">
+              <span className="menu-item-text">
+                <Translate contentKey="global.menu.admin.userManagement">Outils administratifs</Translate>
+              </span>
+            </NavLink>
+            <NavLink to="/admin/metrics" activeClassName="active">
+              <span className="menu-item-text">
+                <Translate contentKey="global.menu.admin.metrics">Outils administratifs</Translate>
+              </span>
+            </NavLink>
+            <NavLink to="/admin/health" activeClassName="active">
+              <span className="menu-item-text">
+                <Translate contentKey="global.menu.admin.health">Outils administratifs</Translate>
+              </span>
+            </NavLink>
+            <NavLink to="/admin/configuration" activeClassName="active">
+              <span className="menu-item-text">
+                <Translate contentKey="global.menu.admin.configuration">Outils administratifs</Translate>
+              </span>
+            </NavLink>
+            <NavLink to="/admin/audits" activeClassName="active">
+              <span className="menu-item-text">
+                <Translate contentKey="global.menu.admin.audits">Outils administratifs</Translate>
+              </span>
+            </NavLink>
+            <NavLink to="/admin/logs" activeClassName="active">
+              <span className="menu-item-text">
+                <Translate contentKey="global.menu.admin.logs">Outils administratifs</Translate>
+              </span>
+            </NavLink>
+          </SideMenu.MenuMultiItems>
+        )}
         <SideMenu.MenuSingleItem>
           <NavLink to="/pages/documentation" activeClassName="active">
             <i className="menu-icon">
@@ -499,4 +490,11 @@ class SideMenuContent extends Component<any> {
   }
 }
 
-export default SideMenuContent;
+const mapStateToProps = ({ authentication }: IRootState) => ({
+  isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN])
+});
+// const mapDispatchToProps = { setLocale };
+// type DispatchProps = typeof mapDispatchToProps;
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+export default connect(mapStateToProps, null)(SideMenuContent);

@@ -45,7 +45,7 @@ import { Translate, translate, TextFormat, getSortState, JhiPagination, JhiItemC
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavbarSearch from '../components/search/Search';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import FonctionDetails from './fonction-details';
+import LocationDetails from './location-details';
 
 const Location = (props: any) => {
   console.log(props);
@@ -160,7 +160,7 @@ const Location = (props: any) => {
 
               <div className="form-group mb-3 form-group-compose text-center">
                 <Button type="button" onClick={() => setModalOpen(true)} className="btn float-left btn-raised btn-danger  my-2 shadow-z-2">
-                  <Icon.Plus size={18} className="mr-1" /> <Translate contentKey="ibamApp.location.home.createLabel">Fonction</Translate>
+                  <Icon.Plus size={18} className="mr-1" /> <Translate contentKey="entity.action.create">Fonction</Translate>
                 </Button>
                 <Button
                   onClick={() => setImportExportOpen('EXP')}
@@ -208,7 +208,7 @@ const Location = (props: any) => {
                   <tbody>
                     {list.map((element, i) => (
                       <tr key={`entity-${i}`}>
-                        <td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           {/* <Button tag={Link} to={`${match.url}/${entreprise.id}`} color="link" size="sm"> */}
                           {element.id}
                           {/* </Button> */}
@@ -217,13 +217,15 @@ const Location = (props: any) => {
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           {element.reference}
                         </td>
-                        <td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           <TextFormat type="date" value={element.dateDebut} format={APP_LOCAL_DATE_FORMAT} />
                         </td>
-                        <td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           <TextFormat type="date" value={element.dateFin} format={APP_LOCAL_DATE_FORMAT} />
                         </td>
-                        <td>{element.tarif}</td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
+                          {element.tarif}
+                        </td>
                         <td>
                           <Icon.Edit onClick={() => editEntity(element)} size={18} className="mr-2" />
                           <Icon.Trash2 onClick={() => confirmDelete(element.id)} size={18} color="#FF586B" />
@@ -260,44 +262,91 @@ const Location = (props: any) => {
       </Row>
       <Modal isOpen={modalOpen} toggle={() => handleClose()} size="md">
         <ModalHeader toggle={() => handleClose()}>
-          <Translate contentKey="ibamApp.fonction.home.createLabel">Entreprises</Translate>
+          <Translate contentKey="ibamApp.location.home.createLabel">Entreprises</Translate>
         </ModalHeader>
         {/* <AddTodo /> */}
         <AvForm model={entityModel} onSubmit={saveEntity}>
           <ModalBody>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="libelleLabel" for="fonction-libelle">
-                    <Translate contentKey="ibamApp.fonction.libelle">Libelle</Translate>
+                <AvGroup>
+                  <Label id="referenceLabel" for="location-reference">
+                    <Translate contentKey="ibamApp.location.reference">Reference</Translate>
                   </Label>
                   <AvField
-                    id="fonction-libelle"
+                    id="location-reference"
                     type="text"
-                    name="libelle"
+                    name="reference"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') }
                     }}
                   />
-                </FormGroup>
+                </AvGroup>
               </Col>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="descriptionLabel" for="fonction-description">
-                    <Translate contentKey="ibamApp.fonction.description">Description</Translate>
+                <AvGroup>
+                  <Label id="dateDebutLabel" for="location-dateDebut">
+                    <Translate contentKey="ibamApp.location.dateDebut">Date Debut</Translate>
                   </Label>
-                  <AvField id="fonction-description" type="text" name="description" />
-                </FormGroup>
+                  <AvField
+                    id="location-dateDebut"
+                    type="date"
+                    className="form-control"
+                    name="dateDebut"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
               </Col>
             </Row>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="competencesLabel" for="fonction-competences">
-                    <Translate contentKey="ibamApp.fonction.competences">Competences</Translate>
+                <AvGroup>
+                  <Label id="dateFinLabel" for="location-dateFin">
+                    <Translate contentKey="ibamApp.location.dateFin">Date Fin</Translate>
                   </Label>
-                  <AvField id="fonction-competences" type="text" name="competences" />
-                </FormGroup>
+                  <AvField id="location-dateFin" type="date" className="form-control" name="dateFin" />
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label id="tarifLabel" for="location-tarif">
+                    <Translate contentKey="ibamApp.location.tarif">Tarif</Translate>
+                  </Label>
+                  <AvField
+                    id="location-tarif"
+                    type="text"
+                    name="tarif"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label id="dureLocationLabel" for="location-dureLocation">
+                    <Translate contentKey="ibamApp.location.dureLocation">Dure Location</Translate>
+                  </Label>
+                  <AvField id="location-dureLocation" type="text" name="dureLocation" />
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label id="montantLocationLabel" for="location-montantLocation">
+                    <Translate contentKey="ibamApp.location.montantLocation">Montant Location</Translate>
+                  </Label>
+                  <AvField id="location-montantLocation" type="text" name="montantLocation" />
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label id="remarqueLabel" for="location-remarque">
+                    <Translate contentKey="ibamApp.location.remarque">Remarque</Translate>
+                  </Label>
+                  <AvField id="location-remarque" type="text" name="remarque" />
+                </AvGroup>
               </Col>
             </Row>
           </ModalBody>
@@ -323,7 +372,7 @@ const Location = (props: any) => {
       </Modal>
 
       {selectedEntity !== null && (
-        <FonctionDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
+        <LocationDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
       )}
     </Fragment>
   );

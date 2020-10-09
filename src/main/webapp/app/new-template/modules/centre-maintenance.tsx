@@ -39,7 +39,7 @@ import {
   ACTION_TYPES,
   apiUrl,
   filterEntities
-} from '../../entities/fonction/fonction.reducer';
+} from '../../entities/centre-maintenance/centre-maintenance.reducer';
 import { Translate, translate, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavbarSearch from '../components/search/Search';
@@ -159,8 +159,7 @@ const CentreMaintenance = (props: any) => {
 
               <div className="form-group mb-3 form-group-compose text-center">
                 <Button type="button" onClick={() => setModalOpen(true)} className="btn float-left btn-raised btn-danger  my-2 shadow-z-2">
-                  <Icon.Plus size={18} className="mr-1" />{' '}
-                  <Translate contentKey="ibamApp.centreMaintenance.home.createLabel">Fonction</Translate>
+                  <Icon.Plus size={18} className="mr-1" /> <Translate contentKey="entity.action.create">Fonction</Translate>
                 </Button>
                 <Button
                   onClick={() => setImportExportOpen('EXP')}
@@ -209,7 +208,7 @@ const CentreMaintenance = (props: any) => {
                   <tbody>
                     {list.map((element, i) => (
                       <tr key={`entity-${i}`}>
-                        <td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           {/* <Button tag={Link} to={`${match.url}/${entreprise.id}`} color="link" size="sm"> */}
                           {element.id}
                           {/* </Button> */}
@@ -217,9 +216,15 @@ const CentreMaintenance = (props: any) => {
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           {element.libelle}
                         </td>
-                        <td>{element.specialite}</td>
-                        <td>{element.responsable}</td>
-                        <td>{element.adresse}</td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
+                          {element.specialite}
+                        </td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
+                          {element.responsable}
+                        </td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
+                          {element.adresse}
+                        </td>
                         <td>
                           <Icon.Edit onClick={() => editEntity(element)} size={18} className="mr-2" />
                           <Icon.Trash2 onClick={() => confirmDelete(element.id)} size={18} color="#FF586B" />
@@ -364,12 +369,12 @@ const CentreMaintenance = (props: any) => {
 };
 // }
 
-const mapStateToProps = ({ fonction }: IRootState) => ({
-  list: fonction.entities,
-  loading: fonction.loading,
-  updateSuccess: fonction.updateSuccess,
+const mapStateToProps = ({ centreMaintenance }: IRootState) => ({
+  list: centreMaintenance.entities,
+  loading: centreMaintenance.loading,
+  updateSuccess: centreMaintenance.updateSuccess,
   //   imageEntity: image.entity,
-  totalItems: fonction.totalItems
+  totalItems: centreMaintenance.totalItems
 });
 
 const mapDispatchToProps = {

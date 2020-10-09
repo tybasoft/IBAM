@@ -237,8 +237,7 @@ const Entreprise = (props: any) => {
 
               <div className="form-group mb-3 form-group-compose text-center">
                 <Button type="button" onClick={() => setModalOpen(true)} className="btn float-left btn-raised btn-danger  my-2 shadow-z-2">
-                  <Icon.Plus size={18} className="mr-1" />{' '}
-                  <Translate contentKey="ibamApp.entreprise.home.createLabel">Entreprises</Translate>
+                  <Icon.Plus size={18} className="mr-1" /> <Translate contentKey="entity.action.create">Entreprises</Translate>
                 </Button>
                 {/* <Link onClick={() => setImportExportOpen(true)}> */}
                 <Button
@@ -291,7 +290,7 @@ const Entreprise = (props: any) => {
                   <tbody>
                     {entrepriseList.map((entreprise, i) => (
                       <tr key={`entity-${i}`}>
-                        <td>
+                        <td onClick={() => openDetails(entreprise.id)} style={{ cursor: 'pointer' }}>
                           {/* <Button tag={Link} to={`${match.url}/${entreprise.id}`} color="link" size="sm"> */}
                           {entreprise.id}
                           {/* </Button> */}
@@ -299,9 +298,15 @@ const Entreprise = (props: any) => {
                         <td onClick={() => openDetails(entreprise.id)} style={{ cursor: 'pointer' }}>
                           {entreprise.entiteJuridique}
                         </td>
-                        <td>{entreprise.nomCommercial}</td>
-                        <td>{entreprise.adresse}</td>
-                        <td>{entreprise.capital}</td>
+                        <td onClick={() => openDetails(entreprise.id)} style={{ cursor: 'pointer' }}>
+                          {entreprise.nomCommercial}
+                        </td>
+                        <td onClick={() => openDetails(entreprise.id)} style={{ cursor: 'pointer' }}>
+                          {entreprise.adresse}
+                        </td>
+                        <td onClick={() => openDetails(entreprise.id)} style={{ cursor: 'pointer' }}>
+                          {entreprise.capital}
+                        </td>
                         <td>
                           <Icon.Edit onClick={() => editEntity(entreprise)} size={18} className="mr-2" />
                           <Icon.Trash2 onClick={() => confirmDelete(entreprise.id)} size={18} color="#FF586B" />

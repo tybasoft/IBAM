@@ -13,5 +13,7 @@ export const uploadFile = (file: FormData, apiUrl: string) => async dispatch => 
     type: 'UPLOAD_FILE',
     payload: axios.post(`${apiUrl}/upload`, file)
   });
+  console.log(result);
+  if (result.value.status === 200) alert('Le fichier a été chargé avec succès');
   return result;
 };

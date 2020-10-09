@@ -6,6 +6,9 @@ import { Translate, Storage, translate } from 'react-jhipster';
 // import { isRTL } from 'app/config/translation';
 import { setLocale } from '../../../../shared/reducers/locale';
 import { locales, languages } from 'app/config/translation';
+import { getEntities } from '../../../../entities/notification/notification.reducer';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { ICrudGetAllAction, TextFormat } from 'react-jhipster';
 
 import { Form, Media, Collapse, Navbar, Nav, NavItem, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -41,10 +44,11 @@ class ThemeNavbar extends Component<any, any> {
   };
   constructor(props) {
     super(props);
-
+    this.props.getEntities();
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false
+      // notificationList: this.props.
     };
   }
   toggle() {
@@ -57,6 +61,8 @@ class ThemeNavbar extends Component<any, any> {
     const langKey = event.target.value;
     Storage.session.set('locale', langKey);
     this.props.setLocale(langKey);
+    location.reload();
+
     // document.querySelector('html').setAttribute('dir', isRTL(langKey) ? 'rtl' : 'ltr');
   };
 
@@ -108,98 +114,47 @@ class ThemeNavbar extends Component<any, any> {
                 </NavItem> */}
                 <UncontrolledDropdown nav inNavbar className="pr-1">
                   <DropdownToggle nav>
-                    <span className="notification-bell-blink" />
-                    <Bell size={21} className="text-dark notification-danger animate-shake" />
+                    {this.props.notificationList &&
+                      this.props.notificationList.length > 0 &&
+                      this.props.notificationList.filter(notification => notification.visualise === 'true').length > 0 && (
+                        <span className="notification-bell-blink" />
+                      )}
+                    <Bell
+                      size={21}
+                      className={
+                        this.props.notificationList.filter(notification => notification.visualise === 'true').length > 0
+                          ? 'text-dark notification-danger animate-shake'
+                          : 'text-dark notification-danger'
+                      }
+                    />
                   </DropdownToggle>
                   <DropdownMenu right className="notification-dropdown">
                     <div className="p-2 text-center  border-bottom-grey border-bottom-lighten-2">
                       <h6 className="mb-0 text-bold-500">Notifications</h6>
                     </div>
                     <PerfectScrollbar className="noti-list bg-grey bg-lighten-5">
-                      <Media className="px-3 pt-2 pb-2 media  border-bottom-grey border-bottom-lighten-3">
-                        <Media left top href="#">
+                      {this.props.notificationList &&
+                        this.props.notificationList.length > 0 &&
+                        this.props.notificationList.map((notification, i) => (
+                          <Media className="px-3 pt-2 pb-2 media  border-bottom-grey border-bottom-lighten-3">
+                            {/* <Media left top href="#">
                           <Media object src={userImage2} alt="Generic placeholder image" className="rounded-circle width-35" />
-                        </Media>
-                        <Media body>
-                          <h6 className="mb-0 text-bold-500 font-small-3">
-                            Selina sent you mail
-                            <span className="text-bold-300 font-small-2 text-muted float-right">9:00 A.M</span>
-                          </h6>
-                          <span className="font-small-3 line-height-2">Cras sit amet nibh libero, in gravida nulla.</span>
-                        </Media>
-                      </Media>
-                      <Media className="px-3 pt-2 pb-2 media  border-bottom-grey border-bottom-lighten-3">
-                        <Media left middle href="#" className="mr-2">
-                          <span className="bg-success rounded-circle width-35 height-35 d-block">
-                            <Check size={30} className="p-1 white margin-left-3" />
-                          </span>
-                        </Media>
-                        <Media body>
-                          <h6 className="mb-1 text-bold-500 font-small-3">
-                            <span className="success">Report generated successfully!</span>
-                            <span className="text-bold-300 font-small-2 text-muted float-right">10:15 A.M</span>
-                          </h6>
-                          <span className="font-small-3 line-height-2">Consectetur adipisicing elit sed do eiusmod.</span>
-                        </Media>
-                      </Media>
-                      <Media className="px-3 pt-2 pb-2 media  border-bottom-grey border-bottom-lighten-3">
-                        <Media left middle href="#" className="mr-2">
-                          <span className="bg-warning rounded-circle width-35 height-35 d-block">
-                            <AlertTriangle size={30} className="p-1 white margin-left-3" />
-                          </span>
-                        </Media>
-                        <Media body>
-                          <h6 className="mb-1 text-bold-500 font-small-3">
-                            <span className="warning">Warning notificatoin</span>
-                            <span className="text-bold-300 font-small-2 text-muted float-right">11:00 A.M</span>
-                          </h6>
-                          <p className="font-small-3 line-height-2">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor.
-                          </p>
-                        </Media>
-                      </Media>
-                      <Media className="px-3 pt-2 pb-2 media  border-bottom-grey border-bottom-lighten-3">
-                        <Media left top href="#">
-                          <Media object src={userImage3} alt="Generic placeholder image" className="rounded-circle width-35" />
-                        </Media>
-                        <Media body>
-                          <h6 className="mb-0 text-bold-500 font-small-3">
-                            John started task
-                            <span className="text-bold-300 font-small-2 text-muted float-right">5:00 P.M</span>
-                          </h6>
-                          <span className="font-small-3 line-height-2">Sit amet consectetur adipisicing elit sed.</span>
-                        </Media>
-                      </Media>
-                      <Media className="px-3 pt-2 pb-2 media  border-bottom-grey border-bottom-lighten-3">
-                        <Media left middle href="#" className="mr-2">
-                          <span className="bg-danger rounded-circle width-35 height-35 d-block">
-                            <X size={30} className="p-1 white margin-left-3" />
-                          </span>
-                        </Media>
-                        <Media body>
-                          <h6 className="mb-1 text-bold-500 font-small-3">
-                            <span className="danger">Error notificarion</span>
-                            <span className="text-bold-300 font-small-2 text-muted float-right">12:15 P.M</span>
-                          </h6>
-                          <span className="font-small-3 line-height-2">Consectetur adipisicing elit sed do eiusmod.</span>
-                        </Media>
-                      </Media>
-                      <Media className="px-3 pt-2 pb-2 media  border-bottom-grey border-bottom-lighten-3">
-                        <Media left top href="#">
-                          <Media object src={userImage4} alt="Generic placeholder image" className="rounded-circle width-35" />
-                        </Media>
-                        <Media body>
-                          <h6 className="mb-0 text-bold-500 font-small-3">
-                            Lisa started task
-                            <span className="text-bold-300 font-small-2 text-muted float-right">6:00 P.M</span>
-                          </h6>
-                          <span className="font-small-3 line-height-2">Sit amet consectetur adipisicing elit sed.</span>
-                        </Media>
-                      </Media>
+                        </Media> */}
+                            <Media body>
+                              <h6 className="mb-0 text-bold-500 font-small-3">
+                                {notification.libelle}
+                                <span className="text-bold-300 font-small-2 text-muted float-right">
+                                  <TextFormat type="date" value={notification.date} format={APP_LOCAL_DATE_FORMAT} />
+                                </span>
+                              </h6>
+                              <span className="font-small-3 line-height-2">{notification.description}</span>
+                            </Media>
+                          </Media>
+                        ))}
                     </PerfectScrollbar>
-                    <div className="p-1 text-center border-top-grey border-top-lighten-2">
+                    {/* <div className="p-1 text-center border-top-grey border-top-lighten-2">
                       <Link to="/">View All</Link>
-                    </div>
+                    </div> */}
                   </DropdownMenu>
                 </UncontrolledDropdown>
 
@@ -258,10 +213,11 @@ class ThemeNavbar extends Component<any, any> {
   }
 }
 
-const mapStateToProps = ({ locale }: IRootState) => ({
-  currentLocale: locale.currentLocale
+const mapStateToProps = ({ locale, notification }: IRootState) => ({
+  currentLocale: locale.currentLocale,
+  notificationList: notification.entities
 });
-const mapDispatchToProps = { setLocale };
+const mapDispatchToProps = { setLocale, getEntities };
 type DispatchProps = typeof mapDispatchToProps;
 type StateProps = ReturnType<typeof mapStateToProps>;
 

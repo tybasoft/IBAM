@@ -2,9 +2,11 @@
 import React, { Component, Suspense, lazy } from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import Spinner from '../components/spinner/spinner';
+import Loadable from 'react-loadable';
 
 // import internal(own) modules
 import MainLayoutRoutes from '../layouts/routes/mainRoutes';
+import PrivateLayoutRoutes from '../layouts/routes/privateRoutes';
 import FullPageLayout from '../layouts/routes/fullpageRoutes';
 import ErrorLayoutRoute from '../layouts/routes/errorRoutes';
 import Entreprise from '../modules/entreprise';
@@ -15,10 +17,25 @@ import Assurance from '../modules/assurance';
 import CentreMaintenance from '../modules/centre-maintenance';
 import Consommation from '../modules/consommation';
 import Location from '../modules/location';
+import VisiteTechnique from '../modules/visite-technique';
+import TransfertMateriel from '../modules/transfert-materiel';
+import Equipe from '../modules/equipe';
+import FichePointage from '../modules/fiche-pointage';
+
 import { Logout } from 'app/modules/login/logout';
 import { logout } from 'app/shared/reducers/authentication';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
+import PrivateRoute, { PrivateRouteComponent } from 'app/shared/auth/private-route';
+import { AUTHORITIES } from 'app/config/constants';
+
+import UserManagement from 'app/modules/administration/user-management';
+import Health from 'app/modules/administration/health/health';
+import Metrics from 'app/modules/administration/metrics/metrics';
+import Docs from 'app/modules/administration/docs/docs';
+import Audits from 'app/modules/administration/audits/audits';
+import Configuration from 'app/modules/administration/configuration/configuration';
+import Logs from 'app/modules/administration/logs/logs';
 
 // Main Layout
 const LazyEcommerceDashboard = lazy(() => import('../views/dashboard/ecommerceDashboard'));
@@ -99,6 +116,11 @@ const LazyLockScreen = lazy(() => import('../views/pages/lockScreen'));
 
 // Error Pages
 const LazyErrorPage = lazy(() => import('../views/pages/error'));
+
+const Admin = Loadable({
+  loader: () => import(/* webpackChunkName: "administration" */ 'app/modules/administration'),
+  loading: () => <div>loading ...</div>
+});
 
 class Router extends Component<any, any> {
   render() {
@@ -259,6 +281,106 @@ class Router extends Component<any, any> {
             render={matchprops => (
               <Suspense fallback={<Spinner />}>
                 <Location {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/visite-technique"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <VisiteTechnique {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/transfert-materiel"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <TransfertMateriel {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/fiche-pointage"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <FichePointage {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/equipe"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Equipe {...matchprops} />
+              </Suspense>
+            )}
+          />
+
+          <PrivateLayoutRoutes
+            exact
+            path="/admin/user-management"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <UserManagement {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <PrivateLayoutRoutes
+            exact
+            path="/admin/health"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Health {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <PrivateLayoutRoutes
+            exact
+            path="/admin/metrics"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Metrics {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <PrivateLayoutRoutes
+            exact
+            path="/admin/logs"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Logs {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <PrivateLayoutRoutes
+            exact
+            path="/admin/docs"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Docs {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <PrivateLayoutRoutes
+            exact
+            path="/admin/configuration"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Configuration {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <PrivateLayoutRoutes
+            exact
+            path="/admin/audits"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Audits {...matchprops} />
               </Suspense>
             )}
           />

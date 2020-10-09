@@ -1,4 +1,5 @@
 import React, { Component, Fragment, useEffect, useState } from 'react';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 import {
   Card,
@@ -18,9 +19,11 @@ import {
 } from 'reactstrap';
 import Export from '../../shared/Repport/export';
 import Import from '../../shared/Repport/import';
+import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-
+import { getEntities as getEmployes } from 'app/entities/employe/employe.reducer';
+import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
 import * as Icon from 'react-feather';
 
 //Prism
@@ -39,14 +42,14 @@ import {
   ACTION_TYPES,
   apiUrl,
   filterEntities
-} from '../../entities/fonction/fonction.reducer';
-import { Translate, translate, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
+} from '../../entities/fiche-pointage/fiche-pointage.reducer';
+import { Translate, translate, TextFormat, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavbarSearch from '../components/search/Search';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import FonctionDetails from './fonction-details';
+import FichePointageDetails from './fiche-pointage-details';
 
-const Fonction = (props: any) => {
+const FichePointage = (props: any) => {
   console.log(props);
 
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
@@ -70,6 +73,8 @@ const Fonction = (props: any) => {
 
   useEffect(() => {
     sortEntities();
+    props.getEmployes();
+    props.getProjets();
   }, []);
 
   const handlePagination = currentPage =>
@@ -89,7 +94,7 @@ const Fonction = (props: any) => {
     setModalOpen(false);
   };
 
-  const { list, totalItems } = props;
+  const { list, totalItems, materiels, projets, employes } = props;
 
   const openDetails = (id: number) => {
     setSelectedEntity(id);
@@ -147,14 +152,14 @@ const Fonction = (props: any) => {
           <Card>
             <CardBody>
               <CardTitle className="row" style={{ margin: 0 }}>
-                <Translate contentKey="ibamApp.fonction.home.title">Fonctions</Translate>
+                <Translate contentKey="ibamApp.fichePointage.home.title">Fonctions</Translate>
                 <Form className="navbar-form mt-1 ml-auto float-left" role="search">
                   <NavbarSearch search={filter} clear={props.getEntities} />
                 </Form>
               </CardTitle>
               <p>
                 {' '}
-                <Translate contentKey="ibamApp.fonction.home.description">fonction</Translate>
+                <Translate contentKey="ibamApp.fichePointage.home.description">fonction</Translate>
               </p>
 
               <div className="form-group mb-3 form-group-compose text-center">
@@ -186,14 +191,17 @@ const Fonction = (props: any) => {
                       <th className="hand" onClick={sort('id')}>
                         <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th className="hand" onClick={sort('libelle')}>
-                        <Translate contentKey="ibamApp.fonction.libelle">Libelle</Translate> <FontAwesomeIcon icon="sort" />
+                      <th className="hand" onClick={sort('dateJour')}>
+                        <Translate contentKey="ibamApp.fichePointage.dateJour">Date Jour</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
-                      <th className="hand" onClick={sort('description')}>
-                        <Translate contentKey="ibamApp.fonction.description">Description</Translate> <FontAwesomeIcon icon="sort" />
-                      </th>
-                      <th className="hand" onClick={sort('competences')}>
-                        <Translate contentKey="ibamApp.fonction.competences">Competences</Translate> <FontAwesomeIcon icon="sort" />
+                      {/*  <th className="hand" onClick={sort('userModif')}>
+                  <Translate contentKey="ibamApp.fichePointage.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('dateModif')}>
+                  <Translate contentKey="ibamApp.fichePointage.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th> */}
+                      <th>
+                        <Translate contentKey="ibamApp.fichePointage.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
                       </th>
                       <th>
                         Actions
@@ -210,13 +218,14 @@ const Fonction = (props: any) => {
                           {/* </Button> */}
                         </td>
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.libelle}
+                          {element.dateJour ? <TextFormat type="date" value={element.dateJour} format={APP_LOCAL_DATE_FORMAT} /> : null}
                         </td>
+                        {/*  <td>{fichePointage.userModif}</td>
+                  <td>
+                    {fichePointage.dateModif ? <TextFormat type="date" value={fichePointage.dateModif} format={APP_DATE_FORMAT} /> : null}
+                  </td> */}
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.description}
-                        </td>
-                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
-                          {element.competences}
+                          {element.projet ? element.projet.id : null}
                         </td>
                         <td>
                           <Icon.Edit onClick={() => editEntity(element)} size={18} className="mr-2" />
@@ -254,44 +263,61 @@ const Fonction = (props: any) => {
       </Row>
       <Modal isOpen={modalOpen} toggle={() => handleClose()} size="md">
         <ModalHeader toggle={() => handleClose()}>
-          <Translate contentKey="ibamApp.fonction.home.createLabel">Entreprises</Translate>
+          <Translate contentKey="ibamApp.fichePointage.home.createLabel">Entreprises</Translate>
         </ModalHeader>
         {/* <AddTodo /> */}
         <AvForm model={entityModel} onSubmit={saveEntity}>
           <ModalBody>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="libelleLabel" for="fonction-libelle">
-                    <Translate contentKey="ibamApp.fonction.libelle">Libelle</Translate>
+                <AvGroup>
+                  <Label id="dateJourLabel" for="fiche-pointage-dateJour">
+                    <Translate contentKey="ibamApp.fichePointage.dateJour">Date Jour</Translate>
                   </Label>
-                  <AvField
-                    id="fonction-libelle"
-                    type="text"
-                    name="libelle"
-                    validate={{
-                      required: { value: true, errorMessage: translate('entity.validation.required') }
-                    }}
-                  />
-                </FormGroup>
+                  <AvField id="fiche-pointage-dateJour" type="date" className="form-control" name="dateJour" />
+                </AvGroup>
               </Col>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="descriptionLabel" for="fonction-description">
-                    <Translate contentKey="ibamApp.fonction.description">Description</Translate>
+                <AvGroup>
+                  <Label id="userModifLabel" for="fiche-pointage-userModif">
+                    <Translate contentKey="ibamApp.fichePointage.userModif">User Modif</Translate>
                   </Label>
-                  <AvField id="fonction-description" type="text" name="description" />
-                </FormGroup>
+                  <AvField id="fiche-pointage-userModif" type="text" name="userModif" />
+                </AvGroup>
               </Col>
             </Row>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="competencesLabel" for="fonction-competences">
-                    <Translate contentKey="ibamApp.fonction.competences">Competences</Translate>
+                <AvGroup>
+                  <Label id="dateModifLabel" for="fiche-pointage-dateModif">
+                    <Translate contentKey="ibamApp.fichePointage.dateModif">Date Modif</Translate>
                   </Label>
-                  <AvField id="fonction-competences" type="text" name="competences" />
-                </FormGroup>
+                  <AvInput
+                    id="fiche-pointage-dateModif"
+                    type="datetime-local"
+                    className="form-control"
+                    name="dateModif"
+                    placeholder={'YYYY-MM-DD HH:mm'}
+                    value={displayDefaultDateTime()}
+                  />
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label for="fiche-pointage-projet">
+                    <Translate contentKey="ibamApp.fichePointage.projet">Projet</Translate>
+                  </Label>
+                  <AvInput id="fiche-pointage-projet" type="select" className="form-control" name="projet.id">
+                    <option value="" key="0" />
+                    {projets
+                      ? projets.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.id}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
               </Col>
             </Row>
           </ModalBody>
@@ -317,19 +343,21 @@ const Fonction = (props: any) => {
       </Modal>
 
       {selectedEntity !== null && (
-        <FonctionDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
+        <FichePointageDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
       )}
     </Fragment>
   );
 };
 // }
 
-const mapStateToProps = ({ fonction }: IRootState) => ({
-  list: fonction.entities,
-  loading: fonction.loading,
-  updateSuccess: fonction.updateSuccess,
+const mapStateToProps = ({ fichePointage, materiel, projet }: IRootState) => ({
+  list: fichePointage.entities,
+  loading: fichePointage.loading,
+  updateSuccess: fichePointage.updateSuccess,
   //   imageEntity: image.entity,
-  totalItems: fonction.totalItems
+  totalItems: fichePointage.totalItems,
+  materiels: materiel.entities,
+  projets: projet.entities
 });
 
 const mapDispatchToProps = {
@@ -337,12 +365,15 @@ const mapDispatchToProps = {
   createEntity,
   deleteEntity,
   updateEntity,
-  filterEntities
+  filterEntities,
+
+  getEmployes,
+  getProjets
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Fonction);
+export default connect(mapStateToProps, mapDispatchToProps)(FichePointage);
 
 // export default Entreprise;
