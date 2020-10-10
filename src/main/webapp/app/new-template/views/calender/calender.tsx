@@ -59,10 +59,16 @@ componentDidMount = async () => {
       title: item.nom_tache,
       start: item.date_debut,
       end: item.date_fin,
-      all_days: true
+      allDay: true
     }
+    let param = {
+      eventTitle: item.nom_tache,
+      start: item.date_debut,
+      end: item.date_fin
+        }
     this.state.events.push(new_item)
-    
+    handleAddEvent(param, this.state.events);
+
   })
 
 
@@ -123,13 +129,16 @@ componentDidMount = async () => {
 
     };
     createEntity(entity);
-    console.log("message from submit handler");
     let param = {
       start: this.state.debut,
       eventTitle:this.state.nom,
       end: this.state.fin
+      
     };
-    handleAddEvent(param, this.state.events);
+     console.log(this.state.events);
+     handleAddEvent(param, this.state.events);
+     console.log(this.state.events);
+
 
     this.setState(
       prevState => {
