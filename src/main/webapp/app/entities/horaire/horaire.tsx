@@ -27,6 +27,16 @@ export const Horaire = (props: IHoraireProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.horaire.home.createLabel">Create new Horaire</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {horaireList && horaireList.length > 0 ? (

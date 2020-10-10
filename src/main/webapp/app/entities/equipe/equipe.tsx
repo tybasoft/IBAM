@@ -55,6 +55,16 @@ export const Equipe = (props: IEquipeProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.equipe.home.createLabel">Create new Equipe</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {equipeList && equipeList.length > 0 ? (
@@ -99,8 +109,8 @@ export const Equipe = (props: IEquipeProps) => {
                     <TextFormat type="date" value={equipe.dateModif} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   */}
-                  <td>{equipe.projet ? <Link to={`projet/${equipe.projet.id}`}>{equipe.projet.id}</Link> : ''}</td>
-                  <td>{equipe.equipe ? <Link to={`employe/${equipe.equipe.id}`}>{equipe.equipe.id}</Link> : ''}</td>
+                  <td>{equipe.projet ? <Link to={`projet/${equipe.projet.id}`}>{equipe.projet.libelle}</Link> : ''}</td>
+                  <td>{equipe.equipe ? <Link to={`employe/${equipe.equipe.id}`}>{equipe.equipe.nom+" "+equipe.equipe.prenom}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${equipe.id}`} color="info" size="sm">

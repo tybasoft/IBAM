@@ -12,6 +12,9 @@ export const ACTION_TYPES = {
   CREATE_POINTAGE: 'pointage/CREATE_POINTAGE',
   UPDATE_POINTAGE: 'pointage/UPDATE_POINTAGE',
   DELETE_POINTAGE: 'pointage/DELETE_POINTAGE',
+  CREATE_POINTAGE_LIST: 'pointage/CREATE_POINTAGE_LIST',
+  UPDATE_POINTAGEBYFICHE: 'pointage/UPDATE_POINTAGEBYFICHE',
+  REPPORT: 'pointage/REPPORT',
   RESET: 'pointage/RESET'
 };
 
@@ -19,6 +22,7 @@ const initialState = {
   loading: false,
   errorMessage: null,
   entities: [] as ReadonlyArray<IPointage>,
+  entitiespointage: [] as ReadonlyArray<IPointage>,
   entity: defaultValue,
   updating: false,
   totalItems: 0,
@@ -40,6 +44,8 @@ export default (state: PointageState = initialState, action): PointageState => {
         loading: true
       };
     case REQUEST(ACTION_TYPES.CREATE_POINTAGE):
+    case REQUEST(ACTION_TYPES.CREATE_POINTAGE_LIST):
+    case REQUEST(ACTION_TYPES.UPDATE_POINTAGEBYFICHE):
     case REQUEST(ACTION_TYPES.UPDATE_POINTAGE):
     case REQUEST(ACTION_TYPES.DELETE_POINTAGE):
       return {
@@ -51,6 +57,8 @@ export default (state: PointageState = initialState, action): PointageState => {
     case FAILURE(ACTION_TYPES.FETCH_POINTAGE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_POINTAGE):
     case FAILURE(ACTION_TYPES.CREATE_POINTAGE):
+    case FAILURE(ACTION_TYPES.CREATE_POINTAGE_LIST):
+    case FAILURE(ACTION_TYPES.UPDATE_POINTAGEBYFICHE):
     case FAILURE(ACTION_TYPES.UPDATE_POINTAGE):
     case FAILURE(ACTION_TYPES.DELETE_POINTAGE):
       return {
@@ -73,6 +81,22 @@ export default (state: PointageState = initialState, action): PointageState => {
         loading: false,
         entity: action.payload.data
       };
+
+    case SUCCESS(ACTION_TYPES.CREATE_POINTAGE_LIST):
+      return {
+        ...state,
+        updating: false,
+        updateSuccess: true,
+        entitiespointage: action.payload.data
+      };
+
+    case SUCCESS(ACTION_TYPES.UPDATE_POINTAGEBYFICHE):
+      return {
+        ...state,
+        updating: false,
+        updateSuccess: true,
+        entitiespointage: action.payload.data
+      };
     case SUCCESS(ACTION_TYPES.CREATE_POINTAGE):
     case SUCCESS(ACTION_TYPES.UPDATE_POINTAGE):
       return {
@@ -88,16 +112,23 @@ export default (state: PointageState = initialState, action): PointageState => {
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/pointages';
+export const apiUrl = 'api/pointages';
 
 // Actions
 
@@ -146,3 +177,21 @@ export const deleteEntity: ICrudDeleteAction<IPointage> = id => async dispatch =
 export const reset = () => ({
   type: ACTION_TYPES.RESET
 });
+
+export const CreateList = (tab: any[]) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.CREATE_POINTAGE_LIST,
+    payload: axios.post(`${apiUrl}/createPointageList`, tab)
+  });
+  dispatch(getEntities());
+  return result;
+};
+
+export const UpdatePointageList = (tab: any[]) => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.UPDATE_POINTAGEBYFICHE,
+    payload: axios.put(`${apiUrl}/editPointages`, tab)
+  });
+  dispatch(getEntities());
+  return result;
+};

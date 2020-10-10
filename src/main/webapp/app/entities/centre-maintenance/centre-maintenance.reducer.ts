@@ -12,7 +12,9 @@ export const ACTION_TYPES = {
   CREATE_CENTREMAINTENANCE: 'centreMaintenance/CREATE_CENTREMAINTENANCE',
   UPDATE_CENTREMAINTENANCE: 'centreMaintenance/UPDATE_CENTREMAINTENANCE',
   DELETE_CENTREMAINTENANCE: 'centreMaintenance/DELETE_CENTREMAINTENANCE',
-  RESET: 'centreMaintenance/RESET'
+  RESET: 'centreMaintenance/RESET',
+  REPPORT: 'centreMaintenance/REPPORT',
+  FILTER_CENTREMAINTENANCE_LIST: 'centreMaintenance/FILTER_CENTREMAINTENANCE_LIST'
 };
 
 const initialState = {
@@ -31,6 +33,8 @@ export type CentreMaintenanceState = Readonly<typeof initialState>;
 
 export default (state: CentreMaintenanceState = initialState, action): CentreMaintenanceState => {
   switch (action.type) {
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_CENTREMAINTENANCE_LIST):
     case REQUEST(ACTION_TYPES.FETCH_CENTREMAINTENANCE):
       return {
@@ -47,6 +51,11 @@ export default (state: CentreMaintenanceState = initialState, action): CentreMai
         errorMessage: null,
         updateSuccess: false,
         updating: true
+      };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
       };
     case FAILURE(ACTION_TYPES.FETCH_CENTREMAINTENANCE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_CENTREMAINTENANCE):
@@ -66,6 +75,12 @@ export default (state: CentreMaintenanceState = initialState, action): CentreMai
         loading: false,
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+      };
+    case SUCCESS(ACTION_TYPES.FILTER_CENTREMAINTENANCE_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
       };
     case SUCCESS(ACTION_TYPES.FETCH_CENTREMAINTENANCE):
       return {
@@ -97,7 +112,7 @@ export default (state: CentreMaintenanceState = initialState, action): CentreMai
   }
 };
 
-const apiUrl = 'api/centre-maintenances';
+export const apiUrl = 'api/centre-maintenances';
 
 // Actions
 
@@ -108,6 +123,11 @@ export const getEntities: ICrudGetAllAction<ICentreMaintenance> = (page, size, s
     payload: axios.get<ICentreMaintenance>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
+
+export const filterEntities: ICrudGetAllAction<ICentreMaintenance> = filter => ({
+  type: ACTION_TYPES.FILTER_CENTREMAINTENANCE_LIST,
+  payload: axios.get<ICentreMaintenance>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntity: ICrudGetAction<ICentreMaintenance> = id => {
   const requestUrl = `${apiUrl}/${id}`;
@@ -131,6 +151,8 @@ export const updateEntity: ICrudPutAction<ICentreMaintenance> = entity => async 
     type: ACTION_TYPES.UPDATE_CENTREMAINTENANCE,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -140,6 +162,8 @@ export const deleteEntity: ICrudDeleteAction<ICentreMaintenance> = id => async d
     type: ACTION_TYPES.DELETE_CENTREMAINTENANCE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 

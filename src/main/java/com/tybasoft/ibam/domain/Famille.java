@@ -1,17 +1,18 @@
 package com.tybasoft.ibam.domain;
 
+import com.tybasoft.ibam.security.SecurityUtils;
+import com.tybasoft.ibam.security.SecurityUtils;
 import io.swagger.annotations.ApiModel;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
-import java.util.Objects;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * The Famille entity.
@@ -21,7 +22,6 @@ import java.util.Set;
 @Table(name = "famille")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Famille implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -40,7 +40,7 @@ public class Famille implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private LocalDate dateModif;
+    private Instant dateModif;
 
     @OneToMany(mappedBy = "famille")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -50,7 +50,8 @@ public class Famille implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Materiel> materiels = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -98,16 +99,16 @@ public class Famille implements Serializable {
         this.userModif = userModif;
     }
 
-    public LocalDate getDateModif() {
+    public Instant getDateModif() {
         return dateModif;
     }
 
-    public Famille dateModif(LocalDate dateModif) {
+    public Famille dateModif(Instant dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(LocalDate dateModif) {
+    public void setDateModif(Instant dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -160,7 +161,9 @@ public class Famille implements Serializable {
     public void setMateriels(Set<Materiel> materiels) {
         this.materiels = materiels;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -180,12 +183,35 @@ public class Famille implements Serializable {
 
     @Override
     public String toString() {
-        return "Famille{" +
-            "id=" + getId() +
-            ", libelle='" + getLibelle() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return (
+            "Famille{" +
+            "id=" +
+            getId() +
+            ", libelle='" +
+            getLibelle() +
+            "'" +
+            ", description='" +
+            getDescription() +
+            "'" +
+            ", userModif='" +
+            getUserModif() +
+            "'" +
+            ", dateModif='" +
+            getDateModif() +
+            "'" +
+            "}"
+        );
+    }
+
+    @PrePersist
+    public void onCreate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
 }

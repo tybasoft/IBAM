@@ -1,0 +1,43 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "projet",
+      "otherEntityName": "projet",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "fichePointage"
+    },
+    {
+      "relationshipName": "pointages",
+      "otherEntityName": "pointage",
+      "relationshipType": "one-to-many",
+      "otherEntityRelationshipName": "fichePointage"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "dateJour",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": []
+    },
+    {
+      "fieldName": "userModif",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateModif",
+      "fieldType": "Instant"
+    }
+  ],
+  "changelogDate": "20200808131051",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "no",
+  "entityTableName": "fiche_pointage",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": false,
+  "pagination": "pagination"
+}

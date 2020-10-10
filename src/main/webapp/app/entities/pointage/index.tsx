@@ -11,12 +11,12 @@ import PointageDeleteDialog from './pointage-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={PointageDeleteDialog} />
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={PointageUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={PointageUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={PointageDetail} />
       <ErrorBoundaryRoute path={match.url} component={Pointage} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={PointageDeleteDialog} />
   </>
 );
 

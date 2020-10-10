@@ -2,16 +2,31 @@ package com.tybasoft.ibam.service;
 
 import com.tybasoft.ibam.domain.Image;
 import com.tybasoft.ibam.repository.ImageRepository;
+import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class ImageService {
     private final ImageRepository imageRepository;
+    @Autowired
+    FileStorageService fileStorageService;
 
     public ImageService(ImageRepository imageRepository) {
         this.imageRepository = imageRepository;
+    }
+
+    public Image saveImage(Image image, Logger log, String entityName) {
+        if (image != null) {
+            log.debug("REST request to save Image : {}", image);
+            if (image.getId() != null) {
+                throw new BadRequestAlertException("A new image cannot already have an ID", entityName, "idexists");
+            }
+            return createImageEntity(image);
+        }
+        return null;
     }
 
     public Image createImageEntity(Image image){
@@ -24,6 +39,7 @@ public class ImageService {
         if (image.getId() != null) {
             newimage.setId(image.getId());
         }
+//        fileStorageService.storeFile(newimage,imagePath,"image");
 
         return imageRepository.save(newimage);
     }

@@ -1,14 +1,17 @@
 import { Moment } from 'moment';
-import { IBonCommande } from 'app/shared/model/bon-commande.model';
 import { IMateriau } from 'app/shared/model/materiau.model';
+import { IMateriel } from 'app/shared/model/materiel.model';
+import { IBonCommande } from 'app/shared/model/bon-commande.model';
 
 export interface ILigneBonCommande {
   id?: number;
   quantite?: string;
   userModif?: string;
-  dateModif?: Moment;
-  bonCommande?: IBonCommande;
+  dateModif?: string;
   materiau?: IMateriau;
+  materiel?: IMateriel;
+  bonCommande?: IBonCommande;
+  type?: string;
 }
 
 export const defaultValue: Readonly<ILigneBonCommande> = {};

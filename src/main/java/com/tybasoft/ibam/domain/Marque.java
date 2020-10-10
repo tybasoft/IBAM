@@ -1,16 +1,17 @@
 package com.tybasoft.ibam.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import com.tybasoft.ibam.security.SecurityUtils;
+import com.tybasoft.ibam.security.SecurityUtils;
 import java.io.Serializable;
-import java.util.Objects;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Marque.
@@ -19,7 +20,6 @@ import java.util.Set;
 @Table(name = "marque")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Marque implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -38,7 +38,7 @@ public class Marque implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private LocalDate dateModif;
+    private Instant dateModif;
 
     @OneToMany(mappedBy = "marque")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -48,7 +48,8 @@ public class Marque implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Materiel> materiels = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -96,16 +97,16 @@ public class Marque implements Serializable {
         this.userModif = userModif;
     }
 
-    public LocalDate getDateModif() {
+    public Instant getDateModif() {
         return dateModif;
     }
 
-    public Marque dateModif(LocalDate dateModif) {
+    public Marque dateModif(Instant dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(LocalDate dateModif) {
+    public void setDateModif(Instant dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -158,7 +159,9 @@ public class Marque implements Serializable {
     public void setMateriels(Set<Materiel> materiels) {
         this.materiels = materiels;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -178,12 +181,35 @@ public class Marque implements Serializable {
 
     @Override
     public String toString() {
-        return "Marque{" +
-            "id=" + getId() +
-            ", libelle='" + getLibelle() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return (
+            "Marque{" +
+            "id=" +
+            getId() +
+            ", libelle='" +
+            getLibelle() +
+            "'" +
+            ", description='" +
+            getDescription() +
+            "'" +
+            ", userModif='" +
+            getUserModif() +
+            "'" +
+            ", dateModif='" +
+            getDateModif() +
+            "'" +
+            "}"
+        );
+    }
+
+    @PrePersist
+    public void onCreate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
 }

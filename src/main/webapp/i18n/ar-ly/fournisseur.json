@@ -2,35 +2,35 @@
   "ibamApp": {
     "fournisseur": {
       "home": {
-        "title": "Fournisseurs",
-        "createLabel": "Create a new Fournisseur",
-        "createOrEditLabel": "Create or edit a Fournisseur",
-        "notFound": "No Fournisseurs found"
+        "title": " المُوَرِّدين",
+        "createLabel": "إنشاء مورد جديد",
+        "createOrEditLabel": "إنشاءأو تعديل مورد  ",
+        "notFound": "لم يتم العثور على موردين"
       },
-      "created": "A new Fournisseur is created with identifier {{ param }}",
-      "updated": "A Fournisseur is updated with identifier {{ param }}",
-      "deleted": "A Fournisseur is deleted with identifier {{ param }}",
+      "created": "لقد تم إنشاء  مُوَرِّد جديد مع معرف {{ param }}",
+      "updated": "لقد تم تحديث مُوَرِّد مع معرف {{ param }}",
+      "deleted": " تم حذف  المُوَرِّد مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Fournisseur {{ id }}?"
+        "question": "هل أنت متأكد أنك تريد حذف المُوَرِّد {{ id }}?"
       },
       "detail": {
-        "title": "Fournisseur"
+        "title": "مُوَرِّد"
       },
-      "nomCommercial": "Nom Commercial",
-      "type": "Type",
-      "fax": "Fax",
-      "nom": "Nom",
-      "prenom": "Prenom",
-      "email": "Email",
-      "tel": "Tel",
-      "adresse": "Adresse",
-      "description": "Description",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "materiel": "Materiel",
-      "consommation": "Consommation",
-      "bonCommande": "Bon Commande",
-      "bonReception": "Bon Reception"
+      "nomCommercial": "إسم التاجر",
+      "type": "نوع",
+      "fax": "فاكس",
+      "nom": "النسب",
+      "prenom": "الإسم",
+      "email": "البريد الإلكتروني",
+      "tel": "الهاتف",
+      "adresse": "العنوان",
+      "description": "وصف",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiel": "أداة",
+      "consommation": "إستهلاك",
+      "bonCommande": "طلب الشراء",
+      "bonReception": "إستلام الطلبية"
     }
   }
 }

@@ -2,26 +2,26 @@
   "ibamApp": {
     "equipe": {
       "home": {
-        "title": "Equipes",
-        "createLabel": "Create a new Equipe",
-        "createOrEditLabel": "Create or edit a Equipe",
-        "notFound": "No Equipes found"
+        "title": "الفرق",
+        "createLabel": "إنشاء فريق جديد",
+        "createOrEditLabel": "إنشاءأو تعديل فريق",
+        "notFound": "لم يتم العثور على فرق"
       },
-      "created": "A new Equipe is created with identifier {{ param }}",
-      "updated": "A Equipe is updated with identifier {{ param }}",
-      "deleted": "A Equipe is deleted with identifier {{ param }}",
+      "created": " يتم إنشاء فريق جديد مع معرف {{ param }}",
+      "updated": " يتم تحديث الفريق مع معرف {{ param }}",
+      "deleted": " تم حذف الفريق مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Equipe {{ id }}?"
+        "question": "هل أنت متأكدأنك تريد حذف الفريق {{ id }}?"
       },
       "detail": {
-        "title": "Equipe"
+        "title": "فريق"
       },
-      "libelle": "Libelle",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "employe": "Employe",
-      "projet": "Projet",
-      "equipe": "Equipe"
+      "libelle": "صياغة",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "employe": "موظف",
+      "projet": "مشروع",
+      "equipe": "فريق"
     }
   }
 }

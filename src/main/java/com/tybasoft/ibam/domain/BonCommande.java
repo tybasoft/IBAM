@@ -8,9 +8,10 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "bon_commande")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class BonCommande implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,18 +49,19 @@ public class BonCommande implements Serializable {
     private LocalDate dateModif;
 
     @OneToMany(mappedBy = "bonCommande")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<LigneBonCommande> ligneBonComs = new HashSet<>();
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private List<LigneBonCommande> ligneBonComs ;
 
     @ManyToOne
-    @JsonIgnoreProperties("bonCommandes")
-    private Depot depot;
-
-    @ManyToOne
-    @JsonIgnoreProperties("bonCommandes")
+    @JsonIgnoreProperties(value = "bonCommandes", allowSetters = true)
     private Fournisseur fournisseur;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = "bonCommandes", allowSetters = true)
+    private Projet projet;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -101,6 +103,10 @@ public class BonCommande implements Serializable {
     public BonCommande dateCreation(LocalDate dateCreation) {
         this.dateCreation = dateCreation;
         return this;
+    }
+
+    public void setLigneBonComs(List<LigneBonCommande> ligneBonComs) {
+        this.ligneBonComs = ligneBonComs;
     }
 
     public void setDateCreation(LocalDate dateCreation) {
@@ -146,43 +152,30 @@ public class BonCommande implements Serializable {
         this.dateModif = dateModif;
     }
 
-    public Set<LigneBonCommande> getLigneBonComs() {
+    public List<LigneBonCommande> getLigneBonComs() {
         return ligneBonComs;
     }
 
-    public BonCommande ligneBonComs(Set<LigneBonCommande> ligneBonCommandes) {
-        this.ligneBonComs = ligneBonCommandes;
-        return this;
-    }
+//    public BonCommande ligneBonComs(Set<LigneBonCommande> ligneBonCommandes) {
+//        this.ligneBonComs = ligneBonCommandes;
+//        return this;
+//    }
 
     public BonCommande addLigneBonCom(LigneBonCommande ligneBonCommande) {
         this.ligneBonComs.add(ligneBonCommande);
         ligneBonCommande.setBonCommande(this);
         return this;
     }
-
+//
     public BonCommande removeLigneBonCom(LigneBonCommande ligneBonCommande) {
         this.ligneBonComs.remove(ligneBonCommande);
         ligneBonCommande.setBonCommande(null);
         return this;
     }
 
-    public void setLigneBonComs(Set<LigneBonCommande> ligneBonCommandes) {
-        this.ligneBonComs = ligneBonCommandes;
-    }
-
-    public Depot getDepot() {
-        return depot;
-    }
-
-    public BonCommande depot(Depot depot) {
-        this.depot = depot;
-        return this;
-    }
-
-    public void setDepot(Depot depot) {
-        this.depot = depot;
-    }
+//    public void setLigneBonComs(Set<LigneBonCommande> ligneBonCommandes) {
+//        this.ligneBonComs = ligneBonCommandes;
+//    }
 
     public Fournisseur getFournisseur() {
         return fournisseur;
@@ -196,7 +189,20 @@ public class BonCommande implements Serializable {
     public void setFournisseur(Fournisseur fournisseur) {
         this.fournisseur = fournisseur;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Projet getProjet() {
+        return projet;
+    }
+
+    public BonCommande projet(Projet projet) {
+        this.projet = projet;
+        return this;
+    }
+
+    public void setProjet(Projet projet) {
+        this.projet = projet;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -214,6 +220,7 @@ public class BonCommande implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "BonCommande{" +

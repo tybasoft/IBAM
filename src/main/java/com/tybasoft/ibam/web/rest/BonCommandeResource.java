@@ -1,7 +1,17 @@
 package com.tybasoft.ibam.web.rest;
 
-import com.tybasoft.ibam.domain.BonCommande;
+import com.itextpdf.text.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.tybasoft.ibam.domain.*;
 import com.tybasoft.ibam.repository.BonCommandeRepository;
+import com.tybasoft.ibam.repository.EntrepriseRepository;
+import com.tybasoft.ibam.repository.LigneBonCommandeRepository;
+import com.tybasoft.ibam.service.FileStorageService;
+import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -9,7 +19,9 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -19,11 +31,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.BonCommande}.
@@ -40,7 +62,17 @@ public class BonCommandeResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    @Autowired
+    ReportService reportService;
+
+
+    @Autowired
+    EntrepriseRepository entrepriseRepository;
+
     private final BonCommandeRepository bonCommandeRepository;
+
+    @Autowired
+    private LigneBonCommandeRepository ligneBonCommandeRepository;
 
     public BonCommandeResource(BonCommandeRepository bonCommandeRepository) {
         this.bonCommandeRepository = bonCommandeRepository;
@@ -54,15 +86,33 @@ public class BonCommandeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/bon-commandes")
-    public ResponseEntity<BonCommande> createBonCommande(@Valid @RequestBody BonCommande bonCommande) throws URISyntaxException {
-        log.debug("REST request to save BonCommande : {}", bonCommande);
+    public ResponseEntity<?> createBonCommande(@RequestBody BonCommande bonCommande) throws URISyntaxException {
+        log.debug("REST request to save BonCommande : {}", bonCommande.getLigneBonComs());
         if (bonCommande.getId() != null) {
             throw new BadRequestAlertException("A new bonCommande cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        System.out.println("Ligne Bon de commande");
+        System.out.println(bonCommande);
         BonCommande result = bonCommandeRepository.save(bonCommande);
-        return ResponseEntity.created(new URI("/api/bon-commandes/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        log.info("My Command lines");
+        List<LigneBonCommande> ligneBonCommandes = bonCommande.getLigneBonComs();
+        for(int i=0 ; i<ligneBonCommandes.size() ;i++){
+            System.out.println(ligneBonCommandes.get(i).getType());
+            LigneBonCommande ligneBonCommande = new LigneBonCommande();
+            if(ligneBonCommandes.get(i).getType().equals("materiel")){
+                ligneBonCommande.setMateriel(ligneBonCommandes.get(i).getMateriel()); }
+            if(ligneBonCommandes.get(i).getType().equals("materiau")){
+                ligneBonCommande.setMateriau(ligneBonCommandes.get(i).getMateriau()); }
+            if(ligneBonCommandes.get(i).getType().equals("both")){
+                ligneBonCommande.setMateriau(ligneBonCommandes.get(i).getMateriau());
+                ligneBonCommande.setMateriel(ligneBonCommandes.get(i).getMateriel());}
+            ligneBonCommande.setQuantite(ligneBonCommandes.get(i).getQuantite());
+            ligneBonCommande.setType(ligneBonCommandes.get(i).getType());
+//            ligneBonReception.setMateriau(ligneBonReceptionList.get(i).getMateriau());
+            ligneBonCommande.setBonCommande(result);
+            ligneBonCommandeRepository.save(ligneBonCommande);
+        }
+        return ResponseEntity.ok().body(result);
     }
 
     /**
@@ -122,7 +172,125 @@ public class BonCommandeResource {
     @DeleteMapping("/bon-commandes/{id}")
     public ResponseEntity<Void> deleteBonCommande(@PathVariable Long id) {
         log.debug("REST request to delete BonCommande : {}", id);
+        List<LigneBonCommande> ligneBonCommandes = ligneBonCommandeRepository.findAllByBonCommande_Id(id);
+        ligneBonCommandeRepository.deleteAll(ligneBonCommandes);
         bonCommandeRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/bon-commandes/report/{id}")
+    @ResponseBody
+    public Resource getFile(HttpServletRequest request , @PathVariable Long id) throws IOException, URISyntaxException, BadElementException {
+        log.debug("DOWNLOAD FILE TEST : {}",id);
+        BonCommande bonCommande = bonCommandeRepository
+            .findById(id).orElseThrow(
+                ()-> new BadRequestAlertException("Bon de Commande not found", ENTITY_NAME, "Bon de Commande"));
+
+
+        List<LigneBonCommande> ligneBonCommandesList = ligneBonCommandeRepository.findAllByBonCommande_Id(id);
+        int size =  ligneBonCommandesList.size();
+
+        Entreprise entreprise = entrepriseRepository.findById(1L).orElseThrow(
+            ()-> new BadRequestAlertException("Entreprise not found", ENTITY_NAME, "Entreprise"));
+        Document document = new Document();
+        String logoPath = Paths.get("./src/main/webapp/content/images/").resolve("logo.png").toAbsolutePath()
+            .normalize().toString();
+        Image img = Image.getInstance(logoPath);
+        PdfPTable table = new PdfPTable(4);
+        PdfPTable table1 = new PdfPTable(5);
+        PdfPTable table2 = new PdfPTable(4);
+        Date dateDownload = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        try
+        {
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("HelloWorld.pdf"));
+            document.open();
+            document.addTitle("My first PDF");
+            Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD,20,BaseColor.BLACK);
+            Chunk chunk = new Chunk("\n                               Bon de Commande");
+            chunk.setFont(titleFont);
+            LocalDate date = LocalDate.now();
+            Paragraph p = new Paragraph();
+            p.add(entreprise.getNomCommercial()+"                                                                                                le "+formatter.format(dateDownload));
+            p.add("\n "+entreprise.getEntiteJuridique());
+            p.add("\n "+entreprise.getEmail());
+            p.add("\n "+entreprise.getTelephone());
+            p.add("\n "+entreprise.getActivite());
+            document.add(img);
+            document.add(p);
+            document.add(chunk);
+            Chunk chunk1 = new Chunk("\n        ");
+            document.add(chunk1);
+            Stream.of("Date Prev liv", "Date de creation","Fournisseur" , "Projet" ,"Remarque" ).forEach(columnTitle -> {
+                PdfPCell header1 = new PdfPCell();
+                header1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                header1.setBorderWidth(2);
+                header1.setPhrase(new Phrase(columnTitle));
+                table1.addCell(header1);
+            });
+            table1.addCell(bonCommande.getDatePrevLiv().toString());
+            table1.addCell(bonCommande.getDateCreation().toString());
+            table1.addCell(bonCommande.getProjet().getLibelle());
+            table1.addCell(bonCommande.getFournisseur().getEmail());
+            table1.addCell(bonCommande.getRemarques());
+            Chunk chunk2 = new Chunk("\n       ");
+            document.add(table1);
+            document.add(chunk2);
+            Stream.of("Les lignes de Bon de commande","Quantite","Materiau", "Materiel").forEach(columnTitle -> {
+                PdfPCell header = new PdfPCell();
+                header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                header.setBorderWidth(2);
+                header.setPhrase(new Phrase(columnTitle));
+                table.addCell(header);
+            });
+            for(int i =0 ; i<size ; i++){
+                table.addCell(ligneBonCommandesList.get(i).getId().toString());
+                table.addCell(ligneBonCommandesList.get(i).getQuantite());
+                if(ligneBonCommandesList.get(i).getType().equals("materiel")){
+                    table.addCell(ligneBonCommandesList.get(i).getMateriau().getLibelle());
+                    table.addCell("---------");
+
+                }
+                if(ligneBonCommandesList.get(i).getType().equals("materiau")){
+                    table.addCell("---------");
+                    table.addCell(ligneBonCommandesList.get(i).getMateriel().getLibelle());
+                }
+                if(ligneBonCommandesList.get(i).getType().equals("both")){
+                    table.addCell(ligneBonCommandesList.get(i).getMateriau().getLibelle());
+                    table.addCell(ligneBonCommandesList.get(i).getMateriel().getLibelle());
+
+                }
+            }
+//            table.addCell(ligneBonCommandesList.getId().toString());
+//            table.addCell(ligneBonCommandesList.getDateFacturation().toString());
+//            table.addCell(ligneBonCommandesList.getMontantFacture());
+//            table.addCell(ligneBonCommandesList.getMontantEnCours());
+            document.add(table);
+            Chunk chunk3 = new Chunk("\n       ");
+            document.add(chunk3);
+//            table2.addCell("Le Montant Restant");
+//            table2.addCell("");
+//            table2.addCell("");
+//            table2.addCell(situationFinanciereCourante.getMontantEnCours());
+//            document.add(table2);
+
+            document.close();
+            writer.close();
+
+            log.info("DONE CREATING FILE");
+
+        } catch (DocumentException e)
+        {
+            e.printStackTrace();
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        Resource resource = reportService.downloadReport(request,"HelloWorld.pdf");
+
+        return resource;
     }
 }

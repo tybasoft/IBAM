@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.LocalDate;
 
 /**
@@ -16,7 +15,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "pointage")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Pointage implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,10 +50,14 @@ public class Pointage implements Serializable {
     private LocalDate dateModif;
 
     @ManyToOne
-    @JsonIgnoreProperties("pointages")
+    @JsonIgnoreProperties(value = "pointages", allowSetters = true)
     private Employe employe;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    @ManyToOne
+    @JsonIgnoreProperties(value = "pointages", allowSetters = true)
+    private FichePointage fichePointage;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -166,7 +169,20 @@ public class Pointage implements Serializable {
     public void setEmploye(Employe employe) {
         this.employe = employe;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public FichePointage getFichePointage() {
+        return fichePointage;
+    }
+
+    public Pointage fichePointage(FichePointage fichePointage) {
+        this.fichePointage = fichePointage;
+        return this;
+    }
+
+    public void setFichePointage(FichePointage fichePointage) {
+        this.fichePointage = fichePointage;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -184,6 +200,7 @@ public class Pointage implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "Pointage{" +

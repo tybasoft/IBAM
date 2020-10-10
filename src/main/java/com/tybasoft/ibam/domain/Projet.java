@@ -1,17 +1,19 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import com.tybasoft.ibam.security.SecurityUtils;
+import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import java.io.Serializable;
-import java.util.Objects;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Projet.
@@ -20,7 +22,6 @@ import java.util.Set;
 @Table(name = "projet")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Projet implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -64,33 +65,46 @@ public class Projet implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private LocalDate dateModif;
+    private Instant dateModif;
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "projet")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<TransfertMateriel> transferts = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "projet")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Equipe> equipes = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "projet")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Employe> employes = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("projets")
     private Entreprise entreprise;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("projets")
     private Horaire horaire;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("projets")
     private Depot depot;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -242,16 +256,16 @@ public class Projet implements Serializable {
         this.userModif = userModif;
     }
 
-    public LocalDate getDateModif() {
+    public Instant getDateModif() {
         return dateModif;
     }
 
-    public Projet dateModif(LocalDate dateModif) {
+    public Projet dateModif(Instant dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(LocalDate dateModif) {
+    public void setDateModif(Instant dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -368,7 +382,25 @@ public class Projet implements Serializable {
     public void setDepot(Depot depot) {
         this.depot = depot;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -388,20 +420,59 @@ public class Projet implements Serializable {
 
     @Override
     public String toString() {
-        return "Projet{" +
-            "id=" + getId() +
-            ", reference='" + getReference() + "'" +
-            ", libelle='" + getLibelle() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", dateDebut='" + getDateDebut() + "'" +
-            ", dateFin='" + getDateFin() + "'" +
-            ", nbrEmploye='" + getNbrEmploye() + "'" +
-            ", budget='" + getBudget() + "'" +
-            ", adresse='" + getAdresse() + "'" +
-            ", ville='" + getVille() + "'" +
-            ", pays='" + getPays() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return (
+            "Projet{" +
+            "id=" +
+            getId() +
+            ", reference='" +
+            getReference() +
+            "'" +
+            ", libelle='" +
+            getLibelle() +
+            "'" +
+            ", description='" +
+            getDescription() +
+            "'" +
+            ", dateDebut='" +
+            getDateDebut() +
+            "'" +
+            ", dateFin='" +
+            getDateFin() +
+            "'" +
+            ", nbrEmploye='" +
+            getNbrEmploye() +
+            "'" +
+            ", budget='" +
+            getBudget() +
+            "'" +
+            ", adresse='" +
+            getAdresse() +
+            "'" +
+            ", ville='" +
+            getVille() +
+            "'" +
+            ", pays='" +
+            getPays() +
+            "'" +
+            ", userModif='" +
+            getUserModif() +
+            "'" +
+            ", dateModif='" +
+            getDateModif() +
+            "'" +
+            "}"
+        );
+    }
+
+    @PrePersist
+    public void onCreate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
 }

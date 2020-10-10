@@ -5,6 +5,7 @@
         "title": "Bon Commandes",
         "createLabel": "Create a new Bon Commande",
         "createOrEditLabel": "Create or edit a Bon Commande",
+        "createOrEditLabelLigne": "Create or edit a Bon Commande line",
         "notFound": "No Bon Commandes found"
       },
       "created": "A new Bon Commande is created with identifier {{ param }}",
@@ -16,14 +17,24 @@
       "detail": {
         "title": "Bon Commande"
       },
-      "datePrevLiv": "Date Prev Liv",
+      "create": "Create new line",
+      "projet": "Projet",
+      "project": "Projet",
+      "add": "Create",
+      "newline": "+ Add new line",
+      "tableTitle": "Table of lines",
+      "datePrevLiv": "Date de livraison prévue",
       "remarques": "Remarques",
+      "quantity": "Quantity",
       "dateCreation": "Date Creation",
       "valide": "Valide",
       "userModif": "User Modif",
       "dateModif": "Date Modif",
       "ligneBonCom": "Ligne Bon Com",
       "depot": "Depot",
+      "materiau": "Materiau/Materiel",
+      "materiel": "Materiel",
+      "materiausAndMateriels": "Materiau/Materiel",
       "fournisseur": "Fournisseur"
     }
   }

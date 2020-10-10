@@ -1,4 +1,7 @@
 import { element, by, ElementFinder } from 'protractor';
+import { waitUntilDisplayed, waitUntilHidden, isVisible } from '../../util/utils';
+
+const expect = chai.expect;
 
 export default class LigneBonReceptionUpdatePage {
   pageTitle: ElementFinder = element(by.id('ibamApp.ligneBonReception.home.createOrEditLabel'));
@@ -10,6 +13,7 @@ export default class LigneBonReceptionUpdatePage {
   dateModifInput: ElementFinder = element(by.css('input#ligne-bon-reception-dateModif'));
   bonReceptionSelect: ElementFinder = element(by.css('select#ligne-bon-reception-bonReception'));
   materiauSelect: ElementFinder = element(by.css('select#ligne-bon-reception-materiau'));
+  materielSelect: ElementFinder = element(by.css('select#ligne-bon-reception-materiel'));
 
   getPageTitle() {
     return this.pageTitle;
@@ -85,6 +89,25 @@ export default class LigneBonReceptionUpdatePage {
     return this.materiauSelect.element(by.css('option:checked')).getText();
   }
 
+  async materielSelectLastOption() {
+    await this.materielSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
+  }
+
+  async materielSelectOption(option) {
+    await this.materielSelect.sendKeys(option);
+  }
+
+  getMaterielSelect() {
+    return this.materielSelect;
+  }
+
+  async getMaterielSelectedOption() {
+    return this.materielSelect.element(by.css('option:checked')).getText();
+  }
+
   async save() {
     await this.saveButton.click();
   }
@@ -95,5 +118,26 @@ export default class LigneBonReceptionUpdatePage {
 
   getSaveButton() {
     return this.saveButton;
+  }
+
+  async enterData() {
+    await waitUntilDisplayed(this.saveButton);
+    await this.setQuantiteInput('quantite');
+    expect(await this.getQuantiteInput()).to.match(/quantite/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setPrixHtInput('prixHt');
+    expect(await this.getPrixHtInput()).to.match(/prixHt/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setUserModifInput('userModif');
+    expect(await this.getUserModifInput()).to.match(/userModif/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setDateModifInput('01-01-2001');
+    expect(await this.getDateModifInput()).to.eq('2001-01-01');
+    await this.bonReceptionSelectLastOption();
+    await this.materiauSelectLastOption();
+    await this.materielSelectLastOption();
+    await this.save();
+    await waitUntilHidden(this.saveButton);
+    expect(await isVisible(this.saveButton)).to.be.false;
   }
 }

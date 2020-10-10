@@ -4,6 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Alert, Row, 
 import { AvForm, AvField, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { Link } from 'react-router-dom';
 
+
 export interface ILoginModalProps {
   showModal: boolean;
   loginError: boolean;
@@ -16,11 +17,11 @@ class LoginModal extends React.Component<ILoginModalProps> {
     const { handleLogin } = this.props;
     handleLogin(username, password, rememberMe);
   };
-
   render() {
     const { loginError, handleClose } = this.props;
-
+    
     return (
+      
       <Modal isOpen={this.props.showModal} toggle={handleClose} backdrop="static" id="login-page" autoFocus={false}>
         <AvForm onSubmit={this.handleSubmit}>
           <ModalHeader id="login-title" toggle={handleClose}>

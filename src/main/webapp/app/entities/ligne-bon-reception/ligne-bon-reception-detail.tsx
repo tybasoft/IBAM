@@ -38,27 +38,17 @@ export const LigneBonReceptionDetail = (props: ILigneBonReceptionDetailProps) =>
           </dt>
           <dd>{ligneBonReceptionEntity.prixHt}</dd>
           <dt>
-            <span id="userModif">
-              <Translate contentKey="ibamApp.ligneBonReception.userModif">User Modif</Translate>
-            </span>
-          </dt>
-          <dd>{ligneBonReceptionEntity.userModif}</dd>
-          <dt>
-            <span id="dateModif">
-              <Translate contentKey="ibamApp.ligneBonReception.dateModif">Date Modif</Translate>
-            </span>
-          </dt>
-          <dd>
-            <TextFormat value={ligneBonReceptionEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
-          <dt>
             <Translate contentKey="ibamApp.ligneBonReception.bonReception">Bon Reception</Translate>
           </dt>
           <dd>{ligneBonReceptionEntity.bonReception ? ligneBonReceptionEntity.bonReception.id : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.ligneBonReception.materiau">Materiau</Translate>
           </dt>
-          <dd>{ligneBonReceptionEntity.materiau ? ligneBonReceptionEntity.materiau.id : ''}</dd>
+          <dd>{ligneBonReceptionEntity.materiau ? ligneBonReceptionEntity.materiau.libelle : ''}</dd>
+          <dt>
+            <Translate contentKey="ibamApp.ligneBonReception.materiel">Materiel</Translate>
+          </dt>
+          <dd>{ligneBonReceptionEntity.materiel ? ligneBonReceptionEntity.materiel.libelle : ''}</dd>
         </dl>
         <Button tag={Link} to="/ligne-bon-reception" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
@@ -79,7 +69,7 @@ export const LigneBonReceptionDetail = (props: ILigneBonReceptionDetailProps) =>
 };
 
 const mapStateToProps = ({ ligneBonReception }: IRootState) => ({
-  ligneBonReceptionEntity: ligneBonReception.entity
+  ligneBonReceptionEntity: ligneBonReception.entity,
 });
 
 const mapDispatchToProps = { getEntity };

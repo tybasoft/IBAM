@@ -55,6 +55,16 @@ export const Location = (props: ILocationProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.location.home.createLabel">Create new Location</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {locationList && locationList.length > 0 ? (
@@ -76,7 +86,7 @@ export const Location = (props: ILocationProps) => {
                 <th className="hand" onClick={sort('tarif')}>
                   <Translate contentKey="ibamApp.location.tarif">Tarif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('dureLocation')}>
+                {/* <th className="hand" onClick={sort('dureLocation')}>
                   <Translate contentKey="ibamApp.location.dureLocation">Dure Location</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('montantLocation')}>
@@ -93,7 +103,7 @@ export const Location = (props: ILocationProps) => {
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.location.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -113,14 +123,14 @@ export const Location = (props: ILocationProps) => {
                     <TextFormat type="date" value={location.dateFin} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   <td>{location.tarif}</td>
-                  <td>{location.dureLocation}</td>
+                  {/* <td>{location.dureLocation}</td>
                   <td>{location.montantLocation}</td>
                   <td>{location.remarque}</td>
                   <td>{location.userModif}</td>
                   <td>
                     <TextFormat type="date" value={location.dateModif} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
-                  <td>{location.materiel ? <Link to={`materiel/${location.materiel.id}`}>{location.materiel.id}</Link> : ''}</td>
+                  <td>{location.materiel ? <Link to={`materiel/${location.materiel.id}`}>{location.materiel.id}</Link> : ''}</td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${location.id}`} color="info" size="sm">

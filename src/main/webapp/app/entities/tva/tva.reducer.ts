@@ -12,6 +12,8 @@ export const ACTION_TYPES = {
   CREATE_TVA: 'tva/CREATE_TVA',
   UPDATE_TVA: 'tva/UPDATE_TVA',
   DELETE_TVA: 'tva/DELETE_TVA',
+
+  REPORT: 'tva/REPORT',
   RESET: 'tva/RESET'
 };
 
@@ -38,6 +40,14 @@ export default (state: TvaState = initialState, action): TvaState => {
         updateSuccess: false,
         loading: true
       };
+    case REQUEST(ACTION_TYPES.REPORT):
+      return {
+        ...state,
+        loading: true
+      };
+
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.CREATE_TVA):
     case REQUEST(ACTION_TYPES.UPDATE_TVA):
     case REQUEST(ACTION_TYPES.DELETE_TVA):
@@ -86,6 +96,7 @@ export default (state: TvaState = initialState, action): TvaState => {
         updateSuccess: true,
         entity: {}
       };
+
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -95,7 +106,7 @@ export default (state: TvaState = initialState, action): TvaState => {
   }
 };
 
-const apiUrl = 'api/tvas';
+export const apiUrl = 'api/tvas';
 
 // Actions
 

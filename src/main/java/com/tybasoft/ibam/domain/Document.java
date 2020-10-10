@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,21 +49,25 @@ public class Document implements Serializable {
     private Instant dateModif;
 
     @PrePersist
-    public void onCreate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
+    public void onCreate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
+
     @PreUpdate
-    public void onUpdate(){
-        userModif= SecurityUtils.getCurrentUserLogin().get();
-        dateModif= Instant.now();
+    public void onUpdate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
 
     @OneToMany(mappedBy = "document")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Materiel> materiels = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
+
+
     public Long getId() {
         return id;
     }
@@ -175,7 +178,9 @@ public class Document implements Serializable {
     public void setMateriels(Set<Materiel> materiels) {
         this.materiels = materiels;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -195,14 +200,10 @@ public class Document implements Serializable {
 
     @Override
     public String toString() {
-        return "Document{" +
-            "id=" + getId() +
-            ", titre='" + getTitre() + "'" +
-            ", type='" + getType() + "'" +
-            ", path='" + getPath() + "'" +
-            ", commentaire='" + getCommentaire() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return "Document{" + "id=" + getId() + ", titre='" + getTitre() + "'" + ", type='" + getType() + "'"
+                + ", path='" + getPath() + "'" + ", commentaire='" + getCommentaire() + "'" + ", userModif='"
+                + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}";
     }
+
+
 }

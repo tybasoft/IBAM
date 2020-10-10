@@ -17,14 +17,17 @@
         "title": "Bon Reception"
       },
       "livreur": "Livreur",
+      "projet": "Projet",
+      "project": "Projet",
+      "currency": "Currency",
       "remarques": "Remarques",
       "dateLivraison": "Date Livraison",
       "userModif": "User Modif",
       "dateModif": "Date Modif",
       "ligneBonRec": "Ligne Bon Rec",
-      "depot": "Depot",
       "fournisseur": "Fournisseur",
-      "image": "Image"
+      "image": "Image",
+      "projet": "Projet"
     }
   }
 }

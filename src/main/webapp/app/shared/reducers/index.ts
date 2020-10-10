@@ -4,6 +4,8 @@ import { loadingBarReducer as loadingBar } from 'react-redux-loading-bar';
 import locale, { LocaleState } from './locale';
 import authentication, { AuthenticationState } from './authentication';
 import applicationProfile, { ApplicationProfileState } from './application-profile';
+import customizer from '../../new-template/redux/reducers/customizer/';
+import calender from '../../new-template/redux/reducers/calenderReducer';
 
 import administration, { AdministrationState } from 'app/modules/administration/administration.reducer';
 import userManagement, { UserManagementState } from 'app/modules/administration/user-management/user-management.reducer';
@@ -12,10 +14,12 @@ import activate, { ActivateState } from 'app/modules/account/activate/activate.r
 import password, { PasswordState } from 'app/modules/account/password/password.reducer';
 import settings, { SettingsState } from 'app/modules/account/settings/settings.reducer';
 import passwordReset, { PasswordResetState } from 'app/modules/account/password-reset/password-reset.reducer';
+
 // prettier-ignore
 import materiau, {
   MateriauState
 } from 'app/entities/materiau/materiau.reducer';
+import currency, { CurrenciesState } from 'app/entities/bon-reception/currency.reducer';
 // prettier-ignore
 import tva, {
   TvaState
@@ -132,8 +136,30 @@ import centreMaintenance, {
 import visiteTechnique, {
   VisiteTechniqueState
 } from 'app/entities/visite-technique/visite-technique.reducer';
+// prettier-ignore
+import notification, {
+  NotificationState
+} from 'app/entities/notification/notification.reducer';
+// prettier-ignore
+import fichePointage, {
+  FichePointageState
+} from 'app/entities/fiche-pointage/fiche-pointage.reducer';
+// prettier-ignore
+import affectationMateriels, {
+  AffectationMaterielsState
+} from 'app/entities/affectation-materiels/affectation-materiels.reducer';
+// prettier-ignore
+import situationFinanciere, {
+  SituationFinanciereState
+} from 'app/entities/situation-financiere/situation-financiere.reducer';
+// prettier-ignore
+import planification, {
+  PlanificationState
+} from 'app/entities/planification/planification.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
+import avancement, { AvancementState } from 'app/entities/avancement/avancement.reducer';
+import { BonReception } from 'app/entities/bon-reception/bon-reception';
 export interface IRootState {
   readonly authentication: AuthenticationState;
   readonly locale: LocaleState;
@@ -175,11 +201,21 @@ export interface IRootState {
   readonly maintenance: MaintenanceState;
   readonly centreMaintenance: CentreMaintenanceState;
   readonly visiteTechnique: VisiteTechniqueState;
+  readonly notification: NotificationState;
+  readonly fichePointage: FichePointageState;
+  readonly affectationMateriels: AffectationMaterielsState;
+  readonly situationFinanciere: SituationFinanciereState;
+  readonly currency: CurrenciesState;
+  readonly avancement: AvancementState;
+  readonly planification: PlanificationState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
+  readonly customizer: any;
+  readonly calender: any;
 }
 
 const rootReducer = combineReducers<IRootState>({
+  currency,
   authentication,
   locale,
   applicationProfile,
@@ -220,8 +256,16 @@ const rootReducer = combineReducers<IRootState>({
   maintenance,
   centreMaintenance,
   visiteTechnique,
+  notification,
+  fichePointage,
+  affectationMateriels,
+  situationFinanciere,
+  avancement,
+  customizer,
+  calender,
+  planification,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
-  loadingBar
+  loadingBar,
 });
 
 export default rootReducer;

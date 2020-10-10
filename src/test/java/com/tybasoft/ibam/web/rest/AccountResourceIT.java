@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.tybasoft.ibam.IbamApp;
 import com.tybasoft.ibam.config.Constants;
-import com.tybasoft.ibam.domain.Authority;
 import com.tybasoft.ibam.domain.User;
 import com.tybasoft.ibam.repository.AuthorityRepository;
 import com.tybasoft.ibam.repository.UserRepository;
@@ -20,13 +19,11 @@ import com.tybasoft.ibam.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
 import java.util.*;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;

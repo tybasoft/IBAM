@@ -1,15 +1,15 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
+import com.tybasoft.ibam.security.SecurityUtils;
+import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import java.io.Serializable;
-import java.util.Objects;
-import java.time.LocalDate;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Location.
@@ -18,7 +18,6 @@ import java.time.LocalDate;
 @Table(name = "location")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Location implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -54,13 +53,14 @@ public class Location implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private LocalDate dateModif;
+    private Instant dateModif;
 
     @ManyToOne
     @JsonIgnoreProperties("locations")
     private Materiel materiel;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -173,16 +173,16 @@ public class Location implements Serializable {
         this.userModif = userModif;
     }
 
-    public LocalDate getDateModif() {
+    public Instant getDateModif() {
         return dateModif;
     }
 
-    public Location dateModif(LocalDate dateModif) {
+    public Location dateModif(Instant dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(LocalDate dateModif) {
+    public void setDateModif(Instant dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -198,7 +198,9 @@ public class Location implements Serializable {
     public void setMateriel(Materiel materiel) {
         this.materiel = materiel;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -218,17 +220,50 @@ public class Location implements Serializable {
 
     @Override
     public String toString() {
-        return "Location{" +
-            "id=" + getId() +
-            ", reference='" + getReference() + "'" +
-            ", dateDebut='" + getDateDebut() + "'" +
-            ", dateFin='" + getDateFin() + "'" +
-            ", tarif='" + getTarif() + "'" +
-            ", dureLocation='" + getDureLocation() + "'" +
-            ", montantLocation='" + getMontantLocation() + "'" +
-            ", remarque='" + getRemarque() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return (
+            "Location{" +
+            "id=" +
+            getId() +
+            ", reference='" +
+            getReference() +
+            "'" +
+            ", dateDebut='" +
+            getDateDebut() +
+            "'" +
+            ", dateFin='" +
+            getDateFin() +
+            "'" +
+            ", tarif='" +
+            getTarif() +
+            "'" +
+            ", dureLocation='" +
+            getDureLocation() +
+            "'" +
+            ", montantLocation='" +
+            getMontantLocation() +
+            "'" +
+            ", remarque='" +
+            getRemarque() +
+            "'" +
+            ", userModif='" +
+            getUserModif() +
+            "'" +
+            ", dateModif='" +
+            getDateModif() +
+            "'" +
+            "}"
+        );
+    }
+
+    @PrePersist
+    public void onCreate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
 }

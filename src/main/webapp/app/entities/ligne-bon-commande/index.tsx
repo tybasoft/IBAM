@@ -11,12 +11,12 @@ import LigneBonCommandeDeleteDialog from './ligne-bon-commande-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={LigneBonCommandeDeleteDialog} />
-      <ErrorBoundaryRoute exact path={`${match.url}/new`} component={LigneBonCommandeUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={LigneBonCommandeUpdate} />
+      {/*<ErrorBoundaryRoute exact path={`${match.url}/new`} component={LigneBonCommandeUpdate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={LigneBonCommandeUpdate} />*/}
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={LigneBonCommandeDetail} />
       <ErrorBoundaryRoute path={match.url} component={LigneBonCommande} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={LigneBonCommandeDeleteDialog} />
   </>
 );
 

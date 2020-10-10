@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunkMiddleware from 'redux-thunk';
-import reducer, { IRootState } from 'app/shared/reducers';
+import reducer, { IRootState } from '../shared/reducers';
 import DevTools from './devtools';
 import errorMiddleware from './error-middleware';
 import notificationMiddleware from './notification-middleware';

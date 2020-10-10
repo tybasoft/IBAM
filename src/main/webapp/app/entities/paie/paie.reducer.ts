@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_PAIE: 'paie/CREATE_PAIE',
   UPDATE_PAIE: 'paie/UPDATE_PAIE',
   DELETE_PAIE: 'paie/DELETE_PAIE',
-  RESET: 'paie/RESET'
+  RESET: 'paie/RESET',
+  REPPORT: 'paie/REPPORT'
 };
 
 const initialState = {
@@ -48,6 +49,11 @@ export default (state: PaieState = initialState, action): PaieState => {
         updateSuccess: false,
         updating: true
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case FAILURE(ACTION_TYPES.FETCH_PAIE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_PAIE):
     case FAILURE(ACTION_TYPES.CREATE_PAIE):
@@ -60,6 +66,7 @@ export default (state: PaieState = initialState, action): PaieState => {
         updateSuccess: false,
         errorMessage: action.payload
       };
+
     case SUCCESS(ACTION_TYPES.FETCH_PAIE_LIST):
       return {
         ...state,
@@ -88,16 +95,19 @@ export default (state: PaieState = initialState, action): PaieState => {
         updateSuccess: true,
         entity: {}
       };
+
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/paies';
+export const apiUrl = 'api/paies';
 
 // Actions
 

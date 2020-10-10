@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_FAMILLE: 'famille/CREATE_FAMILLE',
   UPDATE_FAMILLE: 'famille/UPDATE_FAMILLE',
   DELETE_FAMILLE: 'famille/DELETE_FAMILLE',
-  RESET: 'famille/RESET'
+  RESET: 'famille/RESET',
+  REPPORT: 'famille/REPPORT'
 };
 
 const initialState = {
@@ -88,16 +89,23 @@ export default (state: FamilleState = initialState, action): FamilleState => {
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/familles';
+export const apiUrl = 'api/familles';
 
 // Actions
 

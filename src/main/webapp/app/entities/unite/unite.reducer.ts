@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_UNITE: 'unite/CREATE_UNITE',
   UPDATE_UNITE: 'unite/UPDATE_UNITE',
   DELETE_UNITE: 'unite/DELETE_UNITE',
-  RESET: 'unite/RESET'
+  RESET: 'unite/RESET',
+  REPPORT: 'unite/REPPORT'
 };
 
 const initialState = {
@@ -47,6 +48,11 @@ export default (state: UniteState = initialState, action): UniteState => {
         errorMessage: null,
         updateSuccess: false,
         updating: true
+      };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
       };
     case FAILURE(ACTION_TYPES.FETCH_UNITE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_UNITE):
@@ -92,12 +98,14 @@ export default (state: UniteState = initialState, action): UniteState => {
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/unites';
+export const apiUrl = 'api/unites';
 
 // Actions
 

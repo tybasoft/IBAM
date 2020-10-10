@@ -55,6 +55,16 @@ export const VisiteTechnique = (props: IVisiteTechniqueProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.visiteTechnique.home.createLabel">Create new Visite Technique</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {visiteTechniqueList && visiteTechniqueList.length > 0 ? (
@@ -73,12 +83,12 @@ export const VisiteTechnique = (props: IVisiteTechniqueProps) => {
                 <th className="hand" onClick={sort('remarque')}>
                   <Translate contentKey="ibamApp.visiteTechnique.remarque">Remarque</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
+                {/* <th className="hand" onClick={sort('userModif')}>
                   <Translate contentKey="ibamApp.visiteTechnique.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.visiteTechnique.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th>
                   <Translate contentKey="ibamApp.visiteTechnique.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -98,13 +108,13 @@ export const VisiteTechnique = (props: IVisiteTechniqueProps) => {
                     <TextFormat type="date" value={visiteTechnique.dateVisite} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   <td>{visiteTechnique.remarque}</td>
-                  <td>{visiteTechnique.userModif}</td>
+                  {/* <td>{visiteTechnique.userModif}</td>
                   <td>
                     <TextFormat type="date" value={visiteTechnique.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
+                  </td> */}
                   <td>
                     {visiteTechnique.materiel ? (
-                      <Link to={`materiel/${visiteTechnique.materiel.id}`}>{visiteTechnique.materiel.id}</Link>
+                      <Link to={`materiel/${visiteTechnique.materiel.id}`}>{visiteTechnique.materiel.libelle}</Link>
                     ) : (
                       ''
                     )}

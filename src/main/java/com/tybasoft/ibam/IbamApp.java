@@ -16,9 +16,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })
+@EnableScheduling
 public class IbamApp {
     private static final Logger log = LoggerFactory.getLogger(IbamApp.class);
 
@@ -64,7 +66,7 @@ public class IbamApp {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(IbamApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
-        Environment env = app.run(args).getEnvironment();
+        Environment env = app.  run(args).getEnvironment();
         logApplicationStartup(env);
     }
 

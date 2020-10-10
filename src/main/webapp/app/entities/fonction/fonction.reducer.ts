@@ -12,7 +12,9 @@ export const ACTION_TYPES = {
   CREATE_FONCTION: 'fonction/CREATE_FONCTION',
   UPDATE_FONCTION: 'fonction/UPDATE_FONCTION',
   DELETE_FONCTION: 'fonction/DELETE_FONCTION',
-  RESET: 'fonction/RESET'
+  RESET: 'fonction/RESET',
+  REPPORT: 'fonction/REPPORT',
+  FILTER_FONCTION_LIST: 'fonction/FILTER'
 };
 
 const initialState = {
@@ -88,18 +90,36 @@ export default (state: FonctionState = initialState, action): FonctionState => {
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.FILTER_FONCTION_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/fonctions';
+export const apiUrl = 'api/fonctions';
 
 // Actions
+
+export const filterEntities: ICrudGetAllAction<IFonction> = filter => ({
+  type: ACTION_TYPES.FILTER_FONCTION_LIST,
+  payload: axios.get<IFonction>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntities: ICrudGetAllAction<IFonction> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
@@ -131,6 +151,8 @@ export const updateEntity: ICrudPutAction<IFonction> = entity => async dispatch 
     type: ACTION_TYPES.UPDATE_FONCTION,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -140,6 +162,8 @@ export const deleteEntity: ICrudDeleteAction<IFonction> = id => async dispatch =
     type: ACTION_TYPES.DELETE_FONCTION,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 

@@ -1,0 +1,26 @@
+{
+  "ibamApp": {
+    "fichePointage": {
+      "home": {
+        "title": "FichePointages",
+        "createLabel": "Créer un nouveau Fiche Pointage",
+        "createOrEditLabel": "Créer ou éditer un Fiche Pointage",
+        "notFound": "Aucun Fiche Pointage trouvé"
+      },
+      "created": "Un nouveau Fiche Pointage a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Fiche Pointage avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Fiche Pointage avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Fiche Pointage {{ id }} ?"
+      },
+      "detail": {
+        "title": "Fiche Pointage"
+      },
+      "dateJour": "Date Jour",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "projet": "Projet",
+      "pointages": "Pointages"
+    }
+  }
+}

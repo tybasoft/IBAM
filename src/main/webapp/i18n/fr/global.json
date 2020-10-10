@@ -2,8 +2,20 @@
   "global": {
     "title": "IBAM",
     "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
+    "sidebar": {
+      "dashboard": "Tableau de bord",
+      "employees": "Employés",
+      "calendar": "Calendrier",
+      "projects": "Projets",
+      "modules": "Modules",
+      "settings": "Paramètrage",
+      "admintools": "Outils administratives",
+      "documentation": "Documentation"
+    },
     "menu": {
       "home": "Accueil",
+      "profile": "Mon profil",
+      "logout": "Se déconnecter",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entités",
@@ -37,7 +49,17 @@
         "maintenance": "Maintenance",
         "centreMaintenance": "Centre Maintenance",
         "visiteTechnique": "Visite Technique",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "notification": "Notification",
+        "fichePointage": "Fiche Pointage",
+        "affectationMateriels": "Affectation Materiels",
+        "situationFinanciere": "Situation Financiere",
+        "planification": "Planification",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "Materiel": "Matériel",
+        "Materiau": "Matériau",
+        "Avancement": "Avancement",
+        "Personnel": "Personnel",
+        "Parametrage": "Paramétrage"
       },
       "account": {
         "main": "Compte",
@@ -117,7 +139,8 @@
       "dev": "Développement"
     },
     "item-count": "Affichage {{first}} - {{second}} de {{total}} items.",
-    "themeChooser": "choisir un thème"
+    "themeChooser": "choisir un thème",
+    "SessionExpired": "Votre Session a expiré! Veuillez vous authentifier de nouveau."
   },
   "entity": {
     "action": {
@@ -130,7 +153,11 @@
       "open": "Ouvrir",
       "save": "Sauvegarder",
       "view": "Voir",
-      "download": "Télécharger"
+      "download": "Télécharger",
+      "genererpaie": "générer",
+      "editPointage": "Editer Pointage",
+      "viewPointage": "Voir Pointage",
+      "upload": "Charger"
     },
     "detail": {
       "field": "Champs",

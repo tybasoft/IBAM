@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.LocalDate;
 
 /**
@@ -16,7 +15,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "ligne_bon_reception")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LigneBonReception implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,6 +32,12 @@ public class LigneBonReception implements Serializable {
     @Column(name = "prix_ht")
     private String prixHt;
 
+    @Column(name = "currency")
+    private String currency;
+
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "user_modif")
     private String userModif;
 
@@ -40,16 +45,36 @@ public class LigneBonReception implements Serializable {
     private LocalDate dateModif;
 
     @ManyToOne
-    @JsonIgnoreProperties("ligneBonRecs")
+    @JsonIgnoreProperties(value = "ligneBonRecs", allowSetters = true)
     private BonReception bonReception;
 
     @ManyToOne
-    @JsonIgnoreProperties("ligneBonRecs")
+    @JsonIgnoreProperties(value = "ligneBonRecs", allowSetters = true)
     private Materiau materiau;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    @ManyToOne
+    @JsonIgnoreProperties(value = "ligneBonReceptions", allowSetters = true)
+    private Materiel materiel;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public void setId(Long id) {
@@ -133,7 +158,20 @@ public class LigneBonReception implements Serializable {
     public void setMateriau(Materiau materiau) {
         this.materiau = materiau;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Materiel getMateriel() {
+        return materiel;
+    }
+
+    public LigneBonReception materiel(Materiel materiel) {
+        this.materiel = materiel;
+        return this;
+    }
+
+    public void setMateriel(Materiel materiel) {
+        this.materiel = materiel;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -151,6 +189,7 @@ public class LigneBonReception implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "LigneBonReception{" +

@@ -14,8 +14,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,8 +68,8 @@ public class ProjetResourceIT {
     private static final String DEFAULT_USER_MODIF = "AAAAAAAAAA";
     private static final String UPDATED_USER_MODIF = "BBBBBBBBBB";
 
-    private static final LocalDate DEFAULT_DATE_MODIF = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_DATE_MODIF = LocalDate.now(ZoneId.systemDefault());
+    private static final Instant DEFAULT_DATE_MODIF = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE_MODIF = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private ProjetRepository projetRepository;

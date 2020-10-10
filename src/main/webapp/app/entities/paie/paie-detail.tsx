@@ -90,7 +90,7 @@ export const PaieDetail = (props: IPaieDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.paie.employe">Employe</Translate>
           </dt>
-          <dd>{paieEntity.employe ? paieEntity.employe.id : ''}</dd>
+          <dd>{paieEntity.employe ? paieEntity.employe.nom : ''}</dd>
         </dl>
         <Button tag={Link} to="/paie" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

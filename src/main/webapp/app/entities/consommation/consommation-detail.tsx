@@ -80,7 +80,7 @@ export const ConsommationDetail = (props: IConsommationDetailProps) => {
             </span>
           </dt>
           <dd>{consommationEntity.commentaire}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.consommation.userModif">User Modif</Translate>
             </span>
@@ -93,15 +93,15 @@ export const ConsommationDetail = (props: IConsommationDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={consommationEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
           <dt>
             <Translate contentKey="ibamApp.consommation.materiel">Materiel</Translate>
           </dt>
-          <dd>{consommationEntity.materiel ? consommationEntity.materiel.id : ''}</dd>
+          <dd>{consommationEntity.materiel ? consommationEntity.materiel.libelle: ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.consommation.fournisseur">Fournisseur</Translate>
           </dt>
-          <dd>{consommationEntity.fournisseur ? consommationEntity.fournisseur.id : ''}</dd>
+          <dd>{consommationEntity.fournisseur ? consommationEntity.fournisseur.nomCommercial : ''}</dd>
         </dl>
         <Button tag={Link} to="/consommation" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

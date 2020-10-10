@@ -6,18 +6,33 @@ import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntity } from './projet.reducer';
+import { getEntity, RapportConsommation } from './projet.reducer';
 import { IProjet } from 'app/shared/model/projet.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
+const containerStyle = {
+  width: '100%',
+  height: '400px'
+};
 export interface IProjetDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const ProjetDetail = (props: IProjetDetailProps) => {
   useEffect(() => {
     props.getEntity(props.match.params.id);
   }, []);
-
+  const getConsommationRepport = () => {
+    const res = props.RapportConsommation(props.match.params.id);
+  };
   const { projetEntity } = props;
+
+  const onClick = (e) => {
+    /* eslint-disable no-console */
+    console.log("Map clicked", e);
+    console.log("Lat", e.latLng.lat());
+    console.log("Lng", e.latLng.lng());
+  };
+
   return (
     <Row>
       <Col md="8">
@@ -106,16 +121,37 @@ export const ProjetDetail = (props: IProjetDetailProps) => {
           <dt>
             <Translate contentKey="ibamApp.projet.entreprise">Entreprise</Translate>
           </dt>
-          <dd>{projetEntity.entreprise ? projetEntity.entreprise.id : ''}</dd>
+          <dd>{projetEntity.entreprise ? projetEntity.entreprise.nomCommercial : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.projet.horaire">Horaire</Translate>
           </dt>
-          <dd>{projetEntity.horaire ? projetEntity.horaire.id : ''}</dd>
+          <dd>{projetEntity.horaire ? projetEntity.horaire.libelle: ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.projet.depot">Depot</Translate>
           </dt>
-          <dd>{projetEntity.depot ? projetEntity.depot.id : ''}</dd>
+          <dd>{projetEntity.depot ? projetEntity.depot.libelle : ''}</dd>
         </dl>
+        {projetEntity.latitude && projetEntity.longitude && <div className="mt-2 mb-2">
+          <LoadScript
+            googleMapsApiKey="AIzaSyC3ptr9KQuVbnjrokZLtgQH01RLrtQeWMA"
+          >
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={{ lat: projetEntity.latitude, lng: projetEntity.longitude }}
+              zoom={10}
+              onClick={onClick}
+            >
+              <Marker position={{ lat: projetEntity.latitude, lng: projetEntity.longitude }}/>
+              { /* Child components, such as markers, info windows, etc. */ }
+              <></>
+            </GoogleMap>
+          </LoadScript>
+        </div>}
+        { (!projetEntity.latitude || !projetEntity.longitude) &&
+        <p>
+          <Translate contentKey="ibamApp.projet.nolocal">Aucune information trouvée sur la géolocalisation du projet.</Translate>
+        </p>
+        }
         <Button tag={Link} to="/projet" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
@@ -128,6 +164,11 @@ export const ProjetDetail = (props: IProjetDetailProps) => {
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.edit">Edit</Translate>
           </span>
+        </Button>{' '}
+        <Button onClick={getConsommationRepport} replace color="success">
+          <span className="d-none d-md-inline">
+            <Translate contentKey="ibamApp.materiel.detail.consommation">Rapport de consommation</Translate>
+          </span>
         </Button>
       </Col>
     </Row>
@@ -138,7 +179,7 @@ const mapStateToProps = ({ projet }: IRootState) => ({
   projetEntity: projet.entity
 });
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getEntity, RapportConsommation };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

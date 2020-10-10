@@ -2,32 +2,32 @@
   "ibamApp": {
     "consommation": {
       "home": {
-        "title": "Consommations",
-        "createLabel": "Create a new Consommation",
-        "createOrEditLabel": "Create or edit a Consommation",
-        "notFound": "No Consommations found"
+        "title": "الإستهلاكات",
+        "createLabel": "إنشاءإستهلاك جديد",
+        "createOrEditLabel": "إنشاء أو تعديل إستهلاك",
+        "notFound": "لم يتم العثور على أي  إستهلاك"
       },
-      "created": "A new Consommation is created with identifier {{ param }}",
-      "updated": "A Consommation is updated with identifier {{ param }}",
-      "deleted": "A Consommation is deleted with identifier {{ param }}",
+      "created": "يتم إنشاء إستهلاك جديد مع معرف {{ param }}",
+      "updated": "يتم تحديث الإستهلاك مع معرف {{ param }}",
+      "deleted": " تم حذف الإستهلاك مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Consommation {{ id }}?"
+        "question": "هل أنت متأكد من أنك تريد حذف الإستهلاك {{ id }}?"
       },
       "detail": {
-        "title": "Consommation"
+        "title": "الإستهلاك"
       },
-      "reference": "Reference",
-      "dateAchat": "Date Achat",
-      "typeCarburant": "Type Carburant",
-      "montant": "Montant",
-      "quantite": "Quantite",
-      "kilometrage": "Kilometrage",
-      "commentaire": "Commentaire",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "materiel": "Materiel",
-      "fournisseur": "Fournisseur",
-      "image": "Image"
+      "reference": "مرجع",
+      "dateAchat": "تاريخ الشراء",
+      "typeCarburant": "نوع الوقود",
+      "montant": "مبلغ",
+      "quantite": "كمية",
+      "kilometrage": "المسافه المقطوعة",
+      "commentaire": "تعليق",
+      "userModif": "تم إنشاؤها بواسطة",
+      "dateModif": "تاريخ الإنشاء",
+      "materiel": "أداة",
+      "fournisseur": "مورد",
+      "image": "صورة"
     }
   }
 }

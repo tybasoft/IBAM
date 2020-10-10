@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { ILigneBonReception, defaultValue } from 'app/shared/model/ligne-bon-reception.model';
+import { ILigneBonCommande } from 'app/shared/model/ligne-bon-commande.model';
 
 export const ACTION_TYPES = {
   FETCH_LIGNEBONRECEPTION_LIST: 'ligneBonReception/FETCH_LIGNEBONRECEPTION_LIST',
@@ -109,6 +110,14 @@ export const getEntities: ICrudGetAllAction<ILigneBonReception> = (page, size, s
   };
 };
 
+export const getEntitiesById: ICrudGetAction<ILigneBonReception> = id => {
+  const requestUrl = `${apiUrl}/${id}/lignes`;
+  return {
+    type: ACTION_TYPES.FETCH_LIGNEBONRECEPTION_LIST,
+    payload: axios.get<ILigneBonReception>(requestUrl)
+  };
+};
+
 export const getEntity: ICrudGetAction<ILigneBonReception> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
@@ -140,6 +149,7 @@ export const deleteEntity: ICrudDeleteAction<ILigneBonReception> = id => async d
     type: ACTION_TYPES.DELETE_LIGNEBONRECEPTION,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
   return result;
 };
 

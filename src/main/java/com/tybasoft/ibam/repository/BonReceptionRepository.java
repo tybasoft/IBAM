@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface BonReceptionRepository extends JpaRepository<BonReception, Long> {
+
+
 }

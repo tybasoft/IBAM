@@ -18,13 +18,16 @@
       },
       "livreur": "Livreur",
       "remarques": "Remarques",
+      "projet": "Projet",
+      "project": "Projet",
+      "currency": "Devise",
       "dateLivraison": "Date Livraison",
       "userModif": "User Modif",
       "dateModif": "Date Modif",
       "ligneBonRec": "Ligne Bon Rec",
-      "depot": "Depot",
       "fournisseur": "Fournisseur",
-      "image": "Image"
+      "image": "Image",
+      "projet": "Projet"
     }
   }
 }

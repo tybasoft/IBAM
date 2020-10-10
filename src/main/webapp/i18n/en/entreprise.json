@@ -5,7 +5,8 @@
         "title": "Entreprises",
         "createLabel": "Create a new Entreprise",
         "createOrEditLabel": "Create or edit a Entreprise",
-        "notFound": "No Entreprises found"
+        "notFound": "No Entreprises found",
+        "description": "Short description about entreprises."
       },
       "created": "A new Entreprise is created with identifier {{ param }}",
       "updated": "A Entreprise is updated with identifier {{ param }}",
@@ -17,7 +18,7 @@
         "title": "Entreprise"
       },
       "entiteJuridique": "Entite Juridique",
-      "nomCommercial": "Nom Commercial",
+      "nomCommercial": "Commercial name",
       "adresse": "Adresse",
       "capital": "Capital",
       "direction": "Direction",

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,4 +126,12 @@ public class LigneBonReceptionResource {
         ligneBonReceptionRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
+    @GetMapping("/ligne-bon-receptions/{id}/lignes")
+    public ResponseEntity<List<LigneBonReception>> getAllLigneBonReceptionById(@PathVariable Long id) {
+        log.debug("REST request to get LigneBonReception : {}", id);
+        List<LigneBonReception> ligneBonReceptions = ligneBonReceptionRepository.findAllByBonReception_Id(id);
+        log.debug("Show all LigneBonCommande : {}", ligneBonReceptions.size());
+        return ResponseEntity.ok().body(ligneBonReceptions);
+    }
+
 }

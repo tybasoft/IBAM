@@ -40,19 +40,15 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
   const validate = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
 
-    if (isNew && allowedExtensions.exec(value) == null) {
+    if (value && allowedExtensions.exec(value) == null) {
       cb(false);
       seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (allowedExtensions.exec(value) == null && value !== '') {
+    } else if (value && imageFile.size / Math.pow(1024, 2) > 10) {
       cb(false);
-      seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (imageFile) {
-      if (Math.round(imageFile.size / Math.pow(1024, 2)) > 10) {
-        cb(false);
-        seterrorMessage(translate('entity.validation.imageFileSize'));
-      }
+      seterrorMessage(translate('entity.validation.imageFileSize'));
+    } else {
+      cb(true);
     }
-    cb(true);
   }, 300);
 
   useEffect(() => {
@@ -119,9 +115,10 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
       };
 
       if (isNew) {
-        image = uploadNewImage(values);
-        entity.image = image;
-
+        if (imageFile) {
+          image = uploadNewImage(values);
+          entity.image = image;
+        }
         props.createEntity(entity);
       } else {
         if (consommationEntity.image == null) {
@@ -217,7 +214,17 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                 <Label id="typeCarburantLabel" for="consommation-typeCarburant">
                   <Translate contentKey="ibamApp.consommation.typeCarburant">Type Carburant</Translate>
                 </Label>
-                <AvField id="consommation-typeCarburant" type="text" name="typeCarburant" />
+                <AvInput id="consommation-typeCarburant" type="select" className="form-control" name="typeCarburant">
+                  <option value="" key="0">
+                    Choisir Type Carburant
+                  </option>
+                  <option value=" essence" key="1">
+                    essence
+                  </option>
+                  <option value="diesel" key="1">
+                    diesel
+                  </option>
+                </AvInput>
               </AvGroup>
               <AvGroup>
                 <Label id="montantLabel" for="consommation-montant">
@@ -257,7 +264,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                 </Label>
                 <AvField id="consommation-commentaire" type="text" name="commentaire" />
               </AvGroup>
-              <AvGroup>
+              {/* <AvGroup>
                 <Label id="userModifLabel" for="consommation-userModif">
                   <Translate contentKey="ibamApp.consommation.userModif">User Modif</Translate>
                 </Label>
@@ -268,7 +275,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                   <Translate contentKey="ibamApp.consommation.dateModif">Date Modif</Translate>
                 </Label>
                 <AvField id="consommation-dateModif" type="date" className="form-control" name="dateModif" />
-              </AvGroup>
+              </AvGroup> */}
               <AvGroup>
                 <Label for="consommation-materiel">
                   <Translate contentKey="ibamApp.consommation.materiel">Materiel</Translate>
@@ -278,7 +285,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                   {materiels
                     ? materiels.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle + ' (' + otherEntity.matricule + ')'}
                         </option>
                       ))
                     : null}
@@ -293,7 +300,7 @@ export const ConsommationUpdate = (props: IConsommationUpdateProps) => {
                   {fournisseurs
                     ? fournisseurs.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.nomCommercial}
                         </option>
                       ))
                     : null}

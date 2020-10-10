@@ -6,10 +6,10 @@ TranslatorContext.setDefaultLocale('fr');
 TranslatorContext.setRenderInnerTextForMissingKeys(false);
 
 export const languages: any = {
-  'ar-ly': { name: 'العربية', rtl: true },
-  en: { name: 'English' },
-  fr: { name: 'Français' },
-  es: { name: 'Español' }
+  'ar-ly': { name: 'العربية', rtl: true, code: 'ma' },
+  en: { name: 'English', code: 'us' },
+  fr: { name: 'Français', code: 'fr' },
+  es: { name: 'Español', code: 'es' }
   // jhipster-needle-i18n-language-key-pipe - JHipster will add/remove languages in this object
 };
 

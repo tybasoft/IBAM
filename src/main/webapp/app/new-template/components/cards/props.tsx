@@ -1,0 +1,27 @@
+type CardProps = {
+  cardTitle?: any;
+  earningAmount?: any;
+  description?: any;
+  cardSubTitle?: any;
+  earningText?: any;
+  earningStatisticData?: any;
+  textColor?: any;
+  textTop?: any;
+  statisticsTop?: any;
+  statisticsTopUnit?: any;
+  dountChartClass?: any;
+  donutChartData?: any;
+  statisticsBottom?: any;
+  textBottom?: any;
+  cardBgColor?: any;
+  hobbiesStatisticsBarChartData?: any;
+  iconSide?: any;
+  statisticsColor?: any;
+  statistics?: any;
+  text?: any;
+  chartData?: any;
+  monthlySalesStatisticsBarChartData?: any;
+  salesText?: any;
+  visitText?: any;
+  productsSalesData?: any;
+};

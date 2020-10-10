@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
     <!--
         Added the constraints for entity Pointage.
     -->
@@ -13,6 +13,12 @@
                                  constraintName="fk_pointage_employe_id"
                                  referencedColumnNames="id"
                                  referencedTableName="employe"/>
+
+        <addForeignKeyConstraint baseColumnNames="fiche_pointage_id"
+                                 baseTableName="pointage"
+                                 constraintName="fk_pointage_fiche_pointage_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="fiche_pointage"/>
 
     </changeSet>
 </databaseChangeLog>

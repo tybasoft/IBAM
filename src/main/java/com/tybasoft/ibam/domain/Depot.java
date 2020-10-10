@@ -6,8 +6,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import com.tybasoft.ibam.security.SecurityUtils;
+
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,17 +51,18 @@ public class Depot implements Serializable {
     @Column(name = "date_modif")
     private LocalDate dateModif;
 
-    @OneToMany(mappedBy = "depot")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<BonCommande> bonCommandes = new HashSet<>();
-
-    @OneToMany(mappedBy = "depot")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<BonReception> bonReceptions = new HashSet<>();
 
     @OneToMany(mappedBy = "depot")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Projet> projets = new HashSet<>();
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -158,58 +160,24 @@ public class Depot implements Serializable {
         return this;
     }
 
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
     public void setDateModif(LocalDate dateModif) {
         this.dateModif = dateModif;
-    }
-
-    public Set<BonCommande> getBonCommandes() {
-        return bonCommandes;
-    }
-
-    public Depot bonCommandes(Set<BonCommande> bonCommandes) {
-        this.bonCommandes = bonCommandes;
-        return this;
-    }
-
-    public Depot addBonCommande(BonCommande bonCommande) {
-        this.bonCommandes.add(bonCommande);
-        bonCommande.setDepot(this);
-        return this;
-    }
-
-    public Depot removeBonCommande(BonCommande bonCommande) {
-        this.bonCommandes.remove(bonCommande);
-        bonCommande.setDepot(null);
-        return this;
-    }
-
-    public void setBonCommandes(Set<BonCommande> bonCommandes) {
-        this.bonCommandes = bonCommandes;
-    }
-
-    public Set<BonReception> getBonReceptions() {
-        return bonReceptions;
-    }
-
-    public Depot bonReceptions(Set<BonReception> bonReceptions) {
-        this.bonReceptions = bonReceptions;
-        return this;
-    }
-
-    public Depot addBonReception(BonReception bonReception) {
-        this.bonReceptions.add(bonReception);
-        bonReception.setDepot(this);
-        return this;
-    }
-
-    public Depot removeBonReception(BonReception bonReception) {
-        this.bonReceptions.remove(bonReception);
-        bonReception.setDepot(null);
-        return this;
-    }
-
-    public void setBonReceptions(Set<BonReception> bonReceptions) {
-        this.bonReceptions = bonReceptions;
     }
 
     public Set<Projet> getProjets() {
@@ -236,7 +204,22 @@ public class Depot implements Serializable {
     public void setProjets(Set<Projet> projets) {
         this.projets = projets;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -257,14 +240,16 @@ public class Depot implements Serializable {
     @Override
     public String toString() {
         return "Depot{" +
-            "id=" + getId() +
-            ", libelle='" + getLibelle() + "'" +
-            ", adresse='" + getAdresse() + "'" +
-            ", tel='" + getTel() + "'" +
-            ", ville='" + getVille() + "'" +
-            ", pays='" + getPays() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+            "id=" + id +
+            ", libelle='" + libelle + '\'' +
+            ", adresse='" + adresse + '\'' +
+            ", tel='" + tel + '\'' +
+            ", ville='" + ville + '\'' +
+            ", pays='" + pays + '\'' +
+            ", userModif='" + userModif + '\'' +
+            ", dateModif=" + dateModif +
+            ", latitude=" + latitude +
+            ", longitude=" + longitude +
+            '}';
     }
 }

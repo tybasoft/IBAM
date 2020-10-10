@@ -55,6 +55,24 @@ export const Paie = (props: IPaieProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.paie.home.createLabel">Create new Paie</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
+        <Link to={`${match.url}/paiement`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.paie.home.genererpaiement">Générer</Translate>
+        </Link>
+
+    
+       
       </h2>
       <div className="table-responsive">
         {paieList && paieList.length > 0 ? (

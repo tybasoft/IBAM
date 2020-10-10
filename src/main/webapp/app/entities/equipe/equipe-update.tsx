@@ -119,7 +119,7 @@ export const EquipeUpdate = (props: IEquipeUpdateProps) => {
                   {projets
                     ? projets.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.libelle}
                         </option>
                       ))
                     : null}
@@ -134,7 +134,7 @@ export const EquipeUpdate = (props: IEquipeUpdateProps) => {
                   {employes
                     ? employes.map(otherEntity => (
                         <option value={otherEntity.id} key={otherEntity.id}>
-                          {otherEntity.id}
+                          {otherEntity.prenom+" " +otherEntity.nom+" ("+otherEntity.matricule+")"}
                         </option>
                       ))
                     : null}

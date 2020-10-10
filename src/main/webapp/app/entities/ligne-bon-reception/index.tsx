@@ -11,12 +11,12 @@ import LigneBonReceptionDeleteDialog from './ligne-bon-reception-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={LigneBonReceptionDeleteDialog} />
-      <ErrorBoundaryRoute exact path={`${match.url}/new`} component={LigneBonReceptionUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={LigneBonReceptionUpdate} />
+      {/*<ErrorBoundaryRoute exact path={`${match.url}/new`} component={LigneBonReceptionUpdate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={LigneBonReceptionUpdate} />*/}
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={LigneBonReceptionDetail} />
       <ErrorBoundaryRoute path={match.url} component={LigneBonReception} />
     </Switch>
+    <ErrorBoundaryRoute exact path={`${match.url}/:id/delete`} component={LigneBonReceptionDeleteDialog} />
   </>
 );
 

@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.LocalDate;
 
 /**
@@ -16,7 +15,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "ligne_bon_commande")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LigneBonCommande implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,16 +34,23 @@ public class LigneBonCommande implements Serializable {
 
     @Column(name = "date_modif")
     private LocalDate dateModif;
+    @Column(name = "type")
+    private String type;
+
 
     @ManyToOne
-    @JsonIgnoreProperties("ligneBonComs")
-    private BonCommande bonCommande;
-
-    @ManyToOne
-    @JsonIgnoreProperties("ligneBonComs")
+    @JsonIgnoreProperties(value = "ligneBonComs", allowSetters = true)
     private Materiau materiau;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    @ManyToOne
+    @JsonIgnoreProperties(value = "ligneBonCommandes", allowSetters = true)
+    private Materiel materiel;
+
+    @ManyToOne(optional = false)
+    @JsonIgnoreProperties(value = "ligneBonComs", allowSetters = true)
+    private BonCommande bonCommande;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -92,19 +98,6 @@ public class LigneBonCommande implements Serializable {
         this.dateModif = dateModif;
     }
 
-    public BonCommande getBonCommande() {
-        return bonCommande;
-    }
-
-    public LigneBonCommande bonCommande(BonCommande bonCommande) {
-        this.bonCommande = bonCommande;
-        return this;
-    }
-
-    public void setBonCommande(BonCommande bonCommande) {
-        this.bonCommande = bonCommande;
-    }
-
     public Materiau getMateriau() {
         return materiau;
     }
@@ -117,7 +110,41 @@ public class LigneBonCommande implements Serializable {
     public void setMateriau(Materiau materiau) {
         this.materiau = materiau;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Materiel getMateriel() {
+        return materiel;
+    }
+
+    public LigneBonCommande materiel(Materiel materiel) {
+        this.materiel = materiel;
+        return this;
+    }
+
+    public void setMateriel(Materiel materiel) {
+        this.materiel = materiel;
+    }
+
+    public BonCommande getBonCommande() {
+        return bonCommande;
+    }
+
+    public LigneBonCommande bonCommande(BonCommande bonCommande) {
+        this.bonCommande = bonCommande;
+        return this;
+    }
+
+    public void setBonCommande(BonCommande bonCommande) {
+        this.bonCommande = bonCommande;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -135,6 +162,7 @@ public class LigneBonCommande implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "LigneBonCommande{" +

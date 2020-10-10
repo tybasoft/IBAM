@@ -2,24 +2,26 @@
   "ibamApp": {
     "tva": {
       "home": {
-        "title": "Tvas",
-        "createLabel": "Create a new Tva",
-        "createOrEditLabel": "Create or edit a Tva",
-        "notFound": "No Tvas found"
+        "title": "ضرائب القيمة المضافة",
+        "createLabel": "إنشاء ضريبة قيمة مضافة جديدة",
+        "createOrEditLabel": "إنشاء أو تعديل ضريبة قيمة مضافة",
+        "notFound": "لم يتم العثور على أي ضرائب للقيمة المضافة",
+        "importLabel": "اضافة ملف",
+        "exportLabel": "استخراج ملف"
       },
-      "created": "A new Tva is created with identifier {{ param }}",
-      "updated": "A Tva is updated with identifier {{ param }}",
-      "deleted": "A Tva is deleted with identifier {{ param }}",
+      "created": " تم إنشاء ضريبة قيمة مضافة جديدة مع معرف {{ param }}",
+      "updated": " يتم تحديث ضريبة قيمة مضافة مع معرف {{ param }}",
+      "deleted": "يتم حذف  الضريبة مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Tva {{ id }}?"
+        "question": "هل أنت متأكد أنك تريد حذف الضريبة {{ id }}?"
       },
       "detail": {
-        "title": "Tva"
+        "title": "ضريبة القيمة المضافة"
       },
-      "taux": "Taux",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "materiau": "Materiau"
+      "taux": "معدل",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "materiau": "مادة"
     }
   }
 }

@@ -98,6 +98,7 @@ export default (state: BonCommandeState = initialState, action): BonCommandeStat
 };
 
 const apiUrl = 'api/bon-commandes';
+const date = new Date(Date.now()).toLocaleString().split(',');
 
 // Actions
 
@@ -106,6 +107,14 @@ export const getEntities: ICrudGetAllAction<IBonCommande> = (page, size, sort) =
   return {
     type: ACTION_TYPES.FETCH_BONCOMMANDE_LIST,
     payload: axios.get<IBonCommande>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const getEntitiesById: ICrudGetAction<IBonCommande> = id => {
+  const requestUrl = `${apiUrl}/${id}/lignes`;
+  return {
+    type: ACTION_TYPES.FETCH_BONCOMMANDE,
+    payload: axios.get<IBonCommande>(requestUrl)
   };
 };
 
@@ -125,6 +134,30 @@ export const createEntity: ICrudPutAction<IBonCommande> = entity => async dispat
   dispatch(getEntities());
   return result;
 };
+export const getReportEntity: (id) => void = id => {
+  const requestUrl = `${apiUrl}/report/${id}`;
+  axios({
+    url: requestUrl,
+    method: 'GET',
+    responseType: 'blob' // important
+  }).then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Bon_Commande' + date + '.pdf');
+    document.body.appendChild(link);
+    link.click();
+  });
+};
+
+// export const createBonCommande: (entity, ligne) => (dispatch) => Promise<any> = (entity, ligne) => async dispatch => {
+//   const result = await dispatch({
+//     type: ACTION_TYPES.CREATE_BONCOMMANDE,
+//     payload: axios.post(apiUrl, entity,ligne),
+//   });
+//   dispatch(getEntities());
+//   return result;
+// };
 
 export const updateEntity: ICrudPutAction<IBonCommande> = entity => async dispatch => {
   const result = await dispatch({
@@ -140,6 +173,7 @@ export const deleteEntity: ICrudDeleteAction<IBonCommande> = id => async dispatc
     type: ACTION_TYPES.DELETE_BONCOMMANDE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
   return result;
 };
 

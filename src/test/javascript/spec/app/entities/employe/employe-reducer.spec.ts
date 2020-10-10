@@ -30,6 +30,8 @@ describe('Entities reducer tests', () => {
     loading: false,
     errorMessage: null,
     entities: [] as ReadonlyArray<IEmploye>,
+    currList: [] as ReadonlyArray<IEmploye>,
+    projectid: '',
     entity: defaultValue,
     totalItems: 0,
     updating: false,

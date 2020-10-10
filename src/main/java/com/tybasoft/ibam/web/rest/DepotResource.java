@@ -1,21 +1,32 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Consommation;
 import com.tybasoft.ibam.domain.Depot;
 import com.tybasoft.ibam.repository.DepotRepository;
+import com.tybasoft.ibam.service.FileStorageService;
+import com.tybasoft.ibam.service.ReportService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +55,9 @@ public class DepotResource {
      * {@code POST  /depots} : Create a new depot.
      *
      * @param depot the depot to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new depot, or with status {@code 400 (Bad Request)} if the depot has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new depot, or with status {@code 400 (Bad Request)} if the
+     *         depot has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/depots")
@@ -54,18 +67,20 @@ public class DepotResource {
             throw new BadRequestAlertException("A new depot cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Depot result = depotRepository.save(depot);
-        return ResponseEntity.created(new URI("/api/depots/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        return ResponseEntity
+                .created(new URI("/api/depots/" + result.getId())).headers(HeaderUtil
+                        .createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                .body(result);
     }
 
     /**
      * {@code PUT  /depots} : Updates an existing depot.
      *
      * @param depot the depot to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated depot,
-     * or with status {@code 400 (Bad Request)} if the depot is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the depot couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated depot, or with status {@code 400 (Bad Request)} if the
+     *         depot is not valid, or with status
+     *         {@code 500 (Internal Server Error)} if the depot couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/depots")
@@ -75,15 +90,16 @@ public class DepotResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Depot result = depotRepository.save(depot);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, depot.getId().toString()))
-            .body(result);
+        return ResponseEntity.ok().headers(
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, depot.getId().toString()))
+                .body(result);
     }
 
     /**
      * {@code GET  /depots} : get all the depots.
      *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of depots in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of depots in body.
      */
     @GetMapping("/depots")
     public List<Depot> getAllDepots() {
@@ -95,13 +111,26 @@ public class DepotResource {
      * {@code GET  /depots/:id} : get the "id" depot.
      *
      * @param id the id of the depot to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the depot, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the depot, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/depots/{id}")
     public ResponseEntity<Depot> getDepot(@PathVariable Long id) {
         log.debug("REST request to get Depot : {}", id);
         Optional<Depot> depot = depotRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(depot);
+    }
+    @GetMapping("/depots/search-entities/{keyword}")
+    public ResponseEntity<Collection<Depot>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Depot> depotPage ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        depotPage = depotRepository.findByLibelleIsContainingOrAdresseIsContainingOrTelIsContainingOrVilleIsContainingOrPaysIsContaining(keyword,keyword,keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(depotPage.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), depotPage);
+
+        return ResponseEntity.ok().headers(headers).body(depotPage.getContent());
     }
 
     /**
@@ -114,6 +143,36 @@ public class DepotResource {
     public ResponseEntity<Void> deleteDepot(@PathVariable Long id) {
         log.debug("REST request to delete Depot : {}", id);
         depotRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent()
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+                .build();
+    }
+
+    @Autowired
+    private ReportService reportService;
+
+    @GetMapping("/depots/report/{format}")
+    public boolean generateReport(@PathVariable String format) {
+        reportService.setName(ENTITY_NAME);
+        reportService.setDataSource((List) depotRepository.findAll());
+        return reportService.exportReport(format);
+    }
+
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    @PostMapping("/depots/upload")
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
+            @RequestParam("filename") String filename) {
+        try {
+            fileStorageService.storeFile(file, filename, "Upload");
+
+            reportService.importReport(filename, this.ENTITY_NAME);
+
+        } catch (Exception e) {
+
+        }
+        return ResponseEntity.ok().body(true);
+
     }
 }

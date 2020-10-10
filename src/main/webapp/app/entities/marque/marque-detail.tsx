@@ -37,7 +37,7 @@ export const MarqueDetail = (props: IMarqueDetailProps) => {
             </span>
           </dt>
           <dd>{marqueEntity.description}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.marque.userModif">User Modif</Translate>
             </span>
@@ -50,7 +50,7 @@ export const MarqueDetail = (props: IMarqueDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={marqueEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
         </dl>
         <Button tag={Link} to="/marque" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

@@ -55,6 +55,16 @@ export const Assurance = (props: IAssuranceProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.assurance.home.createLabel">Create new Assurance</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {assuranceList && assuranceList.length > 0 ? (
@@ -73,12 +83,12 @@ export const Assurance = (props: IAssuranceProps) => {
                 <th className="hand" onClick={sort('agence')}>
                   <Translate contentKey="ibamApp.assurance.agence">Agence</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
+                {/* <th className="hand" onClick={sort('userModif')}>
                   <Translate contentKey="ibamApp.assurance.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.assurance.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th>
                   <Translate contentKey="ibamApp.assurance.materiel">Materiel</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -100,11 +110,11 @@ export const Assurance = (props: IAssuranceProps) => {
                     <TextFormat type="date" value={assurance.dateFin} format={APP_LOCAL_DATE_FORMAT} />
                   </td>
                   <td>{assurance.agence}</td>
-                  <td>{assurance.userModif}</td>
+                  {/* <td>{assurance.userModif}</td>
                   <td>
                     <TextFormat type="date" value={assurance.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
-                  <td>{assurance.materiel ? <Link to={`materiel/${assurance.materiel.id}`}>{assurance.materiel.id}</Link> : ''}</td>
+                  </td> */}
+                  <td>{assurance.materiel ? <Link to={`materiel/${assurance.materiel.libelle}`}>{assurance.materiel.libelle}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${assurance.id}`} color="info" size="sm">

@@ -3,5 +3,25 @@
   "parserOptions": {
     "project": "./tsconfig.e2e.json"
   },
-  "rules": {}
+  "rules": {
+    "react/no-unescaped-entities": 0,
+    "object-shorthand": 0,
+    "no-shadow": "off",
+    "@typescript-eslint/class-name-casing": 0,
+    "react/jsx-key": 0,
+    "react/no-string-refs": 0,
+    "@typescript-eslint/prefer-includes": 0,
+    "no-console": "off",
+    "prefer-const": "off",
+    "no-undef": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-prototype-builtins": "off",
+    "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/prefer-regexp-exec": 0,
+    "no-case-declarations": "off",
+    "no-extra-boolean-cast": "off",
+    "@typescript-eslint/member-ordering": "off",
+    "react/no-deprecated": 0,
+    "spaced-comment": "off"
+  }
 }

@@ -1,16 +1,17 @@
 package com.tybasoft.ibam.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import com.tybasoft.ibam.security.SecurityUtils;
+import com.tybasoft.ibam.security.SecurityUtils;
 import java.io.Serializable;
-import java.util.Objects;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Image.
@@ -19,7 +20,6 @@ import java.util.Set;
 @Table(name = "image")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Image implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -39,7 +39,7 @@ public class Image implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private LocalDate dateModif;
+    private Instant dateModif;
 
     @OneToMany(mappedBy = "image")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -69,7 +69,8 @@ public class Image implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<BonReception> bonReceptions = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -117,16 +118,16 @@ public class Image implements Serializable {
         this.userModif = userModif;
     }
 
-    public LocalDate getDateModif() {
+    public Instant getDateModif() {
         return dateModif;
     }
 
-    public Image dateModif(LocalDate dateModif) {
+    public Image dateModif(Instant dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(LocalDate dateModif) {
+    public void setDateModif(Instant dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -304,7 +305,9 @@ public class Image implements Serializable {
     public void setBonReceptions(Set<BonReception> bonReceptions) {
         this.bonReceptions = bonReceptions;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -324,12 +327,35 @@ public class Image implements Serializable {
 
     @Override
     public String toString() {
-        return "Image{" +
-            "id=" + getId() +
-            ", titre='" + getTitre() + "'" +
-            ", path='" + getPath() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return (
+            "Image{" +
+            "id=" +
+            getId() +
+            ", titre='" +
+            getTitre() +
+            "'" +
+            ", path='" +
+            getPath() +
+            "'" +
+            ", userModif='" +
+            getUserModif() +
+            "'" +
+            ", dateModif='" +
+            getDateModif() +
+            "'" +
+            "}"
+        );
+    }
+
+    @PrePersist
+    public void onCreate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
 }

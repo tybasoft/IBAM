@@ -55,6 +55,16 @@ export const Marque = (props: IMarqueProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.marque.home.createLabel">Create new Marque</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {marqueList && marqueList.length > 0 ? (
@@ -70,12 +80,12 @@ export const Marque = (props: IMarqueProps) => {
                 <th className="hand" onClick={sort('description')}>
                   <Translate contentKey="ibamApp.marque.description">Description</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('userModif')}>
+                {/* <th className="hand" onClick={sort('userModif')}>
                   <Translate contentKey="ibamApp.marque.userModif">User Modif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.marque.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -89,10 +99,10 @@ export const Marque = (props: IMarqueProps) => {
                   </td>
                   <td>{marque.libelle}</td>
                   <td>{marque.description}</td>
-                  <td>{marque.userModif}</td>
+                  {/* <td>{marque.userModif}</td>
                   <td>
                     <TextFormat type="date" value={marque.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
+                  </td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${marque.id}`} color="info" size="sm">

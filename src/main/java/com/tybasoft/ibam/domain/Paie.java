@@ -1,6 +1,8 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tybasoft.ibam.security.SecurityUtils;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -60,7 +62,8 @@ public class Paie implements Serializable {
     @JsonIgnoreProperties("paies")
     private Employe employe;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -198,7 +201,22 @@ public class Paie implements Serializable {
     public void setEmploye(Employe employe) {
         this.employe = employe;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -218,17 +236,10 @@ public class Paie implements Serializable {
 
     @Override
     public String toString() {
-        return "Paie{" +
-            "id=" + getId() +
-            ", datePaiement='" + getDatePaiement() + "'" +
-            ", nbrJourTravail='" + getNbrJourTravail() + "'" +
-            ", montantPay='" + getMontantPay() + "'" +
-            ", nbrHeurSup='" + getNbrHeurSup() + "'" +
-            ", dateDebut='" + getDateDebut() + "'" +
-            ", dateFin='" + getDateFin() + "'" +
-            ", remarques='" + getRemarques() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return "Paie{" + "id=" + getId() + ", datePaiement='" + getDatePaiement() + "'" + ", nbrJourTravail='"
+                + getNbrJourTravail() + "'" + ", montantPay='" + getMontantPay() + "'" + ", nbrHeurSup='"
+                + getNbrHeurSup() + "'" + ", dateDebut='" + getDateDebut() + "'" + ", dateFin='" + getDateFin() + "'"
+                + ", remarques='" + getRemarques() + "'" + ", userModif='" + getUserModif() + "'" + ", dateModif='"
+                + getDateModif() + "'" + "}";
     }
 }

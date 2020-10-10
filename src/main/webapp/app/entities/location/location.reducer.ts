@@ -12,7 +12,9 @@ export const ACTION_TYPES = {
   CREATE_LOCATION: 'location/CREATE_LOCATION',
   UPDATE_LOCATION: 'location/UPDATE_LOCATION',
   DELETE_LOCATION: 'location/DELETE_LOCATION',
-  RESET: 'location/RESET'
+  RESET: 'location/RESET',
+  REPPORT: 'location/REPPORT',
+  FILTER_LOCATION_LIST: 'location/FILTER_LOCATION_LIST'
 };
 
 const initialState = {
@@ -31,6 +33,8 @@ export type LocationState = Readonly<typeof initialState>;
 
 export default (state: LocationState = initialState, action): LocationState => {
   switch (action.type) {
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_LOCATION_LIST):
     case REQUEST(ACTION_TYPES.FETCH_LOCATION):
       return {
@@ -67,6 +71,12 @@ export default (state: LocationState = initialState, action): LocationState => {
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
+    case SUCCESS(ACTION_TYPES.FILTER_LOCATION_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case SUCCESS(ACTION_TYPES.FETCH_LOCATION):
       return {
         ...state,
@@ -88,6 +98,11 @@ export default (state: LocationState = initialState, action): LocationState => {
         updateSuccess: true,
         entity: {}
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -97,7 +112,7 @@ export default (state: LocationState = initialState, action): LocationState => {
   }
 };
 
-const apiUrl = 'api/locations';
+export const apiUrl = 'api/locations';
 
 // Actions
 
@@ -108,6 +123,11 @@ export const getEntities: ICrudGetAllAction<ILocation> = (page, size, sort) => {
     payload: axios.get<ILocation>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
+
+export const filterEntities: ICrudGetAllAction<ILocation> = filter => ({
+  type: ACTION_TYPES.FILTER_LOCATION_LIST,
+  payload: axios.get<ILocation>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntity: ICrudGetAction<ILocation> = id => {
   const requestUrl = `${apiUrl}/${id}`;

@@ -6,6 +6,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import com.tybasoft.ibam.security.SecurityUtils;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.time.LocalDate;
@@ -58,7 +60,8 @@ public class Horaire implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Projet> projets = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -195,7 +198,22 @@ public class Horaire implements Serializable {
     public void setProjets(Set<Projet> projets) {
         this.projets = projets;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -215,16 +233,10 @@ public class Horaire implements Serializable {
 
     @Override
     public String toString() {
-        return "Horaire{" +
-            "id=" + getId() +
-            ", libelle='" + getLibelle() + "'" +
-            ", nbrHeurParJr='" + getNbrHeurParJr() + "'" +
-            ", nbrJourParSem='" + getNbrJourParSem() + "'" +
-            ", heureDebutJr='" + getHeureDebutJr() + "'" +
-            ", heureFinJr='" + getHeureFinJr() + "'" +
-            ", dureePause='" + getDureePause() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return "Horaire{" + "id=" + getId() + ", libelle='" + getLibelle() + "'" + ", nbrHeurParJr='"
+                + getNbrHeurParJr() + "'" + ", nbrJourParSem='" + getNbrJourParSem() + "'" + ", heureDebutJr='"
+                + getHeureDebutJr() + "'" + ", heureFinJr='" + getHeureFinJr() + "'" + ", dureePause='"
+                + getDureePause() + "'" + ", userModif='" + getUserModif() + "'" + ", dateModif='" + getDateModif()
+                + "'" + "}";
     }
 }

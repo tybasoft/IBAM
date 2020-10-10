@@ -1,68 +1,69 @@
 {
-    "name": "BonReception",
-    "fields": [
-        {
-            "fieldName": "livreur",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "remarques",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "dateLivraison",
-            "fieldType": "LocalDate",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "userModif",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "dateModif",
-            "fieldType": "LocalDate"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "otherEntityName": "ligneBonReception",
-            "otherEntityRelationshipName": "bonReception",
-            "relationshipName": "ligneBonRec"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "depot",
-            "otherEntityRelationshipName": "bonReception",
-            "relationshipName": "depot",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "fournisseur",
-            "otherEntityRelationshipName": "bonReception",
-            "relationshipName": "fournisseur",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "image",
-            "otherEntityRelationshipName": "bonReception",
-            "relationshipName": "image",
-            "otherEntityField": "id"
-        }
-    ],
-    "changelogDate": "20200512002600",
-    "entityTableName": "bon_reception",
-    "dto": "no",
-    "pagination": "pagination",
-    "service": "no",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "readOnly": false,
-    "embedded": false,
-    "clientRootFolder": "",
-    "applications": "*"
+  "name": "BonReception",
+  "fields": [
+    {
+      "fieldName": "livreur",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "remarques",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateLivraison",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "userModif",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateModif",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "ligneBonReception",
+      "otherEntityRelationshipName": "bonReception",
+      "relationshipName": "ligneBonRec"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "fournisseur",
+      "otherEntityRelationshipName": "bonReception",
+      "relationshipName": "fournisseur",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "image",
+      "otherEntityRelationshipName": "bonReception",
+      "relationshipName": "image",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipName": "projet",
+      "otherEntityName": "projet",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "bonReception"
+    }
+  ],
+  "changelogDate": "20200512002600",
+  "entityTableName": "bon_reception",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "searchEngine": false,
+  "databaseType": "sql"
 }

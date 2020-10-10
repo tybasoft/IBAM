@@ -5,6 +5,7 @@
         "title": "Paies",
         "createLabel": "Créer un nouveau Paie",
         "createOrEditLabel": "Créer ou éditer un Paie",
+        "genererpaiement": "générer",
         "notFound": "Aucun Paie trouvé"
       },
       "created": "Un nouveau Paie a été créé avec l'identifiant {{ param }}",
@@ -18,7 +19,8 @@
       },
       "datePaiement": "Date Paiement",
       "nbrJourTravail": "Nbr Jour Travail",
-      "montantPay": "Montant Pay",
+      "nbHeureJournalier": "nbHeureJournalier",
+      "montantPay": "Montant à Payer",
       "nbrHeurSup": "Nbr Heur Sup",
       "dateDebut": "Date Debut",
       "dateFin": "Date Fin",

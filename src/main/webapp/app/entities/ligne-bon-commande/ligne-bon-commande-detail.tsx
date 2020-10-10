@@ -31,28 +31,19 @@ export const LigneBonCommandeDetail = (props: ILigneBonCommandeDetailProps) => {
             </span>
           </dt>
           <dd>{ligneBonCommandeEntity.quantite}</dd>
+
           <dt>
-            <span id="userModif">
-              <Translate contentKey="ibamApp.ligneBonCommande.userModif">User Modif</Translate>
-            </span>
+            <Translate contentKey="ibamApp.ligneBonCommande.materiau">Materiau</Translate>
           </dt>
-          <dd>{ligneBonCommandeEntity.userModif}</dd>
+          <dd>{ligneBonCommandeEntity.materiau ? ligneBonCommandeEntity.materiau.libelle : ''}</dd>
           <dt>
-            <span id="dateModif">
-              <Translate contentKey="ibamApp.ligneBonCommande.dateModif">Date Modif</Translate>
-            </span>
+            <Translate contentKey="ibamApp.ligneBonCommande.materiel">Materiel</Translate>
           </dt>
-          <dd>
-            <TextFormat value={ligneBonCommandeEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          <dd>{ligneBonCommandeEntity.materiel ? ligneBonCommandeEntity.materiel.libelle : ''}</dd>
           <dt>
             <Translate contentKey="ibamApp.ligneBonCommande.bonCommande">Bon Commande</Translate>
           </dt>
           <dd>{ligneBonCommandeEntity.bonCommande ? ligneBonCommandeEntity.bonCommande.id : ''}</dd>
-          <dt>
-            <Translate contentKey="ibamApp.ligneBonCommande.materiau">Materiau</Translate>
-          </dt>
-          <dd>{ligneBonCommandeEntity.materiau ? ligneBonCommandeEntity.materiau.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/ligne-bon-commande" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}
@@ -73,7 +64,7 @@ export const LigneBonCommandeDetail = (props: ILigneBonCommandeDetailProps) => {
 };
 
 const mapStateToProps = ({ ligneBonCommande }: IRootState) => ({
-  ligneBonCommandeEntity: ligneBonCommande.entity
+  ligneBonCommandeEntity: ligneBonCommande.entity,
 });
 
 const mapDispatchToProps = { getEntity };

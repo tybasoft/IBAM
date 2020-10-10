@@ -27,6 +27,16 @@ export const Depot = (props: IDepotProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.depot.home.createLabel">Create new Depot</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {depotList && depotList.length > 0 ? (
@@ -51,12 +61,12 @@ export const Depot = (props: IDepotProps) => {
                 <th>
                   <Translate contentKey="ibamApp.depot.pays">Pays</Translate>
                 </th>
-                <th>
+                {/*<th>
                   <Translate contentKey="ibamApp.depot.userModif">User Modif</Translate>
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.depot.dateModif">Date Modif</Translate>
-                </th>
+                </th>*/}
                 <th />
               </tr>
             </thead>
@@ -73,10 +83,10 @@ export const Depot = (props: IDepotProps) => {
                   <td>{depot.tel}</td>
                   <td>{depot.ville}</td>
                   <td>{depot.pays}</td>
-                  <td>{depot.userModif}</td>
+                  {/* <td>{depot.userModif}</td>
                   <td>
                     <TextFormat type="date" value={depot.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
+                  </td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${depot.id}`} color="info" size="sm">

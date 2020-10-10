@@ -1,17 +1,19 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import com.tybasoft.ibam.security.SecurityUtils;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
+
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import java.io.Serializable;
-import java.util.Objects;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Employe.
@@ -20,7 +22,6 @@ import java.util.Set;
 @Table(name = "employe")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Employe implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -99,10 +100,12 @@ public class Employe implements Serializable {
     @Column(name = "date_modif")
     private LocalDate dateModif;
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "employe")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Materiel> materiels = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "equipe")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Equipe> employes = new HashSet<>();
@@ -111,27 +114,33 @@ public class Employe implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Pointage> pointages = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "employe")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Paie> paies = new HashSet<>();
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employes")
     private Projet projet;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employes")
     private Equipe equipe;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employes")
     private Fonction fonction;
 
+    @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("employees")
     private Image image;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -564,7 +573,22 @@ public class Employe implements Serializable {
     public void setImage(Image image) {
         this.image = image;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // Fonction executed when the object is created
+    @PrePersist
+    public void prePresist() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+
+    // Fonction executed when the object is updated
+    @PreUpdate
+    public void preUpdate() {
+        this.dateModif = LocalDate.now();
+        this.userModif = SecurityUtils.getCurrentUserLogin().get();
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -584,29 +608,19 @@ public class Employe implements Serializable {
 
     @Override
     public String toString() {
-        return "Employe{" +
-            "id=" + getId() +
-            ", nom='" + getNom() + "'" +
-            ", prenom='" + getPrenom() + "'" +
-            ", matricule='" + getMatricule() + "'" +
-            ", cin='" + getCin() + "'" +
-            ", sexe='" + getSexe() + "'" +
-            ", tarifJournalier='" + getTarifJournalier() + "'" +
-            ", dateNaissance='" + getDateNaissance() + "'" +
-            ", lieuNaissance='" + getLieuNaissance() + "'" +
-            ", situationFam='" + getSituationFam() + "'" +
-            ", nationalite='" + getNationalite() + "'" +
-            ", dateEntree='" + getDateEntree() + "'" +
-            ", tel='" + getTel() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", adresse='" + getAdresse() + "'" +
-            ", division='" + getDivision() + "'" +
-            ", typeContrat='" + getTypeContrat() + "'" +
-            ", multiPorjet='" + isMultiPorjet() + "'" +
-            ", dateDepart='" + getDateDepart() + "'" +
-            ", motifDepart='" + getMotifDepart() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return ("Employe{" + "id=" + getId() + ", nom='" + getNom() + "'" + ", prenom='" + getPrenom() + "'"
+                + ", matricule='" + getMatricule() + "'" + ", cin='" + getCin() + "'" + ", sexe='" + getSexe() + "'"
+                + ", tarifJournalier='" + getTarifJournalier() + "'" + ", dateNaissance='" + getDateNaissance() + "'"
+                + ", lieuNaissance='" + getLieuNaissance() + "'" + ", situationFam='" + getSituationFam() + "'"
+                + ", nationalite='" + getNationalite() + "'" + ", dateEntree='" + getDateEntree() + "'" + ", tel='"
+                + getTel() + "'" + ", email='" + getEmail() + "'" + ", adresse='" + getAdresse() + "'" + ", division='"
+                + getDivision() + "'" + ", typeContrat='" + getTypeContrat() + "'" + ", multiPorjet='" + isMultiPorjet()
+                + "'" + ", dateDepart='" + getDateDepart() + "'" + ", motifDepart='" + getMotifDepart() + "'"
+                + ", userModif='" + getUserModif() + "'" + ", dateModif='" + getDateModif() + "'" + "}");
     }
+
+    public Boolean getMultiPorjet() {
+        return multiPorjet;
+    }
+
 }

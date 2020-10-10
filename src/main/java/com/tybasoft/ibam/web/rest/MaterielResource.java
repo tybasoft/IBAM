@@ -1,14 +1,8 @@
 package com.tybasoft.ibam.web.rest;
 
-import com.tybasoft.ibam.domain.Document;
-import com.tybasoft.ibam.domain.Image;
+import com.tybasoft.ibam.domain.Materiau;
 import com.tybasoft.ibam.domain.Materiel;
-import com.tybasoft.ibam.repository.DocumentRepository;
-import com.tybasoft.ibam.repository.ImageRepository;
 import com.tybasoft.ibam.repository.MaterielRepository;
-import com.tybasoft.ibam.service.DocumentService;
-import com.tybasoft.ibam.service.FileStorageService;
-import com.tybasoft.ibam.service.ImageService;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -20,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,19 +43,9 @@ public class MaterielResource {
     private String applicationName;
 
     private final MaterielRepository materielRepository;
-    private final ImageService imageService;
-    private final ImageRepository imageRepository;
-    private final DocumentService documentService;
-    private final DocumentRepository documentRepository;
-    private final FileStorageService fileStorageService;
 
-    public MaterielResource(MaterielRepository materielRepository, ImageService imageService, ImageRepository imageRepository, DocumentService documentService, DocumentRepository documentRepository, FileStorageService fileStorageService) {
+    public MaterielResource(MaterielRepository materielRepository) {
         this.materielRepository = materielRepository;
-        this.imageService = imageService;
-        this.imageRepository = imageRepository;
-        this.documentService = documentService;
-        this.documentRepository = documentRepository;
-        this.fileStorageService = fileStorageService;
     }
 
     /**
@@ -71,27 +57,10 @@ public class MaterielResource {
      */
     @PostMapping("/materiels")
     public ResponseEntity<Materiel> createMateriel(@Valid @RequestBody Materiel materiel) throws URISyntaxException {
-        Image image= materiel.getImage();
-        Document document= materiel.getDocument();
-
-        log.debug("REST request to save Image : {}", image);
-        if (image.getId() != null) {
-            throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Image resultImage= imageService.createImageEntity(image);
-
-        log.debug("REST request to save Document : {}", document);
-        if (document.getId() != null) {
-            throw new BadRequestAlertException("A new document cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        Document resultDocument = documentService.createDocumentEntity(document);
-
         log.debug("REST request to save Materiel : {}", materiel);
         if (materiel.getId() != null) {
             throw new BadRequestAlertException("A new materiel cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        materiel.setImage(resultImage);
-        materiel.setDocument(resultDocument);
         Materiel result = materielRepository.save(materiel);
         return ResponseEntity.created(new URI("/api/materiels/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -109,35 +78,10 @@ public class MaterielResource {
      */
     @PutMapping("/materiels")
     public ResponseEntity<Materiel> updateMateriel(@Valid @RequestBody Materiel materiel) throws URISyntaxException {
-        Image image= materiel.getImage();
-        Document document= materiel.getDocument();
-        Image resultImage= null;
-        Document resultDocument= null;
-
-        if(image != null) {
-            if (image.getPath() == null && image.getTitre() == null){
-                resultImage= image;
-            }else {
-                log.debug("REST request to save Image : {}", image);
-                resultImage = imageService.createImageEntity(image);
-            }
-        }
-
-        if(document != null) {
-            if (document.getPath() == null && document.getTitre() == null){
-                resultDocument= document;
-            }else {
-                log.debug("REST request to save Document : {}", document);
-                resultDocument = documentService.createDocumentEntity(document);
-            }
-        }
-
         log.debug("REST request to update Materiel : {}", materiel);
         if (materiel.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        materiel.setImage(resultImage);
-        materiel.setDocument(resultDocument);
         Materiel result = materielRepository.save(materiel);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, materiel.getId().toString()))
@@ -171,6 +115,19 @@ public class MaterielResource {
         return ResponseUtil.wrapOrNotFound(materiel);
     }
 
+    @GetMapping("/materiels/search-entities/{keyword}")
+    public ResponseEntity<Collection<Materiel>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Materiel> materiels ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        materiels = materielRepository.findByLibelleIsContainingOrMatriculeIsContainingOrModeleIsContainingOrNumCarteGriseIsContaining(keyword,keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(materiels.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), materiels);
+
+        return ResponseEntity.ok().headers(headers).body(materiels.getContent());
+    }
+
     /**
      * {@code DELETE  /materiels/:id} : delete the "id" materiel.
      *
@@ -179,13 +136,6 @@ public class MaterielResource {
      */
     @DeleteMapping("/materiels/{id}")
     public ResponseEntity<Void> deleteMateriel(@PathVariable Long id) {
-        Materiel materiel= materielRepository.findById(id).get();
-        Image image= materiel.getImage();
-        Document document= materiel.getDocument();
-
-        imageService.deleteImageEntityFile(image, log, imageRepository, fileStorageService);
-        documentService.deleteDocumentEntityFile(document, log, documentRepository, fileStorageService);
-
         log.debug("REST request to delete Materiel : {}", id);
         materielRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

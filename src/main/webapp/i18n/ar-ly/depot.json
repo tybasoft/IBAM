@@ -2,30 +2,33 @@
   "ibamApp": {
     "depot": {
       "home": {
-        "title": "Depots",
-        "createLabel": "Create a new Depot",
-        "createOrEditLabel": "Create or edit a Depot",
-        "notFound": "No Depots found"
+        "title": "المستودعات",
+        "createLabel": "إنشاء مستودع جديد",
+        "createOrEditLabel": "إنشاءأو تعديل مستودع",
+        "notFound": "لم يتم العثور على مستودعات"
       },
-      "created": "A new Depot is created with identifier {{ param }}",
-      "updated": "A Depot is updated with identifier {{ param }}",
-      "deleted": "A Depot is deleted with identifier {{ param }}",
+      "created": "يتم إنشاء مستودع جديد مع معرف {{ param }}",
+      "updated": " يتم تحديث المستودع مع معرف {{ param }}",
+      "deleted": " تم حذف المستودع مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Depot {{ id }}?"
+        "question": "هل أنت متأكد من أنك تريد حذف المستودع {{ id }}?"
       },
       "detail": {
-        "title": "Depot"
+        "title": "المستودع"
       },
-      "libelle": "Libelle",
-      "adresse": "Adresse",
-      "tel": "Tel",
-      "ville": "Ville",
-      "pays": "Pays",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "bonCommande": "Bon Commande",
-      "bonReception": "Bon Reception",
-      "projet": "Projet"
+      "libelle": "صياغة",
+      "adresse": "العنوان",
+      "tel": "الهاتف",
+      "ville": "المدينة",
+      "pays": "البلد",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "bonCommande": "طلب الشراء",
+      "bonReception": "إستلام الطلبية",
+      "projet": "المشروع",
+      "latitude": "خط العرض",
+      "longitude": "خط الطول",
+      "nolocal": "لا توجد معلومات عن الاحداثيات."
     }
   }
 }

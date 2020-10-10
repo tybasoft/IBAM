@@ -1,65 +1,66 @@
 {
-    "name": "BonCommande",
-    "fields": [
-        {
-            "fieldName": "datePrevLiv",
-            "fieldType": "LocalDate"
-        },
-        {
-            "fieldName": "remarques",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "dateCreation",
-            "fieldType": "LocalDate",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "valide",
-            "fieldType": "Boolean"
-        },
-        {
-            "fieldName": "userModif",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "dateModif",
-            "fieldType": "LocalDate"
-        }
-    ],
-    "relationships": [
-        {
-            "relationshipType": "one-to-many",
-            "otherEntityName": "ligneBonCommande",
-            "otherEntityRelationshipName": "bonCommande",
-            "relationshipName": "ligneBonCom"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "depot",
-            "otherEntityRelationshipName": "bonCommande",
-            "relationshipName": "depot",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "otherEntityName": "fournisseur",
-            "otherEntityRelationshipName": "bonCommande",
-            "relationshipName": "fournisseur",
-            "otherEntityField": "id"
-        }
-    ],
-    "changelogDate": "20200512002500",
-    "entityTableName": "bon_commande",
-    "dto": "no",
-    "pagination": "pagination",
-    "service": "no",
-    "jpaMetamodelFiltering": false,
-    "fluentMethods": true,
-    "readOnly": false,
-    "embedded": false,
-    "clientRootFolder": "",
-    "applications": "*"
+  "name": "BonCommande",
+  "fields": [
+    {
+      "fieldName": "datePrevLiv",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "remarques",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateCreation",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "valide",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "userModif",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateModif",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "ligneBonCommande",
+      "otherEntityRelationshipName": "bonCommande",
+      "relationshipName": "ligneBonCom"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "fournisseur",
+      "otherEntityRelationshipName": "bonCommande",
+      "relationshipName": "fournisseur",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipName": "projet",
+      "otherEntityName": "projet",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "bonCommande"
+    }
+  ],
+  "changelogDate": "20200512002500",
+  "entityTableName": "bon_commande",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "searchEngine": false,
+  "databaseType": "sql"
 }

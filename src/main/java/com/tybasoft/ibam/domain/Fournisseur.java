@@ -1,16 +1,17 @@
 package com.tybasoft.ibam.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import com.tybasoft.ibam.security.SecurityUtils;
+import com.tybasoft.ibam.security.SecurityUtils;
 import java.io.Serializable;
-import java.util.Objects;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Fournisseur.
@@ -19,7 +20,6 @@ import java.util.Set;
 @Table(name = "fournisseur")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Fournisseur implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -60,7 +60,7 @@ public class Fournisseur implements Serializable {
     private String userModif;
 
     @Column(name = "date_modif")
-    private LocalDate dateModif;
+    private Instant dateModif;
 
     @OneToMany(mappedBy = "fournisseur")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -78,7 +78,8 @@ public class Fournisseur implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<BonReception> bonReceptions = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public Long getId() {
         return id;
     }
@@ -217,16 +218,16 @@ public class Fournisseur implements Serializable {
         this.userModif = userModif;
     }
 
-    public LocalDate getDateModif() {
+    public Instant getDateModif() {
         return dateModif;
     }
 
-    public Fournisseur dateModif(LocalDate dateModif) {
+    public Fournisseur dateModif(Instant dateModif) {
         this.dateModif = dateModif;
         return this;
     }
 
-    public void setDateModif(LocalDate dateModif) {
+    public void setDateModif(Instant dateModif) {
         this.dateModif = dateModif;
     }
 
@@ -329,7 +330,9 @@ public class Fournisseur implements Serializable {
     public void setBonReceptions(Set<BonReception> bonReceptions) {
         this.bonReceptions = bonReceptions;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -349,19 +352,56 @@ public class Fournisseur implements Serializable {
 
     @Override
     public String toString() {
-        return "Fournisseur{" +
-            "id=" + getId() +
-            ", nomCommercial='" + getNomCommercial() + "'" +
-            ", type='" + getType() + "'" +
-            ", fax='" + getFax() + "'" +
-            ", nom='" + getNom() + "'" +
-            ", prenom='" + getPrenom() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", tel='" + getTel() + "'" +
-            ", adresse='" + getAdresse() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", userModif='" + getUserModif() + "'" +
-            ", dateModif='" + getDateModif() + "'" +
-            "}";
+        return (
+            "Fournisseur{" +
+            "id=" +
+            getId() +
+            ", nomCommercial='" +
+            getNomCommercial() +
+            "'" +
+            ", type='" +
+            getType() +
+            "'" +
+            ", fax='" +
+            getFax() +
+            "'" +
+            ", nom='" +
+            getNom() +
+            "'" +
+            ", prenom='" +
+            getPrenom() +
+            "'" +
+            ", email='" +
+            getEmail() +
+            "'" +
+            ", tel='" +
+            getTel() +
+            "'" +
+            ", adresse='" +
+            getAdresse() +
+            "'" +
+            ", description='" +
+            getDescription() +
+            "'" +
+            ", userModif='" +
+            getUserModif() +
+            "'" +
+            ", dateModif='" +
+            getDateModif() +
+            "'" +
+            "}"
+        );
+    }
+
+    @PrePersist
+    public void onCreate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        userModif = SecurityUtils.getCurrentUserLogin().get();
+        dateModif = Instant.now();
     }
 }

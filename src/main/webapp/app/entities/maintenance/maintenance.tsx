@@ -55,6 +55,16 @@ export const Maintenance = (props: IMaintenanceProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.maintenance.home.createLabel">Create new Maintenance</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {maintenanceList && maintenanceList.length > 0 ? (
@@ -76,7 +86,7 @@ export const Maintenance = (props: IMaintenanceProps) => {
                 <th className="hand" onClick={sort('technicien')}>
                   <Translate contentKey="ibamApp.maintenance.technicien">Technicien</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('motif')}>
+                {/* <th className="hand" onClick={sort('motif')}>
                   <Translate contentKey="ibamApp.maintenance.motif">Motif</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('problemeFrequent')}>
@@ -103,7 +113,7 @@ export const Maintenance = (props: IMaintenanceProps) => {
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.maintenance.image">Image</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -121,7 +131,7 @@ export const Maintenance = (props: IMaintenanceProps) => {
                   </td>
                   <td>{maintenance.frais}</td>
                   <td>{maintenance.technicien}</td>
-                  <td>{maintenance.motif}</td>
+                  {/* <td>{maintenance.motif}</td>
                   <td>{maintenance.problemeFrequent ? 'true' : 'false'}</td>
                   <td>{maintenance.remarque}</td>
                   <td>{maintenance.dureePanne}</td>
@@ -137,7 +147,7 @@ export const Maintenance = (props: IMaintenanceProps) => {
                       ''
                     )}
                   </td>
-                  <td>{maintenance.image ? <Link to={`image/${maintenance.image.id}`}>{maintenance.image.id}</Link> : ''}</td>
+                  <td>{maintenance.image ? <Link to={`image/${maintenance.image.id}`}>{maintenance.image.id}</Link> : ''}</td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${maintenance.id}`} color="info" size="sm">

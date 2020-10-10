@@ -109,6 +109,14 @@ export const getEntities: ICrudGetAllAction<ILigneBonCommande> = (page, size, so
   };
 };
 
+export const getEntitiesById: ICrudGetAction<ILigneBonCommande> = id => {
+  const requestUrl = `${apiUrl}/${id}/lignes`;
+  return {
+    type: ACTION_TYPES.FETCH_LIGNEBONCOMMANDE_LIST,
+    payload: axios.get<ILigneBonCommande>(requestUrl)
+  };
+};
+
 export const getEntity: ICrudGetAction<ILigneBonCommande> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
@@ -140,6 +148,7 @@ export const deleteEntity: ICrudDeleteAction<ILigneBonCommande> = id => async di
     type: ACTION_TYPES.DELETE_LIGNEBONCOMMANDE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
   return result;
 };
 

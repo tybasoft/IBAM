@@ -1,0 +1,41 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "employe",
+      "otherEntityName": "employe",
+      "relationshipType": "many-to-many",
+      "otherEntityField": "id",
+      "ownerSide": true,
+      "otherEntityRelationshipName": "planification"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "nom_tache",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description_tache",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "date_debut",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "date_fin",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "changelogDate": "20201009162822",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "no",
+  "entityTableName": "planification",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": false,
+  "pagination": "pagination"
+}

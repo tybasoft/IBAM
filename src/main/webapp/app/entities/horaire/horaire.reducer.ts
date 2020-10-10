@@ -12,7 +12,9 @@ export const ACTION_TYPES = {
   CREATE_HORAIRE: 'horaire/CREATE_HORAIRE',
   UPDATE_HORAIRE: 'horaire/UPDATE_HORAIRE',
   DELETE_HORAIRE: 'horaire/DELETE_HORAIRE',
-  RESET: 'horaire/RESET'
+  RESET: 'horaire/RESET',
+  REPPORT: 'horaire/REPPORT',
+  FILTER_HORAIRE_LIST: 'horaire/FILTER_HORAIRE_LIST'
 };
 
 const initialState = {
@@ -59,6 +61,11 @@ export default (state: HoraireState = initialState, action): HoraireState => {
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case SUCCESS(ACTION_TYPES.FETCH_HORAIRE_LIST):
       return {
         ...state,
@@ -86,22 +93,35 @@ export default (state: HoraireState = initialState, action): HoraireState => {
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.FILTER_HORAIRE_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
       };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/horaires';
+export const apiUrl = 'api/horaires';
 
 // Actions
 
 export const getEntities: ICrudGetAllAction<IHoraire> = (page, size, sort) => ({
   type: ACTION_TYPES.FETCH_HORAIRE_LIST,
   payload: axios.get<IHoraire>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
+});
+
+export const filterEntities: ICrudGetAllAction<IHoraire> = filter => ({
+  type: ACTION_TYPES.FILTER_HORAIRE_LIST,
+  payload: axios.get<IHoraire>(`${apiUrl}/search-entities/${filter}`)
 });
 
 export const getEntity: ICrudGetAction<IHoraire> = id => {
@@ -126,6 +146,8 @@ export const updateEntity: ICrudPutAction<IHoraire> = entity => async dispatch =
     type: ACTION_TYPES.UPDATE_HORAIRE,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -135,6 +157,8 @@ export const deleteEntity: ICrudDeleteAction<IHoraire> = id => async dispatch =>
     type: ACTION_TYPES.DELETE_HORAIRE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 

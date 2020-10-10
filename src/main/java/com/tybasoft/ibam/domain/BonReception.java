@@ -8,9 +8,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,7 +18,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "bon_reception")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class BonReception implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,7 +34,6 @@ public class BonReception implements Serializable {
     @Column(name = "remarques")
     private String remarques;
 
-    @NotNull
     @Column(name = "date_livraison", nullable = false)
     private LocalDate dateLivraison;
 
@@ -45,22 +44,22 @@ public class BonReception implements Serializable {
     private LocalDate dateModif;
 
     @OneToMany(mappedBy = "bonReception")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<LigneBonReception> ligneBonRecs = new HashSet<>();
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private List<LigneBonReception> ligneBonRecs ;
 
     @ManyToOne
-    @JsonIgnoreProperties("bonReceptions")
-    private Depot depot;
-
-    @ManyToOne
-    @JsonIgnoreProperties("bonReceptions")
+    @JsonIgnoreProperties(value = "bonReceptions", allowSetters = true)
     private Fournisseur fournisseur;
 
     @ManyToOne
-    @JsonIgnoreProperties("bonReceptions")
+    @JsonIgnoreProperties(value = "bonReceptions", allowSetters = true)
     private Image image;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    @ManyToOne(optional = false)
+    @JsonIgnoreProperties(value = "bonReceptions", allowSetters = true)
+    private Projet projet;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -134,11 +133,11 @@ public class BonReception implements Serializable {
         this.dateModif = dateModif;
     }
 
-    public Set<LigneBonReception> getLigneBonRecs() {
+    public List<LigneBonReception> getLigneBonRecs() {
         return ligneBonRecs;
     }
 
-    public BonReception ligneBonRecs(Set<LigneBonReception> ligneBonReceptions) {
+    public BonReception ligneBonRecs(List<LigneBonReception> ligneBonReceptions) {
         this.ligneBonRecs = ligneBonReceptions;
         return this;
     }
@@ -155,21 +154,8 @@ public class BonReception implements Serializable {
         return this;
     }
 
-    public void setLigneBonRecs(Set<LigneBonReception> ligneBonReceptions) {
+    public void setLigneBonRecs(List<LigneBonReception> ligneBonReceptions) {
         this.ligneBonRecs = ligneBonReceptions;
-    }
-
-    public Depot getDepot() {
-        return depot;
-    }
-
-    public BonReception depot(Depot depot) {
-        this.depot = depot;
-        return this;
-    }
-
-    public void setDepot(Depot depot) {
-        this.depot = depot;
     }
 
     public Fournisseur getFournisseur() {
@@ -197,7 +183,20 @@ public class BonReception implements Serializable {
     public void setImage(Image image) {
         this.image = image;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Projet getProjet() {
+        return projet;
+    }
+
+    public BonReception projet(Projet projet) {
+        this.projet = projet;
+        return this;
+    }
+
+    public void setProjet(Projet projet) {
+        this.projet = projet;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -215,6 +214,7 @@ public class BonReception implements Serializable {
         return 31;
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
         return "BonReception{" +

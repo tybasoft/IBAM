@@ -11,6 +11,15 @@ a {
   color: #533f03;
   font-weight: bold;
 }
+.search {
+  margin-left: 35%;
+  width: 500px;
+}
+.your-dialog-classname {
+  display: block;
+  width: 1200px;
+  padding-left: 0px;
+}
 
 * {
   -moz-box-sizing: border-box;
@@ -311,3 +320,42 @@ http://stackoverflow.com/questions/23436430/bootstrap-3-input-group-100-width */
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+.notif-menu {
+  width: 500px;
+  left: -20rem;
+  min-height: 500px;
+  max-height: 500px;
+  overflow: auto;
+}
+
+.notif-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.notif-menu-header {
+  text-align: center;
+}
+
+.notif-menu-body {
+  height: 27rem;
+}
+
+.notif-menu-divider {
+  border-width: 2px;
+  margin-inline-start: 20px;
+  margin-inline-end: 20px;
+}
+
+.notif-icon {
+  font-size: 18px;
+}
+
+.notif-dropdown {
+  height: 100%;
+  border-radius: 5px;
+}
+
+.notif {
+  padding: 10px;
+}

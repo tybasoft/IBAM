@@ -27,6 +27,7 @@
       "description": "Description",
       "userModif": "User Modif",
       "dateModif": "Date Modif",
+      "multiProjet": "Multi Projet",
       "location": "Location",
       "assurance": "Assurance",
       "transfert": "Transfert",
@@ -39,7 +40,8 @@
       "marque": "Marque",
       "document": "Document",
       "employe": "Employe",
-      "image": "Image"
+      "image": "Image",
+      "projet": "Projet"
     }
   }
 }

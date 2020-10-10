@@ -12,7 +12,9 @@ export const ACTION_TYPES = {
   CREATE_ASSURANCE: 'assurance/CREATE_ASSURANCE',
   UPDATE_ASSURANCE: 'assurance/UPDATE_ASSURANCE',
   DELETE_ASSURANCE: 'assurance/DELETE_ASSURANCE',
-  RESET: 'assurance/RESET'
+  REPPORT: 'assurance/REPPORT',
+  RESET: 'assurance/RESET',
+  FILTER_ASSURANCE_LIST: 'assurance/FILTER_ASSURANCE_LIST'
 };
 
 const initialState = {
@@ -48,6 +50,7 @@ export default (state: AssuranceState = initialState, action): AssuranceState =>
         updateSuccess: false,
         updating: true
       };
+
     case FAILURE(ACTION_TYPES.FETCH_ASSURANCE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_ASSURANCE):
     case FAILURE(ACTION_TYPES.CREATE_ASSURANCE):
@@ -60,6 +63,11 @@ export default (state: AssuranceState = initialState, action): AssuranceState =>
         updateSuccess: false,
         errorMessage: action.payload
       };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
+      };
     case SUCCESS(ACTION_TYPES.FETCH_ASSURANCE_LIST):
       return {
         ...state,
@@ -67,6 +75,14 @@ export default (state: AssuranceState = initialState, action): AssuranceState =>
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
+    case SUCCESS(ACTION_TYPES.FILTER_ASSURANCE_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case SUCCESS(ACTION_TYPES.FETCH_ASSURANCE):
       return {
         ...state,
@@ -97,7 +113,7 @@ export default (state: AssuranceState = initialState, action): AssuranceState =>
   }
 };
 
-const apiUrl = 'api/assurances';
+export const apiUrl = 'api/assurances';
 
 // Actions
 
@@ -108,6 +124,11 @@ export const getEntities: ICrudGetAllAction<IAssurance> = (page, size, sort) => 
     payload: axios.get<IAssurance>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
+
+export const filterEntities: ICrudGetAllAction<IAssurance> = filter => ({
+  type: ACTION_TYPES.FILTER_ASSURANCE_LIST,
+  payload: axios.get<IAssurance>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntity: ICrudGetAction<IAssurance> = id => {
   const requestUrl = `${apiUrl}/${id}`;
@@ -131,6 +152,8 @@ export const updateEntity: ICrudPutAction<IAssurance> = entity => async dispatch
     type: ACTION_TYPES.UPDATE_ASSURANCE,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -140,6 +163,8 @@ export const deleteEntity: ICrudDeleteAction<IAssurance> = id => async dispatch 
     type: ACTION_TYPES.DELETE_ASSURANCE,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 

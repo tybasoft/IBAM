@@ -55,6 +55,16 @@ export const Fournisseur = (props: IFournisseurProps) => {
           &nbsp;
           <Translate contentKey="ibamApp.fournisseur.home.createLabel">Create new Fournisseur</Translate>
         </Link>
+        <Link to={`${match.url}/import`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.importLabel">Import</Translate>
+        </Link>
+        <Link to={`${match.url}/export`} className="btn btn-primary mr-2 float-right jh-create-entity" id="jh-create-entity">
+          <FontAwesomeIcon icon="plus" />
+          &nbsp;
+          <Translate contentKey="ibamApp.tva.home.exportLabel">Export</Translate>
+        </Link>
       </h2>
       <div className="table-responsive">
         {fournisseurList && fournisseurList.length > 0 ? (
@@ -79,7 +89,7 @@ export const Fournisseur = (props: IFournisseurProps) => {
                 <th className="hand" onClick={sort('prenom')}>
                   <Translate contentKey="ibamApp.fournisseur.prenom">Prenom</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('email')}>
+                {/* <th className="hand" onClick={sort('email')}>
                   <Translate contentKey="ibamApp.fournisseur.email">Email</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th className="hand" onClick={sort('tel')}>
@@ -96,7 +106,7 @@ export const Fournisseur = (props: IFournisseurProps) => {
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.fournisseur.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th> */}
                 <th />
               </tr>
             </thead>
@@ -113,14 +123,14 @@ export const Fournisseur = (props: IFournisseurProps) => {
                   <td>{fournisseur.fax}</td>
                   <td>{fournisseur.nom}</td>
                   <td>{fournisseur.prenom}</td>
-                  <td>{fournisseur.email}</td>
+                  {/* <td>{fournisseur.email}</td>
                   <td>{fournisseur.tel}</td>
                   <td>{fournisseur.adresse}</td>
                   <td>{fournisseur.description}</td>
                   <td>{fournisseur.userModif}</td>
                   <td>
                     <TextFormat type="date" value={fournisseur.dateModif} format={APP_LOCAL_DATE_FORMAT} />
-                  </td>
+                  </td> */}
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${fournisseur.id}`} color="info" size="sm">

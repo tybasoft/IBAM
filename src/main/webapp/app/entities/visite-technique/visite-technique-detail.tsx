@@ -45,7 +45,7 @@ export const VisiteTechniqueDetail = (props: IVisiteTechniqueDetailProps) => {
             </span>
           </dt>
           <dd>{visiteTechniqueEntity.remarque}</dd>
-          <dt>
+          {/* <dt>
             <span id="userModif">
               <Translate contentKey="ibamApp.visiteTechnique.userModif">User Modif</Translate>
             </span>
@@ -58,11 +58,11 @@ export const VisiteTechniqueDetail = (props: IVisiteTechniqueDetailProps) => {
           </dt>
           <dd>
             <TextFormat value={visiteTechniqueEntity.dateModif} type="date" format={APP_LOCAL_DATE_FORMAT} />
-          </dd>
+          </dd> */}
           <dt>
             <Translate contentKey="ibamApp.visiteTechnique.materiel">Materiel</Translate>
           </dt>
-          <dd>{visiteTechniqueEntity.materiel ? visiteTechniqueEntity.materiel.id : ''}</dd>
+          <dd>{visiteTechniqueEntity.materiel ? visiteTechniqueEntity.materiel.libelle: ''}</dd>
         </dl>
         <Button tag={Link} to="/visite-technique" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_EMPLOYE: 'employe/CREATE_EMPLOYE',
   UPDATE_EMPLOYE: 'employe/UPDATE_EMPLOYE',
   DELETE_EMPLOYE: 'employe/DELETE_EMPLOYE',
-  RESET: 'employe/RESET'
+  RESET: 'employe/RESET',
+  REPPORT: 'employe/REPPORT'
 };
 
 const initialState = {
@@ -31,14 +32,10 @@ export type EmployeState = Readonly<typeof initialState>;
 
 export default (state: EmployeState = initialState, action): EmployeState => {
   switch (action.type) {
+    case REQUEST('UPLOAD_FILE'):
+      return { ...state };
     case REQUEST(ACTION_TYPES.FETCH_EMPLOYE_LIST):
     case REQUEST(ACTION_TYPES.FETCH_EMPLOYE):
-      return {
-        ...state,
-        errorMessage: null,
-        updateSuccess: false,
-        loading: true
-      };
     case REQUEST(ACTION_TYPES.CREATE_EMPLOYE):
     case REQUEST(ACTION_TYPES.UPDATE_EMPLOYE):
     case REQUEST(ACTION_TYPES.DELETE_EMPLOYE):
@@ -47,6 +44,11 @@ export default (state: EmployeState = initialState, action): EmployeState => {
         errorMessage: null,
         updateSuccess: false,
         updating: true
+      };
+    case REQUEST(ACTION_TYPES.REPPORT):
+      return {
+        ...state,
+        loading: true
       };
     case FAILURE(ACTION_TYPES.FETCH_EMPLOYE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_EMPLOYE):
@@ -92,12 +94,13 @@ export default (state: EmployeState = initialState, action): EmployeState => {
       return {
         ...initialState
       };
+
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/employes';
+export const apiUrl = 'api/employes';
 
 // Actions
 

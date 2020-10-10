@@ -25,19 +25,22 @@ const Admin = Loadable({
   loading: () => <div>loading ...</div>
 });
 
+
+
 const Routes = () => (
   <div className="view-routes">
     <Switch>
-      <ErrorBoundaryRoute path="/login" component={Login} />
+       <ErrorBoundaryRoute path="/login" component={Login} />
       <ErrorBoundaryRoute path="/logout" component={Logout} />
       <ErrorBoundaryRoute path="/account/register" component={Register} />
       <ErrorBoundaryRoute path="/account/activate/:key?" component={Activate} />
       <ErrorBoundaryRoute path="/account/reset/request" component={PasswordResetInit} />
       <ErrorBoundaryRoute path="/account/reset/finish/:key?" component={PasswordResetFinish} />
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
-      <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
+      <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER,
+        AUTHORITIES.POINTEUR,AUTHORITIES.CHEFMATERIEL,AUTHORITIES.CHEFMATERIAU,AUTHORITIES.MAGASINIER,AUTHORITIES.RESPONSABLEME,AUTHORITIES.RESPONSABLEPROJET]} />
       <ErrorBoundaryRoute path="/" exact component={Home} />
-      <PrivateRoute path="/" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
+      <ErrorBoundaryRoute path="/" component={Entities} />
       <ErrorBoundaryRoute component={PageNotFound} />
     </Switch>
   </div>
