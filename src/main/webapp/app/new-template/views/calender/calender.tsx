@@ -10,10 +10,11 @@ import DateTimePicker from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import { IEmploye } from 'app/shared/model/employe.model';
 import { getEntities as getEmployes } from 'app/entities/employe/employe.reducer';
-import { getEntity, updateEntity, createEntity, reset } from '../../../entities/planification/planification.reducer';
+import { getEntity, updateEntity,getEntities, createEntity, reset } from '../../../entities/planification/planification.reducer';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { IPlanification } from 'app/shared/model/planification.model';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import Select from 'react-select';
 
 import { handleAddEvent } from '../../redux/actions/calenderAction/calenderAction';
 
@@ -22,9 +23,11 @@ const allViews = Object.keys(ReactBigCalender.Views).map(k => ReactBigCalender.V
 interface IState {
   playOrPause?: string;
 }
+var employeOptions=[];
+
 class Calender extends Component<any, any> {
   
-constructor(props) {
+ constructor(props) {
 super(props)
 const { planificationEntity, employes, loading, updating } = props;
 
@@ -41,7 +44,29 @@ this.state = {
   isNew: !props.match.params || !props.match.params.id
 };
 }
+ loadEmployes = async () =>{
+  var employePaload = await getEmployes().payload;
+  employePaload.data.map((employe) => {
+  employeOptions.push({'value':employe.id,'label':employe.nom})
+});
+}
+componentDidMount = async () => {
+  this.loadEmployes();
+  const payload = await getEntities().payload;
+  payload.data.map((item)=>{
+    let new_item = {
+      title: item.nom_tache,
+      start: item.date_debut,
+      end: item.date_fin,
+      all_days: true
+    }
+    this.state.events.push(new_item)
+    
+  })
 
+
+
+}
 
   toggleModal = () => {
     this.setState((prevState: any) => ({
@@ -69,6 +94,10 @@ this.state = {
      this.state.fin = convertDateTimeToServer(document.getElementById("date_fin").value);
 
   };
+  handleEmployeChange = emp => {
+      this.state.employes.push(emp);
+
+  }
 
   handleSubmit = () => {
     const { handleAddEvent } = this.props;
@@ -76,7 +105,7 @@ this.state = {
     //const fin = convertDateTimeToServer(document.getElementById("date_fin"));
     this.state.nom = document.getElementById("nom_tache").value;
     this.state.description = document.getElementById("description_tache").value;
-    console.log(this.state.start)
+    console.log(this.state.events)
      const entity: IPlanification= {
       date_debut:this.state.debut,
       date_fin:this.state.fin,
@@ -87,6 +116,12 @@ this.state = {
     };
     createEntity(entity);
     console.log("message from submit handler");
+    let param = {
+      start: this.state.debut,
+      eventTitle:this.state.nom,
+      end: this.state.fin
+    };
+    handleAddEvent(param, this.state.events);
 
     this.setState(
       prevState => {
@@ -95,10 +130,10 @@ this.state = {
           events: [
             ...events,
             {
-              title: eventTitle,
+              title: this.state.nom,
               allDay: true,
-              start: start,
-              end: end
+              start: this.state.debut,
+              end: this.state.fin
             }
           ]
         };
@@ -110,7 +145,7 @@ this.state = {
           eventTitle,
           end
         };
-        handleAddEvent(param, events);
+        //handleAddEvent(param, events);
       }
     );
     this.toggleModal();
@@ -128,6 +163,8 @@ this.state = {
   render() {
     const { calender } = this.props;
     const { modal, eventTitle, start, end } = this.state;
+
+
     return (
       <Fragment>
         <Modal isOpen={modal} toggle={this.toggleModal}>
@@ -152,12 +189,16 @@ this.state = {
                 <input className="form-control" id="date_fin" type="datetime-local" onChange={this.handleEndDateTimeChange} defaultValue={calender.startDate} value={end} />
               </div>
               <div>
-                <label>Employes concerné</label>
-                <select className="form-control" id="employes"  onChange={this.handleEndDateTimeChange} defaultValue={calender.startDate} value={end} >
-                <option>1</option>
-                <option>1</option>
-                <option>1</option>
-                </select>
+              <label for="mail">Employe concerné</label>
+        <Select
+        id="mail_array"
+    // defaultValue={emailOptions[0]}
+    isMulti
+    name="colors"
+    options={employeOptions}
+    className="basic-multi-select"
+    classNamePrefix="select"
+  />
               </div>
           </ModalBody>
           <ModalFooter>
