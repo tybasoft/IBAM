@@ -41,13 +41,14 @@ this.state = {
   end: new Date(),
   eventTitle: 'Enter Your Title',
   events: [],
-  isNew: !props.match.params || !props.match.params.id
+  isNew: !props.match.params || !props.match.params.id,
+  employes:[]
 };
 }
  loadEmployes = async () =>{
   var employePaload = await getEmployes().payload;
   employePaload.data.map((employe) => {
-  employeOptions.push({'value':employe.id,'label':employe.nom})
+  employeOptions.push({'value':employe,'label':employe.nom})
 });
 }
 componentDidMount = async () => {
@@ -95,7 +96,14 @@ componentDidMount = async () => {
 
   };
   handleEmployeChange = emp => {
-      this.state.employes.push(emp);
+    let employe_list=[];
+    emp.map((item)=>{
+      employe_list.push(item.value);
+
+    })
+    this.state.employes = employe_list;
+    console.log(this.state.employes)
+
 
   }
 
@@ -111,7 +119,7 @@ componentDidMount = async () => {
       date_fin:this.state.fin,
       nom_tache:this.state.nom,
       description_tache:this.state.description,
-      employes:null
+      employes:this.state.employes
 
     };
     createEntity(entity);
@@ -198,6 +206,7 @@ componentDidMount = async () => {
     options={employeOptions}
     className="basic-multi-select"
     classNamePrefix="select"
+    onChange={this.handleEmployeChange}
   />
               </div>
           </ModalBody>
