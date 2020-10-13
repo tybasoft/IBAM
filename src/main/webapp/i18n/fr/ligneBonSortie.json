@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "ligneBonSortie": {
+      "home": {
+        "title": "LigneBonSorties",
+        "createLabel": "Créer un nouveau Ligne Bon Sortie",
+        "createOrEditLabel": "Créer ou éditer un Ligne Bon Sortie",
+        "notFound": "Aucun Ligne Bon Sortie trouvé"
+      },
+      "created": "Un nouveau Ligne Bon Sortie a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Ligne Bon Sortie avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Ligne Bon Sortie avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Ligne Bon Sortie {{ id }} ?"
+      },
+      "detail": {
+        "title": "Ligne Bon Sortie"
+      },
+      "quantite": "Quantite",
+      "prixHt": "Prix Ht",
+      "type": "Type",
+      "materiel": "Materiel",
+      "materiau": "Materiau",
+      "bonSortie": "Bon Sortie"
+    }
+  }
+}

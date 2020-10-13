@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "bonSortie": {
+      "home": {
+        "title": "Bon Sorties",
+        "createLabel": "Create a new Bon Sortie",
+        "createOrEditLabel": "Create or edit a Bon Sortie",
+        "notFound": "No Bon Sorties found"
+      },
+      "created": "A new Bon Sortie is created with identifier {{ param }}",
+      "updated": "A Bon Sortie is updated with identifier {{ param }}",
+      "deleted": "A Bon Sortie is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Bon Sortie {{ id }}?"
+      },
+      "detail": {
+        "title": "Bon Sortie"
+      },
+      "dateSortie": "Date Sortie",
+      "dateCreation": "Date Creation",
+      "userModif": "User Modif",
+      "dateModif": "Date Modif",
+      "remarques": "Remarques",
+      "projet": "Projet"
+    }
+  }
+}
