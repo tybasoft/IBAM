@@ -431,10 +431,10 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                 <RadioGroup aria-label="type" name="type" value={typeLigne} onChange={handleChange}>
                   <FormControlLabel value="materiel" control={<Radio />} label="Materiel" />
                   <FormControlLabel value="materiau" control={<Radio />} label="Materiau" />
-                  <FormControlLabel value="both" control={<Radio />} label="Les deux" />
+                  {/*<FormControlLabel value="both" control={<Radio />} label="Les deux" />*/}
                 </RadioGroup>
               </FormControl>
-              {typeLigne==='materiau' || typeLigne==='both' ? (
+              {typeLigne==='materiau'  ? (
                   <AvGroup>
                 <Label for="bon-commande-depot">
                   <Translate contentKey="ibamApp.bonCommande.materiau">Materiau</Translate>
@@ -451,7 +451,7 @@ export const NewLigneBonCommandeDialog = (props: IBonCommandeDeleteDialogProps) 
                 </AvInput>
               </AvGroup>
               ) : null}
-              {typeLigne==='materiel' || typeLigne==='both' ? (
+              {typeLigne==='materiel'  ? (
                   <AvGroup>
                 <Label for="bon-commande-materiel">
                   <Translate contentKey="ibamApp.bonCommande.materiel">Materiel</Translate>

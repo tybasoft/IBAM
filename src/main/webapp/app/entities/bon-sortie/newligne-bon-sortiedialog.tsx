@@ -1,53 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import {Link, RouteComponentProps, useHistory} from 'react-router-dom';
 import { Button, Row, Col, Label,Table } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
-
-import { IDepot } from 'app/shared/model/depot.model';
 import { getEntities as getDepots } from 'app/entities/depot/depot.reducer';
-import { IFournisseur } from 'app/shared/model/fournisseur.model';
-import { getEntities as getFournisseurs } from 'app/entities/fournisseur/fournisseur.reducer';
-import { IImage } from 'app/shared/model/image.model';
 import {getEntities as getMateriau} from "app/entities/materiau/materiau.reducer";
 import {getEntities as getProjects} from "app/entities/projet/projet.reducer";
+import {getEntity as getLigneBonReception} from "app/entities/ligne-bon-sortie/ligne-bon-sortie.reducer";
 import {getEntities as getMateriels} from "app/entities/materiel/materiel.reducer";
-import {getEntitiesById as getLigneBonReception} from "app/entities/ligne-bon-reception/ligne-bon-reception.reducer";
-import {getEntity as getOneMateriel} from "app/entities/materiel/materiel.reducer";
-import {getEntity as getOneMateriau} from "app/entities/materiau/materiau.reducer";
-import { useHistory } from 'react-router-dom';
+import { getEntities as getProjets } from 'app/entities/projet/projet.reducer';
 
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-
-import {
-  createEntity as createImageEntity,
-  getEntity as getImageEntity,
-  reset as resetImage,
-  deleteEntity as deleteImageEntity,
-  uploadImage,
-  deleteImageFile
-} from 'app/entities/image/image.reducer';
-import { getEntity, updateEntity, createEntity, reset } from './bon-reception.reducer';
-import { getEntities as getCurrencies } from './currency.reducer';
-import { IBonReception } from 'app/shared/model/bon-reception.model';
+import { IProjet } from 'app/shared/model/projet.model';
+import { getEntity, updateEntity, createEntity, reset } from './bon-sortie.reducer';
+import { IBonSortie } from 'app/shared/model/bon-sortie.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
-import _debounce from 'lodash.debounce';
-import projet from "app/entities/projet/projet";
-import {ICurrency} from "app/shared/model/currency";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
+import {getEntities as getFournisseurs} from "app/entities/fournisseur/fournisseur.reducer";
+import {getEntities as getCurrencies} from "app/entities/bon-reception/currency.reducer";
+import {
+  createEntity as createImageEntity, deleteEntity as deleteImageEntity, deleteImageFile,
+  getEntity as getImageEntity, reset as resetImage,
+  uploadImage
+} from "app/entities/image/image.reducer";
+import {NewBonReceptionUpdate} from "app/entities/bon-reception/newligne-bon-receptiondialog";
 
-export interface IBonReceptionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IBonSortieUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
-export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
+export const NewBonSortieUpdate = (props: IBonSortieUpdateProps) => {
+  const [projetId, setProjetId] = useState('0');
+  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
   const [errorMessage, seterrorMessage] = useState('');
   const [imageID, setimageID] = useState(null);
   const [imageDeleted, setimageDeleted] = useState(false);
@@ -58,40 +48,27 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
   const [materiauObj, setMateriauObj] = useState({id: "1"});
   const [newLines, setNewLines] = useState([]);
   const [currencies, setCurrencies] = useState([]);
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
   const history = useHistory();
+  const [typeLigne, setTypeLigne] = React.useState('materiel');
+  const [disableMateriel, setDisableMateriel] = useState();
+  const [disableMateriau, setDisableMateriau] = useState();
+  const { bonSortieEntity,projets,materiels ,materiaus , loading, updating } = props;
 
-  const { ligneBonReceptionList,projets,materiels ,materiaus ,bonReceptionEntity, depots, fournisseurs, loading, updating, imageEntity } = props;
+  // const { bonSortieEntity, projets, loading, updating ,materiels,materiaus,depots} = props;
 
-  const validate = _debounce((value, ctx, input, cb) => {
-    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-
-    if (value && allowedExtensions.exec(value) == null) {
-      cb(false);
-      seterrorMessage(translate('entity.validation.imageFileType'));
-    } else if (value && imageFile.size / Math.pow(1024, 2) > 10) {
-      cb(false);
-      seterrorMessage(translate('entity.validation.imageFileSize'));
-    } else {
-      cb(true);
-    }
-  }, 300);
-
-  useEffect(() => {
-    if (imageID !== null) {
-      setTimeout(() => {
-        props.deleteImageEntity(imageID);
-      }, 1000);
-    }
-  }, [imageID]);
+  // const { ligneBonSortieList,projets,materiels ,materiaus , depots,bonSortieEntity, loading, updating } = props;
 
   // const handleClose = () => {
-  //   props.history.push('/bon-reception' + props.location.search);
+  //   props.history.push('/bon-sortie' + props.location.search);
   // };
+
   const handleClose = () => {
     setModal(false);
 
     // props.history.push('/bon-commande' + props.location.search);
+  };
+  const handleChange = (event) => {
+    setTypeLigne(event.target.value);
   };
   const handleShow = () => {
     // isOpen=true;
@@ -112,25 +89,14 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
 
   };
 
-
   useEffect(() => {
     if (isNew) {
       props.reset();
     } else {
-      props.resetImage();
       props.getEntity(props.match.params.id);
-      props.getLigneBonReception(props.match.params.id);
-      // console.warn(ligneBonReceptionList);
-
     }
 
-    // props.getDepots();
-    props.getFournisseurs();
-    props.getDepots();
-    props.getMateriau();
-    props.getMateriels();
-    props.getProjects();
-    // props.getCurrencies();
+    props.getProjets();
   }, []);
 
   useEffect(() => {
@@ -139,111 +105,21 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
     }
   }, [props.updateSuccess]);
 
-  useEffect(() => {
-    if (bonReceptionEntity.id !== undefined) {
-      if (bonReceptionEntity.id.toString() === props.match.params.id && bonReceptionEntity.image !== null) {
-        props.getImageEntity(bonReceptionEntity.image.id);
-      }
-    }
-  }, [bonReceptionEntity]);
-
-  const uploadNewImage = values => {
-    const storageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name);
-    const image = {
-      titre: values.dateLivraison,
-      path: storageName
-    };
-    const imageData = new FormData();
-    imageData.append('file', imageFile);
-    imageData.append('storageName', storageName);
-
-    props.uploadImage(imageData);
-    return image;
-  };
-
   const saveEntity = (event, errors, values) => {
-    let imageStorageName;
-    let image;
-    let entity;
-    values.ligneBonRecs = newLines;
-    const imageData = new FormData();
+    values.ligneBonSortie = newLines;
+
     if (errors.length === 0) {
-      entity = {
-        ...bonReceptionEntity,
-        ...values
+      const entity = {
+        ...bonSortieEntity,
+        ...values,
       };
 
       if (isNew) {
-        if (imageFile) {
-          image = uploadNewImage(values);
-          entity.image = image;
-        }
         props.createEntity(entity);
-        handleCloseBig();
-        history.push("/bon-reception");
       } else {
-        if (bonReceptionEntity.image == null) {
-          if (imageFile) {
-            image = uploadNewImage(values);
-            entity.image = image;
-          }
-          props.updateEntity(entity);
-        } else if (imageDeleted) {
-          entity.image = null;
-
-          if (imageFile) {
-            image = uploadNewImage(values);
-            entity.image = image;
-          }
-          props.deleteImageFile(bonReceptionEntity.image.path.substr(24));
-          setimageID(bonReceptionEntity.image.id);
-          props.updateEntity(entity);
-        } else {
-          image = {
-            id: bonReceptionEntity.image.id,
-            titre: values.dateLivraison,
-            path: bonReceptionEntity.image.path.substr(27)
-          };
-          entity.image = image;
-
-          if (imageFile) {
-            (imageStorageName = Date.now().toString() + '.' + /[^.]+$/.exec(imageFile.name)), (image.path = imageStorageName);
-            entity.image = image;
-            imageData.append('file', imageFile);
-            imageData.append('storageName', imageStorageName);
-
-            props.deleteImageFile(bonReceptionEntity.image.path.substr(24));
-            props.uploadImage(imageData);
-          }
-          props.updateEntity(entity);
-          handleCloseBig();
-          history.push("/bon-reception");
-          window.location.reload(false);
-        }
+        props.updateEntity(entity);
       }
     }
-  };
-  const [typeLigne, setTypeLigne] = React.useState('materiel');
-  const [disableMateriel, setDisableMateriel] = useState();
-  const [disableMateriau, setDisableMateriau] = useState();
-
-
-
-  const handleChange = (event) => {
-    setTypeLigne(event.target.value);
-    // if(typeLigne ==='materiel'){
-    //   setDisableMateriel(false);
-    //   setDisableMateriau(true);
-    // }
-    // if(typeLigne==='materiau'){
-    //   setDisableMateriel(false);
-    //   setDisableMateriau(false);
-    // }
-    // if(typeLigne==='both'){
-    //   setDisableMateriel(true);
-    //   setDisableMateriau(false);
-
-    // }
   };
   const saveMateriau = (event, errors, values) => {
     console.warn("Add to table Materiau");
@@ -263,9 +139,8 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
     }
   };
 
-
   return (
-    <div>
+     <div>
 
       <Modal size="lg" style={{maxWidth: '900px', width: '100%'}}  isOpen={bigmodal} toggle={handleClose} >
 
@@ -285,7 +160,7 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
               {loading ? (
                 <p>Loading...</p>
               ) : (
-                <AvForm model={isNew ? {} : bonReceptionEntity} onSubmit={saveEntity}>
+                <AvForm model={isNew ? {} : bonSortieEntity} onSubmit={saveEntity}>
                   {!isNew ? (
                     <AvGroup>
                       <Label for="bon-reception-id">
@@ -296,112 +171,53 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                   ) : null}
                   <ModalBody id="ibamApp.bonCommande.delete.question">
 
-                  <AvGroup>
-                    <Label id="livreurLabel" for="bon-reception-livreur">
-                      <Translate contentKey="ibamApp.bonReception.livreur">Livreur</Translate>
-                    </Label>
-                    <AvField id="bon-reception-livreur" type="text" name="livreur" />
-                  </AvGroup>
-                  <AvGroup>
-                    <Label id="dateLivraisonLabel" for="bon-reception-dateLivraison">
-                      <Translate contentKey="ibamApp.bonReception.dateLivraison">Date Livraison</Translate>
-                    </Label>
-                    <AvField
-                      id="bon-reception-dateLivraison"
-                      type="date"
-                      className="form-control"
-                      name="dateLivraison"
-                      validate={{
-                        required: { value: true, errorMessage: translate('entity.validation.required') }
-                      }}
-                    />
-                  </AvGroup>
-                  <AvGroup>
-                    <Label for="bon-reception-depot">
-                      <Translate contentKey="ibamApp.bonReception.projet">Projet</Translate>
-                    </Label>
-                    <AvInput id="bon-reception-depot" type="select" className="form-control" name="projet.id">
-                      <option value="" key="0" />
-                      {projets
-                        ? projets.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.libelle}
-                          </option>
-                        ))
-                        : null}
-                    </AvInput>
-                  </AvGroup>
-                  <AvGroup>
-                    <Label for="bon-reception-fournisseur">
-                      <Translate contentKey="ibamApp.bonReception.fournisseur">Fournisseur</Translate>
-                    </Label>
-                    <AvInput id="bon-reception-fournisseur" type="select" className="form-control" name="fournisseur.id">
-                      <option value="" key="0" />
-                      {fournisseurs
-                        ? fournisseurs.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.nomCommercial}
-                          </option>
-                        ))
-                        : null}
-                    </AvInput>
-                  </AvGroup>
+                    <AvGroup>
+                      <Label id="livreurLabel" for="bon-reception-livreur">
+                        <Translate contentKey="ibamApp.bonReception.livreur">Livreur</Translate>
+                      </Label>
+                      <AvField id="bon-reception-livreur" type="text" name="livreur" />
+                    </AvGroup>
+                    <AvGroup>
+                      <Label id="dateLivraisonLabel" for="bon-reception-dateLivraison">
+                        <Translate contentKey="ibamApp.bonReception.dateLivraison">Date Livraison</Translate>
+                      </Label>
+                      <AvField
+                        id="bon-reception-dateLivraison"
+                        type="date"
+                        className="form-control"
+                        name="dateLivraison"
+                        validate={{
+                          required: { value: true, errorMessage: translate('entity.validation.required') }
+                        }}
+                      />
+                    </AvGroup>
+                    <AvGroup>
+                      <Label for="bon-reception-depot">
+                        <Translate contentKey="ibamApp.bonReception.projet">Projet</Translate>
+                      </Label>
+                      <AvInput id="bon-reception-depot" type="select" className="form-control" name="projet.id">
+                        <option value="" key="0" />
+                        {projets
+                          ? projets.map(otherEntity => (
+                            <option value={otherEntity.id} key={otherEntity.id}>
+                              {otherEntity.libelle}
+                            </option>
+                          ))
+                          : null}
+                      </AvInput>
+                    </AvGroup>
                     <AvGroup>
                       <Label id="remarquesLabel" for="bon-reception-remarques">
                         <Translate contentKey="ibamApp.bonReception.remarques">Remarques</Translate>
                       </Label>
                       <AvField id="bon-reception-remarques" type="text" name="remarques" />
                     </AvGroup>
-                  <AvGroup>
-                    <Label>
-                      <Translate contentKey="ibamApp.bonReception.image">Image</Translate>
-                    </Label>
-                    {!isNew ? (
-                      <div>
-                        <dd>
-                          {!imageDeleted && bonReceptionEntity.image !== null && imageEntity.path !== undefined ? (
-                            <img src={imageEntity.path + '?' + Math.random()} alt="not found" style={{ width: '300px', border: 'solid 1px' }} />
-                          ) : null}
-                        </dd>
-                        <dd>
-                          <Button
-                            color="danger"
-                            size="sm"
-                            onClick={() => setimageDeleted(true)}
-                            disabled={imageDeleted || bonReceptionEntity.image == null}
-                          >
-                            <FontAwesomeIcon icon="trash" />{' '}
-                            <span className="d-none d-md-inline">
-                          <Translate contentKey="entity.action.delete">Delete</Translate>
-                        </span>
-                          </Button>
-                        </dd>
-                      </div>
-                    ) : null}
-                    <AvInput
-                      id="bon-reception-image"
-                      type="file"
-                      name="imageFile"
-                      accept=".png, .jpg, .jpeg"
-                      validate={{ async: validate }}
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => setimageFile(event.target.files[0])}
-                      style={{ opacity: '0', position: 'absolute', height: '0px' }}
-                    />
-                    <div className="form-group" style={{ marginBottom: '-10px' }}>
-                      <Label for="bon-reception-image" className="btn btn-secondary">
-                        {translate('entity.inputImageFile')}
-                      </Label>
-                      <Label className="p-2">
-                        {imageFile !== null && imageFile !== undefined ? imageFile.name : translate('entity.noFileChoosed')}
-                      </Label>
-                    </div>
-                    <AvFeedback>{errorMessage}</AvFeedback>
-                  </AvGroup>
                     <Button
                       tag={Link}
                       color="primary"
                       size="sm"
                       onClick={handleShow}
+                      to="/#"
                     >
                       <FontAwesomeIcon icon="pencil-alt" />{' '}
                       <span className="d-none d-md-inline">
@@ -440,6 +256,7 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                                 tag={Link}
                                 color="danger"
                                 size="sm"
+                                to="/#"
 
                               >
                                 <FontAwesomeIcon icon="trash" />{' '}
@@ -514,38 +331,38 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                 </RadioGroup>
               </FormControl>
               {typeLigne==='materiau'  ? (
-                  <AvGroup>
-                <Label for="bon-commande-depot">
-                  <Translate contentKey="ibamApp.bonCommande.materiau">Materiau</Translate>
-                </Label>
-                <AvInput id="bon-commande-depot" type="select" className="form-control" name="materiau"  disabled={disableMateriau}>
-                  <option value="" key="0" />
-                  {materiaus
-                    ? materiaus.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.libelle}
-                      </option>
-                    ))
-                    : null}
-                </AvInput>
-              </AvGroup>
+                <AvGroup>
+                  <Label for="bon-commande-depot">
+                    <Translate contentKey="ibamApp.bonCommande.materiau">Materiau</Translate>
+                  </Label>
+                  <AvInput id="bon-commande-depot" type="select" className="form-control" name="materiau"  disabled={disableMateriau}>
+                    <option value="" key="0" />
+                    {materiaus
+                      ? materiaus.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.libelle}
+                        </option>
+                      ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
               ) : null}
               {typeLigne==='materiel'  ? (
-              <AvGroup>
-                <Label for="bon-commande-materiel" >
-                  <Translate contentKey="ibamApp.bonCommande.materiel">Materiel</Translate>
-                </Label>
-                <AvInput id="bon-commande-materiel" type="select" className="form-control" name="materiel" >
-                  <option value="" key="0"  />
-                  {materiels
-                    ? materiels.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.libelle}
-                      </option>
-                    ))
-                    : null}
-                </AvInput>
-              </AvGroup>
+                <AvGroup>
+                  <Label for="bon-commande-materiel" >
+                    <Translate contentKey="ibamApp.bonCommande.materiel">Materiel</Translate>
+                  </Label>
+                  <AvInput id="bon-commande-materiel" type="select" className="form-control" name="materiel" >
+                    <option value="" key="0"  />
+                    {materiels
+                      ? materiels.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.libelle}
+                        </option>
+                      ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
               ) : null}
               {/*<AvGroup>
                 <Label for="bon-commande-currency">
@@ -593,12 +410,12 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
           </ModalFooter>
         </AvForm>
       </Modal>
-
     </div>
   );
 };
 
-  const mapStateToProps = (storeState: IRootState) => ({
+
+const mapStateToProps = (storeState: IRootState) => ({
   depots: storeState.depot.entities,
   fournisseurs: storeState.fournisseur.entities,
   bonReceptionEntity: storeState.bonReception.entity,
@@ -607,42 +424,30 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
   updateSuccess: storeState.bonReception.updateSuccess,
   imageEntity: storeState.image.entity,
   images: storeState.image.entities,
-    currencyList : storeState.bonReception.currenciesList,
+  currencyList : storeState.bonReception.currenciesList,
   errorUpload: storeState.image.errorUpload,
   uploadSuccess: storeState.image.uploadSuccess,
-    projets: storeState.projet.entities,
+  projets: storeState.projet.entities,
   materiaus: storeState.materiau.entities,
   materiels: storeState.materiel.entities,
-    // currenciesList : storeState.currency.entities,
-  // tab : storeState.ligneBonCommande.entities,
-  // materiau: storeState.materiau.entity,
-  // materiel: storeState.materiel.entity,
-  //   currency: icurrency,
-    ligneBonReceptionList: storeState.ligneBonReception.entities,
+  bonSortieEntity: storeState.bonSortie.entity,
+  ligneBonSortieList: storeState.ligneBonSortie.entities,
   totalItems: storeState.ligneBonReception.totalItems,
+
+
 });
 
 const mapDispatchToProps = {
-  getDepots,
-  getFournisseurs,
   getMateriels,
   getMateriau,
-  getProjects,
+  getProjets,
   getEntity,
   updateEntity,
   createEntity,
   reset,
-  getCurrencies,
-  createImageEntity,
-  uploadImage,
-  getImageEntity,
-  getLigneBonReception,
-  resetImage,
-  deleteImageFile,
-  deleteImageEntity
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewBonReceptionUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(NewBonSortieUpdate);
