@@ -1,7 +1,7 @@
 // import external modules
 import React, { Component } from 'react';
 import { NavLink, Redirect, RouteComponentProps } from 'react-router-dom';
-import { Row, Col, Input, Form, FormGroup, Button, Label, Card, CardBody, CardFooter } from 'reactstrap';
+import { Row, Col, Input, Form, FormGroup, Button, Label, Card, CardBody, CardFooter, Alert } from 'reactstrap';
 import { IRootState } from '../../../shared/reducers';
 import { login, ACTION_TYPES, getSession } from '../../../shared/reducers/authentication';
 import { connect } from 'react-redux';
@@ -31,7 +31,7 @@ class Login extends Component<ILoginFormProps> {
 
   handleSubmit = (event, errors, { username, password, rememberMe }) => {
     const { handleLogin } = this.props;
-    console.log('con', username, password);
+    console.log('con', username, password, rememberMe);
     handleLogin(username, password, rememberMe);
     console.log('handled');
   };
@@ -85,24 +85,34 @@ class Login extends Component<ILoginFormProps> {
                     </Col>
                   </FormGroup>
 
-                  <FormGroup>
+                  <AvGroup check inline>
                     <Row>
                       <Col md="12">
                         <div className="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0 ml-3">
-                          <Input
+                          <AvInput
                             type="checkbox"
                             className="custom-control-input"
+                            name="rememberMe"
                             checked={this.state.isChecked}
-                            onChange={this.handleChecked}
+                            // onChange={this.handleChecked}
                             id="rememberMe"
                           />
-                          <Label className="custom-control-label float-left white" for="rememberme">
+                          <Label className="custom-control-label float-left white" for="rememberMe">
                             <Translate contentKey="login.form.rememberme">Remember me</Translate>
                           </Label>
                         </div>
                       </Col>
                     </Row>
-                  </FormGroup>
+                  </AvGroup>
+                  <Col md="12">
+                    {loginError ? (
+                      <Alert color="danger">
+                        <Translate contentKey="login.messages.error.authentication">
+                          <strong>Failed to sign in!</strong> Please check your credentials and try again.
+                        </Translate>
+                      </Alert>
+                    ) : null}
+                  </Col>
                   <FormGroup>
                     <Col md="12">
                       <Button type="submit" color="danger" block className="btn-pink btn-raised">

@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -156,10 +157,10 @@ public class TvaResource {
     }
 
     @GetMapping("/tvas/report/{format}")
-    public ResponseEntity<?> generateReport(@PathVariable String format) {
+    public ResponseEntity<?> generateReport(@PathVariable String format, HttpServletResponse response) {
         reportService.setName(ENTITY_NAME);
         reportService.setDataSource((List) tvaRepository.findAll());
-        boolean result = reportService.exportReport(format);
+        boolean result = reportService.exportReport(format, response);
         String s1 = String.valueOf(result);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, s1))
                 .body(result);

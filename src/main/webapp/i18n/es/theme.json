@@ -1,0 +1,21 @@
+{
+  "ibamApp": {
+    "theme": {
+      "home": {
+        "title": "Themes",
+        "createLabel": "Crear nuevo Theme",
+        "createOrEditLabel": "Crear o editar Theme",
+        "notFound": "Ningún Themes encontrado"
+      },
+      "created": "Un nuevo Theme ha sido creado con el identificador {{ param }}",
+      "updated": "Un Theme ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Theme ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Theme {{ id }}?"
+      },
+      "detail": {
+        "title": "Theme"
+      }
+    }
+  }
+}

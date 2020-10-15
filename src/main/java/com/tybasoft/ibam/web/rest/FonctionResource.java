@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -159,10 +160,10 @@ public class FonctionResource {
     private ReportService reportService;
 
     @GetMapping("/fonctions/report/{format}")
-    public boolean generateReport(@PathVariable String format) {
+    public void generateReport(@PathVariable String format, HttpServletResponse response) {
         reportService.setName(ENTITY_NAME);
         reportService.setDataSource((List) fonctionRepository.findAll());
-        return reportService.exportReport(format);
+        reportService.exportReport(format, response);
     }
 
     @Autowired

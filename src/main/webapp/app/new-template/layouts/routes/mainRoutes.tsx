@@ -21,7 +21,7 @@ const MainLayoutRoute = (props, { ...rest }) => {
     props.login(username, password, rememberMe);
   };
 
-  console.log('Auth state:', account);
+  console.log('Auth state:', props);
 
   const { location, isAuthenticated } = props;
 

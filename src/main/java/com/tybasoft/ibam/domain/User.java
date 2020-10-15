@@ -81,6 +81,76 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "reset_date")
     private Instant resetDate = null;
 
+    @Column(name = "layout_color")
+    private String layoutColor = null;
+
+    @Column(name = "sidebar_collapsed")
+    private Boolean sidebarCollapsed = null;
+
+    @Column(name = "sidebar_size")
+    private String sidebarSize = null;
+
+    @Column(name = "sidebar_background_color")
+    private String sidebarBackgroundColor = null;
+
+    @Column(name = "sidebar_background_image")
+    private Boolean sidebarBackgroundImage = null;
+
+    @Column(name = "sidebar_background_image_URL")
+    private String sidebarBackgroundImageURL = null;
+
+
+
+    public String getLayoutColor() {
+        return layoutColor;
+    }
+
+    public void setLayoutColor(String layoutColor) {
+        this.layoutColor = layoutColor;
+    }
+
+    public Boolean getSidebarCollapsed() {
+        return sidebarCollapsed;
+    }
+
+    public void setSidebarCollapsed(Boolean sidebarCollapsed) {
+        this.sidebarCollapsed = sidebarCollapsed;
+    }
+
+    public String getSidebarSize() {
+        return sidebarSize;
+    }
+
+    public void setSidebarSize(String sidebarSize) {
+        this.sidebarSize = sidebarSize;
+    }
+
+    public String getSidebarBackgroundColor() {
+        return sidebarBackgroundColor;
+    }
+
+    public void setSidebarBackgroundColor(String sidebarBackgroundColor) {
+        this.sidebarBackgroundColor = sidebarBackgroundColor;
+    }
+
+    public Boolean getSidebarBackgroundImage() {
+        return sidebarBackgroundImage;
+    }
+
+    public void setSidebarBackgroundImage(Boolean sidebarBackgroundImage) {
+        this.sidebarBackgroundImage = sidebarBackgroundImage;
+    }
+
+    public String getSidebarBackgroundImageURL() {
+        return sidebarBackgroundImageURL;
+    }
+
+    public void setSidebarBackgroundImageURL(String sidebarBackgroundImageURL) {
+        this.sidebarBackgroundImageURL = sidebarBackgroundImageURL;
+    }
+
+
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(

@@ -15,6 +15,7 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -159,10 +160,10 @@ public class DocumentResource {
     private ReportService reportService;
 
     @GetMapping("/documents/report/{format}")
-    public boolean generateReport(@PathVariable String format) {
+    public void generateReport(@PathVariable String format, HttpServletResponse response) {
         reportService.setName(ENTITY_NAME);
         reportService.setDataSource((List) documentRepository.findAll());
-        return reportService.exportReport(format);
+        reportService.exportReport(format, response);
     }
 
     @Autowired

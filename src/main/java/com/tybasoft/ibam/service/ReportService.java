@@ -41,6 +41,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Service
@@ -144,7 +145,7 @@ public class ReportService {
         return generated;
     }
 
-    private void ExportCSV() {
+    private void ExportCSV(HttpServletResponse response) {
         String home = System.getProperty("user.home");
         try {
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(this.dataSource);
@@ -159,17 +160,20 @@ public class ReportService {
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
             SimpleExporterInput input = new SimpleExporterInput(jasperPrint);
             SimpleWriterExporterOutput output = new SimpleWriterExporterOutput(
-                    home + "/Downloads/" + this.Name + ".csv");
+                response.getOutputStream());
             JRCsvExporter exporter = new JRCsvExporter();
             exporter.setExporterInput(input);
             exporter.setExporterOutput(output);
+            response.setHeader("Content-Disposition", "attachment; filename=" + this.Name + ".csv;");
+            response.setContentType("application/octet-stream");
+
             exporter.exportReport();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void ExportPDF() {
+    private void ExportPDF(HttpServletResponse response) {
         String home = System.getProperty("user.home");
         try {
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(this.dataSource);
@@ -180,21 +184,23 @@ public class ReportService {
             parameters.put("title", "IBAM");
             parameters.put("subtitle", "Intelligent Best Application of Management");
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-            JasperExportManager.exportReportToPdfFile(jasperPrint, home + "/Downloads/" + this.Name + ".pdf");
+            JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
+            response.setContentType("application/pdf");
+            response.addHeader("Content-Disposition", "attachment; filename=" + this.Name + ".pdf;");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public boolean exportReport(String Format) {
+    public boolean exportReport(String Format, HttpServletResponse response) {
 
         boolean generated = true;
 
         if (Format.equalsIgnoreCase("csv")) {
-            ExportCSV();
+            ExportCSV(response);
         }
         if (Format.equalsIgnoreCase("pdf")) {
-            ExportPDF();
+            ExportPDF(response);
         }
 
         return (generated);

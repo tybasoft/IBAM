@@ -48,16 +48,16 @@ export const Import = (props: ImportProps) => {
                   ref={divRef}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFile(event.target.files[0])}
                 />
-                <FontAwesomeIcon
+                {/* <FontAwesomeIcon
                   onClick={() => divRef.current.click()}
                   style={{ alignSelf: 'center', cursor: 'pointer' }}
                   icon="cloud"
                   size="7x"
-                />
-                <CardText>
+                /> */}
+                <CardText onClick={() => divRef.current.click()} style={{ alignSelf: 'center', cursor: 'pointer' }}>
                   <Translate contentKey="global.import.instruction">ibamApp.tva.home.createOrEditLabel</Translate>{' '}
                 </CardText>
-                <br></br>
+                {File && <hr></hr>}
                 {File && <p>{File.name}</p>}
                 {File && (
                   <Button onClick={Upload}>

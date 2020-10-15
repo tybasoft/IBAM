@@ -5,7 +5,8 @@ import { IRootState } from 'app/shared/reducers';
 import { getReportEntity } from './report.reducer';
 import { toast } from 'react-toastify';
 import { Translate, Storage, translate } from 'react-jhipster';
-
+import axios from 'axios';
+import FileDownload from 'js-file-download';
 interface ExportProps extends DispatchProps, StateProps {
   apiUrl: string;
   action: string;
@@ -18,9 +19,12 @@ const Export = (props: ExportProps) => {
   };
   const ExportReport = e => {
     if (Type === 'pdf' || Type === 'csv') {
-      setGenerated(true);
-      toast.success('The file is uploaded successfully-- see Your downloads folder');
-      props.getReportEntity(Type, props.apiUrl, props.action);
+      axios.get(`${props.apiUrl}/report/${Type}`).then(res => {
+        console.log(res);
+        setGenerated(true);
+        toast.success('The file is uploaded successfully. See Your downloads folder');
+        FileDownload(res.data, props.apiUrl.substr(4) + '.' + Type);
+      });
     } else {
       setGenerated(false);
     }
