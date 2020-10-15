@@ -59,7 +59,7 @@ spring:
     contexts: dev, faker
   mail:
     host: smtp.mailtrap.io
-    port: 25
+    port: 2525
     tls: true
     ssl: false
     username: 3929903e2a9092

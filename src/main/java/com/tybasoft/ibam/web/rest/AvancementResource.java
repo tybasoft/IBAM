@@ -100,10 +100,8 @@ public class AvancementResource {
 
         for(int i=0 ; i<mails.size() ;i++)
         {
-
             log.debug("REST request to send mail to : {}", mails.get(i));
-          //  mailService.sendEmail(mails.get(i),"compte rendu ",msg,true,false);
-
+            mailService.sendEmail(mails.get(i),"compte rendu ",msg,false,false);
         }
     }
 
