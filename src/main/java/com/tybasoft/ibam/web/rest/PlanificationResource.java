@@ -1,6 +1,8 @@
 package com.tybasoft.ibam.web.rest;
 
+import com.tybasoft.ibam.domain.Employe;
 import com.tybasoft.ibam.domain.Planification;
+import com.tybasoft.ibam.repository.EmployeRepository;
 import com.tybasoft.ibam.repository.PlanificationRepository;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
 
@@ -9,6 +11,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,9 +44,14 @@ public class PlanificationResource {
 
     private final PlanificationRepository planificationRepository;
 
+    @Autowired
+    private  EmployeRepository employeRepository;
+
+
     public PlanificationResource(PlanificationRepository planificationRepository) {
         this.planificationRepository = planificationRepository;
     }
+
 
     /**
      * {@code POST  /planifications} : Create a new planification.
@@ -103,6 +111,18 @@ public class PlanificationResource {
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+    /**
+    *  Get tasks of employe
+    * */
+    @GetMapping("/planifications/employe/{id}")
+    public List<Planification> getAllTasksOfEmploye(@PathVariable Long id) {
+        log.debug("REST request to get a page of Planifications");
+
+        Optional<Employe> employe = employeRepository.findById(id);
+        List<Planification> tasks = planificationRepository.findAllByEmployes(employe);
+
+    return tasks;
     }
 
     /**

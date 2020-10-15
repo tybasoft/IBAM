@@ -10,7 +10,7 @@ import DateTimePicker from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import { IEmploye } from 'app/shared/model/employe.model';
 import { getEntities as getEmployes } from 'app/entities/employe/employe.reducer';
-import { getEntity, updateEntity,getEntities, createEntity, reset } from '../../../entities/planification/planification.reducer';
+import { getEntity, updateEntity,getEmployeTasks, getEntities, createEntity, reset } from '../../../entities/planification/planification.reducer';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { IPlanification } from 'app/shared/model/planification.model';
 import { mapIdList } from 'app/shared/util/entity-utils';
@@ -71,8 +71,6 @@ componentDidMount = async () => {
 
   })
 
-
-
 }
 
   toggleModal = () => {
@@ -101,14 +99,17 @@ componentDidMount = async () => {
      this.state.fin = convertDateTimeToServer(document.getElementById("date_fin").value);
 
   };
-  handleEmployeChange = emp => {
+  handleEmployeChange = (emp) => {
     let employe_list=[];
-    emp.map((item)=>{
+    emp.map( async (item) =>{
+      const dates_tasks_employe = [][]
       employe_list.push(item.value);
-
+      const employe_task = await getEmployeTasks(item.value.id);
+      console.log(employe_task.data);
     })
     this.state.employes = employe_list;
     console.log(this.state.employes)
+
 
 
   }
@@ -162,7 +163,7 @@ componentDidMount = async () => {
           eventTitle,
           end
         };
-        //handleAddEvent(param, events);
+        handleAddEvent(param, events);
       }
     );
     this.toggleModal();
@@ -175,6 +176,9 @@ componentDidMount = async () => {
       end: slotInfo.end,
       eventTitle: 'Enter Your Title'
     }));
+  };
+  checkAvailability = (emp,intervall) => {
+
   };
 
   render() {
@@ -274,5 +278,6 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
 };
+
 
 export default connect(mapStateToProps, { handleAddEvent })(Calender);
