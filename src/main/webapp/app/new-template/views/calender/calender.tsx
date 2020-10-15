@@ -180,11 +180,12 @@ componentDidMount = async () => {
       eventTitle: 'Enter Your Title'
     }));
   };
+   condition_for_end = false;
+   condition_for_start = false;
   checkAvailability = (date_debut_tache_x,date_fin_tache_x,date_debut_selectionne,date_fin_selectionne) => {
-    const condition_for_start= date_debut_selectionne>=date_debut_tache_x &&date_debut_selectionne<=date_fin_tache_x;
-    const condition_for_end=date_fin_selectionne>=date_debut_tache_x &&date_debut_selectionne<=date_fin_tache_x
-    if(condition_for_start || condition_for_end) {
-        this.state.availability = false;
+     this.condition_for_start= date_debut_selectionne>=date_debut_tache_x &&date_debut_selectionne<=date_fin_tache_x;
+     this.condition_for_end=date_fin_selectionne>=date_debut_tache_x &&date_debut_selectionne<=date_fin_tache_x
+    if(this.condition_for_start || this.condition_for_end) {
         document.getElementById("availability").className="text-danger";
     }
     else
@@ -235,7 +236,7 @@ componentDidMount = async () => {
     classNamePrefix="select"
     onChange={this.handleEmployeChange}
   />
-    <span className="text-danger">L'employe n'est pas valable</span>
+    <span className="text-danger" id="availability">L'employe n'est pas valable</span>
               </div>
           </ModalBody>
           <ModalFooter>
