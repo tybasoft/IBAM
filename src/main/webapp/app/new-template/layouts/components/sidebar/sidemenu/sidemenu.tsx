@@ -94,7 +94,7 @@ const SideMenuContent = props => {
         </NavLink>
       </SideMenu.MenuSingleItem>
       <SideMenu.MenuSingleItem>
-        <NavLink to="/calendar" activeClassName="active">
+        <NavLink to="/projet" activeClassName="active">
           <i className="menu-icon">
             <Copy size={18} />
           </i>

@@ -222,18 +222,18 @@ public class UserService {
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(
                 user -> {
-                    user.setLayoutColor(data.getLayoutColor());
-                    user.setSidebarBackgroundColor(data.getSidebarBackgroundColor());
-                    user.setSidebarBackgroundImage(data.getSidebarBackgroundImage());
-                    user.setSidebarBackgroundImageURL(data.getSidebarBackgroundImageURL());
-                    user.setSidebarCollapsed(data.getSidebarCollapsed());
-                    user.setSidebarSize(data.getSidebarSize());
+                    if (data.getLayoutColor() != null) user.setLayoutColor(data.getLayoutColor());
+                    if (data.getSidebarBackgroundColor() != null) user.setSidebarBackgroundColor(data.getSidebarBackgroundColor());
+                    if (data.getSidebarBackgroundImage() != null) user.setSidebarBackgroundImage(data.getSidebarBackgroundImage());
+                    if (data.getSidebarBackgroundImageURL() != null) user.setSidebarBackgroundImageURL(data.getSidebarBackgroundImageURL());
+                    if (data.getSidebarCollapsed() != null) user.setSidebarCollapsed(data.getSidebarCollapsed());
+                    if (data.getSidebarSize() != null) user.setSidebarSize(data.getSidebarSize());
 
                     this.clearUserCaches(user);
                     log.debug("Changed Information for User: {}", user);
                 }
             );
-//        return userRepository.findOneByLogin;
+        //        return userRepository.findOneByLogin;
     }
 
     /**

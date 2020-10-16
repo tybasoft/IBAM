@@ -21,7 +21,8 @@ const circleStyle = {
 
 class Customizer extends Component<any, any> {
   state = {
-    customizer: false
+    customizer: false,
+    ...this.props.settings
   };
 
   toggleCustomizer = () => {
@@ -36,10 +37,13 @@ class Customizer extends Component<any, any> {
 
   handleLayout = layout => {
     this.props.handleLayout(layout);
+    this.setState({ layoutColor: layout });
   };
 
   handleSidebarChange = state => {
     this.props.handleCollapsedSidebar(state);
+    this.setState({ sidebarCollapsed: state });
+    console.log(this.state);
   };
 
   render() {
@@ -233,6 +237,7 @@ class Customizer extends Component<any, any> {
                           <Input
                             type="checkbox"
                             id="cz-bg-image-display"
+                            checked={this.state.layoutColor === 'layout-dark'}
                             onChange={e => {
                               if (e.target.checked === true) {
                                 this.handleLayout('layout-dark');
@@ -254,16 +259,16 @@ class Customizer extends Component<any, any> {
                           <Input
                             type="checkbox"
                             id="cz-bg-image-display"
+                            checked={this.state.sidebarCollapsed}
                             onChange={e => {
                               if (e.target.checked === true) {
-                                context.makeNormalContent();
-                                this.handleSidebarChange(false);
-                              } else {
-                                context.makeFullContent();
                                 this.handleSidebarChange(true);
+                                context.makeFullContent();
+                              } else {
+                                this.handleSidebarChange(false);
+                                context.makeNormalContent();
                               }
                             }}
-                            defaultChecked
                           />{' '}
                           Compact Menu
                         </Label>

@@ -6,6 +6,7 @@ import authentication, { AuthenticationState } from './authentication';
 import applicationProfile, { ApplicationProfileState } from './application-profile';
 import customizer from '../../new-template/redux/reducers/customizer/';
 import calender from '../../new-template/redux/reducers/calenderReducer';
+import emailApp from '../../new-template/redux/reducers/email';
 
 import administration, { AdministrationState } from 'app/modules/administration/administration.reducer';
 import userManagement, { UserManagementState } from 'app/modules/administration/user-management/user-management.reducer';
@@ -222,6 +223,7 @@ export interface IRootState {
   readonly loadingBar: any;
   readonly customizer: any;
   readonly calender: any;
+  readonly emailApp: any;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -277,7 +279,8 @@ const rootReducer = combineReducers<IRootState>({
   bonSortie,
   ligneBonSortie,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
-  loadingBar
+  loadingBar,
+  emailApp
 });
 
 export default rootReducer;
