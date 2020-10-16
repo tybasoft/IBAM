@@ -35,8 +35,8 @@ const NavbarSearch = props => {
         value={searchTerm}
       />
       <div className="form-control-position">
-        <Search onClick={() => handleSearch()} size={16} style={{ cursor: 'pointer' }} className="mb-0 mr-2" />
-        <X onClick={() => handleCancel()} size={16} style={{ cursor: 'pointer' }} className="mb-0" />
+        {/* <Search onClick={() => handleSearch()} size={16} style={{ cursor: 'pointer' }} className="mb-0 mr-2" /> */}
+        {/* <X onClick={() => handleCancel()} size={16} style={{ cursor: 'pointer' }} className="mb-0" /> */}
       </div>
       {/* <div className="form-control-position"></div> */}
     </div>

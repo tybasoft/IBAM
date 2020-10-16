@@ -10,13 +10,20 @@ import Footer from './components/footer/footer';
 import templateConfig from '../templateConfig';
 import { IRootState } from 'app/shared/reducers';
 import { connect } from 'react-redux';
-
+import {
+  sidebarImage,
+  sidebarImageUrl,
+  sidebarBgColor,
+  sidebarCollapsed,
+  sidebarSize,
+  handleLayout
+} from 'app/new-template/redux/actions/customizer/customizerActions';
 class MainLayout extends PureComponent<any, any> {
   state = {
     width: window.innerWidth,
     sidebarState: 'close',
-    sidebarSize: '',
-    layout: '',
+    sidebarSize: this.props.user.sidebarSize === null ? '' : this.props.user.sidebarSize,
+    layout: this.props.user.layoutColor === null ? '' : this.props.user.layoutColor,
     user: {}
   };
 
@@ -31,6 +38,7 @@ class MainLayout extends PureComponent<any, any> {
   };
 
   handleLayout = layout => {
+    this.props.handleLayout(layout);
     this.setState({ layout });
   };
 
@@ -88,4 +96,4 @@ const mapStateToProps = ({ authentication, applicationProfile, locale, notificat
   user: authentication.account
 });
 
-export default connect(mapStateToProps, {})(MainLayout);
+export default connect(mapStateToProps, { handleLayout })(MainLayout);

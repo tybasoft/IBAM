@@ -8,7 +8,7 @@ import sidebarBGImage from './assets/img/sidebar-bg/01.jpg';
 
 //Template config options
 const templateConfig = {
-  layoutColor: 'layout-dark', // Options: layout-dark, layout-light - Set layout-dark for dark mode and layout-light for light.
+  layoutColor: 'layout-light', // Options: layout-dark, layout-light - Set layout-dark for dark mode and layout-light for light.
   // fixedNavbar: true, // Options: true, false - Set true for fixed navbar.
   sidebar: {
     collapsed: false, // Options: true, false | Set false to keep the sidebar open / set it to true for collapsed sidebar by default

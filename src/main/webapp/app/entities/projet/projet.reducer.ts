@@ -14,7 +14,8 @@ export const ACTION_TYPES = {
   DELETE_PROJET: 'projet/DELETE_PROJET',
   RESET: 'projet/RESET',
   CONSOMMATION: 'projet/CONSOMMATION',
-  REPPORT: 'projet/REPPORT'
+  REPPORT: 'projet/REPPORT',
+  FILTER_PROJET_LIST: 'projet/FILTER_PROJET_LIST'
 };
 
 const initialState = {
@@ -77,6 +78,12 @@ export default (state: ProjetState = initialState, action): ProjetState => {
         loading: false,
         entity: action.payload.data
       };
+    case SUCCESS(ACTION_TYPES.FILTER_PROJET_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case SUCCESS(ACTION_TYPES.CREATE_PROJET):
     case SUCCESS(ACTION_TYPES.UPDATE_PROJET):
       return {
@@ -137,11 +144,17 @@ export const createEntity: ICrudPutAction<IProjet> = entity => async dispatch =>
   return result;
 };
 
+export const filterEntities: ICrudGetAllAction<IProjet> = filter => ({
+  type: ACTION_TYPES.FILTER_PROJET_LIST,
+  payload: axios.get<IProjet>(`${apiUrl}/search-entities/${filter}`)
+});
+
 export const updateEntity: ICrudPutAction<IProjet> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_PROJET,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
   return result;
 };
 
@@ -151,6 +164,7 @@ export const deleteEntity: ICrudDeleteAction<IProjet> = id => async dispatch => 
     type: ACTION_TYPES.DELETE_PROJET,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
   return result;
 };
 

@@ -21,6 +21,7 @@ import VisiteTechnique from '../modules/visite-technique';
 import TransfertMateriel from '../modules/transfert-materiel';
 import Equipe from '../modules/equipe';
 import FichePointage from '../modules/fiche-pointage';
+import Projet from '../modules/projet';
 
 import { Logout } from 'app/modules/login/logout';
 import { logout } from 'app/shared/reducers/authentication';
@@ -212,6 +213,15 @@ class Router extends Component<any, any> {
             )}
           />
           {/* UIKit Views */}
+          <MainLayoutRoutes
+            exact
+            path="/projet"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Projet {...matchprops} />
+              </Suspense>
+            )}
+          />
           <MainLayoutRoutes
             exact
             path="/entreprise"

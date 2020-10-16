@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Mail, Inbox, Send, File, Star, Trash, AlertCircle, Pocket, Tag } from 'react-feather';
 import { Editor } from 'react-draft-wysiwyg';
-import FilterEmail from '../../containers/email/filterEmails';
+import FilterEmail from '../../modules/projet/ProjetTab';
 import { VisibilityFilters } from '../../redux/actions/email/emailActions';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
