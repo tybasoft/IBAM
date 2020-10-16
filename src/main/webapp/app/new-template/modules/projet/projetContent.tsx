@@ -13,6 +13,8 @@ import classnames from 'classnames';
 import { IRootState } from 'app/shared/reducers';
 import ProjetDetails from './projetDetails';
 import ProjetDepot from './projetDepot';
+import { ProjetMateriel } from './projetMateriel';
+import projetEmployes, { ProjetEmploye } from './projetEmployes';
 
 const ProjetContent = ({ projet }) => {
   const [activeTab, setActiveTab] = useState('1');
@@ -104,6 +106,24 @@ const ProjetContent = ({ projet }) => {
                     </div>
                   </div>
                 )}
+                {activeTab === '3' && (
+                  <div id="collapse2" role="tabpanel" aria-labelledby="headingCollapse2" className="card-collapse" aria-expanded="false">
+                    <div className="card-body px-0">
+                      <div className="email-app-text card-block">
+                        {projet.materiels ? <ProjetMateriel materielList={projet.materiels} /> : 'Aucun matériel associé à ce projet.'}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {activeTab === '4' && (
+                  <div id="collapse2" role="tabpanel" aria-labelledby="headingCollapse2" className="card-collapse" aria-expanded="false">
+                    <div className="card-body px-0">
+                      <div className="email-app-text card-block">
+                        {projet.employes ? <ProjetEmploye depotEntity={projet.employes} /> : 'Aucun employé associé à ce projet.'}
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* {activeTab === '2' && <div>TAB 2</div>} */}
                 <div className="email-app-text-action card-body" />
@@ -115,8 +135,8 @@ const ProjetContent = ({ projet }) => {
         <div className="row h-100">
           <div className="col-sm-12 my-auto">
             <div className="text-center">
-              <Icon.Mail size={84} color="#ccc" className="pb-3" />
-              <h4>Please select a email to show details.</h4>
+              <Icon.Copy size={84} color="#ccc" className="pb-3" />
+              <h4>Cliquez sur un projet pour voir plus.</h4>
             </div>
           </div>
         </div>
