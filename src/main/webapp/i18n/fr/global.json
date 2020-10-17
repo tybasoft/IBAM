@@ -12,6 +12,18 @@
       "admintools": "Outils administratives",
       "documentation": "Documentation"
     },
+    "import": {
+      "title": "Importer un fichier à la base de données",
+      "instruction": "Cliquer sur le bouton au-dessus pour choisir un fichier",
+      "upload": "Charger"
+    },
+    "export": {
+      "title": "Export un fichier csv/pdf à partir de la base de données",
+      "choose": "Choisir une extention:",
+      "generate": "Génerer",
+      "success": "Le fichier a été géneré avec succès. Voir le dossier de téléchargements.",
+      "fail": "Veuillez choisir une format"
+    },
     "menu": {
       "home": "Accueil",
       "profile": "Mon profil",
@@ -54,6 +66,8 @@
         "affectationMateriels": "Affectation Materiels",
         "situationFinanciere": "Situation Financiere",
         "planification": "Planification",
+        "bonSortie": "Bon Sortie",
+        "ligneBonSortie": "Ligne Bon Sortie",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "Materiel": "Matériel",
         "Materiau": "Matériau",
@@ -148,6 +162,7 @@
       "addimage": "Ajouter image",
       "back": "Retour",
       "cancel": "Annuler",
+      "create": "Créer",
       "edit": "Editer",
       "delete": "Supprimer",
       "open": "Ouvrir",

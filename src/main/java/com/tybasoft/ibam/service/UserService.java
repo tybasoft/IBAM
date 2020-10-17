@@ -216,6 +216,26 @@ public class UserService {
             );
     }
 
+    public void updateTheme(User data) {
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(
+                user -> {
+                    if (data.getLayoutColor() != null) user.setLayoutColor(data.getLayoutColor());
+                    if (data.getSidebarBackgroundColor() != null) user.setSidebarBackgroundColor(data.getSidebarBackgroundColor());
+                    if (data.getSidebarBackgroundImage() != null) user.setSidebarBackgroundImage(data.getSidebarBackgroundImage());
+                    if (data.getSidebarBackgroundImageURL() != null) user.setSidebarBackgroundImageURL(data.getSidebarBackgroundImageURL());
+                    if (data.getSidebarCollapsed() != null) user.setSidebarCollapsed(data.getSidebarCollapsed());
+                    if (data.getSidebarSize() != null) user.setSidebarSize(data.getSidebarSize());
+
+                    this.clearUserCaches(user);
+                    log.debug("Changed Information for User: {}", user);
+                }
+            );
+        //        return userRepository.findOneByLogin;
+    }
+
     /**
      * Update all information for a specific user, and return the modified user.
      *

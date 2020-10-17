@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_EQUIPE: 'equipe/UPDATE_EQUIPE',
   DELETE_EQUIPE: 'equipe/DELETE_EQUIPE',
   RESET: 'equipe/RESET',
-  REPPORT: 'equipe/REPPORT'
+  REPPORT: 'equipe/REPPORT',
+  FILTER_EQUIPE_LIST: 'equipe/filter'
 };
 
 const initialState = {
@@ -82,6 +83,12 @@ export default (state: EquipeState = initialState, action): EquipeState => {
         updateSuccess: true,
         entity: action.payload.data
       };
+    case SUCCESS(ACTION_TYPES.FILTER_EQUIPE_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case REQUEST(ACTION_TYPES.REPPORT):
       return {
         ...state,
@@ -116,6 +123,11 @@ export const getEntities: ICrudGetAllAction<IEquipe> = (page, size, sort) => {
     payload: axios.get<IEquipe>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
+
+export const filterEntities: ICrudGetAllAction<IEquipe> = filter => ({
+  type: ACTION_TYPES.FILTER_EQUIPE_LIST,
+  payload: axios.get<IEquipe>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntity: ICrudGetAction<IEquipe> = id => {
   const requestUrl = `${apiUrl}/${id}`;

@@ -3,7 +3,7 @@ import { Translate, translate } from 'react-jhipster';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Alert, Row, Col } from 'reactstrap';
 import { AvForm, AvField, AvGroup, AvInput } from 'availity-reactstrap-validation';
 import { Link } from 'react-router-dom';
-
+import { FormGroup } from 'semantic-ui-react';
 
 export interface ILoginModalProps {
   showModal: boolean;
@@ -19,9 +19,8 @@ class LoginModal extends React.Component<ILoginModalProps> {
   };
   render() {
     const { loginError, handleClose } = this.props;
-    
+
     return (
-      
       <Modal isOpen={this.props.showModal} toggle={handleClose} backdrop="static" id="login-page" autoFocus={false}>
         <AvForm onSubmit={this.handleSubmit}>
           <ModalHeader id="login-title" toggle={handleClose}>
@@ -55,11 +54,11 @@ class LoginModal extends React.Component<ILoginModalProps> {
                   required
                   errorMessage="Password cannot be empty!"
                 />
-                <AvGroup check inline>
+                <FormGroup>
                   <Label className="form-check-label">
                     <AvInput type="checkbox" name="rememberMe" /> <Translate contentKey="login.form.rememberme">Remember me</Translate>
                   </Label>
-                </AvGroup>
+                </FormGroup>
               </Col>
             </Row>
             <div className="mt-1">&nbsp;</div>

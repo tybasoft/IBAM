@@ -14,7 +14,9 @@ export const ACTION_TYPES = {
   UPDATE_FICHEPOINTAGE: 'fichePointage/UPDATE_FICHEPOINTAGE',
   DELETE_FICHEPOINTAGE: 'fichePointage/DELETE_FICHEPOINTAGE',
   RESET: 'fichePointage/RESET',
-  FETCH_POINTAGEBYFICHE_LIST: 'fichePointage/FETCH_POINTAGEBYFICHE_LIST'
+  FETCH_POINTAGEBYFICHE_LIST: 'fichePointage/FETCH_POINTAGEBYFICHE_LIST',
+  FILTER_FICHE_POINTAGE_LIST: 'fichePointage/FILTER_FICHE_POINTAGE_LIST',
+  REPPORT: 'fichePointage/REPPORT'
 };
 
 const initialState = {
@@ -72,6 +74,12 @@ export default (state: FichePointageState = initialState, action): FichePointage
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
+    case SUCCESS(ACTION_TYPES.FILTER_FICHE_POINTAGE_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
 
     case SUCCESS(ACTION_TYPES.FETCH_POINTAGEBYFICHE_LIST):
       return {
@@ -111,13 +119,18 @@ export default (state: FichePointageState = initialState, action): FichePointage
   }
 };
 
-const apiUrl = 'api/fiche-pointages';
+export const apiUrl = 'api/fiche-pointages';
 
 // Actions
 
 export const getEntities: ICrudGetAllAction<IFichePointage> = (page, size, sort) => ({
   type: ACTION_TYPES.FETCH_FICHEPOINTAGE_LIST,
   payload: axios.get<IFichePointage>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
+});
+
+export const filterEntities: ICrudGetAllAction<IFichePointage> = filter => ({
+  type: ACTION_TYPES.FILTER_FICHE_POINTAGE_LIST,
+  payload: axios.get<IFichePointage>(`${apiUrl}/search-entities/${filter}`)
 });
 
 export const getEntity: ICrudGetAction<IFichePointage> = id => {

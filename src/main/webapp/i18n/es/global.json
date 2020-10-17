@@ -42,6 +42,8 @@
         "affectationMateriels": "Affectation Materiels",
         "situationFinanciere": "Situation Financiere",
         "planification": "Planification",
+        "bonSortie": "Bon Sortie",
+        "ligneBonSortie": "Ligne Bon Sortie",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

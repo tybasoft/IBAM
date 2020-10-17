@@ -1,0 +1,46 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "projet",
+      "otherEntityName": "projet",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "bonSortie"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "dateSortie",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dateCreation",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "userModif",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateModif",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "remarques",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20201013162625",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "no",
+  "entityTableName": "bon_sortie",
+  "databaseType": "sql",
+  "readOnly": false,
+  "jpaMetamodelFiltering": false,
+  "pagination": "pagination"
+}

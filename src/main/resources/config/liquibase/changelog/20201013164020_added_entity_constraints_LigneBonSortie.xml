@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity LigneBonSortie.
+    -->
+    <changeSet id="20201013164020-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="materiel_id"
+                                 baseTableName="ligne_bon_sortie"
+                                 constraintName="fk_ligne_bon_sortie_materiel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="materiel"/>
+
+        <addForeignKeyConstraint baseColumnNames="materiau_id"
+                                 baseTableName="ligne_bon_sortie"
+                                 constraintName="fk_ligne_bon_sortie_materiau_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="materiau"/>
+
+        <addForeignKeyConstraint baseColumnNames="bon_sortie_id"
+                                 baseTableName="ligne_bon_sortie"
+                                 constraintName="fk_ligne_bon_sortie_bon_sortie_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="bon_sortie"/>
+
+    </changeSet>
+</databaseChangeLog>

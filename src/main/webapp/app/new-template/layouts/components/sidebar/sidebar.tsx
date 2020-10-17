@@ -16,12 +16,13 @@ import {
   sidebarImageUrl,
   sidebarBgColor,
   sidebarCollapsed,
-  sidebarSize
+  sidebarSize,
+  handleLayout
 } from '../../../redux/actions/customizer/customizerActions';
 
 class Sidebar extends Component<any, any> {
   state = {
-    collapsedSidebar: templateConfig.sidebar.collapsed,
+    collapsedSidebar: this.props.collapsed,
     width: window.innerWidth
   };
   updateWidth = () => {
@@ -31,12 +32,14 @@ class Sidebar extends Component<any, any> {
   };
 
   handleCollapsedSidebar = collapsedSidebar => {
+    this.props.sidebarCollapsed(collapsedSidebar);
     this.setState({ collapsedSidebar });
   };
 
   componentDidMount() {
     if (window !== undefined) {
       window.addEventListener('resize', this.updateWidth, false);
+      console.log('Current theme', this.props);
     }
   }
 
@@ -109,26 +112,34 @@ class Sidebar extends Component<any, any> {
           handleSidebarSize={this.props.handleSidebarSize}
           handleLayout={this.props.handleLayout}
           handleCollapsedSidebar={this.handleCollapsedSidebar.bind(this)}
+          settings={this.props.settings}
         />
       </Fragment>
     );
   }
 }
 
-const mapStateToProps = ({ customizer }) => ({
-  color: customizer.sidebarBgColor,
-  img: customizer.sidebarImage,
-  imgurl: customizer.sidebarImageUrl,
-  size: customizer.sidebarSize,
-  collapsed: customizer.sidebarCollapsed
+const mapStateToProps = ({ customizer, authentication }) => ({
+  color: authentication.account.sidebarBackgroundColor === null ? customizer.sidebarBgColor : authentication.account.sidebarBackgroundColor,
+  img: authentication.account.sidebarBackgroundImage === null ? customizer.sidebarImage : authentication.account.sidebarBackgroundImage,
+  imgurl:
+    authentication.account.sidebarBackgroundImageURL === null
+      ? customizer.sidebarImageUrl
+      : authentication.account.sidebarBackgroundImageURL,
+  size: authentication.account.sidebarSize === null ? customizer.sidebarSize : authentication.account.sidebarSize,
+  collapsed: authentication.account.sidebarCollapsed === null ? customizer.sidebarCollapsed : authentication.account.sidebarCollapsed,
+  settings: authentication.account
 });
 
-const mapDispatchToProps = dispatch => ({
-  sidebarBgColor: color => dispatch(sidebarBgColor(color)),
-  sidebarImage: img => dispatch(sidebarImage(img)),
-  sidebarImageUrl: imgurl => dispatch(sidebarImageUrl(imgurl)),
-  sidebarSize: size => dispatch(sidebarSize(size)),
-  sidebarCollapsed: collapsed => dispatch(sidebarCollapsed(collapsed))
-});
+const mapDispatchToProps = {
+  sidebarBgColor,
+  sidebarImage,
+  sidebarImageUrl,
+  sidebarSize,
+  sidebarCollapsed
+  // handleLayout
+};
+
+// const
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

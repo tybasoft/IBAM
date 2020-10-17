@@ -61,7 +61,7 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
   const history = useHistory();
 
-  const {currenciesList, ligneBonReceptionList,projets,materiels ,materiaus ,bonReceptionEntity, depots, fournisseurs, loading, updating, imageEntity } = props;
+  const { ligneBonReceptionList,projets,materiels ,materiaus ,bonReceptionEntity, depots, fournisseurs, loading, updating, imageEntity } = props;
 
   const validate = _debounce((value, ctx, input, cb) => {
     const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
@@ -127,12 +127,10 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
     // props.getDepots();
     props.getFournisseurs();
     props.getDepots();
-    props.getFournisseurs();
     props.getMateriau();
     props.getMateriels();
     props.getProjects();
-    props.getCurrencies();
-    console.warn(currenciesList);
+    // props.getCurrencies();
   }, []);
 
   useEffect(() => {
@@ -257,7 +255,7 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
       };
       newLines.push({materiel:{id:values.materiel} ,
         materiau:{id:values.materiau},quantite:values.quantity,
-        prixHt:values.prixHt , currency :values.currency , type:typeLigne});
+        prixHt:values.prixHt , type:typeLigne});
       // newLines.push({materiel: {id: "3"}, materiau:null, quantite: "1", prixHt: "120", currency: "CDF", type: "materiel"});
       console.warn(newLines);
       setModal(false);
@@ -512,10 +510,10 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                 <RadioGroup aria-label="type" name="type" value={typeLigne} onChange={handleChange}>
                   <FormControlLabel value="materiel" control={<Radio />} label="Materiel" />
                   <FormControlLabel value="materiau" control={<Radio />} label="Materiau" />
-                  <FormControlLabel value="both" control={<Radio />} label="Les deux" />
+                  {/*<FormControlLabel value="both" control={<Radio />} label="Les deux" />*/}
                 </RadioGroup>
               </FormControl>
-              {typeLigne==='materiau' || typeLigne==='both' ? (
+              {typeLigne==='materiau'  ? (
                   <AvGroup>
                 <Label for="bon-commande-depot">
                   <Translate contentKey="ibamApp.bonCommande.materiau">Materiau</Translate>
@@ -532,7 +530,7 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                 </AvInput>
               </AvGroup>
               ) : null}
-              {typeLigne==='materiel' || typeLigne==='both' ? (
+              {typeLigne==='materiel'  ? (
               <AvGroup>
                 <Label for="bon-commande-materiel" >
                   <Translate contentKey="ibamApp.bonCommande.materiel">Materiel</Translate>
@@ -549,7 +547,7 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                 </AvInput>
               </AvGroup>
               ) : null}
-              <AvGroup>
+              {/*<AvGroup>
                 <Label for="bon-commande-currency">
                   <Translate contentKey="ibamApp.bonReception.currency">Currency</Translate>
                 </Label>
@@ -563,7 +561,7 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
                     ))
                     : null}
                 </AvInput>
-              </AvGroup>
+              </AvGroup>*/}
               <AvGroup>
                 <Label id="prixHtLabel" for="ligne-bon-reception-prixHt">
                   <Translate contentKey="ibamApp.ligneBonReception.prixHt">Prix Ht</Translate>
@@ -612,15 +610,15 @@ export const NewBonReceptionUpdate = (props: IBonReceptionUpdateProps) => {
     currencyList : storeState.bonReception.currenciesList,
   errorUpload: storeState.image.errorUpload,
   uploadSuccess: storeState.image.uploadSuccess,
-  projets: storeState.projet.entities,
+    projets: storeState.projet.entities,
   materiaus: storeState.materiau.entities,
   materiels: storeState.materiel.entities,
-    currenciesList : storeState.currency.entities,
+    // currenciesList : storeState.currency.entities,
   // tab : storeState.ligneBonCommande.entities,
   // materiau: storeState.materiau.entity,
   // materiel: storeState.materiel.entity,
   //   currency: icurrency,
-  ligneBonReceptionList: storeState.ligneBonReception.entities,
+    ligneBonReceptionList: storeState.ligneBonReception.entities,
   totalItems: storeState.ligneBonReception.totalItems,
 });
 

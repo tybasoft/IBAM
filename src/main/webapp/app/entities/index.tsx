@@ -41,6 +41,8 @@ import FichePointage from './fiche-pointage';
 import AffectationMateriels from './affectation-materiels';
 import SituationFinanciere from './situation-financiere';
 import Planification from './planification';
+import BonSortie from './bon-sortie';
+import LigneBonSortie from './ligne-bon-sortie';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -206,6 +208,8 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}ligne-bon-reception`} component={LigneBonReception} />
       <ErrorBoundaryRoute path={`${match.url}bon-reception`} component={BonReception} />
       <ErrorBoundaryRoute path={`${match.url}planification`} component={Planification} />
+      <ErrorBoundaryRoute path={`${match.url}bon-sortie`} component={BonSortie} />
+      <ErrorBoundaryRoute path={`${match.url}ligne-bon-sortie`} component={LigneBonSortie} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

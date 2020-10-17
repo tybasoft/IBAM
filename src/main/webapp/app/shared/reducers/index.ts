@@ -6,6 +6,7 @@ import authentication, { AuthenticationState } from './authentication';
 import applicationProfile, { ApplicationProfileState } from './application-profile';
 import customizer from '../../new-template/redux/reducers/customizer/';
 import calender from '../../new-template/redux/reducers/calenderReducer';
+import emailApp from '../../new-template/redux/reducers/email';
 
 import administration, { AdministrationState } from 'app/modules/administration/administration.reducer';
 import userManagement, { UserManagementState } from 'app/modules/administration/user-management/user-management.reducer';
@@ -156,6 +157,14 @@ import situationFinanciere, {
 import planification, {
   PlanificationState
 } from 'app/entities/planification/planification.reducer';
+// prettier-ignore
+import bonSortie, {
+  BonSortieState
+} from 'app/entities/bon-sortie/bon-sortie.reducer';
+// prettier-ignore
+import ligneBonSortie, {
+  LigneBonSortieState
+} from 'app/entities/ligne-bon-sortie/ligne-bon-sortie.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 import avancement, { AvancementState } from 'app/entities/avancement/avancement.reducer';
@@ -208,10 +217,13 @@ export interface IRootState {
   readonly currency: CurrenciesState;
   readonly avancement: AvancementState;
   readonly planification: PlanificationState;
+  readonly bonSortie: BonSortieState;
+  readonly ligneBonSortie: LigneBonSortieState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly customizer: any;
   readonly calender: any;
+  readonly emailApp: any;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -264,8 +276,11 @@ const rootReducer = combineReducers<IRootState>({
   customizer,
   calender,
   planification,
+  bonSortie,
+  ligneBonSortie,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
+  emailApp
 });
 
 export default rootReducer;

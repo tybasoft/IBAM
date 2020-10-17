@@ -1,5 +1,7 @@
 import React, { Component, Fragment, useEffect, useState } from 'react';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { getEntities as getMateriels } from 'app/entities/materiel/materiel.reducer';
+import { getEntities as getFournisseurs } from 'app/entities/fournisseur/fournisseur.reducer';
 
 import {
   Card,
@@ -45,7 +47,7 @@ import { Translate, translate, TextFormat, getSortState, JhiPagination, JhiItemC
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NavbarSearch from '../components/search/Search';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import FonctionDetails from './fonction-details';
+import ConsommationDetails from './consommation-details';
 
 const Consommation = (props: any) => {
   console.log(props);
@@ -85,12 +87,17 @@ const Consommation = (props: any) => {
     }
   }, [props.updateSuccess]);
 
+  useEffect(() => {
+    props.getMateriels();
+    props.getFournisseurs();
+  }, []);
+
   const handleClose = () => {
     setEntityModel(null);
     setModalOpen(false);
   };
 
-  const { list, totalItems } = props;
+  const { list, totalItems, materiels, fournisseurs } = props;
 
   const openDetails = (id: number) => {
     setSelectedEntity(id);
@@ -160,8 +167,7 @@ const Consommation = (props: any) => {
 
               <div className="form-group mb-3 form-group-compose text-center">
                 <Button type="button" onClick={() => setModalOpen(true)} className="btn float-left btn-raised btn-danger  my-2 shadow-z-2">
-                  <Icon.Plus size={18} className="mr-1" />{' '}
-                  <Translate contentKey="ibamApp.consommation.home.createLabel">Fonction</Translate>
+                  <Icon.Plus size={18} className="mr-1" /> <Translate contentKey="entity.action.create">Fonction</Translate>
                 </Button>
                 <Button
                   onClick={() => setImportExportOpen('EXP')}
@@ -210,7 +216,7 @@ const Consommation = (props: any) => {
                   <tbody>
                     {list.map((element, i) => (
                       <tr key={`entity-${i}`}>
-                        <td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           {/* <Button tag={Link} to={`${match.url}/${entreprise.id}`} color="link" size="sm"> */}
                           {element.id}
                           {/* </Button> */}
@@ -219,11 +225,15 @@ const Consommation = (props: any) => {
                         <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           {element.reference}
                         </td>
-                        <td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
                           <TextFormat type="date" value={element.dateAchat} format={APP_LOCAL_DATE_FORMAT} />
                         </td>
-                        <td>{element.typeCarburant}</td>
-                        <td>{element.montant}</td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
+                          {element.typeCarburant}
+                        </td>
+                        <td onClick={() => openDetails(element.id)} style={{ cursor: 'pointer' }}>
+                          {element.montant}
+                        </td>
                         <td>
                           <Icon.Edit onClick={() => editEntity(element)} size={18} className="mr-2" />
                           <Icon.Trash2 onClick={() => confirmDelete(element.id)} size={18} color="#FF586B" />
@@ -260,44 +270,159 @@ const Consommation = (props: any) => {
       </Row>
       <Modal isOpen={modalOpen} toggle={() => handleClose()} size="md">
         <ModalHeader toggle={() => handleClose()}>
-          <Translate contentKey="ibamApp.fonction.home.createLabel">Entreprises</Translate>
+          <Translate contentKey="ibamApp.consommation.home.createLabel">Entreprises</Translate>
         </ModalHeader>
         {/* <AddTodo /> */}
         <AvForm model={entityModel} onSubmit={saveEntity}>
           <ModalBody>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="libelleLabel" for="fonction-libelle">
-                    <Translate contentKey="ibamApp.fonction.libelle">Libelle</Translate>
+                <AvGroup>
+                  <Label id="referenceLabel" for="consommation-reference">
+                    <Translate contentKey="ibamApp.consommation.reference">Reference</Translate>
                   </Label>
                   <AvField
-                    id="fonction-libelle"
+                    id="consommation-reference"
                     type="text"
-                    name="libelle"
+                    name="reference"
                     validate={{
                       required: { value: true, errorMessage: translate('entity.validation.required') }
                     }}
                   />
-                </FormGroup>
+                </AvGroup>
               </Col>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="descriptionLabel" for="fonction-description">
-                    <Translate contentKey="ibamApp.fonction.description">Description</Translate>
+                <AvGroup>
+                  <Label id="dateAchatLabel" for="consommation-dateAchat">
+                    <Translate contentKey="ibamApp.consommation.dateAchat">Date Achat</Translate>
                   </Label>
-                  <AvField id="fonction-description" type="text" name="description" />
-                </FormGroup>
+                  <AvField
+                    id="consommation-dateAchat"
+                    type="date"
+                    className="form-control"
+                    name="dateAchat"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
               </Col>
             </Row>
             <Row>
               <Col md={12}>
-                <FormGroup>
-                  <Label id="competencesLabel" for="fonction-competences">
-                    <Translate contentKey="ibamApp.fonction.competences">Competences</Translate>
+                <AvGroup>
+                  <Label id="typeCarburantLabel" for="consommation-typeCarburant">
+                    <Translate contentKey="ibamApp.consommation.typeCarburant">Type Carburant</Translate>
                   </Label>
-                  <AvField id="fonction-competences" type="text" name="competences" />
-                </FormGroup>
+                  <AvInput id="consommation-typeCarburant" type="select" className="form-control" name="typeCarburant">
+                    <option value="" key="0">
+                      Choisir Type Carburant
+                    </option>
+                    <option value=" essence" key="1">
+                      essence
+                    </option>
+                    <option value="diesel" key="1">
+                      diesel
+                    </option>
+                  </AvInput>
+                </AvGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={12}>
+                <AvGroup>
+                  <Label id="montantLabel" for="consommation-montant">
+                    <Translate contentKey="ibamApp.consommation.montant">Montant</Translate>
+                  </Label>
+                  <AvField
+                    id="consommation-montant"
+                    type="text"
+                    name="montant"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label id="quantiteLabel" for="consommation-quantite">
+                    <Translate contentKey="ibamApp.consommation.quantite">Quantite</Translate>
+                  </Label>
+                  <AvField
+                    id="consommation-quantite"
+                    type="text"
+                    name="quantite"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label id="kilometrageLabel" for="consommation-kilometrage">
+                    <Translate contentKey="ibamApp.consommation.kilometrage">Kilometrage</Translate>
+                  </Label>
+                  <AvField id="consommation-kilometrage" type="text" name="kilometrage" />
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label id="commentaireLabel" for="consommation-commentaire">
+                    <Translate contentKey="ibamApp.consommation.commentaire">Commentaire</Translate>
+                  </Label>
+                  <AvField id="consommation-commentaire" type="text" name="commentaire" />
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label for="consommation-materiel">
+                    <Translate contentKey="ibamApp.consommation.materiel">Materiel</Translate>
+                  </Label>
+                  <AvInput id="consommation-materiel" type="select" className="form-control" name="materiel.id">
+                    <option value="" key="0" />
+                    {materiels
+                      ? materiels.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.libelle + ' (' + otherEntity.matricule + ')'}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label for="consommation-fournisseur">
+                    <Translate contentKey="ibamApp.consommation.fournisseur">Fournisseur</Translate>
+                  </Label>
+                  <AvInput id="consommation-fournisseur" type="select" className="form-control" name="fournisseur.id">
+                    <option value="" key="0" />
+                    {fournisseurs
+                      ? fournisseurs.map(otherEntity => (
+                          <option value={otherEntity.id} key={otherEntity.id}>
+                            {otherEntity.nomCommercial}
+                          </option>
+                        ))
+                      : null}
+                  </AvInput>
+                </AvGroup>
+              </Col>
+              <Col md={12}>
+                <AvGroup>
+                  <Label id="montantLabel" for="consommation-montant">
+                    <Translate contentKey="ibamApp.consommation.montant">Montant</Translate>
+                  </Label>
+                  <AvField
+                    id="consommation-montant"
+                    type="text"
+                    name="montant"
+                    validate={{
+                      required: { value: true, errorMessage: translate('entity.validation.required') }
+                    }}
+                  />
+                </AvGroup>
               </Col>
             </Row>
           </ModalBody>
@@ -323,19 +448,21 @@ const Consommation = (props: any) => {
       </Modal>
 
       {selectedEntity !== null && (
-        <FonctionDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
+        <ConsommationDetails selectedEntity={selectedEntity} setSelectedEntity={openDetails} isOpen={selectedEntity !== null} />
       )}
     </Fragment>
   );
 };
 // }
 
-const mapStateToProps = ({ consommation }: IRootState) => ({
+const mapStateToProps = ({ consommation, materiel, fournisseur }: IRootState) => ({
   list: consommation.entities,
   loading: consommation.loading,
   updateSuccess: consommation.updateSuccess,
   //   imageEntity: image.entity,
-  totalItems: consommation.totalItems
+  totalItems: consommation.totalItems,
+  materiels: materiel.entities,
+  fournisseurs: fournisseur.entities
 });
 
 const mapDispatchToProps = {
@@ -343,7 +470,10 @@ const mapDispatchToProps = {
   createEntity,
   deleteEntity,
   updateEntity,
-  filterEntities
+  filterEntities,
+
+  getMateriels,
+  getFournisseurs
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

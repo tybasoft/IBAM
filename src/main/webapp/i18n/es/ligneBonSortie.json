@@ -1,0 +1,27 @@
+{
+  "ibamApp": {
+    "ligneBonSortie": {
+      "home": {
+        "title": "Ligne Bon Sorties",
+        "createLabel": "Crear nuevo Ligne Bon Sortie",
+        "createOrEditLabel": "Crear o editar Ligne Bon Sortie",
+        "notFound": "Ningún Ligne Bon Sorties encontrado"
+      },
+      "created": "Un nuevo Ligne Bon Sortie ha sido creado con el identificador {{ param }}",
+      "updated": "Un Ligne Bon Sortie ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Ligne Bon Sortie ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Ligne Bon Sortie {{ id }}?"
+      },
+      "detail": {
+        "title": "Ligne Bon Sortie"
+      },
+      "quantite": "Quantite",
+      "prixHt": "Prix Ht",
+      "type": "Type",
+      "materiel": "Materiel",
+      "materiau": "Materiau",
+      "bonSortie": "Bon Sortie"
+    }
+  }
+}

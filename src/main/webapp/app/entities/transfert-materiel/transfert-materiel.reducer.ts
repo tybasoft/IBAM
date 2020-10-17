@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_TRANSFERTMATERIEL: 'transfertMateriel/UPDATE_TRANSFERTMATERIEL',
   DELETE_TRANSFERTMATERIEL: 'transfertMateriel/DELETE_TRANSFERTMATERIEL',
   RESET: 'transfertMateriel/RESET',
-  REPPORT: 'transferMateriel/REPPORT'
+  REPPORT: 'transferMateriel/REPPORT',
+  FILTER_TRANSFERT_MATERIEL_LIST: 'transferMateriel/filter'
 };
 
 const initialState = {
@@ -79,6 +80,12 @@ export default (state: TransfertMaterielState = initialState, action): Transfert
         loading: false,
         entity: action.payload.data
       };
+    case SUCCESS(ACTION_TYPES.FILTER_TRANSFERT_MATERIEL_LIST):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case SUCCESS(ACTION_TYPES.CREATE_TRANSFERTMATERIEL):
     case SUCCESS(ACTION_TYPES.UPDATE_TRANSFERTMATERIEL):
       return {
@@ -116,6 +123,11 @@ export const getEntities: ICrudGetAllAction<ITransfertMateriel> = (page, size, s
     payload: axios.get<ITransfertMateriel>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
+
+export const filterEntities: ICrudGetAllAction<ITransfertMateriel> = filter => ({
+  type: ACTION_TYPES.FILTER_TRANSFERT_MATERIEL_LIST,
+  payload: axios.get<ITransfertMateriel>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntity: ICrudGetAction<ITransfertMateriel> = id => {
   const requestUrl = `${apiUrl}/${id}`;

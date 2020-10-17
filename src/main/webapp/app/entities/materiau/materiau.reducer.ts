@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_MATERIAU: 'materiau/UPDATE_MATERIAU',
   REPORT: 'materiau/REPORT',
   DELETE_MATERIAU: 'materiau/DELETE_MATERIAU',
-  RESET: 'materiau/RESET'
+  RESET: 'materiau/RESET',
+  FILTER: 'materiau/FILTER'
 };
 
 const initialState = {
@@ -96,6 +97,12 @@ export default (state: MateriauState = initialState, action): MateriauState => {
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.FILTER):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -125,6 +132,11 @@ export const getEntity: ICrudGetAction<IMateriau> = id => {
   };
 };
 
+export const filterEntities: ICrudGetAllAction<IMateriau> = filter => ({
+  type: ACTION_TYPES.FILTER,
+  payload: axios.get<IMateriau>(`${apiUrl}/search-entities/${filter}`)
+});
+
 export const createEntity: ICrudPutAction<IMateriau> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_MATERIAU,
@@ -139,6 +151,8 @@ export const updateEntity: ICrudPutAction<IMateriau> = entity => async dispatch 
     type: ACTION_TYPES.UPDATE_MATERIAU,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -148,6 +162,8 @@ export const deleteEntity: ICrudDeleteAction<IMateriau> = id => async dispatch =
     type: ACTION_TYPES.DELETE_MATERIAU,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 

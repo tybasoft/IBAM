@@ -223,21 +223,29 @@ public class BonCommandeResource {
             document.add(chunk);
             Chunk chunk1 = new Chunk("\n        ");
             document.add(chunk1);
-            Stream.of("Date Prev liv", "Date de creation","Fournisseur" , "Projet" ,"Remarque" ).forEach(columnTitle -> {
-                PdfPCell header1 = new PdfPCell();
-                header1.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                header1.setBorderWidth(2);
-                header1.setPhrase(new Phrase(columnTitle));
-                table1.addCell(header1);
-            });
-            table1.addCell(bonCommande.getDatePrevLiv().toString());
-            table1.addCell(bonCommande.getDateCreation().toString());
-            table1.addCell(bonCommande.getProjet().getLibelle());
-            table1.addCell(bonCommande.getFournisseur().getEmail());
-            table1.addCell(bonCommande.getRemarques());
-            Chunk chunk2 = new Chunk("\n       ");
-            document.add(table1);
-            document.add(chunk2);
+            Paragraph p1 = new Paragraph();
+            p1.add("\n                Date Prev liv      : .............................................................................."+bonCommande.getDatePrevLiv().toString());
+            p1.add("\n                Date de creation : .............................................................................."+bonCommande.getDateCreation().toString());
+            p1.add("\n                Projet                    : ......................................................."+bonCommande.getProjet().getLibelle());
+            p1.add("\n                Fournisseur   : ............................................."+bonCommande.getFournisseur().getEmail());
+            p1.add("\n                Remarque            : .............................................................................."+bonCommande.getRemarques());
+            p1.add("                                                                                                                                ");
+            document.add(p1);
+//            Stream.of("Date Prev liv", "Date de creation","Fournisseur" , "Projet" ,"Remarque" ).forEach(columnTitle -> {
+//                PdfPCell header1 = new PdfPCell();
+//                header1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+//                header1.setBorderWidth(2);
+//                header1.setPhrase(new Phrase(columnTitle));
+//                table1.addCell(header1);
+//            });
+//            table1.addCell(bonCommande.getDatePrevLiv().toString());
+//            table1.addCell(bonCommande.getDateCreation().toString());
+//            table1.addCell(bonCommande.getProjet().getLibelle());
+//            table1.addCell(bonCommande.getFournisseur().getEmail());
+//            table1.addCell(bonCommande.getRemarques());
+//            Chunk chunk2 = new Chunk("\n       ");
+//            document.add(table1);
+//            document.add(chunk2);
             Stream.of("Les lignes de Bon de commande","Quantite","Materiau", "Materiel").forEach(columnTitle -> {
                 PdfPCell header = new PdfPCell();
                 header.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -248,12 +256,12 @@ public class BonCommandeResource {
             for(int i =0 ; i<size ; i++){
                 table.addCell(ligneBonCommandesList.get(i).getId().toString());
                 table.addCell(ligneBonCommandesList.get(i).getQuantite());
-                if(ligneBonCommandesList.get(i).getType().equals("materiel")){
+                if(ligneBonCommandesList.get(i).getType().equals("materiau")){
                     table.addCell(ligneBonCommandesList.get(i).getMateriau().getLibelle());
                     table.addCell("---------");
 
                 }
-                if(ligneBonCommandesList.get(i).getType().equals("materiau")){
+                if(ligneBonCommandesList.get(i).getType().equals("materiel")){
                     table.addCell("---------");
                     table.addCell(ligneBonCommandesList.get(i).getMateriel().getLibelle());
                 }

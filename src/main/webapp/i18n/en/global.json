@@ -12,6 +12,18 @@
       "admintools": "Admin tools",
       "documentation": "Documentation"
     },
+    "import": {
+      "title": "Import a csv File to database",
+      "instruction": "Click on the cloud to upload the file",
+      "upload": "Upload"
+    },
+    "export": {
+      "title": "Export a csv/pdf File from database",
+      "choose": "Choose the extention:",
+      "generate": "Generate",
+      "success": "The file is generated successfully. see Your downloads folder",
+      "fail": "Please choose a format"
+    },
     "menu": {
       "home": "Home",
       "profile": "My profile",
@@ -54,6 +66,8 @@
         "affectationMateriels": "Affectation Materiels",
         "situationFinanciere": "Situation Financiere",
         "planification": "Planification",
+        "bonSortie": "Bon Sortie",
+        "ligneBonSortie": "Ligne Bon Sortie",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -143,6 +157,7 @@
       "addimage": "Add image",
       "back": "Back",
       "cancel": "Cancel",
+      "create": "Create",
       "delete": "Delete",
       "edit": "Edit",
       "open": "Open",

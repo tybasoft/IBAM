@@ -138,6 +138,8 @@ export const updateEntity: ICrudPutAction<IMateriel> = entity => async dispatch 
     type: ACTION_TYPES.UPDATE_MATERIEL,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 

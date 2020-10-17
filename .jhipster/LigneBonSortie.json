@@ -1,0 +1,54 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "materiel",
+      "otherEntityName": "materiel",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": [],
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "ligneBonSortie"
+    },
+    {
+      "relationshipName": "materiau",
+      "otherEntityName": "materiau",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "ligneBonSortie"
+    },
+    {
+      "relationshipName": "bonSortie",
+      "otherEntityName": "bonSortie",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "id",
+      "otherEntityRelationshipName": "ligneBonSortie"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "quantite",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "prixHt",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20201013164020",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "no",
+  "entityTableName": "ligne_bon_sortie",
+  "databaseType": "sql",
+  "readOnly": true,
+  "jpaMetamodelFiltering": false,
+  "pagination": "pagination"
+}

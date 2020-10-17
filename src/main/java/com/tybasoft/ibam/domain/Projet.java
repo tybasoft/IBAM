@@ -2,16 +2,16 @@ package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tybasoft.ibam.security.SecurityUtils;
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -77,7 +77,7 @@ public class Projet implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Equipe> equipes = new HashSet<>();
 
-    @ApiModelProperty(hidden = true)
+//    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "projet")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Employe> employes = new HashSet<>();
@@ -92,7 +92,7 @@ public class Projet implements Serializable {
     @JsonIgnoreProperties("projets")
     private Horaire horaire;
 
-    @ApiModelProperty(hidden = true)
+    // @ApiModelProperty(hidden = true)
     @ManyToOne
     @JsonIgnoreProperties("projets")
     private Depot depot;
@@ -102,6 +102,17 @@ public class Projet implements Serializable {
 
     @Column(name = "longitude")
     private Double longitude;
+
+    @OneToMany(mappedBy="projet")
+    private List<Materiel> materiels;
+
+    public List<Materiel> getMateriels() {
+        return materiels;
+    }
+
+    public void setMateriels(List<Materiel> materiels) {
+        this.materiels = materiels;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not
     // remove

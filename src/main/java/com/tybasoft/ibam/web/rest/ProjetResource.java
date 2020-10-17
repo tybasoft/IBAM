@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -102,17 +103,17 @@ public class ProjetResource {
     /**
      * {@code GET  /projets} : get all the projets.
      *
-     * @param pageable the pagination information.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+//     * @param pageable the pagination information.
+//     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
      *         of projets in body.
      */
     @GetMapping("/projets")
-    public ResponseEntity<List<Projet>> getAllProjets(Pageable pageable) {
+    public ResponseEntity<List<Projet>> getAllProjets() {
         log.debug("REST request to get a page of Projets");
-        Page<Projet> page = projetRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        List<Projet> projets = projetRepository.findAll();
+//        HttpHeaders headers = PaginationUtil
+//                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().body(projets);
     }
 
     /**
@@ -158,10 +159,10 @@ public class ProjetResource {
     }
 
     @GetMapping("/projets/report/{format}")
-    public boolean generateReport(@PathVariable String format) {
+    public void generateReport(@PathVariable String format, HttpServletResponse response) {
         reportService.setName(ENTITY_NAME);
         reportService.setDataSource((List) projetRepository.findAll());
-        return reportService.exportReport(format);
+        reportService.exportReport(format, response);
     }
 
     @GetMapping("/projets/consommation/{Id}")

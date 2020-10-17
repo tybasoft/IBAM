@@ -12,6 +12,13 @@ export interface IUser {
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
   password?: string;
+
+  layoutColor?: string;
+  sidebarCollapsed?: boolean;
+  sidebarSize?: string;
+  sidebarBackgroundColor?: string;
+  sidebarBackgroundImage?: boolean;
+  sidebarBackgroundImageURL?: string;
 }
 
 export const defaultValue: Readonly<IUser> = {

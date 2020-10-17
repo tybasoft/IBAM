@@ -29,6 +29,7 @@
     "google-map-react": "^2.0.4",
     "google-maps-react": "^2.0.6",
     "history": "^4.7.2",
+    "js-file-download": "^0.4.12",
     "loaders.css": "0.1.2",
     "lodash": "4.17.15",
     "lodash.debounce": "^4.0.8",

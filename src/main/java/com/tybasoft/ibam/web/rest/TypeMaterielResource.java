@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -156,10 +157,10 @@ public class TypeMaterielResource {
     private ReportService reportService;
 
     @GetMapping("/type-materiels/report/{format}")
-    public boolean generateReport(@PathVariable String format) {
+    public void generateReport(@PathVariable String format, HttpServletResponse response) {
         reportService.setName(ENTITY_NAME);
         reportService.setDataSource((List) typeMaterielRepository.findAll());
-        return reportService.exportReport(format);
+        reportService.exportReport(format, response);
     }
 
     @Autowired

@@ -257,21 +257,31 @@ public class BonReceptionResource {
             document.add(chunk);
             Chunk chunk1 = new Chunk("\n        ");
             document.add(chunk1);
-            Stream.of("Livreur", "Date de Livraison","Projet" , "Fournisseur" ,"Remarque" ).forEach(columnTitle -> {
-                PdfPCell header1 = new PdfPCell();
-                header1.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                header1.setBorderWidth(2);
-                header1.setPhrase(new Phrase(columnTitle));
-                table1.addCell(header1);
-            });
-            table1.addCell(bonReception.getLivreur());
-            table1.addCell(bonReception.getDateLivraison().toString());
-            table1.addCell(bonReception.getProjet().getLibelle());
-            table1.addCell(bonReception.getFournisseur().getEmail());
-            table1.addCell(bonReception.getRemarques());
-            Chunk chunk2 = new Chunk("\n       ");
-            document.add(table1);
-            document.add(chunk2);
+            Paragraph p1 = new Paragraph();
+            p1.add("\n                Livreur                 : ........................................................."+bonReception.getLivreur());
+            p1.add("\n                Date de Livraison : ......................................................."+bonReception.getDateLivraison().toString());
+            p1.add("\n                Projet                    : ......................................................."+bonReception.getProjet().getLibelle());
+            p1.add("\n                Fournisseur          : ......................................................."+bonReception.getFournisseur().getEmail());
+            p1.add("\n                Remarque            : ......................................................."+bonReception.getRemarques());
+            p1.add("                                                                                                                                ");
+            document.add(p1);
+//            Stream.of("Livreur", "Date de Livraison","Projet" , "Fournisseur" ,"Remarque" ).forEach(columnTitle -> {
+//                PdfPCell header1 = new PdfPCell();
+//                header1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+//                header1.setBorderWidth(2);
+//                header1.setPhrase(new Phrase(columnTitle));
+//                table1.addCell(header1);
+//            });
+//            table1.addCell(bonReception.getLivreur());
+//            table1.addCell(bonReception.getDateLivraison().toString());
+//            table1.addCell(bonReception.getProjet().getLibelle());
+//            table1.addCell(bonReception.getFournisseur().getEmail());
+//            table1.addCell(bonReception.getRemarques());
+//            Chunk chunk2 = new Chunk("\n       ");
+//            document.add(table1);
+//            document.add(chunk2);
+
+
             Stream.of("Les lignes de Bon de reception","Materiau", "Materiel","Quantite","Prix Ht").forEach(columnTitle -> {
                 PdfPCell header = new PdfPCell();
                 header.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -301,15 +311,27 @@ public class BonReceptionResource {
 
 
             }
-//            table.addCell(ligneBonCommandesList.getId().toString());
-//            table.addCell(ligneBonCommandesList.getDateFacturation().toString());
-//            table.addCell(ligneBonCommandesList.getMontantFacture());
-//            table.addCell(ligneBonCommandesList.getMontantEnCours());
-            table2.addCell("La Somme Totale");
-            table2.addCell("");
-            table2.addCell("");
-            table2.addCell("");
-            table2.addCell(Long.toString(sumPrix));
+//           //CALCULATION OF TVA
+            long tva = 0;
+            tva = (sumPrix * 20)/100;
+
+            table.addCell("");
+            table.addCell("");
+            table.addCell("");
+            table.addCell("Totale");
+            table.addCell(Long.toString(sumPrix));
+            //***************************//
+            table.addCell("");
+            table.addCell("");
+            table.addCell("");
+            table.addCell("TVA 20%");
+            table.addCell(Long.toString(tva));
+            //*************************//
+            table.addCell("");
+            table.addCell("");
+            table.addCell("");
+            table.addCell("Totale TTC");
+            table.addCell(Long.toString(sumPrix+tva));
             System.out.println(sumPrix);
             document.add(table);
             Chunk chunk3 = new Chunk("\n       ");

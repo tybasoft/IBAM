@@ -6,6 +6,7 @@ import com.tybasoft.ibam.domain.User;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 
 /**
@@ -47,8 +48,68 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private String layoutColor = null;
+
+    private Boolean sidebarCollapsed = null;
+
+    private String sidebarSize = null;
+
+    private String sidebarBackgroundColor = null;
+
+    private Boolean sidebarBackgroundImage = null;
+
+    private String sidebarBackgroundImageURL = null;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
+    }
+
+    public String getLayoutColor() {
+        return layoutColor;
+    }
+
+    public void setLayoutColor(String layoutColor) {
+        this.layoutColor = layoutColor;
+    }
+
+    public Boolean getSidebarCollapsed() {
+        return sidebarCollapsed;
+    }
+
+    public void setSidebarCollapsed(Boolean sidebarCollapsed) {
+        this.sidebarCollapsed = sidebarCollapsed;
+    }
+
+    public String getSidebarSize() {
+        return sidebarSize;
+    }
+
+    public void setSidebarSize(String sidebarSize) {
+        this.sidebarSize = sidebarSize;
+    }
+
+    public String getSidebarBackgroundColor() {
+        return sidebarBackgroundColor;
+    }
+
+    public void setSidebarBackgroundColor(String sidebarBackgroundColor) {
+        this.sidebarBackgroundColor = sidebarBackgroundColor;
+    }
+
+    public Boolean getSidebarBackgroundImage() {
+        return sidebarBackgroundImage;
+    }
+
+    public void setSidebarBackgroundImage(Boolean sidebarBackgroundImage) {
+        this.sidebarBackgroundImage = sidebarBackgroundImage;
+    }
+
+    public String getSidebarBackgroundImageURL() {
+        return sidebarBackgroundImageURL;
+    }
+
+    public void setSidebarBackgroundImageURL(String sidebarBackgroundImageURL) {
+        this.sidebarBackgroundImageURL = sidebarBackgroundImageURL;
     }
 
     public UserDTO(User user) {
@@ -65,6 +126,12 @@ public class UserDTO {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
+        this.layoutColor = user.getLayoutColor();
+        this.sidebarBackgroundColor = user.getSidebarBackgroundColor();
+        this.sidebarBackgroundImage = user.getSidebarBackgroundImage();
+        this.sidebarBackgroundImageURL = user.getSidebarBackgroundImageURL();
+        this.sidebarCollapsed = user.getSidebarCollapsed();
+        this.sidebarSize = user.getSidebarSize();
     }
 
     public Long getId() {

@@ -123,6 +123,8 @@ public class CacheConfiguration {
             createCache(cm, com.tybasoft.ibam.domain.BonCommande.class.getName() + ".materiaus");
             createCache(cm, com.tybasoft.ibam.domain.Planification.class.getName());
             createCache(cm, com.tybasoft.ibam.domain.Planification.class.getName() + ".employes");
+            createCache(cm, com.tybasoft.ibam.domain.BonSortie.class.getName());
+            createCache(cm, com.tybasoft.ibam.domain.LigneBonSortie.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

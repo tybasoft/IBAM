@@ -4,6 +4,9 @@ import { Row, Modal, Card, Button, CardTitle, CardText, Col, Alert } from 'react
 import { IRootState } from 'app/shared/reducers';
 import { getReportEntity } from './report.reducer';
 import { toast } from 'react-toastify';
+import { Translate, Storage, translate } from 'react-jhipster';
+import axios from 'axios';
+import FileDownload from 'js-file-download';
 interface ExportProps extends DispatchProps, StateProps {
   apiUrl: string;
   action: string;
@@ -16,9 +19,12 @@ const Export = (props: ExportProps) => {
   };
   const ExportReport = e => {
     if (Type === 'pdf' || Type === 'csv') {
-      setGenerated(true);
-      toast.success('The file is uploaded successfully-- see Your downloads folder');
-      props.getReportEntity(Type, props.apiUrl, props.action);
+      axios.get(`${props.apiUrl}/report/${Type}`).then(res => {
+        console.log(res);
+        setGenerated(true);
+        toast.success('The file is uploaded successfully. See Your downloads folder');
+        FileDownload(res.data, props.apiUrl.substr(4) + '.' + Type);
+      });
     } else {
       setGenerated(false);
     }
@@ -29,7 +35,9 @@ const Export = (props: ExportProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="ibamApp.tva.home.createOrEditLabel">Export a csv/pdf File from database</h2>
+          <h2 id="ibamApp.tva.home.createOrEditLabel">
+            <Translate contentKey="global.export.title">ibamApp.tva.home.createOrEditLabel</Translate>
+          </h2>
         </Col>
       </Row>
       <Row className="justify-content-center">
@@ -38,7 +46,9 @@ const Export = (props: ExportProps) => {
           <Row xs="2">
             <Col>
               <Card body className="card text-black  mb-3 ">
-                <CardText>Choose the extention:</CardText>
+                <CardText>
+                  <Translate contentKey="global.export.choose">ibamApp.tva.home.createOrEditLabel</Translate>
+                </CardText>
 
                 <label className="form--radio-label">
                   <input type="radio" name="Type" id="pdf" checked={Type === 'pdf'} onChange={onChange} />
@@ -51,13 +61,19 @@ const Export = (props: ExportProps) => {
                 </label>
                 <br></br>
 
-                <Button onClick={ExportReport}>Generate</Button>
+                <Button onClick={ExportReport}>
+                  <Translate contentKey="global.export.generate">ibamApp.tva.home.createOrEditLabel</Translate>
+                </Button>
               </Card>
               {generated != null ? (
                 generated ? (
-                  <Alert color="success">The file is uploaded successfully-- see Your downloads folder</Alert>
+                  <Alert color="success">
+                    <Translate contentKey="global.export.success">ibamApp.tva.home.createOrEditLabel</Translate>
+                  </Alert>
                 ) : (
-                  <Alert color="danger">Please choose a format</Alert>
+                  <Alert color="danger">
+                    <Translate contentKey="global.export.fail">ibamApp.tva.home.createOrEditLabel</Translate>
+                  </Alert>
                 )
               ) : (
                 ''

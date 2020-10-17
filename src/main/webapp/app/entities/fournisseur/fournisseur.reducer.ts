@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_FOURNISSEUR: 'fournisseur/UPDATE_FOURNISSEUR',
   DELETE_FOURNISSEUR: 'fournisseur/DELETE_FOURNISSEUR',
   RESET: 'fournisseur/RESET',
-  REPPORT: 'fournisseur/REPPORT'
+  REPPORT: 'fournisseur/REPPORT',
+  FILTER: 'fournisseur/filter'
 };
 
 const initialState = {
@@ -73,6 +74,12 @@ export default (state: FournisseurState = initialState, action): FournisseurStat
         entities: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10)
       };
+    case REQUEST(ACTION_TYPES.FILTER):
+      return {
+        ...state,
+        loading: true
+        // entities: null
+      };
     case SUCCESS(ACTION_TYPES.FETCH_FOURNISSEUR):
       return {
         ...state,
@@ -125,6 +132,11 @@ export const getEntity: ICrudGetAction<IFournisseur> = id => {
   };
 };
 
+export const filterEntities: ICrudGetAllAction<IFournisseur> = filter => ({
+  type: ACTION_TYPES.FILTER,
+  payload: axios.get<IFournisseur>(`${apiUrl}/search-entities/${filter}`)
+});
+
 export const createEntity: ICrudPutAction<IFournisseur> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_FOURNISSEUR,
@@ -139,6 +151,8 @@ export const updateEntity: ICrudPutAction<IFournisseur> = entity => async dispat
     type: ACTION_TYPES.UPDATE_FOURNISSEUR,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -148,6 +162,8 @@ export const deleteEntity: ICrudDeleteAction<IFournisseur> = id => async dispatc
     type: ACTION_TYPES.DELETE_FOURNISSEUR,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 
