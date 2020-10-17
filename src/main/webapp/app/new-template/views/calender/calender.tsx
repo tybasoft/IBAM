@@ -13,6 +13,8 @@ import { getEntities as getEmployes } from 'app/entities/employe/employe.reducer
 import { getEntity, updateEntity,getEmployeTasks, getEntities, createEntity, reset } from '../../../entities/planification/planification.reducer';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { IPlanification } from 'app/shared/model/planification.model';
+import { getEntities as getProjectEntities }  from '../../../entities/projet/projet.reducer';
+
 import { mapIdList } from 'app/shared/util/entity-utils';
 import Select from 'react-select';
 
@@ -214,9 +216,10 @@ componentDidMount = async () => {
 
   };
 
-  render() {
+  async render() {
     const { calender } = this.props;
     const { modal, eventTitle, start, end } = this.state;
+  //  var projects = await getProjectEntities().payload;
 
 
     return (
@@ -245,7 +248,13 @@ componentDidMount = async () => {
               <div>
                 <label>Projet concérné</label>
                 <select id="projet" className="form-control">
-                    <option></option>
+
+                    
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+
                 </select>
               <label for="mail">Employe concerné</label>
         <Select
