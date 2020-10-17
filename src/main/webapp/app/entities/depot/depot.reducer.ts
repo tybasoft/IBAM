@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_DEPOT: 'depot/UPDATE_DEPOT',
   DELETE_DEPOT: 'depot/DELETE_DEPOT',
   RESET: 'depot/RESET',
-  REPPORT: 'depot/REPPORT'
+  REPPORT: 'depot/REPPORT',
+  FILTER: 'depot/filter'
 };
 
 const initialState = {
@@ -68,6 +69,12 @@ export default (state: DepotState = initialState, action): DepotState => {
         loading: false,
         entities: action.payload.data
       };
+    case REQUEST(ACTION_TYPES.FILTER):
+      return {
+        ...state,
+        loading: true
+        // entities: null
+      };
     case SUCCESS(ACTION_TYPES.FETCH_DEPOT):
       return {
         ...state,
@@ -120,6 +127,11 @@ export const getEntity: ICrudGetAction<IDepot> = id => {
   };
 };
 
+export const filterEntities: ICrudGetAllAction<IDepot> = filter => ({
+  type: ACTION_TYPES.FILTER,
+  payload: axios.get<IDepot>(`${apiUrl}/search-entities/${filter}`)
+});
+
 export const createEntity: ICrudPutAction<IDepot> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_DEPOT,
@@ -134,6 +146,8 @@ export const updateEntity: ICrudPutAction<IDepot> = entity => async dispatch => 
     type: ACTION_TYPES.UPDATE_DEPOT,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -143,6 +157,8 @@ export const deleteEntity: ICrudDeleteAction<IDepot> = id => async dispatch => {
     type: ACTION_TYPES.DELETE_DEPOT,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 

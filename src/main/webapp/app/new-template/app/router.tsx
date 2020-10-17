@@ -22,6 +22,12 @@ import TransfertMateriel from '../modules/transfert-materiel';
 import Equipe from '../modules/equipe';
 import FichePointage from '../modules/fiche-pointage';
 import Projet from '../modules/projet';
+import Employe from '../modules/employe/employe';
+import AffectationMateriels from '../modules/affectation-materiel/affectationMateriel';
+import Materiau from '../modules/materiau/materiau';
+import Fournisseur from '../modules/fournisseur/fournisseur';
+import TypeMateriel from '../modules/type-materiel/typeMateriel';
+import Depot from '../modules/depot/depot';
 
 import { Logout } from 'app/modules/login/logout';
 import { logout } from 'app/shared/reducers/authentication';
@@ -187,6 +193,15 @@ class Router extends Component<any, any> {
           />
           <MainLayoutRoutes
             exact
+            path="/employes"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Employe {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
             path="/chat"
             render={matchprops => (
               <Suspense fallback={<div>Loading ...</div>}>
@@ -219,6 +234,33 @@ class Router extends Component<any, any> {
             render={matchprops => (
               <Suspense fallback={<Spinner />}>
                 <Projet {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/fournisseur"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Fournisseur {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/type-materiel"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <TypeMateriel {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/depot"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Depot {...matchprops} />
               </Suspense>
             )}
           />
@@ -309,6 +351,24 @@ class Router extends Component<any, any> {
             render={matchprops => (
               <Suspense fallback={<Spinner />}>
                 <TransfertMateriel {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/affectation-materiels"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <AffectationMateriels {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/materiau"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Materiau {...matchprops} />
               </Suspense>
             )}
           />

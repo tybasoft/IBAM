@@ -12,7 +12,9 @@ export const ACTION_TYPES = {
   CREATE_AFFECTATIONMATERIELS: 'affectationMateriels/CREATE_AFFECTATIONMATERIELS',
   UPDATE_AFFECTATIONMATERIELS: 'affectationMateriels/UPDATE_AFFECTATIONMATERIELS',
   DELETE_AFFECTATIONMATERIELS: 'affectationMateriels/DELETE_AFFECTATIONMATERIELS',
-  RESET: 'affectationMateriels/RESET'
+  RESET: 'affectationMateriels/RESET',
+  REPPORT: 'affectationMateriels/REPPORT',
+  FILTER: 'affectationMateriels/FILTER'
 };
 
 const initialState = {
@@ -88,6 +90,12 @@ export default (state: AffectationMaterielsState = initialState, action): Affect
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.FILTER):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -97,32 +105,15 @@ export default (state: AffectationMaterielsState = initialState, action): Affect
   }
 };
 
-const apiUrl = 'api/affectation-materiels';
+export const apiUrl = 'api/affectation-materiels';
 
 // Actions
-
-export const getEntities: (keyword, page, size, sort) => { payload: Promise<AxiosResponse<IAffectationMateriels>>; type: string } = (
-  keyword,
-  page,
-  size,
-  sort
-) => {
+export const getEntities: ICrudGetAllAction<IAffectationMateriels> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  if (keyword === '') {
-    return {
-      type: ACTION_TYPES.FETCH_AFFECTATIONMATERIELS_LIST,
-      payload: axios.get<IAffectationMateriels>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
-    };
-  } else {
-    return {
-      type: ACTION_TYPES.FETCH_AFFECTATIONMATERIELS_LIST,
-      payload: axios.get<IAffectationMateriels>(
-        `${apiUrl}/search-entities/${keyword}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}${
-          sort ? '&' : '?'
-        }cacheBuster=${new Date().getTime()}`
-      )
-    };
-  }
+  return {
+    type: ACTION_TYPES.FETCH_AFFECTATIONMATERIELS,
+    payload: axios.get<IAffectationMateriels>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
 };
 
 export const searchInEntities: ICrudGetAction<IAffectationMateriels> = keyword => {
@@ -141,12 +132,17 @@ export const getEntity: ICrudGetAction<IAffectationMateriels> = id => {
   };
 };
 
+export const filterEntities: ICrudGetAllAction<IAffectationMateriels> = filter => ({
+  type: ACTION_TYPES.FILTER,
+  payload: axios.get<IAffectationMateriels>(`${apiUrl}/search-entities/${filter}`)
+});
+
 export const createEntity: ICrudPutAction<IAffectationMateriels> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_AFFECTATIONMATERIELS,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  // dispatch(getEntities());
+  dispatch(getEntities());
   return result;
 };
 
@@ -155,6 +151,8 @@ export const updateEntity: ICrudPutAction<IAffectationMateriels> = entity => asy
     type: ACTION_TYPES.UPDATE_AFFECTATIONMATERIELS,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -164,7 +162,7 @@ export const deleteEntity: ICrudDeleteAction<IAffectationMateriels> = id => asyn
     type: ACTION_TYPES.DELETE_AFFECTATIONMATERIELS,
     payload: axios.delete(requestUrl)
   });
-  // dispatch(getEntities());
+  dispatch(getEntities());
   return result;
 };
 

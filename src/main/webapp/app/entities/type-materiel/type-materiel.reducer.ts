@@ -13,7 +13,8 @@ export const ACTION_TYPES = {
   UPDATE_TYPEMATERIEL: 'typeMateriel/UPDATE_TYPEMATERIEL',
   DELETE_TYPEMATERIEL: 'typeMateriel/DELETE_TYPEMATERIEL',
   RESET: 'typeMateriel/RESET',
-  REPPORT: 'typeMateriel/REPPORT'
+  REPPORT: 'typeMateriel/REPPORT',
+  FILTER: 'typeMateriel/filter'
 };
 
 const initialState = {
@@ -74,6 +75,12 @@ export default (state: TypeMaterielState = initialState, action): TypeMaterielSt
         loading: false,
         entity: action.payload.data
       };
+    case SUCCESS(ACTION_TYPES.FILTER):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case SUCCESS(ACTION_TYPES.CREATE_TYPEMATERIEL):
     case SUCCESS(ACTION_TYPES.UPDATE_TYPEMATERIEL):
       return {
@@ -120,6 +127,11 @@ export const getEntity: ICrudGetAction<ITypeMateriel> = id => {
   };
 };
 
+export const filterEntities: ICrudGetAllAction<ITypeMateriel> = filter => ({
+  type: ACTION_TYPES.FILTER,
+  payload: axios.get<ITypeMateriel>(`${apiUrl}/search-entities/${filter}`)
+});
+
 export const createEntity: ICrudPutAction<ITypeMateriel> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_TYPEMATERIEL,
@@ -134,6 +146,8 @@ export const updateEntity: ICrudPutAction<ITypeMateriel> = entity => async dispa
     type: ACTION_TYPES.UPDATE_TYPEMATERIEL,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 
@@ -143,6 +157,8 @@ export const deleteEntity: ICrudDeleteAction<ITypeMateriel> = id => async dispat
     type: ACTION_TYPES.DELETE_TYPEMATERIEL,
     payload: axios.delete(requestUrl)
   });
+  dispatch(getEntities());
+
   return result;
 };
 

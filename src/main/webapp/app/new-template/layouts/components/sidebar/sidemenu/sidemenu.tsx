@@ -59,7 +59,7 @@ const SideMenuContent = props => {
         collapsedSidebar={props.collapsedSidebar}
         Icon={<Users size={18} />}
       >
-        <NavLink to="/contacts" activeClassName="active">
+        <NavLink to="/employes" activeClassName="active">
           {/* <i className="menu-icon">
             <Users size={18} />
           </i> */}
@@ -120,6 +120,9 @@ const SideMenuContent = props => {
         <NavLink to="/marque" className="item" activeClassName="active">
           <span className="menu-item-text">Marque</span>
         </NavLink>
+        <NavLink to="/type-materiel" className="item" activeClassName="active">
+          <span className="menu-item-text">Type de materiel</span>
+        </NavLink>
       </SideMenu.MenuMultiItems>
       <SideMenu.MenuMultiItems name="Matériel" ArrowRight={<ChevronRight size={16} />} collapsedSidebar={props.collapsedSidebar}>
         <NavLink to="/contacts" activeClassName="active">
@@ -142,6 +145,40 @@ const SideMenuContent = props => {
         </NavLink>
         <NavLink to="/transfert-materiel" className="item" activeClassName="active">
           <span className="menu-item-text">Transfert materiel</span>
+        </NavLink>
+        <NavLink to="/affectation-materiels" className="item" activeClassName="active">
+          <span className="menu-item-text">Affectation materiel</span>
+        </NavLink>
+      </SideMenu.MenuMultiItems>
+      <SideMenu.MenuMultiItems name="Matériau" ArrowRight={<ChevronRight size={16} />} collapsedSidebar={props.collapsedSidebar}>
+        <NavLink to="/materiau" activeClassName="active">
+          <span className="menu-item-text">Fiche matériau</span>
+        </NavLink>
+        <NavLink to="/fournisseur" className="item" activeClassName="active">
+          <span className="menu-item-text">Fournisseur</span>
+        </NavLink>
+        <NavLink to="/centre-maintenance" className="item" activeClassName="active">
+          <span className="menu-item-text">Centre maintenance</span>
+        </NavLink>
+        <NavLink to="/depot" className="item" activeClassName="active">
+          <span className="menu-item-text">Dépôt</span>
+        </NavLink>
+      </SideMenu.MenuMultiItems>
+      <SideMenu.MenuMultiItems name="Bons" ArrowRight={<ChevronRight size={16} />} collapsedSidebar={props.collapsedSidebar}>
+        <NavLink to="/bon-commande" activeClassName="active">
+          <span className="menu-item-text">Bon de commande</span>
+        </NavLink>
+        <NavLink to="/bon-sortie" className="item" activeClassName="active">
+          <span className="menu-item-text">Bon de sortie</span>
+        </NavLink>
+        <NavLink to="/bon-de-reception" className="item" activeClassName="active">
+          <span className="menu-item-text">Bon de reception</span>
+        </NavLink>
+        <NavLink to="/gestion-financiere" className="item" activeClassName="active">
+          <span className="menu-item-text">Gestion financiere</span>
+        </NavLink>
+        <NavLink to="/fiche-paix" className="item" activeClassName="active">
+          <span className="menu-item-text">Fiche de paix</span>
         </NavLink>
       </SideMenu.MenuMultiItems>
       {/* <SideMenu.MenuMultiItems name="Employé" ArrowRight={<ChevronRight size={16} />} collapsedSidebar={props.collapsedSidebar}>
