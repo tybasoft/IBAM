@@ -34,8 +34,8 @@ const { planificationEntity, employes, loading, updating } = props;
 this.state = {
   modal: false,
   debut: null,
-  availability:true,
   fin: null,
+  availability:0,
   nom: "ma tache",
   description: "description de tache",
   start: new Date(),
@@ -101,19 +101,37 @@ componentDidMount = async () => {
 
   };
   handleEmployeChange = (emp) => {
+    let score = 0;
+    this.availability = 0;
     let employe_list=[];
+
      emp.map( async (item,index) =>{
       employe_list.push(item.value);
       const employe_task = await getEmployeTasks(item.value.id);
 
-       employe_task.data.map((task)=>{
-        this.checkAvailability(task.date_debut,task.date_fin,document.getElementById("date_debut").value,this.state.fin)
+      for(const task of employe_task.data){
+        if(this.checkAvailability(
+          task.date_debut,
+          task.date_fin,
+          document.getElementById("date_debut").value,
+          document.getElementById("date_fin").value) > 0  ) {
+            score = 1;
+            document.getElementById("availability").className="text-danger";
+            document.getElementById("availability").textContent="L'employe "+item.value.nom+"n'est pas disponible pour la date sélectionné, si vous souhaitez, vous pouvez le sélectionner comme même.";
+            break;
+            
+          }
+       }
 
-      });
+
     })
     this.state.employes = employe_list;
 
 
+    if(score == 0) {
+      document.getElementById("availability").className="invisible";
+ 
+    }
 
   }
 
@@ -139,7 +157,6 @@ componentDidMount = async () => {
       end: this.state.fin
       
     };
-     console.log(this.state.events);
      handleAddEvent(param, this.state.events);
      console.log(this.state.events);
 
@@ -182,16 +199,17 @@ componentDidMount = async () => {
   };
    condition_for_end = false;
    condition_for_start = false;
-  checkAvailability = (date_debut_tache_x,date_fin_tache_x,date_debut_selectionne,date_fin_selectionne) => {
-     this.condition_for_start= date_debut_selectionne>=date_debut_tache_x &&date_debut_selectionne<=date_fin_tache_x;
+    availability = 0;
+  checkAvailability = (
+    date_debut_tache_x,
+    date_fin_tache_x,
+    date_debut_selectionne,
+    date_fin_selectionne) => {
+ this.condition_for_start= date_debut_selectionne>=date_debut_tache_x &&date_debut_selectionne<=date_fin_tache_x;
      this.condition_for_end=date_fin_selectionne>=date_debut_tache_x &&date_debut_selectionne<=date_fin_tache_x
-    if(this.condition_for_start || this.condition_for_end) {
-        document.getElementById("availability").className="text-danger";
-    }
-    else
-    {
-      document.getElementById("availability").className="invisible";
 
+     if(this.condition_for_start || this.condition_for_end) {
+     return this.availability +=1;
     }
 
   };
@@ -225,6 +243,10 @@ componentDidMount = async () => {
                 <input className="form-control" id="date_fin" type="datetime-local" onChange={this.handleEndDateTimeChange} defaultValue={calender.startDate} value={end} />
               </div>
               <div>
+                <label>Projet concérné</label>
+                <select id="projet" className="form-control">
+                    <option></option>
+                </select>
               <label for="mail">Employe concerné</label>
         <Select
         id="mail_array"
@@ -236,7 +258,7 @@ componentDidMount = async () => {
     classNamePrefix="select"
     onChange={this.handleEmployeChange}
   />
-    <span className="text-danger" id="availability">L'employe n'est pas valable</span>
+    <span className="invisible" id="availability">L'employe n'est pas valable</span>
               </div>
           </ModalBody>
           <ModalFooter>
