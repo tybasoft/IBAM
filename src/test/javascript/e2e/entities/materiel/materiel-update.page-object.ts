@@ -19,6 +19,7 @@ export default class MaterielUpdatePage {
   userModifInput: ElementFinder = element(by.css('input#materiel-userModif'));
   dateModifInput: ElementFinder = element(by.css('input#materiel-dateModif'));
   multiProjetInput: ElementFinder = element(by.css('input#materiel-multiProjet'));
+  referenceInput: ElementFinder = element(by.css('input#materiel-reference'));
   familleSelect: ElementFinder = element(by.css('select#materiel-famille'));
   typeMaterielSelect: ElementFinder = element(by.css('select#materiel-typeMateriel'));
   fournisseurSelect: ElementFinder = element(by.css('select#materiel-fournisseur'));
@@ -118,6 +119,14 @@ export default class MaterielUpdatePage {
   getMultiProjetInput() {
     return this.multiProjetInput;
   }
+  async setReferenceInput(reference) {
+    await this.referenceInput.sendKeys(reference);
+  }
+
+  async getReferenceInput() {
+    return this.referenceInput.getAttribute('value');
+  }
+
   async familleSelectLastOption() {
     await this.familleSelect
       .all(by.tagName('option'))
@@ -331,6 +340,9 @@ export default class MaterielUpdatePage {
       await this.getMultiProjetInput().click();
       expect(await this.getMultiProjetInput().isSelected()).to.be.true;
     }
+    await waitUntilDisplayed(this.saveButton);
+    await this.setReferenceInput('reference');
+    expect(await this.getReferenceInput()).to.match(/reference/);
     await this.familleSelectLastOption();
     await this.typeMaterielSelectLastOption();
     await this.fournisseurSelectLastOption();

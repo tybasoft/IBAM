@@ -51,6 +51,10 @@
       "fieldName": "multiProjet",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "reference",
+      "fieldType": "String"
     }
   ],
   "relationships": [

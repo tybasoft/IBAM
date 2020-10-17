@@ -84,6 +84,7 @@ class MaterielGatlingTest extends Simulation {
                 , "userModif":"SAMPLE_TEXT"
                 , "dateModif":"2020-01-01T00:00:00.000Z"
                 , "multiProjet":null
+                , "reference":"SAMPLE_TEXT"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_materiel_url"))).exitHereIfFailed

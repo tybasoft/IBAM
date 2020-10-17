@@ -51,6 +51,8 @@
     <include file="config/liquibase/changelog/20201009162822_added_entity_Planification.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201013162625_added_entity_BonSortie.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201013164020_added_entity_LigneBonSortie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201016180318_added_entity_StockDisponible.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201016180855_added_entity_LigneStockDisponible.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20200512001600_added_entity_constraints_Materiau.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200512002200_added_entity_constraints_Entreprise.xml" relativeToChangelogFile="false"/>
@@ -77,6 +79,8 @@
     <include file="config/liquibase/changelog/20201009162822_added_entity_constraints_Planification.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201013162625_added_entity_constraints_BonSortie.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201013164020_added_entity_constraints_LigneBonSortie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201016180318_added_entity_constraints_StockDisponible.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201016180855_added_entity_constraints_LigneStockDisponible.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200523052350_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200523054708_changelog.xml" relativeToChangelogFile="false"/>

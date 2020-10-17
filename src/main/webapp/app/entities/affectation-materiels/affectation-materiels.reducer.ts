@@ -108,7 +108,12 @@ export default (state: AffectationMaterielsState = initialState, action): Affect
 export const apiUrl = 'api/affectation-materiels';
 
 // Actions
-export const getEntities: ICrudGetAllAction<IAffectationMateriels> = (page, size, sort) => {
+export const getEntities: (keyword, page, size, sort) => { payload: Promise<AxiosResponse<IAffectationMateriels>>; type: string } = (
+  keyword,
+  page,
+  size,
+  sort
+) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_AFFECTATIONMATERIELS,
@@ -142,7 +147,7 @@ export const createEntity: ICrudPutAction<IAffectationMateriels> = entity => asy
     type: ACTION_TYPES.CREATE_AFFECTATIONMATERIELS,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  // dispatch(getEntities());
   return result;
 };
 
@@ -151,7 +156,7 @@ export const updateEntity: ICrudPutAction<IAffectationMateriels> = entity => asy
     type: ACTION_TYPES.UPDATE_AFFECTATIONMATERIELS,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  // dispatch(getEntities());
 
   return result;
 };
@@ -162,7 +167,7 @@ export const deleteEntity: ICrudDeleteAction<IAffectationMateriels> = id => asyn
     type: ACTION_TYPES.DELETE_AFFECTATIONMATERIELS,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
+  // dispatch(getEntities());
   return result;
 };
 

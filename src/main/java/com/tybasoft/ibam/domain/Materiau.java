@@ -34,7 +34,7 @@ public class Materiau implements Serializable {
     private String libelle;
 
     @NotNull
-    @Column(name = "reference", nullable = false)
+    @Column(name = "reference", nullable = false,unique = true)
     private String reference;
 
     @Column(name = "poids")

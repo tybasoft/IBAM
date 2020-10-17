@@ -125,6 +125,11 @@ public class CacheConfiguration {
             createCache(cm, com.tybasoft.ibam.domain.Planification.class.getName() + ".employes");
             createCache(cm, com.tybasoft.ibam.domain.BonSortie.class.getName());
             createCache(cm, com.tybasoft.ibam.domain.LigneBonSortie.class.getName());
+            createCache(cm, com.tybasoft.ibam.domain.StockDisponible.class.getName());
+            createCache(cm, com.tybasoft.ibam.domain.LigneStockDisponible.class.getName());
+            createCache(cm, com.tybasoft.ibam.domain.StockDisponible.class.getName() + ".ligneStockDisponibles");
+            createCache(cm, com.tybasoft.ibam.domain.StockDisponible.class.getName() + ".materiels");
+            createCache(cm, com.tybasoft.ibam.domain.StockDisponible.class.getName() + ".materiaus");
             // jhipster-needle-ehcache-add-entry
         };
     }

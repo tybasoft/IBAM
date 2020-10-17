@@ -1,6 +1,5 @@
 package com.tybasoft.ibam.web.rest;
 
-import com.tybasoft.ibam.domain.Materiau;
 import com.tybasoft.ibam.domain.Materiel;
 import com.tybasoft.ibam.repository.MaterielRepository;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
@@ -47,6 +46,19 @@ public class MaterielResource {
     public MaterielResource(MaterielRepository materielRepository) {
         this.materielRepository = materielRepository;
     }
+    @GetMapping("/materiels/search-entities/{keyword}")
+    public ResponseEntity<Collection<Materiel>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
+        Page<Materiel> materiels ;
+//        String key = keyword.toLowerCase();
+        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
+        log.debug(keyword);
+        materiels = materielRepository.findByLibelleIsContainingOrMatriculeIsContainingOrModeleIsContainingOrNumCarteGriseIsContaining(keyword,keyword,keyword,keyword,pageable);
+        log.debug(String.valueOf(materiels.stream().count()));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), materiels);
+
+        return ResponseEntity.ok().headers(headers).body(materiels.getContent());
+    }
+
 
     /**
      * {@code POST  /materiels} : Create a new materiel.
@@ -113,19 +125,6 @@ public class MaterielResource {
         log.debug("REST request to get Materiel : {}", id);
         Optional<Materiel> materiel = materielRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(materiel);
-    }
-
-    @GetMapping("/materiels/search-entities/{keyword}")
-    public ResponseEntity<Collection<Materiel>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
-        Page<Materiel> materiels ;
-//        String key = keyword.toLowerCase();
-        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
-        log.debug(keyword);
-        materiels = materielRepository.findByLibelleIsContainingOrMatriculeIsContainingOrModeleIsContainingOrNumCarteGriseIsContaining(keyword,keyword,keyword,keyword,pageable);
-        log.debug(String.valueOf(materiels.stream().count()));
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), materiels);
-
-        return ResponseEntity.ok().headers(headers).body(materiels.getContent());
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.tybasoft.ibam.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -66,6 +67,9 @@ public class Materiel implements Serializable {
     @Column(name = "multi_projet", nullable = false)
     private Boolean multiProjet;
 
+    @Column(name = "reference" ,unique = true,nullable = false)
+    private String reference;
+
     @OneToMany(mappedBy = "materiel")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Location> locations = new HashSet<>();
@@ -127,14 +131,17 @@ public class Materiel implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Boolean getLocation() {
+        return location;
     }
 
     public Boolean getMultiProjet() {
         return multiProjet;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getLibelle() {
         return libelle;
@@ -290,6 +297,19 @@ public class Materiel implements Serializable {
 
     public void setMultiProjet(Boolean multiProjet) {
         this.multiProjet = multiProjet;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public Materiel reference(String reference) {
+        this.reference = reference;
+        return this;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public Set<Location> getLocations() {
@@ -580,6 +600,7 @@ public class Materiel implements Serializable {
             ", userModif='" + getUserModif() + "'" +
             ", dateModif='" + getDateModif() + "'" +
             ", multiProjet='" + isMultiProjet() + "'" +
+            ", reference='" + getReference() + "'" +
             "}";
     }
 }

@@ -26,7 +26,6 @@ export const AffectationMateriels = (props: IAffectationMaterielsProps) => {
       props.getEntities(" ",paginationState.activePage - 1, 10, `${paginationState.sort},${paginationState.order}`);
     } else {
       props.getEntities(keyword,paginationState.activePage - 1, 10, `${paginationState.sort},${paginationState.order}`);
-
     }
   };
 

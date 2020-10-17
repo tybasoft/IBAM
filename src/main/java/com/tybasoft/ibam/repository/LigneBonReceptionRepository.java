@@ -16,4 +16,5 @@ import java.util.List;
 public interface LigneBonReceptionRepository extends JpaRepository<LigneBonReception, Long> {
 
     List<LigneBonReception> findAllByBonReception_Id(Long id);
+    List<LigneBonReception> findAllByMateriau_ReferenceOrMateriel_Reference(String referenceMateriau , String referenceMateriel);
 }

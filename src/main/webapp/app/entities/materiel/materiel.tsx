@@ -81,9 +81,6 @@ export const Materiel = (props: IMaterielProps) => {
                 <th className="hand" onClick={sort('id')}>
                   <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('multiProjet')}>
-                  <Translate contentKey="ibamApp.materiel.multiProjet">Multi Projet</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
                 <th className="hand" onClick={sort('libelle')}>
                   <Translate contentKey="ibamApp.materiel.libelle">Libelle</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
@@ -96,7 +93,7 @@ export const Materiel = (props: IMaterielProps) => {
                 <th className="hand" onClick={sort('numCarteGrise')}>
                   <Translate contentKey="ibamApp.materiel.numCarteGrise">Num Carte Grise</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                {/* <th className="hand" onClick={sort('dateIdentification')}>
+                {/*<th className="hand" onClick={sort('dateIdentification')}>
                   <Translate contentKey="ibamApp.materiel.dateIdentification">Date Identification</Translate>{' '}
                   <FontAwesomeIcon icon="sort" />
                 </th>
@@ -117,9 +114,14 @@ export const Materiel = (props: IMaterielProps) => {
                 </th>
                 <th className="hand" onClick={sort('dateModif')}>
                   <Translate contentKey="ibamApp.materiel.dateModif">Date Modif</Translate> <FontAwesomeIcon icon="sort" />
+                </th>*/}
+                <th className="hand" onClick={sort('multiProjet')}>
+                  <Translate contentKey="ibamApp.materiel.multiProjet">Multi Projet</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-
-                <th>
+                <th className="hand" onClick={sort('reference')}>
+                  <Translate contentKey="ibamApp.materiel.reference">Reference</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                {/*<th>
                   <Translate contentKey="ibamApp.materiel.famille">Famille</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
@@ -139,11 +141,10 @@ export const Materiel = (props: IMaterielProps) => {
                 </th>
                 <th>
                   <Translate contentKey="ibamApp.materiel.image">Image</Translate> <FontAwesomeIcon icon="sort" />
-                </th>
+                </th>*/}
                 <th>
                   <Translate contentKey="ibamApp.materiel.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
-                */}
                 <th />
               </tr>
             </thead>
@@ -155,12 +156,11 @@ export const Materiel = (props: IMaterielProps) => {
                       {materiel.id}
                     </Button>
                   </td>
-                  <td>{materiel.multiProjet ? 'true' : 'false'}</td>
                   <td>{materiel.libelle}</td>
                   <td>{materiel.matricule}</td>
                   <td>{materiel.modele}</td>
                   <td>{materiel.numCarteGrise}</td>
-                  {/* <td>
+                  {/*<td>
                     {materiel.dateIdentification ? (
                       <TextFormat type="date" value={materiel.dateIdentification} format={APP_LOCAL_DATE_FORMAT} />
                     ) : null}
@@ -172,8 +172,10 @@ export const Materiel = (props: IMaterielProps) => {
                   <td>{materiel.userModif}</td>
                   <td>
                     {materiel.dateModif ? <TextFormat type="date" value={materiel.dateModif} format={APP_LOCAL_DATE_FORMAT} /> : null}
-                  </td>
-                  <td>{materiel.famille ? <Link to={`famille/${materiel.famille.id}`}>{materiel.famille.id}</Link> : ''}</td>
+                  </td>*/}
+                  <td>{materiel.multiProjet ? 'true' : 'false'}</td>
+                  <td>{materiel.reference}</td>
+                  {/*<td>{materiel.famille ? <Link to={`famille/${materiel.famille.id}`}>{materiel.famille.id}</Link> : ''}</td>
                   <td>
                     {materiel.typeMateriel ? <Link to={`type-materiel/${materiel.typeMateriel.id}`}>{materiel.typeMateriel.id}</Link> : ''}
                   </td>
@@ -183,9 +185,8 @@ export const Materiel = (props: IMaterielProps) => {
                   <td>{materiel.marque ? <Link to={`marque/${materiel.marque.id}`}>{materiel.marque.id}</Link> : ''}</td>
                   <td>{materiel.document ? <Link to={`document/${materiel.document.id}`}>{materiel.document.id}</Link> : ''}</td>
                   <td>{materiel.employe ? <Link to={`employe/${materiel.employe.id}`}>{materiel.employe.id}</Link> : ''}</td>
-                  <td>{materiel.image ? <Link to={`image/${materiel.image.id}`}>{materiel.image.id}</Link> : ''}</td>
-                  <td>{materiel.projet ? <Link to={`projet/${materiel.projet.id}`}>{materiel.projet.id}</Link> : ''}</td>
-                  */}
+                  <td>{materiel.image ? <Link to={`image/${materiel.image.id}`}>{materiel.image.id}</Link> : ''}</td>*/}
+                  <td>{materiel.projet ? <Link to={`projet/${materiel.projet.id}`}>{materiel.projet.libelle}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${materiel.id}`} color="info" size="sm">
