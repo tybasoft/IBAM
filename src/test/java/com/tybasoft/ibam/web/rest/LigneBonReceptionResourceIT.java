@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link LigneBonReceptionResource} REST controller.
  */
 @SpringBootTest(classes = IbamApp.class)
+
 @AutoConfigureMockMvc
 @WithMockUser
 public class LigneBonReceptionResourceIT {
@@ -92,6 +93,7 @@ public class LigneBonReceptionResourceIT {
     @Transactional
     public void createLigneBonReception() throws Exception {
         int databaseSizeBeforeCreate = ligneBonReceptionRepository.findAll().size();
+
         // Create the LigneBonReception
         restLigneBonReceptionMockMvc.perform(post("/api/ligne-bon-receptions")
             .contentType(MediaType.APPLICATION_JSON)
@@ -137,7 +139,6 @@ public class LigneBonReceptionResourceIT {
 
         // Create the LigneBonReception, which fails.
 
-
         restLigneBonReceptionMockMvc.perform(post("/api/ligne-bon-receptions")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(ligneBonReception)))
@@ -163,7 +164,7 @@ public class LigneBonReceptionResourceIT {
             .andExpect(jsonPath("$.[*].userModif").value(hasItem(DEFAULT_USER_MODIF)))
             .andExpect(jsonPath("$.[*].dateModif").value(hasItem(DEFAULT_DATE_MODIF.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getLigneBonReception() throws Exception {
@@ -180,6 +181,7 @@ public class LigneBonReceptionResourceIT {
             .andExpect(jsonPath("$.userModif").value(DEFAULT_USER_MODIF))
             .andExpect(jsonPath("$.dateModif").value(DEFAULT_DATE_MODIF.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingLigneBonReception() throws Exception {
@@ -225,6 +227,8 @@ public class LigneBonReceptionResourceIT {
     @Transactional
     public void updateNonExistingLigneBonReception() throws Exception {
         int databaseSizeBeforeUpdate = ligneBonReceptionRepository.findAll().size();
+
+        // Create the LigneBonReception
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restLigneBonReceptionMockMvc.perform(put("/api/ligne-bon-receptions")

@@ -2,7 +2,6 @@ package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.IbamApp;
 import com.tybasoft.ibam.domain.BonReception;
-import com.tybasoft.ibam.domain.Projet;
 import com.tybasoft.ibam.repository.BonReceptionRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link BonReceptionResource} REST controller.
  */
 @SpringBootTest(classes = IbamApp.class)
+
 @AutoConfigureMockMvc
 @WithMockUser
 public class BonReceptionResourceIT {
@@ -71,16 +71,6 @@ public class BonReceptionResourceIT {
             .dateLivraison(DEFAULT_DATE_LIVRAISON)
             .userModif(DEFAULT_USER_MODIF)
             .dateModif(DEFAULT_DATE_MODIF);
-        // Add required entity
-        Projet projet;
-        if (TestUtil.findAll(em, Projet.class).isEmpty()) {
-            projet = ProjetResourceIT.createEntity(em);
-            em.persist(projet);
-            em.flush();
-        } else {
-            projet = TestUtil.findAll(em, Projet.class).get(0);
-        }
-        bonReception.setProjet(projet);
         return bonReception;
     }
     /**
@@ -96,16 +86,6 @@ public class BonReceptionResourceIT {
             .dateLivraison(UPDATED_DATE_LIVRAISON)
             .userModif(UPDATED_USER_MODIF)
             .dateModif(UPDATED_DATE_MODIF);
-        // Add required entity
-        Projet projet;
-        if (TestUtil.findAll(em, Projet.class).isEmpty()) {
-            projet = ProjetResourceIT.createUpdatedEntity(em);
-            em.persist(projet);
-            em.flush();
-        } else {
-            projet = TestUtil.findAll(em, Projet.class).get(0);
-        }
-        bonReception.setProjet(projet);
         return bonReception;
     }
 
@@ -118,6 +98,7 @@ public class BonReceptionResourceIT {
     @Transactional
     public void createBonReception() throws Exception {
         int databaseSizeBeforeCreate = bonReceptionRepository.findAll().size();
+
         // Create the BonReception
         restBonReceptionMockMvc.perform(post("/api/bon-receptions")
             .contentType(MediaType.APPLICATION_JSON)
@@ -164,7 +145,6 @@ public class BonReceptionResourceIT {
 
         // Create the BonReception, which fails.
 
-
         restBonReceptionMockMvc.perform(post("/api/bon-receptions")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(bonReception)))
@@ -191,7 +171,7 @@ public class BonReceptionResourceIT {
             .andExpect(jsonPath("$.[*].userModif").value(hasItem(DEFAULT_USER_MODIF)))
             .andExpect(jsonPath("$.[*].dateModif").value(hasItem(DEFAULT_DATE_MODIF.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getBonReception() throws Exception {
@@ -209,6 +189,7 @@ public class BonReceptionResourceIT {
             .andExpect(jsonPath("$.userModif").value(DEFAULT_USER_MODIF))
             .andExpect(jsonPath("$.dateModif").value(DEFAULT_DATE_MODIF.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingBonReception() throws Exception {
@@ -256,6 +237,8 @@ public class BonReceptionResourceIT {
     @Transactional
     public void updateNonExistingBonReception() throws Exception {
         int databaseSizeBeforeUpdate = bonReceptionRepository.findAll().size();
+
+        // Create the BonReception
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restBonReceptionMockMvc.perform(put("/api/bon-receptions")

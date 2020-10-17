@@ -131,6 +131,25 @@ public class AvancementResourceIT {
 
     @Test
     @Transactional
+    public void checkTitreCompteRenduIsRequired() throws Exception {
+        int databaseSizeBeforeTest = avancementRepository.findAll().size();
+        // set the field null
+        avancement.setTitreCompteRendu(null);
+
+        // Create the Avancement, which fails.
+
+
+        restAvancementMockMvc.perform(post("/api/avancements")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(avancement)))
+            .andExpect(status().isBadRequest());
+
+        List<Avancement> avancementList = avancementRepository.findAll();
+        assertThat(avancementList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllAvancements() throws Exception {
         // Initialize the database
         avancementRepository.saveAndFlush(avancement);

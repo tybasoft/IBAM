@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="ASUS (generated)" id="1601570550535-2">
+        <createTable tableName="entitetest">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="entitetestPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1601570550535-3">
+        <addColumn tableName="depot">
+            <column name="latitude" type="double"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1601570550535-4">
+        <addColumn tableName="projet">
+            <column name="latitude" type="double"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1601570550535-5">
+        <addColumn tableName="depot">
+            <column name="longitude" type="double"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1601570550535-6">
+        <addColumn tableName="projet">
+            <column name="longitude" type="double"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="ASUS (generated)" id="1601570550535-1">
+        <alterSequence incrementBy="50" sequenceName="sequence_generator"/>
+    </changeSet>
+</databaseChangeLog>

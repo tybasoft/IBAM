@@ -48,9 +48,7 @@
     <include file="config/liquibase/changelog/20200808131051_added_entity_FichePointage.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200920150619_added_entity_AffectationMateriels.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200920161340_added_entity_SituationFinanciere.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20201009162822_added_entity_Planification.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20201013162625_added_entity_BonSortie.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20201013164020_added_entity_LigneBonSortie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200811210240_added_entity_Avancement.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20200512001600_added_entity_constraints_Materiau.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200512002200_added_entity_constraints_Entreprise.xml" relativeToChangelogFile="false"/>
@@ -74,9 +72,7 @@
     <include file="config/liquibase/changelog/20200808131051_added_entity_constraints_FichePointage.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200920150619_added_entity_constraints_AffectationMateriels.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200920161340_added_entity_constraints_SituationFinanciere.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20201009162822_added_entity_constraints_Planification.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20201013162625_added_entity_constraints_BonSortie.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20201013164020_added_entity_constraints_LigneBonSortie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200811210240_added_entity_constraints_Avancement.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200523052350_changelog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200523054708_changelog.xml" relativeToChangelogFile="false"/>

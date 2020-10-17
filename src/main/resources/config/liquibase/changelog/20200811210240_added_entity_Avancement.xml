@@ -22,7 +22,7 @@
                 <constraints nullable="true" />
             </column>
             <column name="titre_compte_rendu" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="contenu_compte_rendu" type="${clobType}">
                 <constraints nullable="true" />

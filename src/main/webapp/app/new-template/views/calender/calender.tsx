@@ -169,6 +169,7 @@ componentDidMount = async () => {
   };
 
   handleSlotSelect = slotInfo => {
+    console.log("slot info");
     this.toggleModal();
     this.setState(prevState => ({
       start: slotInfo.start,
@@ -251,7 +252,7 @@ componentDidMount = async () => {
           <CardBody>
             <div style={{ height: 700 }}>
               <ReactBigCalender
-                events={calender.events}
+                events={this.state.events}
                 views={allViews}
                 step={60}
                 defaultDate={new Date()}

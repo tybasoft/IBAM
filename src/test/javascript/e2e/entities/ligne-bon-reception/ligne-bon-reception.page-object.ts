@@ -1,26 +1,5 @@
 import { element, by, ElementFinder, ElementArrayFinder } from 'protractor';
 
-import { waitUntilAnyDisplayed, waitUntilDisplayed, click, waitUntilHidden, isVisible } from '../../util/utils';
-
-import NavBarPage from './../../page-objects/navbar-page';
-
-import LigneBonReceptionUpdatePage from './ligne-bon-reception-update.page-object';
-
-const expect = chai.expect;
-export class LigneBonReceptionDeleteDialog {
-  deleteModal = element(by.className('modal'));
-  private dialogTitle: ElementFinder = element(by.id('ibamApp.ligneBonReception.delete.question'));
-  private confirmButton = element(by.id('jhi-confirm-delete-ligneBonReception'));
-
-  getDialogTitle() {
-    return this.dialogTitle;
-  }
-
-  async clickOnConfirmButton() {
-    await this.confirmButton.click();
-  }
-}
-
 export default class LigneBonReceptionComponentsPage {
   createButton: ElementFinder = element(by.id('jh-create-entity'));
   deleteButtons = element.all(by.css('div table .btn-danger'));
@@ -41,29 +20,18 @@ export default class LigneBonReceptionComponentsPage {
   getDeleteButton(record: ElementFinder) {
     return record.element(by.css('a.btn.btn-danger.btn-sm'));
   }
+}
 
-  async goToPage(navBarPage: NavBarPage) {
-    await navBarPage.getEntityPage('ligne-bon-reception');
-    await waitUntilAnyDisplayed([this.noRecords, this.table]);
-    return this;
+export class LigneBonReceptionDeleteDialog {
+  deleteModal = element(by.className('modal'));
+  private dialogTitle: ElementFinder = element(by.id('ibamApp.ligneBonReception.delete.question'));
+  private confirmButton = element(by.id('jhi-confirm-delete-ligneBonReception'));
+
+  getDialogTitle() {
+    return this.dialogTitle;
   }
 
-  async goToCreateLigneBonReception() {
-    await this.createButton.click();
-    return new LigneBonReceptionUpdatePage();
-  }
-
-  async deleteLigneBonReception() {
-    const deleteButton = this.getDeleteButton(this.records.last());
-    await click(deleteButton);
-
-    const ligneBonReceptionDeleteDialog = new LigneBonReceptionDeleteDialog();
-    await waitUntilDisplayed(ligneBonReceptionDeleteDialog.deleteModal);
-    expect(await ligneBonReceptionDeleteDialog.getDialogTitle().getAttribute('id')).to.match(/ibamApp.ligneBonReception.delete.question/);
-    await ligneBonReceptionDeleteDialog.clickOnConfirmButton();
-
-    await waitUntilHidden(ligneBonReceptionDeleteDialog.deleteModal);
-
-    expect(await isVisible(ligneBonReceptionDeleteDialog.deleteModal)).to.be.false;
+  async clickOnConfirmButton() {
+    await this.confirmButton.click();
   }
 }

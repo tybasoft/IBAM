@@ -2,29 +2,29 @@
   "ibamApp": {
     "bonReception": {
       "home": {
-        "title": "Bon Receptions",
-        "createLabel": "Create a new Bon Reception",
-        "createOrEditLabel": "Create or edit a Bon Reception",
-        "notFound": "No Bon Receptions found"
+        "title": " إستلام طلبيات",
+        "createLabel": "إنشاء إستلام طلبية جديد",
+        "createOrEditLabel": "إنشاء أو تعديل إستلام طلبية",
+        "notFound": "لم يتم العثور على أي إستلام طلبية"
       },
-      "created": "A new Bon Reception is created with identifier {{ param }}",
-      "updated": "A Bon Reception is updated with identifier {{ param }}",
-      "deleted": "A Bon Reception is deleted with identifier {{ param }}",
+      "created": "يتم إنشاء إستلام طلب جديد مع معرف {{ param }}",
+      "updated": "يتم تحديث إستلام طلب مع معرف {{ param }}",
+      "deleted": "يتم حذف إستلام طلب مع معرف {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Bon Reception {{ id }}?"
+        "question": "هل أنت متأكد أنك تريد حذف إستلام طلب {{ id }}?"
       },
       "detail": {
-        "title": "Bon Reception"
+        "title": "إستلام طلبية "
       },
-      "livreur": "Livreur",
-      "remarques": "Remarques",
-      "dateLivraison": "Date Livraison",
-      "userModif": "User Modif",
-      "dateModif": "Date Modif",
-      "ligneBonRec": "Ligne Bon Rec",
-      "fournisseur": "Fournisseur",
-      "image": "Image",
-      "projet": "Projet"
+      "livreur": "رجل توصيل",
+      "remarques": "ملاحظات",
+      "dateLivraison": "تاريخ التسليم",
+      "userModif": "المستخدم الذي أجرى التغيير",
+      "dateModif": "تاريخ التغيير",
+      "ligneBonRec": "خط إستلام طلبيات",
+      "depot": "مستودع",
+      "fournisseur": "مُوَرِّد",
+      "image": "صورة"
     }
   }
 }

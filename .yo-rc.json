@@ -36,7 +36,11 @@
     "dtoSuffix": "DTO",
     "otherModules": [],
     "blueprints": [],
+<<<<<<< HEAD
     "lastLiquibaseTimestamp": 1602607220000
+=======
+    "lastLiquibaseTimestamp": 1600618420000
+>>>>>>> zakaria_final
   },
   "git-provider": "GitHub",
   "git-company": "tybasoft",

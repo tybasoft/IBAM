@@ -50,10 +50,7 @@ export default class AvancementUpdatePage {
   }
 
   async employeSelectLastOption() {
-    await this.employeSelect
-      .all(by.tagName('option'))
-      .last()
-      .click();
+    await this.employeSelect.all(by.tagName('option')).last().click();
   }
 
   async employeSelectOption(option) {

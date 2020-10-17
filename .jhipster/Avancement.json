@@ -3,8 +3,13 @@
   "clientRootFolder": "",
   "relationships": [
     {
+<<<<<<< HEAD
       "relationshipName": "compteRendu",
       "otherEntityName": "compteRendu",
+=======
+      "relationshipName": "employe",
+      "otherEntityName": "employe",
+>>>>>>> zakaria_final
       "relationshipType": "one-to-one",
       "otherEntityField": "id",
       "ownerSide": true,
@@ -20,6 +25,19 @@
     {
       "fieldName": "updatedAt",
       "fieldType": "LocalDate"
+<<<<<<< HEAD
+=======
+    },
+    {
+      "fieldName": "titreCompteRendu",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "contenuCompteRendu",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+>>>>>>> zakaria_final
     }
   ],
   "changelogDate": "20200811210240",

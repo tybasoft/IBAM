@@ -2,7 +2,6 @@ package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.IbamApp;
 import com.tybasoft.ibam.domain.LigneBonCommande;
-import com.tybasoft.ibam.domain.BonCommande;
 import com.tybasoft.ibam.repository.LigneBonCommandeRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link LigneBonCommandeResource} REST controller.
  */
 @SpringBootTest(classes = IbamApp.class)
+
 @AutoConfigureMockMvc
 @WithMockUser
 public class LigneBonCommandeResourceIT {
@@ -63,16 +63,6 @@ public class LigneBonCommandeResourceIT {
             .quantite(DEFAULT_QUANTITE)
             .userModif(DEFAULT_USER_MODIF)
             .dateModif(DEFAULT_DATE_MODIF);
-        // Add required entity
-        BonCommande bonCommande;
-        if (TestUtil.findAll(em, BonCommande.class).isEmpty()) {
-            bonCommande = BonCommandeResourceIT.createEntity(em);
-            em.persist(bonCommande);
-            em.flush();
-        } else {
-            bonCommande = TestUtil.findAll(em, BonCommande.class).get(0);
-        }
-        ligneBonCommande.setBonCommande(bonCommande);
         return ligneBonCommande;
     }
     /**
@@ -86,16 +76,6 @@ public class LigneBonCommandeResourceIT {
             .quantite(UPDATED_QUANTITE)
             .userModif(UPDATED_USER_MODIF)
             .dateModif(UPDATED_DATE_MODIF);
-        // Add required entity
-        BonCommande bonCommande;
-        if (TestUtil.findAll(em, BonCommande.class).isEmpty()) {
-            bonCommande = BonCommandeResourceIT.createUpdatedEntity(em);
-            em.persist(bonCommande);
-            em.flush();
-        } else {
-            bonCommande = TestUtil.findAll(em, BonCommande.class).get(0);
-        }
-        ligneBonCommande.setBonCommande(bonCommande);
         return ligneBonCommande;
     }
 
@@ -108,6 +88,7 @@ public class LigneBonCommandeResourceIT {
     @Transactional
     public void createLigneBonCommande() throws Exception {
         int databaseSizeBeforeCreate = ligneBonCommandeRepository.findAll().size();
+
         // Create the LigneBonCommande
         restLigneBonCommandeMockMvc.perform(post("/api/ligne-bon-commandes")
             .contentType(MediaType.APPLICATION_JSON)
@@ -152,7 +133,6 @@ public class LigneBonCommandeResourceIT {
 
         // Create the LigneBonCommande, which fails.
 
-
         restLigneBonCommandeMockMvc.perform(post("/api/ligne-bon-commandes")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(ligneBonCommande)))
@@ -177,7 +157,7 @@ public class LigneBonCommandeResourceIT {
             .andExpect(jsonPath("$.[*].userModif").value(hasItem(DEFAULT_USER_MODIF)))
             .andExpect(jsonPath("$.[*].dateModif").value(hasItem(DEFAULT_DATE_MODIF.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getLigneBonCommande() throws Exception {
@@ -193,6 +173,7 @@ public class LigneBonCommandeResourceIT {
             .andExpect(jsonPath("$.userModif").value(DEFAULT_USER_MODIF))
             .andExpect(jsonPath("$.dateModif").value(DEFAULT_DATE_MODIF.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingLigneBonCommande() throws Exception {
@@ -236,6 +217,8 @@ public class LigneBonCommandeResourceIT {
     @Transactional
     public void updateNonExistingLigneBonCommande() throws Exception {
         int databaseSizeBeforeUpdate = ligneBonCommandeRepository.findAll().size();
+
+        // Create the LigneBonCommande
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restLigneBonCommandeMockMvc.perform(put("/api/ligne-bon-commandes")

@@ -1,0 +1,8 @@
+translation avancement created at updated at i18n ->francais
++
+redacteur dans detail avancement au debut de la 
+
+create table planification
+id-tache-date_debut-date_fin-users_concerné(multiselect)
+
+langue calendrier

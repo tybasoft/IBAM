@@ -2,7 +2,6 @@ package com.tybasoft.ibam.web.rest;
 
 import com.tybasoft.ibam.IbamApp;
 import com.tybasoft.ibam.domain.BonCommande;
-import com.tybasoft.ibam.domain.Projet;
 import com.tybasoft.ibam.repository.BonCommandeRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link BonCommandeResource} REST controller.
  */
 @SpringBootTest(classes = IbamApp.class)
+
 @AutoConfigureMockMvc
 @WithMockUser
 public class BonCommandeResourceIT {
@@ -75,16 +75,6 @@ public class BonCommandeResourceIT {
             .valide(DEFAULT_VALIDE)
             .userModif(DEFAULT_USER_MODIF)
             .dateModif(DEFAULT_DATE_MODIF);
-        // Add required entity
-        Projet projet;
-        if (TestUtil.findAll(em, Projet.class).isEmpty()) {
-            projet = ProjetResourceIT.createEntity(em);
-            em.persist(projet);
-            em.flush();
-        } else {
-            projet = TestUtil.findAll(em, Projet.class).get(0);
-        }
-        bonCommande.setProjet(projet);
         return bonCommande;
     }
     /**
@@ -101,16 +91,6 @@ public class BonCommandeResourceIT {
             .valide(UPDATED_VALIDE)
             .userModif(UPDATED_USER_MODIF)
             .dateModif(UPDATED_DATE_MODIF);
-        // Add required entity
-        Projet projet;
-        if (TestUtil.findAll(em, Projet.class).isEmpty()) {
-            projet = ProjetResourceIT.createUpdatedEntity(em);
-            em.persist(projet);
-            em.flush();
-        } else {
-            projet = TestUtil.findAll(em, Projet.class).get(0);
-        }
-        bonCommande.setProjet(projet);
         return bonCommande;
     }
 
@@ -123,6 +103,7 @@ public class BonCommandeResourceIT {
     @Transactional
     public void createBonCommande() throws Exception {
         int databaseSizeBeforeCreate = bonCommandeRepository.findAll().size();
+
         // Create the BonCommande
         restBonCommandeMockMvc.perform(post("/api/bon-commandes")
             .contentType(MediaType.APPLICATION_JSON)
@@ -170,7 +151,6 @@ public class BonCommandeResourceIT {
 
         // Create the BonCommande, which fails.
 
-
         restBonCommandeMockMvc.perform(post("/api/bon-commandes")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(bonCommande)))
@@ -198,7 +178,7 @@ public class BonCommandeResourceIT {
             .andExpect(jsonPath("$.[*].userModif").value(hasItem(DEFAULT_USER_MODIF)))
             .andExpect(jsonPath("$.[*].dateModif").value(hasItem(DEFAULT_DATE_MODIF.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getBonCommande() throws Exception {
@@ -217,6 +197,7 @@ public class BonCommandeResourceIT {
             .andExpect(jsonPath("$.userModif").value(DEFAULT_USER_MODIF))
             .andExpect(jsonPath("$.dateModif").value(DEFAULT_DATE_MODIF.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingBonCommande() throws Exception {
@@ -266,6 +247,8 @@ public class BonCommandeResourceIT {
     @Transactional
     public void updateNonExistingBonCommande() throws Exception {
         int databaseSizeBeforeUpdate = bonCommandeRepository.findAll().size();
+
+        // Create the BonCommande
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restBonCommandeMockMvc.perform(put("/api/bon-commandes")
