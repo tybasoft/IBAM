@@ -109,6 +109,13 @@ export const getEntities: ICrudGetAllAction<IPlanification> = (page, size, sort)
   };
 };
 
+export const getEmployeTasks: ICrudGetAllAction<IPlanification> = (id) => {
+  const requestUrl = `${apiUrl}/employe/${id}`;
+  
+  return axios.get<IPlanification>(requestUrl)
+
+};
+
 export const getEntity: ICrudGetAction<IPlanification> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {

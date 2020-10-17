@@ -10,9 +10,11 @@ import DateTimePicker from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 import { IEmploye } from 'app/shared/model/employe.model';
 import { getEntities as getEmployes } from 'app/entities/employe/employe.reducer';
-import { getEntity, updateEntity,getEntities, createEntity, reset } from '../../../entities/planification/planification.reducer';
+import { getEntity, updateEntity,getEmployeTasks, getEntities, createEntity, reset } from '../../../entities/planification/planification.reducer';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { IPlanification } from 'app/shared/model/planification.model';
+import { getEntities as getProjectEntities }  from '../../../entities/projet/projet.reducer';
+
 import { mapIdList } from 'app/shared/util/entity-utils';
 import Select from 'react-select';
 
@@ -35,6 +37,7 @@ this.state = {
   modal: false,
   debut: null,
   fin: null,
+  availability:0,
   nom: "ma tache",
   description: "description de tache",
   start: new Date(),
@@ -71,8 +74,6 @@ componentDidMount = async () => {
 
   })
 
-
-
 }
 
   toggleModal = () => {
@@ -101,15 +102,38 @@ componentDidMount = async () => {
      this.state.fin = convertDateTimeToServer(document.getElementById("date_fin").value);
 
   };
-  handleEmployeChange = emp => {
+  handleEmployeChange = (emp) => {
+    let score = 0;
+    this.availability = 0;
     let employe_list=[];
-    emp.map((item)=>{
+
+     emp.map( async (item,index) =>{
       employe_list.push(item.value);
+      const employe_task = await getEmployeTasks(item.value.id);
+
+      for(const task of employe_task.data){
+        if(this.checkAvailability(
+          task.date_debut,
+          task.date_fin,
+          document.getElementById("date_debut").value,
+          document.getElementById("date_fin").value) > 0  ) {
+            score = 1;
+            document.getElementById("availability").className="text-danger";
+            document.getElementById("availability").textContent="L'employe "+item.value.nom+"n'est pas disponible pour la date sélectionné, si vous souhaitez, vous pouvez le sélectionner comme même.";
+            break;
+            
+          }
+       }
+
 
     })
     this.state.employes = employe_list;
-    console.log(this.state.employes)
 
+
+    if(score == 0) {
+      document.getElementById("availability").className="invisible";
+ 
+    }
 
   }
 
@@ -135,7 +159,6 @@ componentDidMount = async () => {
       end: this.state.fin
       
     };
-     console.log(this.state.events);
      handleAddEvent(param, this.state.events);
      console.log(this.state.events);
 
@@ -162,7 +185,7 @@ componentDidMount = async () => {
           eventTitle,
           end
         };
-        //handleAddEvent(param, events);
+        handleAddEvent(param, events);
       }
     );
     this.toggleModal();
@@ -176,10 +199,27 @@ componentDidMount = async () => {
       eventTitle: 'Enter Your Title'
     }));
   };
+   condition_for_end = false;
+   condition_for_start = false;
+    availability = 0;
+  checkAvailability = (
+    date_debut_tache_x,
+    date_fin_tache_x,
+    date_debut_selectionne,
+    date_fin_selectionne) => {
+ this.condition_for_start= date_debut_selectionne>=date_debut_tache_x &&date_debut_selectionne<=date_fin_tache_x;
+     this.condition_for_end=date_fin_selectionne>=date_debut_tache_x &&date_debut_selectionne<=date_fin_tache_x
 
-  render() {
+     if(this.condition_for_start || this.condition_for_end) {
+     return this.availability +=1;
+    }
+
+  };
+
+  async render() {
     const { calender } = this.props;
     const { modal, eventTitle, start, end } = this.state;
+  //  var projects = await getProjectEntities().payload;
 
 
     return (
@@ -206,6 +246,16 @@ componentDidMount = async () => {
                 <input className="form-control" id="date_fin" type="datetime-local" onChange={this.handleEndDateTimeChange} defaultValue={calender.startDate} value={end} />
               </div>
               <div>
+                <label>Projet concérné</label>
+                <select id="projet" className="form-control">
+
+                    
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+
+                </select>
               <label for="mail">Employe concerné</label>
         <Select
         id="mail_array"
@@ -217,6 +267,7 @@ componentDidMount = async () => {
     classNamePrefix="select"
     onChange={this.handleEmployeChange}
   />
+    <span className="invisible" id="availability">L'employe n'est pas valable</span>
               </div>
           </ModalBody>
           <ModalFooter>
@@ -274,5 +325,6 @@ const mapDispatchToProps = {
   getEntity,
   updateEntity,
 };
+
 
 export default connect(mapStateToProps, { handleAddEvent })(Calender);
