@@ -1,0 +1,28 @@
+{
+  "ibamApp": {
+    "stockDisponible": {
+      "home": {
+        "title": "StockDisponibles",
+        "createLabel": "Créer un nouveau Stock Disponible",
+        "createOrEditLabel": "Créer ou éditer un Stock Disponible",
+        "notFound": "Aucun Stock Disponible trouvé"
+      },
+      "created": "Un nouveau Stock Disponible a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Stock Disponible avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Stock Disponible avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Stock Disponible {{ id }} ?"
+      },
+      "detail": {
+        "title": "Stock Disponible"
+      },
+      "dateStock": "Date Stock",
+      "userModif": "User Modif",
+      "remarque": "Remarque",
+      "dateModif": "Date Modif",
+      "quantite": "Quantite",
+      "materiel": "Materiel",
+      "materiau": "Materiau"
+    }
+  }
+}

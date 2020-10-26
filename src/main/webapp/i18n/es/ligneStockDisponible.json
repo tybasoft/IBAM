@@ -1,0 +1,26 @@
+{
+  "ibamApp": {
+    "ligneStockDisponible": {
+      "home": {
+        "title": "Ligne Stock Disponibles",
+        "createLabel": "Crear nuevo Ligne Stock Disponible",
+        "createOrEditLabel": "Crear o editar Ligne Stock Disponible",
+        "notFound": "Ningún Ligne Stock Disponibles encontrado"
+      },
+      "created": "Un nuevo Ligne Stock Disponible ha sido creado con el identificador {{ param }}",
+      "updated": "Un Ligne Stock Disponible ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Ligne Stock Disponible ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Ligne Stock Disponible {{ id }}?"
+      },
+      "detail": {
+        "title": "Ligne Stock Disponible"
+      },
+      "quantite": "Quantite",
+      "type": "Type",
+      "materiel": "Materiel",
+      "materiau": "Materiau",
+      "stockDisponible": "Stock Disponible"
+    }
+  }
+}
