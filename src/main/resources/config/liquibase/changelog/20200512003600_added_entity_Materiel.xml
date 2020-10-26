@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    
+
     <!--
         Added the entity Materiel.
     -->
@@ -50,6 +50,9 @@
             </column>
             <column name="multi_projet" type="boolean">
                 <constraints nullable="false" />
+            </column>
+            <column name="reference" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
             <column name="famille_id" type="bigint">
                 <constraints nullable="true" />
@@ -110,6 +113,7 @@
             <column name="user_modif" type="string"/>
             <column name="date_modif" type="date"/>
             <column name="multi_projet" type="boolean"/>
+            <column name="reference" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

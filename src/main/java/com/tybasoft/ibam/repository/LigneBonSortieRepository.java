@@ -16,5 +16,7 @@ import java.util.List;
 public interface LigneBonSortieRepository extends JpaRepository<LigneBonSortie, Long> {
 
     List<LigneBonSortie> findAllByBonSortie_Id(Long id);
+    List<LigneBonSortie> findAllByMateriau_ReferenceOrMateriel_Reference(String referenceMateriau , String referenceMateriel);
+
 
 }

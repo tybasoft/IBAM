@@ -195,6 +195,12 @@ export const MaterielUpdate = (props: IMaterielUpdateProps) => {
                 </Label>
               </AvGroup>
               <AvGroup>
+                <Label id="referenceLabel" for="materiel-reference">
+                  <Translate contentKey="ibamApp.materiel.reference">Reference</Translate>
+                </Label>
+                <AvField id="materiel-reference" type="text" name="reference" />
+              </AvGroup>
+              <AvGroup>
                 <Label for="materiel-famille">
                   <Translate contentKey="ibamApp.materiel.famille">Famille</Translate>
                 </Label>

@@ -1,5 +1,6 @@
 package com.tybasoft.ibam.repository;
 
+import com.tybasoft.ibam.domain.Employe;
 import com.tybasoft.ibam.domain.Planification;
 
 import org.springframework.data.domain.Page;
@@ -26,4 +27,6 @@ public interface PlanificationRepository extends JpaRepository<Planification, Lo
 
     @Query("select planification from Planification planification left join fetch planification.employes where planification.id =:id")
     Optional<Planification> findOneWithEagerRelationships(@Param("id") Long id);
+
+    List<Planification> findAllByEmployes(Optional<Employe> employe);
 }

@@ -28,6 +28,7 @@ export interface IMateriel {
   userModif?: string;
   dateModif?: string;
   multiProjet?: boolean;
+  reference?: string;
   locations?: ILocation[];
   assurances?: IAssurance[];
   transferts?: ITransfertMateriel[];

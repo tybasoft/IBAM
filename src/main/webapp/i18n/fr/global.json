@@ -68,6 +68,8 @@
         "planification": "Planification",
         "bonSortie": "Bon Sortie",
         "ligneBonSortie": "Ligne Bon Sortie",
+        "stockDisponible": "Stock Disponible",
+        "ligneStockDisponible": "Ligne Stock Disponible",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "Materiel": "Matériel",
         "Materiau": "Matériau",

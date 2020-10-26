@@ -104,6 +104,12 @@ export const MaterielDetail = (props: IMaterielDetailProps) => {
           </dt>
           <dd>{materielEntity.multiProjet ? 'true' : 'false'}</dd>
           <dt>
+            <span id="reference">
+              <Translate contentKey="ibamApp.materiel.reference">Reference</Translate>
+            </span>
+          </dt>
+          <dd>{materielEntity.reference}</dd>
+          <dt>
             <Translate contentKey="ibamApp.materiel.famille">Famille</Translate>
           </dt>
           <dd>{materielEntity.famille ? materielEntity.famille.id : ''}</dd>

@@ -67,6 +67,9 @@ public class MaterielResourceIT {
     private static final Boolean DEFAULT_MULTI_PROJET = false;
     private static final Boolean UPDATED_MULTI_PROJET = true;
 
+    private static final String DEFAULT_REFERENCE = "AAAAAAAAAA";
+    private static final String UPDATED_REFERENCE = "BBBBBBBBBB";
+
     @Autowired
     private MaterielRepository materielRepository;
 
@@ -97,7 +100,8 @@ public class MaterielResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .userModif(DEFAULT_USER_MODIF)
             .dateModif(DEFAULT_DATE_MODIF)
-            .multiProjet(DEFAULT_MULTI_PROJET);
+            .multiProjet(DEFAULT_MULTI_PROJET)
+            .reference(DEFAULT_REFERENCE);
         return materiel;
     }
     /**
@@ -119,7 +123,8 @@ public class MaterielResourceIT {
             .description(UPDATED_DESCRIPTION)
             .userModif(UPDATED_USER_MODIF)
             .dateModif(UPDATED_DATE_MODIF)
-            .multiProjet(UPDATED_MULTI_PROJET);
+            .multiProjet(UPDATED_MULTI_PROJET)
+            .reference(UPDATED_REFERENCE);
         return materiel;
     }
 
@@ -154,6 +159,7 @@ public class MaterielResourceIT {
         assertThat(testMateriel.getUserModif()).isEqualTo(DEFAULT_USER_MODIF);
         assertThat(testMateriel.getDateModif()).isEqualTo(DEFAULT_DATE_MODIF);
         assertThat(testMateriel.isMultiProjet()).isEqualTo(DEFAULT_MULTI_PROJET);
+        assertThat(testMateriel.getReference()).isEqualTo(DEFAULT_REFERENCE);
     }
 
     @Test
@@ -255,9 +261,10 @@ public class MaterielResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].userModif").value(hasItem(DEFAULT_USER_MODIF)))
             .andExpect(jsonPath("$.[*].dateModif").value(hasItem(DEFAULT_DATE_MODIF.toString())))
-            .andExpect(jsonPath("$.[*].multiProjet").value(hasItem(DEFAULT_MULTI_PROJET.booleanValue())));
+            .andExpect(jsonPath("$.[*].multiProjet").value(hasItem(DEFAULT_MULTI_PROJET.booleanValue())))
+            .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)));
     }
-    
+
     @Test
     @Transactional
     public void getMateriel() throws Exception {
@@ -280,7 +287,8 @@ public class MaterielResourceIT {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.userModif").value(DEFAULT_USER_MODIF))
             .andExpect(jsonPath("$.dateModif").value(DEFAULT_DATE_MODIF.toString()))
-            .andExpect(jsonPath("$.multiProjet").value(DEFAULT_MULTI_PROJET.booleanValue()));
+            .andExpect(jsonPath("$.multiProjet").value(DEFAULT_MULTI_PROJET.booleanValue()))
+            .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE));
     }
     @Test
     @Transactional
@@ -314,7 +322,8 @@ public class MaterielResourceIT {
             .description(UPDATED_DESCRIPTION)
             .userModif(UPDATED_USER_MODIF)
             .dateModif(UPDATED_DATE_MODIF)
-            .multiProjet(UPDATED_MULTI_PROJET);
+            .multiProjet(UPDATED_MULTI_PROJET)
+            .reference(UPDATED_REFERENCE);
 
         restMaterielMockMvc.perform(put("/api/materiels")
             .contentType(MediaType.APPLICATION_JSON)
@@ -337,6 +346,7 @@ public class MaterielResourceIT {
         assertThat(testMateriel.getUserModif()).isEqualTo(UPDATED_USER_MODIF);
         assertThat(testMateriel.getDateModif()).isEqualTo(UPDATED_DATE_MODIF);
         assertThat(testMateriel.isMultiProjet()).isEqualTo(UPDATED_MULTI_PROJET);
+        assertThat(testMateriel.getReference()).isEqualTo(UPDATED_REFERENCE);
     }
 
     @Test

@@ -165,6 +165,14 @@ import bonSortie, {
 import ligneBonSortie, {
   LigneBonSortieState
 } from 'app/entities/ligne-bon-sortie/ligne-bon-sortie.reducer';
+// prettier-ignore
+import stockDisponible, {
+  StockDisponibleState
+} from 'app/entities/stock-disponible/stock-disponible.reducer';
+// prettier-ignore
+import ligneStockDisponible, {
+  LigneStockDisponibleState
+} from 'app/entities/ligne-stock-disponible/ligne-stock-disponible.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 import avancement, { AvancementState } from 'app/entities/avancement/avancement.reducer';
@@ -219,6 +227,8 @@ export interface IRootState {
   readonly planification: PlanificationState;
   readonly bonSortie: BonSortieState;
   readonly ligneBonSortie: LigneBonSortieState;
+  readonly stockDisponible: StockDisponibleState;
+  readonly ligneStockDisponible: LigneStockDisponibleState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly customizer: any;
@@ -278,6 +288,8 @@ const rootReducer = combineReducers<IRootState>({
   planification,
   bonSortie,
   ligneBonSortie,
+  stockDisponible,
+  ligneStockDisponible,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
   emailApp
