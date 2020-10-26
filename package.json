@@ -29,6 +29,7 @@
     "google-map-react": "^2.0.4",
     "google-maps-react": "^2.0.6",
     "history": "^4.7.2",
+    "html-to-image": "^1.1.1",
     "js-file-download": "^0.4.12",
     "loaders.css": "0.1.2",
     "lodash": "4.17.15",
@@ -52,6 +53,7 @@
     "react-google-maps": "^9.4.5",
     "react-horizontal-timeline": "^1.5.3",
     "react-hot-loader": "4.12.18",
+    "react-html-parser": "^2.0.2",
     "react-jhipster": "0.10.0",
     "react-loadable": "5.5.0",
     "react-perfect-scrollbar": "^1.5.8",
@@ -79,6 +81,7 @@
     "redux-promise-middleware": "6.1.2",
     "redux-thunk": "2.3.0",
     "semantic-ui-react": "^1.2.0",
+    "throttle-debounce": "^2.3.0",
     "tslib": "1.10.0",
     "uuid": "3.3.3",
     "yup": "^0.26.6"

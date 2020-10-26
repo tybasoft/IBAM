@@ -44,7 +44,7 @@ export const EntitetestDetail = (props: IEntitetestDetailProps) => {
 };
 
 const mapStateToProps = ({ entitetest }: IRootState) => ({
-  entitetestEntity: entitetest.entity,
+  entitetestEntity: entitetest.entity
 });
 
 const mapDispatchToProps = { getEntity };

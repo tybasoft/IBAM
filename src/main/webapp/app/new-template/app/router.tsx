@@ -48,7 +48,7 @@ import Logs from 'app/modules/administration/logs/logs';
 const LazyEcommerceDashboard = lazy(() => import('../views/dashboard/ecommerceDashboard'));
 const LazyAnalyticsDashboard = lazy(() => import('../views/dashboard/analyticsDashboard'));
 const LazySalesDashboard = lazy(() => import('../views/dashboard/salesDashboard'));
-const LazyEmail = lazy(() => import('../views/email/email'));
+// const LazyEmail = lazy(() => import('../views/email/email'));
 const LazyChat = lazy(() => import('../views/chat/chat'));
 const LazyContacts = lazy(() => import('../views/contacts/contacts'));
 const LazyTodo = lazy(() => import('../views/todo/todo'));
@@ -182,15 +182,7 @@ class Router extends Component<any, any> {
               </Suspense>
             )}
           />
-          <MainLayoutRoutes
-            exact
-            path="/email"
-            render={matchprops => (
-              <Suspense fallback={<Spinner />}>
-                <LazyEmail {...matchprops} />
-              </Suspense>
-            )}
-          />
+
           <MainLayoutRoutes
             exact
             path="/employes"

@@ -173,10 +173,12 @@ import stockDisponible, {
 import ligneStockDisponible, {
   LigneStockDisponibleState
 } from 'app/entities/ligne-stock-disponible/ligne-stock-disponible.reducer';
+
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 import avancement, { AvancementState } from 'app/entities/avancement/avancement.reducer';
 import { BonReception } from 'app/entities/bon-reception/bon-reception';
+import entitetest, { EntitetestState } from 'app/entities/entitetest/entitetest.reducer';
 export interface IRootState {
   readonly authentication: AuthenticationState;
   readonly locale: LocaleState;
@@ -229,6 +231,7 @@ export interface IRootState {
   readonly ligneBonSortie: LigneBonSortieState;
   readonly stockDisponible: StockDisponibleState;
   readonly ligneStockDisponible: LigneStockDisponibleState;
+  readonly entitetest: EntitetestState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly customizer: any;
@@ -237,6 +240,7 @@ export interface IRootState {
 }
 
 const rootReducer = combineReducers<IRootState>({
+  entitetest,
   currency,
   authentication,
   locale,

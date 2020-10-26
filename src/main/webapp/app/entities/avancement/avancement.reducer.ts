@@ -1,3 +1,5 @@
+/*eslint-disable */
+
 import axios from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
@@ -5,9 +7,14 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IAvancement, defaultValue } from 'app/shared/model/avancement.model';
+import { IEmploye } from 'app/shared/model/employe.model';
 
 export const ACTION_TYPES = {
+  FETCH_EMPLOYE_LIST: 'employe/FETCH_EMPLOYE_LIST',
+
   FETCH_AVANCEMENT_LIST: 'avancement/FETCH_AVANCEMENT_LIST',
+  SEND_PDF: 'avancement/SEND_PDF',
+
   FETCH_AVANCEMENT: 'avancement/FETCH_AVANCEMENT',
   CREATE_AVANCEMENT: 'avancement/CREATE_AVANCEMENT',
   UPDATE_AVANCEMENT: 'avancement/UPDATE_AVANCEMENT',
@@ -110,8 +117,17 @@ export default (state: AvancementState = initialState, action): AvancementState 
 };
 
 const apiUrl = 'api/avancements';
+export const apiUrlEmploye = 'api/employes';
 
 // Actions
+
+export const getEmployes: any = () => {
+  const requestUrl = `${apiUrlEmploye}`;
+  return {
+    type: ACTION_TYPES.FETCH_EMPLOYE_LIST,
+    payload: axios.get<IEmploye>(`${requestUrl}`)
+  };
+};
 
 export const getEntities: ICrudGetAllAction<IAvancement> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
@@ -127,6 +143,47 @@ export const getEntity: ICrudGetAction<IAvancement> = id => {
     type: ACTION_TYPES.FETCH_AVANCEMENT,
     payload: axios.get<IAvancement>(requestUrl)
   };
+};
+
+// export const getFile: ICrudGetAction<IAvancement> = id => {
+//   const requestUrl = `${apiUrl}/${id}/download`;
+//   return {
+//     type: ACTION_TYPES.FETCH_AVANCEMENT,
+//     payload: axios.get<IAvancement>(requestUrl,{responseType: 'blob'}),
+//   };
+// };
+
+export const getFile: (id) => void = id => {
+  const requestUrl = `${apiUrl}/${id}/download`;
+  axios({
+    url: requestUrl,
+    method: 'GET',
+    responseType: 'blob' // important
+  }).then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Compte_rendu.pdf');
+    document.body.appendChild(link);
+    link.click();
+  });
+};
+
+export const getUsers: ICrudGetAction<IAvancement> = id => {
+  const requestUrl = `${apiUrl}/${id}/download`;
+  return {
+    type: ACTION_TYPES.FETCH_AVANCEMENT,
+    payload: axios.get<IAvancement>(requestUrl)
+  };
+};
+export const sendPdf = (message, dest_array, id) => {
+  const requestUrl = `${apiUrl}/${id}/sendPdf`;
+
+  const result = {
+    type: ACTION_TYPES.SEND_PDF,
+    payload: axios.post(requestUrl, { message, dest_array })
+  };
+  return result;
 };
 
 export const createEntity: ICrudPutAction<IAvancement> = entity => async dispatch => {
