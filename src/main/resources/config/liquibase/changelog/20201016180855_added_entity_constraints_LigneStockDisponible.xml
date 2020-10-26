@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity LigneStockDisponible.
+    -->
+    <changeSet id="20201016180855-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="materiel_id"
+                                 baseTableName="ligne_stock_disponible"
+                                 constraintName="fk_ligne_stock_disponible_materiel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="materiel"/>
+
+        <addForeignKeyConstraint baseColumnNames="materiau_id"
+                                 baseTableName="ligne_stock_disponible"
+                                 constraintName="fk_ligne_stock_disponible_materiau_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="materiau"/>
+
+        <addForeignKeyConstraint baseColumnNames="stock_disponible_id"
+                                 baseTableName="ligne_stock_disponible"
+                                 constraintName="fk_ligne_stock_disponible_stock_disponible_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="stock_disponible"/>
+
+    </changeSet>
+</databaseChangeLog>
