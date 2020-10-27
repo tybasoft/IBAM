@@ -28,6 +28,8 @@ import Materiau from '../modules/materiau/materiau';
 import Fournisseur from '../modules/fournisseur/fournisseur';
 import TypeMateriel from '../modules/type-materiel/typeMateriel';
 import Depot from '../modules/depot/depot';
+import Avancement from '../modules/avancement/avancement';
+// import Entite from '../modules/entite/entite';
 
 import { Logout } from 'app/modules/login/logout';
 import { logout } from 'app/shared/reducers/authentication';
@@ -43,6 +45,9 @@ import Docs from 'app/modules/administration/docs/docs';
 import Audits from 'app/modules/administration/audits/audits';
 import Configuration from 'app/modules/administration/configuration/configuration';
 import Logs from 'app/modules/administration/logs/logs';
+import BonCommande from '../modules/bon-commande/bonCommande';
+import BonSortie from '../modules/bon-sortie/BonSortie';
+import BonReception from '../modules/bon-reception/BonReception';
 
 // Main Layout
 const LazyEcommerceDashboard = lazy(() => import('../views/dashboard/ecommerceDashboard'));
@@ -229,6 +234,7 @@ class Router extends Component<any, any> {
               </Suspense>
             )}
           />
+
           <MainLayoutRoutes
             exact
             path="/fournisseur"
@@ -298,6 +304,15 @@ class Router extends Component<any, any> {
             render={matchprops => (
               <Suspense fallback={<Spinner />}>
                 <Assurance {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/avancement"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <Avancement {...matchprops} />
               </Suspense>
             )}
           />
@@ -379,6 +394,33 @@ class Router extends Component<any, any> {
             render={matchprops => (
               <Suspense fallback={<Spinner />}>
                 <Equipe {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/bon-commande"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <BonCommande {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/bon-sortie"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <BonSortie {...matchprops} />
+              </Suspense>
+            )}
+          />
+          <MainLayoutRoutes
+            exact
+            path="/bon-reception"
+            render={matchprops => (
+              <Suspense fallback={<Spinner />}>
+                <BonReception {...matchprops} />
               </Suspense>
             )}
           />

@@ -1,42 +1,61 @@
 package com.tybasoft.ibam.web.rest;
 
-import com.tybasoft.ibam.domain.Assurance;
+import com.itextpdf.html2pdf.HtmlConverter;
 import com.tybasoft.ibam.domain.Avancement;
+import com.tybasoft.ibam.domain.PdfMailing;
 import com.tybasoft.ibam.repository.AvancementRepository;
+import com.tybasoft.ibam.service.FileStorageService;
+import com.tybasoft.ibam.service.MailService;
+import com.tybasoft.ibam.service.SendMailV2;
 import com.tybasoft.ibam.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * REST controller for managing {@link com.tybasoft.ibam.domain.Avancement}.
  */
+@CrossOrigin(origins = "http://localhost:9000/*")
 @RestController
 @RequestMapping("/api")
 @Transactional
 public class AvancementResource {
-
     private final Logger log = LoggerFactory.getLogger(AvancementResource.class);
 
     private static final String ENTITY_NAME = "avancement";
+
+    @Autowired
+    MailService mailService;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -55,15 +74,30 @@ public class AvancementResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/avancements")
-    public ResponseEntity<Avancement> createAvancement(@RequestBody Avancement avancement) throws URISyntaxException {
+    public ResponseEntity<Avancement> createAvancement(@Valid @RequestBody Avancement avancement) throws URISyntaxException {
         log.debug("REST request to save Avancement : {}", avancement);
         if (avancement.getId() != null) {
             throw new BadRequestAlertException("A new avancement cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Avancement result = avancementRepository.save(avancement);
-        return ResponseEntity.created(new URI("/api/avancements/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/avancements/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    @PostMapping("/avancements/{id}/sendPdf")
+    public void sendMail(@RequestBody PdfMailing dest_mails, @PathVariable long id) throws URISyntaxException, MessagingException {
+        PdfMailing pdfMailing = dest_mails;
+        log.debug("REST request to send mail to : {}", pdfMailing.getMessage());
+        log.debug("REST request to send mail to : {}", pdfMailing.getDest_array());
+        List<String> mails = pdfMailing.getDest_array();
+        String msg = pdfMailing.getMessage();
+
+        for (int i = 0; i < mails.size(); i++) {
+            log.debug("REST request to send mail to : {}", mails.get(i));
+            mailService.sendEmail(mails.get(i), "compte rendu ", msg, false, false);
+        }
     }
 
     /**
@@ -76,20 +110,21 @@ public class AvancementResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/avancements")
-    public ResponseEntity<Avancement> updateAvancement(@RequestBody Avancement avancement) throws URISyntaxException {
+    public ResponseEntity<Avancement> updateAvancement(@Valid @RequestBody Avancement avancement) throws URISyntaxException {
         log.debug("REST request to update Avancement : {}", avancement);
         if (avancement.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Avancement result = avancementRepository.save(avancement);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, avancement.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code GET  /avancements} : get all the avancements.
-     *
+     *m
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of avancements in body.
      */
@@ -99,6 +134,51 @@ public class AvancementResource {
         Page<Avancement> page = avancementRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    private static final Logger logger = LoggerFactory.getLogger(FileUploadDownloadController.class);
+
+    private FileStorageService fileStorageService;
+
+    @GetMapping("/avancements/{id}/download")
+    public ResponseEntity downloadPdf(@PathVariable long id, HttpServletRequest request) throws IOException {
+        log.debug("REST request to download PDF of avancement : {}", id);
+        Avancement avancement = avancementRepository.findById(id).get();
+        String title = avancement.getTitreCompteRendu();
+        String content = avancement.getContenuCompteRendu();
+        LocalDate date = avancement.getCreatedAt();
+        String redacteur = avancement.getEmploye().getNom();
+        String wrapper =
+            "<div style=\"margin-top:200px\"></div>" +
+            "<strong>Titre:</strong>" +
+            title +
+            "<div style=\"margin-top:40px\"></div>" +
+            "<strong>Rédacteur:</strong>" +
+            redacteur +
+            "<div style=\"margin-top:40px\"></div>" +
+            "<strong>Date de rédaction:</strong>" +
+            date +
+            "<div style=\"margin-top:80px\"></div>" +
+            content;
+        LocalDate today = LocalDate.now();
+        HtmlConverter.convertToPdf(
+            wrapper,
+            new FileOutputStream("src/main/webapp/content/uploads/documents/compte_rendu_" + avancement.getId() + "_" + today + ".pdf")
+        );
+        System.out.println("PDF Created!");
+
+        Path path = Paths.get("src/main/webapp/content/uploads/documents/compte_rendu_" + avancement.getId() + "_" + today + ".pdf");
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity
+            .ok()
+            .contentType(MediaType.parseMediaType("application/pdf"))
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+            .body(resource);
     }
 
     /**
@@ -114,22 +194,6 @@ public class AvancementResource {
         return ResponseUtil.wrapOrNotFound(avancement);
     }
 
-
-
-
-    @GetMapping("/avancement/search-entities/{keyword}")
-    public ResponseEntity<Collection<Avancement>> seachInAllEntities(@PathVariable String  keyword, Pageable pageable){
-        Page<Avancement> avancements ;
-//        String key = keyword.toLowerCase();
-        log.debug("GET ALL ENTITIES FOR SEARCHING IN FRONTEND");
-        log.debug(keyword);
-        avancements = avancementRepository.findByTitreCompteRenduIsContainingOrContenuCompteRenduIsContainingOrEmploye_EmailIsContaining(keyword,keyword,keyword,pageable);
-        log.debug(String.valueOf(avancements.stream().count()));
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), avancements);
-
-        return ResponseEntity.ok().headers(headers).body(avancements.getContent());
-    }
-
     /**
      * {@code DELETE  /avancements/:id} : delete the "id" avancement.
      *
@@ -140,6 +204,9 @@ public class AvancementResource {
     public ResponseEntity<Void> deleteAvancement(@PathVariable Long id) {
         log.debug("REST request to delete Avancement : {}", id);
         avancementRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

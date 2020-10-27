@@ -116,7 +116,7 @@ export const getEntities: (keyword, page, size, sort) => { payload: Promise<Axio
 ) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
-    type: ACTION_TYPES.FETCH_AFFECTATIONMATERIELS,
+    type: ACTION_TYPES.FETCH_AFFECTATIONMATERIELS_LIST,
     payload: axios.get<IAffectationMateriels>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };

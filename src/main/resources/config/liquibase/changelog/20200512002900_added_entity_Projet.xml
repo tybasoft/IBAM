@@ -51,6 +51,12 @@
             <column name="date_modif" type="date">
                 <constraints nullable="true" />
             </column>
+            <column name="latitude" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="longitude" type="double">
+                <constraints nullable="true" />
+            </column>
             <column name="entreprise_id" type="bigint">
                 <constraints nullable="true" />
             </column>

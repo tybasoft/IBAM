@@ -30,6 +30,12 @@
             <column name="pays" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+             <column name="latitude" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="longitude" type="double">
+                <constraints nullable="true" />
+            </column>
             <column name="user_modif" type="varchar(255)">
                 <constraints nullable="true" />
             </column>

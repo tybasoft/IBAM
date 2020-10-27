@@ -23,34 +23,22 @@ import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstr
 
 import * as Icon from 'react-feather';
 
-//Prism
-// eslint-disable-next-line
-import Prism from 'prismjs'; //Include JS
-import 'prismjs/themes/prism-okaidia.css'; //Include CSS
-import { PrismCode } from 'react-prism'; //Prism Component
 import { IRootState } from 'app/shared/reducers';
-import { connect } from 'react-redux';
-
-import {
-  getEntities,
-  createEntity,
-  deleteEntity,
-  updateEntity,
-  ACTION_TYPES,
-  apiUrl
-  // filterEntities
-} from '../../../entities/avancement/avancement.reducer';
-import { Translate, translate, getSortState, JhiPagination, JhiItemCount, TextFormat } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import NavbarSearch from '../../components/search/Search';
+import { getEntities, deleteEntity, filterEntities } from 'app/entities/bon-reception/bon-reception.reducer';
+import { IBonReception } from 'app/shared/model/bon-reception.model';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-// import EmployeDetails from './employe-details';
-import { Link } from 'react-router-dom';
-import AvancementCreate from './avancementCreate';
-import AvancementDetails from './avancementDetails';
-import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { RouteComponentProps } from 'react-router';
+import { getSortState, Translate, TextFormat, JhiItemCount, JhiPagination } from 'react-jhipster';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import NavbarSearch from 'app/new-template/components/search/Search';
+import { connect } from 'react-redux';
+import BonReceptionCreate from './BonReceptionCreate';
+import BonReceptionDetails from './BonReceptionDetails';
 
-export const Avancement = (props: any) => {
+export interface IBonReceptionProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+
+export const BonReception = (props: IBonReceptionProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
   const [modalOpen, setModalOpen] = useState(false);
   const [importExportOpen, setImportExportOpen] = useState(null);
@@ -63,14 +51,30 @@ export const Avancement = (props: any) => {
 
   const sortEntities = () => {
     getAllEntities();
-    props.history.push(
-      `${props.location.pathname}?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`
-    );
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (props.location.search !== endURL) {
+      props.history.push(`${props.location.pathname}${endURL}`);
+    }
   };
 
   useEffect(() => {
     sortEntities();
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const page = params.get('page');
+    const sort = params.get('sort');
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1]
+      });
+    }
+  }, [props.location.search]);
 
   const sort = p => () => {
     setPaginationState({
@@ -114,7 +118,7 @@ export const Avancement = (props: any) => {
     props.filterEntities(e);
   };
 
-  const { avancementList, match, loading, totalItems } = props;
+  const { bonReceptionList, match, loading, totalItems } = props;
   return (
     <Fragment>
       <Row>
@@ -122,14 +126,14 @@ export const Avancement = (props: any) => {
           <Card>
             <CardBody>
               <CardTitle className="row" style={{ margin: 0 }}>
-                <Translate contentKey="ibamApp.avancement.home.title">Fonctions</Translate>
+                <Translate contentKey="ibamApp.bonReception.home.title">Bon Receptions</Translate>
                 <Form className="navbar-form mt-1 ml-auto float-left" role="search">
                   <NavbarSearch search={filter} clear={props.getEntities} />
                 </Form>
               </CardTitle>
               <p>
                 {' '}
-                <Translate contentKey="ibamApp.avancement.home.description">fonction</Translate>
+                <Translate contentKey="ibamApp.bonReception.home.description">fonction</Translate>
               </p>
               <div className="form-group mb-3 form-group-compose text-center">
                 <Button type="button" onClick={() => setModalOpen(true)} className="btn float-left btn-raised btn-danger  my-2 shadow-z-2">
@@ -154,63 +158,60 @@ export const Avancement = (props: any) => {
                 </Button>
               </div>
               <div className="table-responsive">
-                {avancementList && avancementList.length > 0 ? (
+                {bonReceptionList && bonReceptionList.length > 0 ? (
                   <Table responsive>
                     <thead>
                       <tr>
                         <th className="hand" onClick={sort('id')}>
                           <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                         </th>
-                        <th className="hand" onClick={sort('createdAt')}>
-                          <Translate contentKey="ibamApp.avancement.createdAt">Created At</Translate> <FontAwesomeIcon icon="sort" />
+                        <th className="hand" onClick={sort('livreur')}>
+                          <Translate contentKey="ibamApp.bonReception.livreur">Livreur</Translate> <FontAwesomeIcon icon="sort" />
                         </th>
-                        <th className="hand" onClick={sort('updatedAt')}>
-                          <Translate contentKey="ibamApp.avancement.updatedAt">Updated At</Translate> <FontAwesomeIcon icon="sort" />
+                        <th className="hand" onClick={sort('remarques')}>
+                          <Translate contentKey="ibamApp.bonReception.remarques">Remarques</Translate> <FontAwesomeIcon icon="sort" />
                         </th>
-                        <th className="hand" onClick={sort('titreCompteRendu')}>
-                          <Translate contentKey="ibamApp.avancement.titreCompteRendu">Titre Compte Rendu</Translate>{' '}
-                          <FontAwesomeIcon icon="sort" />
-                        </th>
-                        <th className="hand" onClick={sort('contenuCompteRendu')}>
-                          <Translate contentKey="ibamApp.avancement.contenuCompteRendu">Contenu Compte Rendu</Translate>{' '}
+                        <th className="hand" onClick={sort('dateLivraison')}>
+                          <Translate contentKey="ibamApp.bonReception.dateLivraison">Date Livraison</Translate>{' '}
                           <FontAwesomeIcon icon="sort" />
                         </th>
                         <th>
-                          <Translate contentKey="ibamApp.avancement.employe">Employe</Translate> <FontAwesomeIcon icon="sort" />
+                          <Translate contentKey="ibamApp.bonReception.fournisseur">Fournisseur</Translate> <FontAwesomeIcon icon="sort" />
+                        </th>
+                        <th>
+                          <Translate contentKey="ibamApp.bonReception.image">Image</Translate> <FontAwesomeIcon icon="sort" />
+                        </th>
+                        <th>
+                          <Translate contentKey="ibamApp.bonReception.projet">Projet</Translate> <FontAwesomeIcon icon="sort" />
                         </th>
                         <th />
                       </tr>
                     </thead>
                     <tbody>
-                      {avancementList.map((avancement, i) => (
+                      {bonReceptionList.map((bonReception, i) => (
                         <tr key={`entity-${i}`}>
-                          <td onClick={() => openDetails(avancement.id)} style={{ cursor: 'pointer' }}>
-                            {/* <Button tag={Link} to={`${match.url}/${avancement.id}`} color="link" size="sm"> */}
-                            {avancement.id}
-                            {/* </Button> */}
+                          <td onClick={() => openDetails(bonReception.id)} style={{ cursor: 'pointer' }}>
+                            {bonReception.id}
                           </td>
-                          <td onClick={() => openDetails(avancement.id)} style={{ cursor: 'pointer' }}>
-                            {avancement.createdAt ? (
-                              <TextFormat type="date" value={avancement.createdAt} format={APP_LOCAL_DATE_FORMAT} />
+                          <td onClick={() => openDetails(bonReception.id)} style={{ cursor: 'pointer' }}>
+                            {bonReception.livreur}
+                          </td>
+                          <td onClick={() => openDetails(bonReception.id)} style={{ cursor: 'pointer' }}>
+                            {bonReception.remarques}
+                          </td>
+                          <td onClick={() => openDetails(bonReception.id)} style={{ cursor: 'pointer' }}>
+                            {bonReception.dateLivraison ? (
+                              <TextFormat type="date" value={bonReception.dateLivraison} format="DD-MM-YYYY" />
                             ) : null}
                           </td>
-                          <td onClick={() => openDetails(avancement.id)} style={{ cursor: 'pointer' }}>
-                            {avancement.updatedAt ? (
-                              <TextFormat type="date" value={avancement.updatedAt} format={APP_LOCAL_DATE_FORMAT} />
-                            ) : null}
+                          <td onClick={() => openDetails(bonReception.id)} style={{ cursor: 'pointer' }}>
+                            {bonReception.fournisseur ? bonReception.fournisseur.email : ''}
                           </td>
-                          <td onClick={() => openDetails(avancement.id)} style={{ cursor: 'pointer' }}>
-                            {avancement.titreCompteRendu}
-                          </td>
-                          <td onClick={() => openDetails(avancement.id)} style={{ cursor: 'pointer' }}>
-                            {avancement.contenuCompteRendu}
-                          </td>
-                          <td onClick={() => openDetails(avancement.id)} style={{ cursor: 'pointer' }}>
-                            {avancement.employe ? avancement.employe.nom : ''}
-                          </td>
+                          <td>{bonReception.image ? bonReception.image.id : ''}</td>
+                          <td>{bonReception.projet ? bonReception.projet.libelle : ''}</td>
                           <td>
-                            <Icon.Edit onClick={() => editEntity(avancement)} size={18} className="mr-2" />
-                            <Icon.Trash2 onClick={() => confirmDelete(avancement.id)} size={18} color="#FF586B" />
+                            <Icon.Edit onClick={() => editEntity(bonReception)} size={18} className="mr-2" />
+                            <Icon.Trash2 onClick={() => confirmDelete(bonReception.id)} size={18} color="#FF586B" />
                           </td>
                         </tr>
                       ))}
@@ -219,13 +220,13 @@ export const Avancement = (props: any) => {
                 ) : (
                   !loading && (
                     <div className="alert alert-warning">
-                      <Translate contentKey="ibamApp.avancement.home.notFound">No Avancements found</Translate>
+                      <Translate contentKey="ibamApp.bonReception.home.notFound">No Bon Receptions found</Translate>
                     </div>
                   )
                 )}
               </div>
               {props.totalItems ? (
-                <div className={avancementList && avancementList.length > 0 ? '' : 'd-none'}>
+                <div className={bonReceptionList && bonReceptionList.length > 0 ? '' : 'd-none'}>
                   <Row className="justify-content-center">
                     <JhiItemCount
                       page={paginationState.activePage}
@@ -251,8 +252,8 @@ export const Avancement = (props: any) => {
           </Card>
         </Col>
       </Row>
-      <AvancementCreate modalOpen={modalOpen} handleClose={handleClose} avancementEntity={entityModel} />
-      {selectedEntity !== null && <AvancementDetails handleClose={handleClose} id={selectedEntity} isOpen={selectedEntity !== null} />}
+      <BonReceptionCreate modalOpen={modalOpen} handleClose={handleClose} bonReceptionEntity={entityModel} />
+      {selectedEntity !== null && <BonReceptionDetails handleClose={handleClose} id={selectedEntity} isOpen={selectedEntity !== null} />}
       {/* <Modal isOpen={importExportOpen !== null} toggle={() => setImportExportOpen(null)} size="md">
         <ModalHeader toggle={() => setImportExportOpen(null)}>{importExportOpen === 'IMP' ? 'Importer' : 'Exporter'}</ModalHeader>
         <ModalBody>
@@ -263,18 +264,20 @@ export const Avancement = (props: any) => {
   );
 };
 
-const mapStateToProps = ({ avancement }: IRootState) => ({
-  avancementList: avancement.entities,
-  loading: avancement.loading,
-  totalItems: avancement.totalItems,
-  entityModel: avancement.entity
+const mapStateToProps = ({ bonReception }: IRootState) => ({
+  bonReceptionList: bonReception.entities,
+  loading: bonReception.loading,
+  totalItems: bonReception.totalItems,
+  entityModel: bonReception.entity
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
+  deleteEntity,
+  filterEntities
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Avancement);
+export default connect(mapStateToProps, mapDispatchToProps)(BonReception);

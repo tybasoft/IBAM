@@ -32,6 +32,28 @@
             <column name="activated" type="boolean" valueBoolean="false">
                 <constraints nullable="false" />
             </column>
+            <column name="layout_color" type="varchar(256)">
+                <constraints nullable="true" />
+            </column>
+            <column name="sidebar_size" type="varchar(256)">
+                <constraints nullable="true" />
+            </column>
+            <column name="sidebar_background_color" type="varchar(256)">
+                <constraints nullable="true" />
+            </column>
+            <column name="sidebar_background_image_url" type="varchar(256)">
+                <constraints nullable="true" />
+            </column>
+            <column name="sidebar_size" type="varchar(256)">
+                <constraints nullable="true" />
+            </column>
+            <column name="sidebar_collapsed" type="boolean"  valueBoolean="false">
+                <constraints nullable="true" />
+            </column>
+            <column name="sidebar_background_image" type="boolean"  valueBoolean="false">
+                <constraints nullable="true" />
+            </column>
+          
             <column name="lang_key" type="varchar(10)"/>
             <column name="activation_key" type="varchar(20)"/>
             <column name="reset_key" type="varchar(20)"/>

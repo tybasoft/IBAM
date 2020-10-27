@@ -103,6 +103,7 @@ const SideMenuContent = props => {
           </span>
         </NavLink>
       </SideMenu.MenuSingleItem>
+
       <SideMenu.MenuMultiItems
         name={translate('global.sidebar.settings')}
         ArrowRight={<ChevronRight size={16} />}
@@ -125,7 +126,7 @@ const SideMenuContent = props => {
         </NavLink>
       </SideMenu.MenuMultiItems>
       <SideMenu.MenuMultiItems name="Matériel" ArrowRight={<ChevronRight size={16} />} collapsedSidebar={props.collapsedSidebar}>
-        <NavLink to="/contacts" activeClassName="active">
+        <NavLink to="/materiel" activeClassName="active">
           <span className="menu-item-text">Fiche Matériel</span>
         </NavLink>
         <NavLink to="/assurance" className="item" activeClassName="active">
@@ -171,7 +172,7 @@ const SideMenuContent = props => {
         <NavLink to="/bon-sortie" className="item" activeClassName="active">
           <span className="menu-item-text">Bon de sortie</span>
         </NavLink>
-        <NavLink to="/bon-de-reception" className="item" activeClassName="active">
+        <NavLink to="/bon-reception" className="item" activeClassName="active">
           <span className="menu-item-text">Bon de reception</span>
         </NavLink>
         <NavLink to="/gestion-financiere" className="item" activeClassName="active">
@@ -185,7 +186,7 @@ const SideMenuContent = props => {
      
       </SideMenu.MenuMultiItems> */}
       <SideMenu.MenuSingleItem>
-        <NavLink to="/react-tables/regular" className="item" activeClassName="active">
+        <NavLink to="/avancement" className="item" activeClassName="active">
           <span className="menu-item-text">Avancement des travaux</span>
         </NavLink>
       </SideMenu.MenuSingleItem>

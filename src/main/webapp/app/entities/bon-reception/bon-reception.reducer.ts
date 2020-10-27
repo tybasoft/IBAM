@@ -15,7 +15,8 @@ export const ACTION_TYPES = {
   CREATE_BONRECEPTION: 'bonReception/CREATE_BONRECEPTION',
   UPDATE_BONRECEPTION: 'bonReception/UPDATE_BONRECEPTION',
   DELETE_BONRECEPTION: 'bonReception/DELETE_BONRECEPTION',
-  RESET: 'bonReception/RESET'
+  RESET: 'bonReception/RESET',
+  FILTER: 'bonReception/FILTER'
 };
 
 const initialState = {
@@ -92,6 +93,12 @@ export default (state: BonReceptionState = initialState, action): BonReceptionSt
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.FILTER):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -101,7 +108,7 @@ export default (state: BonReceptionState = initialState, action): BonReceptionSt
   }
 };
 
-const apiUrl = 'api/bon-receptions';
+export const apiUrl = 'api/bon-receptions';
 const date = new Date(Date.now()).toLocaleString().split(',');
 
 // Actions
@@ -114,21 +121,10 @@ export const getEntities: ICrudGetAllAction<IBonReception> = (page, size, sort) 
   };
 };
 
-export const getCurrencies: ICrudGetAllAction<IBonReception> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}/currencies`;
-  return {
-    type: ACTION_TYPES.FETCH_BONRECEPTION_LIST,
-    payload: axios.get<IBonReception>(`${requestUrl}`)
-  };
-};
-
-export const getEntitiesById: ICrudGetAction<IBonReception> = id => {
-  const requestUrl = `${apiUrl}/${id}/lignes`;
-  return {
-    type: ACTION_TYPES.FETCH_BONRECEPTION,
-    payload: axios.get<IBonReception>(requestUrl)
-  };
-};
+export const filterEntities: ICrudGetAllAction<IBonReception> = filter => ({
+  type: ACTION_TYPES.FILTER,
+  payload: axios.get<IBonReception>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntity: ICrudGetAction<IBonReception> = id => {
   const requestUrl = `${apiUrl}/${id}`;

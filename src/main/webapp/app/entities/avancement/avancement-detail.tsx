@@ -21,13 +21,14 @@ export interface IAvancementDetailProps extends StateProps, DispatchProps, Route
 export const AvancementDetail = (props: IAvancementDetailProps) => {
   useEffect(() => {
     props.getEntity(props.match.params.id);
+    props.getEmployes();
   }, []);
   var mycont;
   var parse = require('html-react-parser');
   const { avancementEntity } = props;
   var loadEmails = async () => {
-    var employePaload = props.getEmployes().payload;
-    employePaload.data.map(employe => {
+    var employePaload = props.employeList;
+    employePaload.map(employe => {
       emailOptions.push({ value: employe.email, label: employe.nom });
     });
   };
@@ -204,8 +205,9 @@ export const AvancementDetail = (props: IAvancementDetailProps) => {
   );
 };
 
-const mapStateToProps = ({ avancement }: IRootState) => ({
-  avancementEntity: avancement.entity
+const mapStateToProps = ({ avancement, employe }: IRootState) => ({
+  avancementEntity: avancement.entity,
+  employeList: employe.entities
 });
 
 const mapDispatchToProps = {

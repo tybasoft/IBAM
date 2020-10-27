@@ -6,7 +6,7 @@ import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBase
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities,searchInEntities } from './affectation-materiels.reducer';
+import { getEntities, searchInEntities } from './affectation-materiels.reducer';
 import { IAffectationMateriels } from 'app/shared/model/affectation-materiels.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
@@ -15,21 +15,21 @@ export interface IAffectationMaterielsProps extends StateProps, DispatchProps, R
 
 export const AffectationMateriels = (props: IAffectationMaterielsProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
-  const [search , setSearch] = useState('');
+  const [search, setSearch] = useState('');
 
   function delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
   const getAllEntities = async keyword => {
     await delay(800); // just to wait until you write the whole word and not build glitch...
     if (keyword === null) {
-      props.getEntities(" ",paginationState.activePage - 1, 10, `${paginationState.sort},${paginationState.order}`);
+      props.getEntities(keyword, paginationState.activePage - 1, 10, `${paginationState.sort},${paginationState.order}`);
     } else {
       props.getEntities(keyword,paginationState.activePage - 1, 10, `${paginationState.sort},${paginationState.order}`);
     }
   };
 
-  const searchAllEntities= keyword => {
+  const searchAllEntities = keyword => {
     props.searchInEntities(keyword);
   };
 
@@ -42,7 +42,7 @@ export const AffectationMateriels = (props: IAffectationMaterielsProps) => {
   };
 
   useEffect(() => {
-    sortEntities("");
+    sortEntities('');
   }, [paginationState.activePage, paginationState.order, paginationState.sort]);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export const AffectationMateriels = (props: IAffectationMaterielsProps) => {
         ...paginationState,
         activePage: +page,
         sort: sortSplit[0],
-        order: sortSplit[1],
+        order: sortSplit[1]
       });
     }
   }, [props.location.search]);
@@ -64,25 +64,22 @@ export const AffectationMateriels = (props: IAffectationMaterielsProps) => {
     setPaginationState({
       ...paginationState,
       order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p,
+      sort: p
     });
   };
-  const disabledSearch = e =>{
-
-  }
+  const disabledSearch = e => {};
   const { affectationMaterielsList, match, loading, totalItems } = props;
 
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
-      activePage: currentPage,
+      activePage: currentPage
     });
 
-  const searchAffectations =  keyword => {
-
-    if(keyword === ""){
-      getAllEntities(search.toLowerCase())}
-    else {
+  const searchAffectations = keyword => {
+    if (keyword === '') {
+      getAllEntities(search.toLowerCase());
+    } else {
       searchAllEntities(keyword.toLowerCase());
     }
 
@@ -106,11 +103,20 @@ export const AffectationMateriels = (props: IAffectationMaterielsProps) => {
         </Link>
       </h2>
       <form className="md-form search">
-        <input className="form-control" type="text" id="inputSearch" placeholder="Search" aria-label="Search"  onChange={e =>sortEntities(e.target.value)} />
-        <Button className="form-control btn btn-primary float-right" id="target" onClick={disabledSearch} hidden>Annuler</Button>
+        <input
+          className="form-control"
+          type="text"
+          id="inputSearch"
+          placeholder="Search"
+          aria-label="Search"
+          onChange={e => sortEntities(e.target.value)}
+        />
+        <Button className="form-control btn btn-primary float-right" id="target" onClick={disabledSearch} hidden>
+          Annuler
+        </Button>
       </form>
-      <br/>
-      <br/>
+      <br />
+      <br />
       <div className="table-responsive">
         {affectationMaterielsList && affectationMaterielsList.length > 0 ? (
           <Table responsive>
@@ -239,7 +245,7 @@ export const AffectationMateriels = (props: IAffectationMaterielsProps) => {
 const mapStateToProps = ({ affectationMateriels }: IRootState) => ({
   affectationMaterielsList: affectationMateriels.entities,
   loading: 10,
-  totalItems: affectationMateriels.totalItems,
+  totalItems: affectationMateriels.totalItems
 });
 
 const mapDispatchToProps = {

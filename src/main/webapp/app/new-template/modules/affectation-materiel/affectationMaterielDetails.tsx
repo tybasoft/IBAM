@@ -23,7 +23,9 @@ export const AffectationMaterielsDetails = ({ id, handleClose, ...props }) => {
 
   return (
     <Modal isOpen={props.isOpen} toggle={() => handleClose()} size="lg">
-      <ModalHeader toggle={() => handleClose()}>Détails d'employé</ModalHeader>
+      <ModalHeader toggle={() => handleClose()}>
+        <Translate contentKey="ibamApp.affectationMateriels.detail.title">AffectationMateriels</Translate> [
+      </ModalHeader>
       {!affectationMaterielsEntity ? (
         <Row className="pt-3 pl-3 pr-3">'Chargement ...'</Row>
       ) : (
@@ -69,7 +71,7 @@ export const AffectationMaterielsDetails = ({ id, handleClose, ...props }) => {
               </dt>
               <dd>{affectationMaterielsEntity.materiel ? affectationMaterielsEntity.materiel.id : ''}</dd>
             </dl>
-            <Button tag={Link} to="/affectation-materiels" replace color="info">
+            {/* <Button tag={Link} to="/affectation-materiels" replace color="info">
               <FontAwesomeIcon icon="arrow-left" />{' '}
               <span className="d-none d-md-inline">
                 <Translate contentKey="entity.action.back">Back</Translate>
@@ -81,7 +83,7 @@ export const AffectationMaterielsDetails = ({ id, handleClose, ...props }) => {
               <span className="d-none d-md-inline">
                 <Translate contentKey="entity.action.edit">Edit</Translate>
               </span>
-            </Button>
+            </Button> */}
           </Col>
         </Row>
       )}

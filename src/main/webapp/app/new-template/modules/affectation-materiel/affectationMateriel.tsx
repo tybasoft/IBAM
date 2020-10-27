@@ -59,6 +59,7 @@ export const AffectationMateriels = (props: any) => {
   const [entityModel, setEntityModel] = useState(props.entityModel);
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
+    console.log(props.affectationMaterielsList);
   };
 
   const sortEntities = () => {

@@ -116,12 +116,12 @@ export default (state: AvancementState = initialState, action): AvancementState 
   }
 };
 
-const apiUrl = 'api/avancements';
+export const apiUrl = 'api/avancements';
 export const apiUrlEmploye = 'api/employes';
 
 // Actions
 
-export const getEmployes: any = () => {
+export const getEmployes: ICrudGetAllAction<IEmploye> = () => {
   const requestUrl = `${apiUrlEmploye}`;
   return {
     type: ACTION_TYPES.FETCH_EMPLOYE_LIST,
@@ -200,6 +200,8 @@ export const updateEntity: ICrudPutAction<IAvancement> = entity => async dispatc
     type: ACTION_TYPES.UPDATE_AVANCEMENT,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
+  dispatch(getEntities());
+
   return result;
 };
 

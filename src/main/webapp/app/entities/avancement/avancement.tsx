@@ -10,8 +10,7 @@ import {
   getSortState,
   IPaginationBaseState,
   JhiPagination,
-  JhiItemCount,
-
+  JhiItemCount
 } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -25,7 +24,6 @@ export interface IAvancementProps extends StateProps, DispatchProps, RouteCompon
 
 export const Avancement = (props: IAvancementProps) => {
   const [paginationState, setPaginationState] = useState(getSortState(props.location, ITEMS_PER_PAGE));
-
 
   const getAllEntities = () => {
     props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
@@ -53,7 +51,7 @@ export const Avancement = (props: IAvancementProps) => {
         ...paginationState,
         activePage: +page,
         sort: sortSplit[0],
-        order: sortSplit[1],
+        order: sortSplit[1]
       });
     }
   }, [props.location.search]);
@@ -62,14 +60,14 @@ export const Avancement = (props: IAvancementProps) => {
     setPaginationState({
       ...paginationState,
       order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p,
+      sort: p
     });
   };
 
   const handlePagination = currentPage =>
     setPaginationState({
       ...paginationState,
-      activePage: currentPage,
+      activePage: currentPage
     });
 
   const { avancementList, match, loading, totalItems } = props;
@@ -196,11 +194,11 @@ export const Avancement = (props: IAvancementProps) => {
 const mapStateToProps = ({ avancement }: IRootState) => ({
   avancementList: avancement.entities,
   loading: avancement.loading,
-  totalItems: avancement.totalItems,
+  totalItems: avancement.totalItems
 });
 
 const mapDispatchToProps = {
-  getEntities,
+  getEntities
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -12,7 +12,9 @@ export const ACTION_TYPES = {
   CREATE_BONCOMMANDE: 'bonCommande/CREATE_BONCOMMANDE',
   UPDATE_BONCOMMANDE: 'bonCommande/UPDATE_BONCOMMANDE',
   DELETE_BONCOMMANDE: 'bonCommande/DELETE_BONCOMMANDE',
-  RESET: 'bonCommande/RESET'
+  RESET: 'bonCommande/RESET',
+  FILTER: 'bonCommande/FILTER',
+
 };
 
 const initialState = {
@@ -88,6 +90,12 @@ export default (state: BonCommandeState = initialState, action): BonCommandeStat
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.FILTER):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -97,7 +105,7 @@ export default (state: BonCommandeState = initialState, action): BonCommandeStat
   }
 };
 
-const apiUrl = 'api/bon-commandes';
+export const apiUrl = 'api/bon-commandes';
 const date = new Date(Date.now()).toLocaleString().split(',');
 
 // Actions
@@ -110,13 +118,10 @@ export const getEntities: ICrudGetAllAction<IBonCommande> = (page, size, sort) =
   };
 };
 
-export const getEntitiesById: ICrudGetAction<IBonCommande> = id => {
-  const requestUrl = `${apiUrl}/${id}/lignes`;
-  return {
-    type: ACTION_TYPES.FETCH_BONCOMMANDE,
-    payload: axios.get<IBonCommande>(requestUrl)
-  };
-};
+export const filterEntities: ICrudGetAllAction<IBonCommande> = filter => ({
+  type: ACTION_TYPES.FILTER,
+  payload: axios.get<IBonCommande>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntity: ICrudGetAction<IBonCommande> = id => {
   const requestUrl = `${apiUrl}/${id}`;

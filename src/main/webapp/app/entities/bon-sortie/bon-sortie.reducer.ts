@@ -12,7 +12,8 @@ export const ACTION_TYPES = {
   CREATE_BONSORTIE: 'bonSortie/CREATE_BONSORTIE',
   UPDATE_BONSORTIE: 'bonSortie/UPDATE_BONSORTIE',
   DELETE_BONSORTIE: 'bonSortie/DELETE_BONSORTIE',
-  RESET: 'bonSortie/RESET'
+  RESET: 'bonSortie/RESET',
+  FILTER: 'bonSortie/FILTER',
 };
 
 const initialState = {
@@ -88,6 +89,12 @@ export default (state: BonSortieState = initialState, action): BonSortieState =>
         updateSuccess: true,
         entity: {}
       };
+    case SUCCESS(ACTION_TYPES.FILTER):
+      return {
+        ...state,
+        loading: false,
+        entities: action.payload.data
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -97,7 +104,7 @@ export default (state: BonSortieState = initialState, action): BonSortieState =>
   }
 };
 
-const apiUrl = 'api/bon-sorties';
+export const apiUrl = 'api/bon-sorties';
 const date = new Date(Date.now()).toLocaleString().split(',');
 
 // Actions
@@ -109,6 +116,11 @@ export const getEntities: ICrudGetAllAction<IBonSortie> = (page, size, sort) => 
     payload: axios.get<IBonSortie>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
   };
 };
+
+export const filterEntities: ICrudGetAllAction<IBonSortie> = filter => ({
+  type: ACTION_TYPES.FILTER,
+  payload: axios.get<IBonSortie>(`${apiUrl}/search-entities/${filter}`)
+});
 
 export const getEntity: ICrudGetAction<IBonSortie> = id => {
   const requestUrl = `${apiUrl}/${id}`;
