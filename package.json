@@ -33,7 +33,7 @@
     "lodash": "4.17.15",
     "lodash.debounce": "^4.0.8",
     "match-sorter": "^2.2.3",
-    "moment": "2.24.0",
+    "moment": "2.29.4",
     "namor": "^1.0.1",
     "prismjs": "^1.15.0",
     "rc-slider": "^8.6.1",
